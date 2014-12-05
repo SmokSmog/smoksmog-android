@@ -16,5 +16,4 @@ public class SmokSmogApplication extends Application {
         super.onCreate();
         Fabric.with( this, new Crashlytics() );
     }
-
 }
