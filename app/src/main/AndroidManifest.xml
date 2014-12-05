@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.malopolska.smoksmog" >
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".SmokSmogApplication"
         android:allowBackup="true"
@@ -17,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8"/>
     </application>
 
 </manifest>
