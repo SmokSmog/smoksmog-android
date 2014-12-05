@@ -48,6 +48,12 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            // We don't want flood Crashlytics with reports
+            ext.enableCrashlytics = false
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -73,5 +79,5 @@ dependencies {
         transitive = true;
     }
 
-    
+
 }

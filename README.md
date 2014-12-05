@@ -2,3 +2,7 @@ smoksmog-android [![Build Status](https://travis-ci.org/SmokSmog/smoksmog-androi
 ================
 
 SmokSmog client for Android
+
+* Default english language
+* Support Android 4.0
+* Notifications
