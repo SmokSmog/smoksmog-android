@@ -10,6 +10,7 @@ import io.fabric.sdk.android.Fabric;
  * Project Application class
  */
 public class SmokSmogApplication extends Application {
+
     @Override
     public void onCreate() {
         super.onCreate();
