@@ -14,7 +14,7 @@ public class DumbRoboTest {
 
     @Test
     public void testTruth() throws Exception {
-        
+
         assertThat(true).isTrue();
     }
 }
