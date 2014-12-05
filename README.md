@@ -1,4 +1,4 @@
-Smok Smog (for Android) [![Build Status](https://travis-ci.org/SmokSmog/smoksmog-android.svg?branch=develop)](https://travis-ci.org/SmokSmog/smoksmog-android)
+Smok Smog ( for Android ) [![Build Status](https://travis-ci.org/SmokSmog/smoksmog-android.svg?branch=develop)](https://travis-ci.org/SmokSmog/smoksmog-android)
 ================
 
 SmokSmog application for Android
