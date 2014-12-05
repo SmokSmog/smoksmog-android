@@ -5,13 +5,15 @@ buildscript {
     }
     dependencies {
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'io.fabric.tools:gradle:1.14.4'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.14.1'
     }
 }
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'robolectric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -79,5 +81,58 @@ dependencies {
         transitive = true;
     }
 
+    /**
+     * Testing
+     */
 
+    androidTestCompile 'junit:junit:4.11'
+
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.1.2'
+
+    androidTestCompile('org.robolectric:robolectric:2.3') {
+        exclude module: 'classworlds'
+        exclude module: 'commons-logging'
+        exclude module: 'httpclient'
+        exclude module: 'maven-artifact'
+        exclude module: 'maven-artifact-manager'
+        exclude module: 'maven-error-diagnostics'
+        exclude module: 'maven-model'
+        exclude module: 'maven-project'
+        exclude module: 'maven-settings'
+        exclude module: 'plexus-container-default'
+        exclude module: 'plexus-interpolation'
+        exclude module: 'plexus-utils'
+        exclude module: 'wagon-file'
+        exclude module: 'wagon-http-lightweight'
+        exclude module: 'wagon-provider-api'
+    }
+
+    androidTestCompile 'com.squareup:fest-android:1.0.8'
+
+    androidTestCompile 'org.mockito:mockito-core:1.9.5'
+}
+
+/**
+ * Robolectric configuration
+ *
+ * Run tests with: ./gradlew clean test
+ */
+
+robolectric {
+
+    include '**/*RoboTest.class'
+    //exclude '**/espresso/**/*.class'
+
+    maxHeapSize = '2048m'
+
+    jvmArgs '-XX:MaxPermSize=512m', '-XX:-UseSplitVerifier'
+
+    maxParallelForks = 4
+    forkEvery = 150
+
+    ignoreFailures false
+
+    afterTest { descriptor, result ->
+        println "Executing test for ${descriptor.name} with result: ${result.resultType}"
+    }
 }
