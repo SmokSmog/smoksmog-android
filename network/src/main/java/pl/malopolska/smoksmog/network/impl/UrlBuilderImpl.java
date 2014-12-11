@@ -1,5 +1,7 @@
 package pl.malopolska.smoksmog.network.impl;
 
+import java.util.Locale;
+
 import pl.malopolska.smoksmog.network.UrlBuilder;
 
 /**
@@ -7,11 +9,17 @@ import pl.malopolska.smoksmog.network.UrlBuilder;
  */
 public final class UrlBuilderImpl implements UrlBuilder {
 
-    /**
-     * TODO change as pleased, add parameters etc., but keep private
-     */
-    private UrlBuilderImpl(){
+    private final String baseUrl;
+    private final String locale;
 
+    /**
+     *
+     *
+     * @param baseUrl
+     */
+    private UrlBuilderImpl(String baseUrl, Locale locale){
+        this.baseUrl = baseUrl;
+        this.locale = locale.getISO3Language();
     }
 
     /**
@@ -19,8 +27,8 @@ public final class UrlBuilderImpl implements UrlBuilder {
      *
      * @return UrlBuilder implementation
      */
-    public static UrlBuilder create(){
-        return new UrlBuilderImpl();
+    public static UrlBuilder create(String baseUrl, Locale locale){
+        return new UrlBuilderImpl(baseUrl, locale);
     }
 
     @Override

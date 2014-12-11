@@ -62,7 +62,7 @@ public interface UrlBuilder {
     /**
      * URL for atmospheric particle description
      *
-     * Path: /{locale}/stations/{lat}/{lon}/history
+     * Path: /{locale}/particulates/{id}/desc
      *
      * @param particleId identifies particle
      * @return String URL
