@@ -1,5 +1,7 @@
 package pl.malopolska.smoksmog.network.impl;
 
+import android.net.Uri;
+
 import java.util.Locale;
 
 import pl.malopolska.smoksmog.network.UrlBuilder;
@@ -19,7 +21,7 @@ public final class UrlBuilderImpl implements UrlBuilder {
      */
     private UrlBuilderImpl(String baseUrl, Locale locale){
         this.baseUrl = baseUrl;
-        this.locale = locale.getISO3Language();
+        this.locale = locale.getLanguage();
     }
 
     /**
@@ -33,31 +35,55 @@ public final class UrlBuilderImpl implements UrlBuilder {
 
     @Override
     public String stations() {
-        throw new UnsupportedOperationException();
+        return builder().appendPath("stations").build().toString();
     }
 
     @Override
     public String station(long stationId) {
-        throw new UnsupportedOperationException();
+        return builder()
+                .appendPath("stations")
+                .appendPath(String.valueOf(stationId))
+                .build().toString();
     }
 
     @Override
     public String station(float latitude, float longitude) {
-        throw new UnsupportedOperationException();
+        return builder()
+                .appendPath("stations")
+                .appendPath(String.valueOf(latitude))
+                .appendPath(String.valueOf(longitude))
+                .build().toString();
     }
 
     @Override
     public String stationHistory(long stationId) {
-        throw new UnsupportedOperationException();
+        return builder()
+                .appendPath("stations")
+                .appendPath(String.valueOf(stationId))
+                .appendPath("history")
+                .build().toString();
     }
 
     @Override
     public String stationHistory(float latitude, float longitude) {
-        throw new UnsupportedOperationException();
+        return builder()
+                .appendPath("stations")
+                .appendPath(String.valueOf(latitude))
+                .appendPath(String.valueOf(longitude))
+                .appendPath("history")
+                .build().toString();
     }
 
     @Override
     public String particulates(long particleId) {
-        throw new UnsupportedOperationException();
+        return builder()
+                .appendPath("particulates")
+                .appendPath(String.valueOf(particleId))
+                .appendPath("desc")
+                .build().toString();
+    }
+
+    private Uri.Builder builder(){
+        return Uri.parse(baseUrl).buildUpon().appendPath(locale);
     }
 }
