@@ -22,7 +22,7 @@ public class UrlBuilderTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        urlBuilder = UrlBuilderImpl.create(BASE_URL, Locale.forLanguageTag(LANGUAGE_TAG));
+        urlBuilder = UrlBuilderImpl.create(BASE_URL, new Locale(LANGUAGE_TAG));
     }
 
     public void testStations() throws Exception {
