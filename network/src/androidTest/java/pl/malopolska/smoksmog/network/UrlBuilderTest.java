@@ -2,8 +2,6 @@ package pl.malopolska.smoksmog.network;
 
 import junit.framework.TestCase;
 
-import org.assertj.core.api.StringAssert;
-
 import java.util.Locale;
 
 import pl.malopolska.smoksmog.network.impl.UrlBuilderImpl;
@@ -34,7 +32,8 @@ public class UrlBuilderTest extends TestCase {
 
         int stationId = 23;
 
-        assertThat(urlBuilder.station(stationId)).startsWith(URL_START + "stations/" + stationId);
+        assertThat(urlBuilder.station(stationId))
+                .startsWith(URL_START + "stations/" + stationId);
     }
 
     public void testStationLatLng() throws Exception {
@@ -52,7 +51,6 @@ public class UrlBuilderTest extends TestCase {
 
         assertThat(urlBuilder.stationHistory(stationId))
                 .startsWith(URL_START + "stations/" + stationId + "/history");
-
     }
 
     public void testStationHistoryLatLng() throws Exception {
