@@ -5,7 +5,23 @@ import pl.malopolska.smoksmog.network.UrlBuilder;
 /**
  * TODO check interface comments for implementation details
  */
-public class UrlBuilderImpl implements UrlBuilder {
+public final class UrlBuilderImpl implements UrlBuilder {
+
+    /**
+     * TODO change as pleased, add parameters etc., but keep private
+     */
+    private UrlBuilderImpl(){
+
+    }
+
+    /**
+     * Factory method
+     *
+     * @return UrlBuilder implementation
+     */
+    public static UrlBuilder create(){
+        return new UrlBuilderImpl();
+    }
 
     @Override
     public String stations() {

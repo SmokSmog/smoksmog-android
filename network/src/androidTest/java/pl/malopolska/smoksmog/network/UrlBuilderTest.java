@@ -2,11 +2,16 @@ package pl.malopolska.smoksmog.network;
 
 import junit.framework.TestCase;
 
+import pl.malopolska.smoksmog.network.impl.UrlBuilderImpl;
+
 public class UrlBuilderTest extends TestCase {
+
+    private UrlBuilder urlBuilder;
 
     public void setUp() throws Exception {
         super.setUp();
 
+        urlBuilder = UrlBuilderImpl.create();
     }
 
     public void testStations() throws Exception {
