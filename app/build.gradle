@@ -79,9 +79,9 @@ dependencies {
 
     compile 'com.squareup.dagger:dagger:1.2.2'
 
-    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'com.android.support:appcompat-v7:21.0.3'
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
         transitive = true;
     }
 
@@ -89,11 +89,11 @@ dependencies {
      * Testing
      */
 
-    androidTestCompile 'junit:junit:4.11'
+    androidTestCompile 'junit:junit:4.12'
 
     androidTestCompile 'com.squareup.spoon:spoon-client:1.1.2'
 
-    androidTestCompile('org.robolectric:robolectric:2.3') {
+    androidTestCompile('org.robolectric:robolectric:2.4') {
         exclude module: 'classworlds'
         exclude module: 'commons-logging'
         exclude module: 'httpclient'
@@ -113,7 +113,7 @@ dependencies {
 
     androidTestCompile 'com.squareup:fest-android:1.0.8'
 
-    androidTestCompile 'org.mockito:mockito-core:1.9.5'
+    androidTestCompile 'org.mockito:mockito-core:1.10.17'
 }
 
 /**
