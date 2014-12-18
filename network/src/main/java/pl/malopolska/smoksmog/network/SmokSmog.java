@@ -1,6 +1,8 @@
 package pl.malopolska.smoksmog.network;
 
-import android.content.Context;
+import android.app.Application;
+
+import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 
@@ -11,14 +13,25 @@ public final class SmokSmog {
 
     private final ObjectGraph objectGraph;
 
+    @Inject
+    UrlBuilder urlBuilder;
+
     /**
      *
-     * 
-     * @param context
+     *
+     * @param application
      */
-    public SmokSmog( Context context ) {
+    public SmokSmog( Application application, Configuration configuration ) {
 
-        objectGraph = ObjectGraph.create( new SmokSmogModule(context) );
+        Configuration configurationNew = configuration;
+
+        if ( configurationNew == null ) {
+            configurationNew = Configuration.DEFAULT;
+        }
+
+        objectGraph = ObjectGraph.create( new SmokSmogModule( application, configurationNew ) );
         objectGraph.inject( this );
     }
+
+
 }
