@@ -19,18 +19,9 @@ public final class UrlBuilderImpl implements UrlBuilder {
      *
      * @param baseUrl
      */
-    private UrlBuilderImpl(String baseUrl, Locale locale){
+    public UrlBuilderImpl(String baseUrl, Locale locale){
         this.baseUrl = baseUrl;
         this.locale = locale.getLanguage();
-    }
-
-    /**
-     * Factory method
-     *
-     * @return UrlBuilder implementation
-     */
-    public static UrlBuilder create(String baseUrl, Locale locale){
-        return new UrlBuilderImpl(baseUrl, locale);
     }
 
     @Override
