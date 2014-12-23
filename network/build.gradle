@@ -20,8 +20,8 @@ dependencies {
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
     compile 'com.squareup.dagger:dagger:1.2.2'
-
     compile 'com.squareup.retrofit:retrofit:1.8.0'
+    compile 'com.android.support:appcompat-v7:21.0.3'
 
     /**
      * Testing
