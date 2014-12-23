@@ -3,7 +3,7 @@ package pl.malopolska.smoksmog.network;
 import java.util.Collection;
 
 /**
- * TODO add
+ * Interface for client-server communication. All methods should be synchronized.
  */
 public interface SmokSmogAPI {
 

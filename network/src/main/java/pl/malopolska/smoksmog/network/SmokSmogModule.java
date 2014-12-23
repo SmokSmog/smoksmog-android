@@ -10,18 +10,21 @@ import dagger.Provides;
 import pl.malopolska.smoksmog.network.impl.UrlBuilderImpl;
 
 /**
- * Created by iwopolanski on 18.12.14.
+ *
  */
-@Module
+@Module(
+        library = true
+)
 class SmokSmogModule {
 
     private final Application application;
 
-    SmokSmogModule( Application application, Configuration configuration ) {
+    SmokSmogModule( Application application ) {
         this.application = application;
     }
 
     @Provides
+    @Singleton
     Context providesApplicationContext() {
         return application;
     }

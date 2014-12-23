@@ -35,7 +35,6 @@ android {
         versionName "0.0.1"
 
         resConfigs "en", "pl"
-        resConfigs "nodpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
 
     compileOptions {
