@@ -9,6 +9,13 @@ package pl.malopolska.smoksmog.network;
 public interface UrlBuilder {
 
     /**
+     * Access to base URL used to create rest of them.
+     *
+     * @return String URL
+     */
+    String baseUrl();
+
+    /**
      * URL for accessing all available stations
      *
      * Path: /{locale}/stations

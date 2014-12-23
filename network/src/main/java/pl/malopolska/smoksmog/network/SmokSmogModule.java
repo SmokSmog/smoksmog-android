@@ -7,7 +7,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import pl.malopolska.smoksmog.network.impl.SmokSmogAPIRetrofit;
 import pl.malopolska.smoksmog.network.impl.UrlBuilderImpl;
+import retrofit.RestAdapter;
 
 /**
  *
@@ -32,6 +34,17 @@ class SmokSmogModule {
     @Provides
     @Singleton
     UrlBuilder providesUrlBuilder( Context context ) {
-        return new UrlBuilderImpl(null, null);
+        return new UrlBuilderImpl( null, null );
+    }
+
+    @Provides
+    @Singleton
+    SmokSmogAPI providesSmokSmogAPI( UrlBuilder urlBuilder ) {
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint( urlBuilder.baseUrl() )
+                .build();
+
+        return restAdapter.create( SmokSmogAPIRetrofit.class );
     }
 }

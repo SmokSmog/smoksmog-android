@@ -8,13 +8,6 @@ import java.util.Collection;
 public interface SmokSmogAPI {
 
     /**
-     * Access to UrlBuilder for SmokSmogAPI
-     *
-     * @return UrlBuilder implementation
-     */
-    UrlBuilder getUrlBuilder();
-
-    /**
      * Get available stations.
      *
      * @return collection of stations

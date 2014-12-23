@@ -25,6 +25,11 @@ public final class UrlBuilderImpl implements UrlBuilder {
     }
 
     @Override
+    public String baseUrl() {
+        return builder().build().toString();
+    }
+
+    @Override
     public String stations() {
         return builder().appendPath("stations").build().toString();
     }
