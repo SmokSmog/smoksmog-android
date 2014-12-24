@@ -33,7 +33,7 @@ public final class SmokSmog {
 
         final Application application;
 
-        String endpoint;
+        String endpoint = "http://api.smoksmog.jkostrz.name/";
 
         /**
          *
@@ -45,6 +45,9 @@ public final class SmokSmog {
         }
 
         public Builder setEndpoint( String endpoint ){
+
+            // TODO validate argument
+
             this.endpoint = endpoint;
             return this;
         }
