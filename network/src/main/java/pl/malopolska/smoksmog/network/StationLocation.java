@@ -3,7 +3,7 @@ package pl.malopolska.smoksmog.network;
 /**
  * Station with location details
  */
-public interface StationDetails extends Station {
+public interface StationLocation extends Station {
 
     /**
      * Station latitude.

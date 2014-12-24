@@ -1,7 +1,7 @@
 package pl.malopolska.smoksmog.network;
 
 /**
- *
+ * Minimal station information.
  */
 interface Station {
 
