@@ -7,5 +7,5 @@ dependencies {
     /**
      * Testing
      */
-    testCompile 'com.squareup.assertj:assertj-android:1.0.0'
+    testCompile 'org.assertj:assertj-core:1.7.0'
 }
