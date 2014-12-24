@@ -4,8 +4,6 @@ import junit.framework.TestCase;
 
 import java.util.Locale;
 
-import pl.malopolska.smoksmog.network.impl.UrlBuilderImpl;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UrlBuilderTest extends TestCase {

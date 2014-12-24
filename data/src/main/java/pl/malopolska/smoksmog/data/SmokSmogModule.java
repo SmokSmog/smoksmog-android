@@ -1,4 +1,4 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.data;
 
 import android.app.Application;
 import android.content.Context;
@@ -7,8 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import pl.malopolska.smoksmog.network.impl.SmokSmogAPIRetrofit;
-import pl.malopolska.smoksmog.network.impl.UrlBuilderImpl;
+import pl.malopolska.smoksmog.network.SmokSmogAPI;
 import retrofit.RestAdapter;
 
 /**
@@ -33,18 +32,11 @@ class SmokSmogModule {
 
     @Provides
     @Singleton
-    UrlBuilder providesUrlBuilder( Context context ) {
-        return new UrlBuilderImpl( null, null );
-    }
-
-    @Provides
-    @Singleton
-    SmokSmogAPI providesSmokSmogAPI( UrlBuilder urlBuilder ) {
+    SmokSmogAPI providesSmokSmogAPI() {
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint( urlBuilder.baseUrl() )
                 .build();
 
-        return restAdapter.create( SmokSmogAPIRetrofit.class );
+        return restAdapter.create( SmokSmogAPI.class );
     }
 }

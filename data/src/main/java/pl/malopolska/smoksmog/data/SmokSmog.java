@@ -1,11 +1,11 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.data;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
 
 import dagger.ObjectGraph;
+import pl.malopolska.smoksmog.network.SmokSmogAPI;
 
 /**
  *
@@ -13,7 +13,7 @@ import dagger.ObjectGraph;
 public final class SmokSmog {
 
     @Inject
-    UrlBuilder urlBuilder;
+    SmokSmogAPI smokSmogAPI;
 
     /**
      *
@@ -38,7 +38,7 @@ public final class SmokSmog {
          *
          * @param application
          */
-        public Builder( @NonNull Application application ){
+        public Builder( Application application ){
             this.application = application;
         }
 

@@ -84,7 +84,7 @@ dependencies {
         transitive = true;
     }
 
-    compile project( ':network' )
+    compile project( ':data' )
 
     /**
      * Testing
