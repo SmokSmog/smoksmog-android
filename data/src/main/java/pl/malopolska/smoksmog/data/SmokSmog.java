@@ -22,16 +22,18 @@ public final class SmokSmog {
      */
     private SmokSmog( Builder builder ) {
 
-        ObjectGraph objectGraph = ObjectGraph.create( new SmokSmogModule( builder.application ) );
+        ObjectGraph objectGraph = ObjectGraph.create( new SmokSmogModule( builder ) );
         objectGraph.inject( this );
     }
 
     /**
      * Construct SmokSmog object
      */
-    public static final class Builder {
+    static final class Builder {
 
-        private final Application application;
+        final Application application;
+
+        String endpoint;
 
         /**
          *
@@ -40,6 +42,11 @@ public final class SmokSmog {
          */
         public Builder( Application application ){
             this.application = application;
+        }
+
+        public Builder setEndpoint( String endpoint ){
+            this.endpoint = endpoint;
+            return this;
         }
 
         public SmokSmog build(){

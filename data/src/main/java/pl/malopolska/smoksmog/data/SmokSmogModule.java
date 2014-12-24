@@ -1,14 +1,15 @@
 package pl.malopolska.smoksmog.data;
 
-import android.app.Application;
 import android.content.Context;
+
+import java.util.Locale;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import pl.malopolska.smoksmog.network.SmokSmogAPI;
-import retrofit.RestAdapter;
+import pl.malopolska.smoksmog.network.SmokSmogAPICreator;
 
 /**
  *
@@ -18,25 +19,24 @@ import retrofit.RestAdapter;
 )
 class SmokSmogModule {
 
-    private final Application application;
+    private final SmokSmog.Builder builder;
 
-    SmokSmogModule( Application application ) {
-        this.application = application;
+    SmokSmogModule( SmokSmog.Builder builder ) {
+        this.builder = builder;
     }
 
     @Provides
     @Singleton
     Context providesApplicationContext() {
-        return application;
+        return builder.application;
     }
 
     @Provides
     @Singleton
     SmokSmogAPI providesSmokSmogAPI() {
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .build();
+        Locale locale = builder.application.getResources().getConfiguration().locale;
 
-        return restAdapter.create( SmokSmogAPI.class );
+        return SmokSmogAPICreator.create( builder.endpoint, locale );
     }
 }
