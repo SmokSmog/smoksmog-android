@@ -1,9 +1,12 @@
 package pl.malopolska.smoksmog.network;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Locale;
 
 import retrofit.RestAdapter;
 import retrofit.converter.Converter;
+import retrofit.converter.JacksonConverter;
 
 /**
  * API creator
@@ -49,10 +52,8 @@ public final class SmokSmogAPICreator {
      */
     private static Converter jacksonConverter() {
 
-        Converter converter = null;
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        // TODO setup Jackson ObjectMapper
-
-        return converter;
+        return new JacksonConverter( objectMapper );
     }
 }
