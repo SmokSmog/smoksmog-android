@@ -34,8 +34,9 @@ public final class SmokSmogAPICreator {
             throw new IllegalArgumentException( "Locale cannot be null" );
         }
 
-        // TODO check what is the last character of endpoint URL
-        String baseUrl = endpoint + "/" + locale.getLanguage();
+        String extraSlash = endpoint.endsWith( "/" ) ? "" : "/";
+
+        String baseUrl = endpoint + extraSlash + locale.getLanguage();
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint( baseUrl )
