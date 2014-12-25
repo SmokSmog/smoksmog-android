@@ -19,6 +19,6 @@ public class SmokSmogAPITest extends TestCase {
     }
 
     public void testStations() {
-        assertThat( smokSmogAPI.stations() ).isNullOrEmpty();
+        assertThat( smokSmogAPI.stations() ).isNotNull().isNotEmpty();
     }
 }
