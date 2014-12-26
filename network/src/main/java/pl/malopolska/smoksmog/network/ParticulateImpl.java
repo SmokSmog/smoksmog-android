@@ -4,11 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Created by iwopolanski on 26.12.14.
  */
-public class ParticulateImpl implements Particulate {
+public final class ParticulateImpl implements Particulate {
+
+    private static final DateTimeFormatter DTF =
+            DateTimeFormat.forPattern( "YYYY-MM-dd HH:mm:ss" );
 
     @JsonProperty( KEY_ID )
     private long id;
@@ -74,7 +79,7 @@ public class ParticulateImpl implements Particulate {
 
     @Override
     public DateTime getDate() {
-        return new DateTime( date );
+        return DTF.parseDateTime( date );
     }
 
     @Override
