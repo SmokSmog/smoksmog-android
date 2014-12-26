@@ -1,10 +1,13 @@
 package pl.malopolska.smoksmog.network;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.joda.time.DateTime;
 
 /**
  * Current state of measurement, returned with stations inforamtions
  */
+@JsonDeserialize( as = ParticulateImpl.class )
 public interface Particulate {
 
     public static final String KEY_ID = "id";
@@ -15,6 +18,7 @@ public interface Particulate {
     public static final String KEY_NORM = "norm";
     public static final String KEY_AVG = "avg";
     public static final String KEY_DATE = "date";
+    public static final String KEY_POSITION = "position";
 
     long getId();
 

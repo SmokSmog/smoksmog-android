@@ -1,6 +1,7 @@
 package pl.malopolska.smoksmog.network;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import java.util.Locale;
 
@@ -54,6 +55,8 @@ public final class SmokSmogAPICreator {
     private static Converter jacksonConverter() {
 
         ObjectMapper objectMapper = new ObjectMapper();
+
+        objectMapper.registerModule(new JodaModule());
 
         return new JacksonConverter( objectMapper );
     }
