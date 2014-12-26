@@ -21,4 +21,7 @@ public interface SmokSmogAPI {
     @GET( "/stations/{stationId}" )
     StationParticulates station( @Path( "stationId" ) long stationId );
 
+    @GET( "/stations/{stationId}/history" )
+    StationParticulates stationHistory( @Path( "stationId" ) long stationId );
+
 }

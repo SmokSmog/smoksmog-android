@@ -36,4 +36,9 @@ public class SmokSmogAPITest extends TestCase {
             assertThat( particulate.getDate() ).isNotNull();
         }
     }
+
+    public void testStationHistory() {
+        
+
+    }
 }
