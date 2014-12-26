@@ -15,5 +15,5 @@ public interface StationParticulates {
      *
      * @return collection of particulates
      */
-    Collection<Particulate> getParticulates();
+    Collection<ParticulateDetails> getParticulates();
 }

@@ -9,7 +9,7 @@ import org.joda.time.format.DateTimeFormatter;
 /**
  * Created by iwopolanski on 26.12.14.
  */
-public final class ParticulateImpl implements Particulate {
+public final class ParticulateDetailsImpl implements ParticulateDetails {
 
     private static final DateTimeFormatter DTF =
             DateTimeFormat.forPattern( "YYYY-MM-dd HH:mm:ss" );

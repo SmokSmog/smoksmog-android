@@ -27,12 +27,12 @@ public class SmokSmogAPITest extends TestCase {
 
         StationParticulates station = smokSmogAPI.station( 4 );
 
-        Collection<Particulate> particulates = station.getParticulates();
+        Collection<ParticulateDetails> particulates = station.getParticulates();
 
         assertThat( station ).isNotNull();
         assertThat( particulates ).isNotNull().isNotEmpty();
 
-        for( Particulate particulate : particulates ){
+        for( ParticulateDetails particulate : particulates ){
             assertThat( particulate.getDate() ).isNotNull();
         }
     }

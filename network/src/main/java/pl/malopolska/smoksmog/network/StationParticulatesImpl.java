@@ -5,10 +5,10 @@ import java.util.Collection;
 
 public class StationParticulatesImpl extends StationImpl implements StationParticulates {
 
-    private final Collection<Particulate> particulates = new ArrayList<>();
+    private final Collection<ParticulateDetails> particulates = new ArrayList<>();
 
     @Override
-    public Collection<Particulate> getParticulates() {
+    public Collection<ParticulateDetails> getParticulates() {
         return particulates;
     }
 }
