@@ -1,6 +1,5 @@
 package pl.malopolska.smoksmog.network;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.joda.time.DateTime;
@@ -21,7 +20,7 @@ public final class ParticulateImpl implements Particulate {
     @JsonProperty( KEY_NAME )
     private String name;
 
-    @JsonProperty( KEY_SHORT_NAME)
+    @JsonProperty( KEY_SHORT_NAME )
     private String shortName;
 
     @JsonProperty( KEY_UNIT )

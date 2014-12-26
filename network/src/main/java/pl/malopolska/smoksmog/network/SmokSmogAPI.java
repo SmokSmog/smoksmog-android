@@ -15,7 +15,7 @@ public interface SmokSmogAPI {
      *
      * @return collection of stations
      */
-    @GET( "/stations" )
+    @GET("/stations")
     Collection<StationLocation> stations();
 
     @GET( "/stations/{stationId}" )

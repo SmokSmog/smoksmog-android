@@ -56,7 +56,7 @@ public final class SmokSmogAPICreator {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        objectMapper.registerModule(new JodaModule());
+        objectMapper.registerModule( new JodaModule() );
 
         return new JacksonConverter( objectMapper );
     }
