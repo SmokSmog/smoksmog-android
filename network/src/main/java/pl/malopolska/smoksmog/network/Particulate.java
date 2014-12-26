@@ -35,4 +35,6 @@ public interface Particulate {
     float getAvg();
 
     DateTime getDate();
+
+    int getPosition();
 }

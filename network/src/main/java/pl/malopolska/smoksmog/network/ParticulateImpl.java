@@ -39,42 +39,46 @@ public class ParticulateImpl implements Particulate {
 
     @Override
     public long getId() {
-        return 0;
+        return id;
     }
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
     public String getShortName() {
-        return null;
+        return shortName;
     }
 
     @Override
     public String getUnit() {
-        return null;
+        return unit;
     }
 
     @Override
     public float getValue() {
-        return 0;
+        return Float.valueOf( value );
     }
 
     @Override
     public float getNorm() {
-        return 0;
+        return Float.valueOf( norm );
     }
 
     @Override
     public float getAvg() {
-        return 0;
+        return Float.valueOf( average );
     }
 
     @Override
     public DateTime getDate() {
-        return null;
+        return new DateTime( date );
     }
 
+    @Override
+    public int getPosition() {
+        return Integer.valueOf( position );
+    }
 }

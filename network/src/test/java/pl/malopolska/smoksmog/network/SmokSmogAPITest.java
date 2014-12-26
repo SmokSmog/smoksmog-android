@@ -2,6 +2,7 @@ package pl.malopolska.smoksmog.network;
 
 import junit.framework.TestCase;
 
+import java.util.Collection;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +24,16 @@ public class SmokSmogAPITest extends TestCase {
     }
 
     public void testStation(){
-        assertThat( smokSmogAPI.station( 4 ) ).isNotNull();
+
+        StationParticulates station = smokSmogAPI.station( 4 );
+
+        Collection<Particulate> particulates = station.getParticulates();
+
+        assertThat( station ).isNotNull();
+        assertThat( particulates ).isNotNull().isNotEmpty();
+
+        for( Particulate particulate : particulates ){
+            assertThat( particulate.getDate() ).isNotNull();
+        }
     }
 }
