@@ -5,10 +5,10 @@ import java.util.Collection;
 
 public class ParticulateHistoryImpl extends ParticulateImpl implements ParticulateHistory {
 
-    private Collection<ValueHistory> values = new ArrayList<>();
+    private Collection<HistoryValue> values = new ArrayList<>();
 
     @Override
-    public Collection<ValueHistory> getValues() {
+    public Collection<HistoryValue> getValues() {
         return values;
     }
 }

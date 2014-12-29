@@ -7,8 +7,8 @@ import org.joda.time.DateTime;
 /**
  * Created by iwopolanski on 29.12.14.
  */
-@JsonDeserialize( as = ValueHistoryImpl.class )
-public interface ValueHistory {
+@JsonDeserialize( as = HistoryValueImpl.class )
+public interface HistoryValue {
 
     float getValue();
 

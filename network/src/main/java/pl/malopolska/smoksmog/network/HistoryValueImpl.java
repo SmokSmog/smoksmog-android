@@ -7,7 +7,7 @@ import org.joda.time.DateTime;
 /**
  * Created by iwopolanski on 29.12.14.
  */
-public class ValueHistoryImpl implements ValueHistory {
+public class HistoryValueImpl implements HistoryValue {
 
     @JsonProperty
     private float value;

@@ -27,4 +27,7 @@ public interface SmokSmogAPI {
     @GET( "/stations/{stationId}/history" )
     StationHistory stationHistory( @Path( "stationId" ) long stationId );
 
+    @GET( "/stations/{latitude}/{longitude}/history" )
+    StationHistory stationHistory( @Path( "latitude" ) float latitude, @Path( "longitude" ) float longitude );
+
 }

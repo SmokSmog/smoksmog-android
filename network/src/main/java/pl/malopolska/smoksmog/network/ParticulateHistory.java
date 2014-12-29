@@ -10,5 +10,5 @@ import java.util.Collection;
 @JsonDeserialize( as = ParticulateHistoryImpl.class )
 public interface ParticulateHistory extends Particulate {
 
-    Collection<ValueHistory> getValues();
+    Collection<HistoryValue> getValues();
 }

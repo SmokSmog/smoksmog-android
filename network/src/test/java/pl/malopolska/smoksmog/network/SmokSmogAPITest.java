@@ -27,23 +27,32 @@ public class SmokSmogAPITest extends TestCase {
         assertThat( smokSmogAPI.stations() ).isNotNull().isNotEmpty();
     }
 
-    public void testStationById(){
+    public void testStationById() {
 
         StationParticulates station = smokSmogAPI.station( STATION_ID );
 
         checkStationDetails( station );
     }
 
-    public void testStationByLocation(){
+    public void testStationByLocation() {
 
         StationParticulates station = smokSmogAPI.station( LATITUDE, LONGITUDE );
 
         checkStationDetails( station );
     }
 
-    public void testStationHistory() {
+    public void testStationHistoryById() {
 
         StationHistory station = smokSmogAPI.stationHistory( STATION_ID );
+
+        checkStationHistory( station );
+    }
+
+    public void testStationHistoryByLocation() {
+
+        StationHistory station = smokSmogAPI.stationHistory( LATITUDE, LONGITUDE );
+
+        checkStationHistory( station );
     }
 
     /**
@@ -52,13 +61,29 @@ public class SmokSmogAPITest extends TestCase {
      * @param station with particulates information
      */
     private void checkStationDetails( StationParticulates station ) {
-        Collection<ParticulateDetails> particulates = station.getParticulates();
 
         assertThat( station ).isNotNull();
+
+        Collection<ParticulateDetails> particulates = station.getParticulates();
+
         assertThat( particulates ).isNotNull().isNotEmpty();
 
-        for( ParticulateDetails particulate : particulates ){
+        for ( ParticulateDetails particulate : particulates ) {
             assertThat( particulate.getDate() ).isNotNull();
+        }
+    }
+
+    private void checkStationHistory( StationHistory station ) {
+        assertThat( station );
+
+        Collection<ParticulateHistory> particulates = station.getParticulates();
+
+        assertThat( particulates ).isNotNull().isNotEmpty();
+
+        for ( ParticulateHistory particulate : particulates ) {
+            for ( HistoryValue value : particulate.getValues() ) {
+                assertThat( value.getDate() ).isNotNull();
+            }
         }
     }
 }
