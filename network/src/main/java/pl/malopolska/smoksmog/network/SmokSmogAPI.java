@@ -21,7 +21,15 @@ public interface SmokSmogAPI {
     @GET( "/stations/{stationId}" )
     StationParticulates station( @Path( "stationId" ) long stationId );
 
-    @GET( "/stations/{stationId}/history" )
-    StationParticulates stationHistory( @Path( "stationId" ) long stationId );
+    @GET( "/stations/{latitude}/{longitude}" )
+    StationParticulates station( @Path( "latitude" ) float latitude, @Path( "longitude" ) float longitude );
 
+    @GET( "/stations/{stationId}/history" )
+    StationHistory stationHistory( @Path( "stationId" ) long stationId );
+
+    @GET( "/stations/{latitude}/{longitude}/history" )
+    StationHistory stationHistory( @Path( "latitude" ) float latitude, @Path( "longitude" ) float longitude );
+
+    @GET( "/particulates/{particulateId}/desc" )
+    ParticulateDescription particulate( @Path( "particulateId" ) long particulateId );
 }

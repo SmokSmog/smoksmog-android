@@ -5,15 +5,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.Collection;
 
 /**
- * Represents brief information about station measurement state.
+ * Created by iwopolanski on 29.12.14.
  */
-@JsonDeserialize( as = StationParticulatesImpl.class )
-public interface StationParticulates extends Station {
+@JsonDeserialize( as = StationHistoryImpl.class )
+public interface StationHistory extends Station {
 
     /**
      * Current state of measurement for station
      *
      * @return collection of particulates
      */
-    Collection<ParticulateDetails> getParticulates();
+    Collection<ParticulateHistory> getParticulates();
 }
