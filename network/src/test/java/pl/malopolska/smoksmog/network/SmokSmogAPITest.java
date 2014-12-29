@@ -9,6 +9,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SmokSmogAPITest extends TestCase {
 
+    private static final int STATION_ID = 4;
+    public static final float LATITUDE = 50.061389f;
+    public static final float LONGITUDE = 19.938333f;
+
     private SmokSmogAPI smokSmogAPI;
 
     @Override
@@ -23,10 +27,31 @@ public class SmokSmogAPITest extends TestCase {
         assertThat( smokSmogAPI.stations() ).isNotNull().isNotEmpty();
     }
 
-    public void testStation(){
+    public void testStationById(){
 
-        StationParticulates station = smokSmogAPI.station( 4 );
+        StationParticulates station = smokSmogAPI.station( STATION_ID );
 
+        checkStationDetails( station );
+    }
+
+    public void testStationByLocation(){
+
+        StationParticulates station = smokSmogAPI.station( LATITUDE, LONGITUDE );
+
+        checkStationDetails( station );
+    }
+
+    public void testStationHistory() {
+
+        StationParticulates station = smokSmogAPI.stationHistory( STATION_ID );
+    }
+
+    /**
+     * Check station
+     *
+     * @param station with particulates information
+     */
+    private void checkStationDetails( StationParticulates station ) {
         Collection<ParticulateDetails> particulates = station.getParticulates();
 
         assertThat( station ).isNotNull();
@@ -35,10 +60,5 @@ public class SmokSmogAPITest extends TestCase {
         for( ParticulateDetails particulate : particulates ){
             assertThat( particulate.getDate() ).isNotNull();
         }
-    }
-
-    public void testStationHistory() {
-        
-
     }
 }
