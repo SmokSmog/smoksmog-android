@@ -55,6 +55,13 @@ public class SmokSmogAPITest extends TestCase {
         checkStationHistory( station );
     }
 
+    public void testParticulate() {
+
+        ParticulateDescription particulateDescription = smokSmogAPI.particulate( 1 );
+
+        assertThat( particulateDescription );
+    }
+
     /**
      * Check station
      *
