@@ -19,6 +19,16 @@ public final class SmokSmogAPICreator {
     }
 
     /**
+     * Same as create() calling Locale.getDefault()
+     *
+     * @param endpoint
+     * @return
+     */
+    public static SmokSmogAPI create( String endpoint ){
+        return create(endpoint, Locale.getDefault());
+    }
+
+    /**
      * Valid way for API creation
      *
      * @param endpoint
