@@ -43,7 +43,7 @@ public class SmokSmogAPITest extends TestCase {
 
     public void testStationHistory() {
 
-        StationParticulates station = smokSmogAPI.stationHistory( STATION_ID );
+        StationHistory station = smokSmogAPI.stationHistory( STATION_ID );
     }
 
     /**
