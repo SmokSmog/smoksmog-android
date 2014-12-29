@@ -1,5 +1,6 @@
 package pl.malopolska.smoksmog.network;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ParticulateImpl implements Particulate {
@@ -34,5 +35,16 @@ public class ParticulateImpl implements Particulate {
     @Override
     public float getNorm() {
         return Float.valueOf( norm );
+    }
+
+    /**
+     * Crappy situation at API level when field 'short_name' i returned with extra char at the end
+     */
+    @JsonAnySetter
+    void anySetter( String key, Object value ){
+
+        if(key != null && key.startsWith( KEY_SHORT_NAME )){
+            shortName = String.valueOf( value );
+        }
     }
 }
