@@ -1,13 +1,12 @@
 package pl.malopolska.smoksmog.network;
 
-import junit.framework.TestCase;
-
 import org.junit.Test;
 
-public class SmokSmogAPICreatorTest extends TestCase {
+public class SmokSmogAPICreatorTest {
 
     public static final String ENDPOINT = "http://www.onet.pl";
 
+    @Test
     public void testCreateValid() throws Exception {
         SmokSmogAPICreator.create(ENDPOINT);
         SmokSmogAPICreator.create(ENDPOINT + "/");
