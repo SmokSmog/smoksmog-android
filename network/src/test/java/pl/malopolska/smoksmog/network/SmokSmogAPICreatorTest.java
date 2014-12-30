@@ -6,6 +6,11 @@ public class SmokSmogAPICreatorTest {
 
     public static final String ENDPOINT = "http://www.onet.pl";
 
+    @Test(expected = Exception.class)
+    public void testConstructor(){
+        new SmokSmogAPICreator();
+    }
+
     @Test
     public void testCreateValid() throws Exception {
         SmokSmogAPICreator.create(ENDPOINT);

@@ -14,7 +14,7 @@ import retrofit.converter.JacksonConverter;
  */
 public final class SmokSmogAPICreator {
 
-    private SmokSmogAPICreator() {
+    SmokSmogAPICreator() {
         throw new UnsupportedOperationException( "Utility class" );
     }
 
