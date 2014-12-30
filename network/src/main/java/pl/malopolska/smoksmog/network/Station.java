@@ -5,9 +5,6 @@ package pl.malopolska.smoksmog.network;
  */
 interface Station {
 
-    public static final String KEY_ID = "id";
-    public static final String KEY_NAME = "name";
-
     /**
      * Unique identifier for station.
      *

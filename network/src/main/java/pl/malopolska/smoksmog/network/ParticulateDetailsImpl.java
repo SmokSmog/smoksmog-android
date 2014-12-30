@@ -6,10 +6,13 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-/**
- * Created by iwopolanski on 26.12.14.
- */
 public final class ParticulateDetailsImpl extends ParticulateImpl implements ParticulateDetails {
+
+    private static final String KEY_UNIT = "unit";
+    private static final String KEY_VALUE = "value";
+    private static final String KEY_AVG = "avg";
+    private static final String KEY_DATE = "date";
+    private static final String KEY_POSITION = "position";
 
     private static final DateTimeFormatter DTF =
             DateTimeFormat.forPattern( "YYYY-MM-dd HH:mm:ss" );

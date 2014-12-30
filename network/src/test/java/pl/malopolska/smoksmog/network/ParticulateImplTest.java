@@ -30,4 +30,9 @@ public class ParticulateImplTest extends TestCase {
 
         assertThat( particulate.getShortName() ).isEqualTo( newValue );
     }
+
+    public void testAnySetterInvalidValue() {
+
+        particulate.anySetter( "random", "value2" );
+    }
 }

@@ -7,12 +7,6 @@ import org.joda.time.DateTime;
  */
 public interface ParticulateDetails extends Particulate {
 
-    public static final String KEY_UNIT = "unit";
-    public static final String KEY_VALUE = "value";
-    public static final String KEY_AVG = "avg";
-    public static final String KEY_DATE = "date";
-    public static final String KEY_POSITION = "position";
-
     String getUnit();
 
     float getValue();
