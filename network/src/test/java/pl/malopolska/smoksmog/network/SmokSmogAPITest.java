@@ -100,7 +100,7 @@ public class SmokSmogAPITest extends TestCase {
             for ( HistoryValue historyValue : particulate.getValues() ) {
 
                 TestUtils.invokeAllGetters( historyValue );
-                
+
                 assertThat( historyValue.getDate() ).isNotNull();
             }
         }
