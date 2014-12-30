@@ -67,6 +67,8 @@ public class SmokSmogAPITest extends TestCase {
         ParticulateDescription particulateDescription = smokSmogAPI.particulate( 1 );
 
         assertThat( particulateDescription ).isNotNull();
+
+        TestUtils.invokeAllGetters( particulateDescription );
     }
 
     /**

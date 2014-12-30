@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ParticulateImpl implements Particulate {
 
+    static final String KEY_ID = "id";
+    static final String KEY_NAME = "name";
+    static final String KEY_SHORT_NAME = "short_name";
+    static final String KEY_NORM = "norm";
+
     @JsonProperty( KEY_ID )
     private long id;
 
