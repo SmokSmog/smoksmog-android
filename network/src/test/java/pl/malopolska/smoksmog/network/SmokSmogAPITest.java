@@ -24,7 +24,14 @@ public class SmokSmogAPITest extends TestCase {
     }
 
     public void testStations() {
-        assertThat( smokSmogAPI.stations() ).isNotNull().isNotEmpty();
+
+        Collection<StationLocation> stations = smokSmogAPI.stations();
+
+        assertThat( stations ).isNotNull().isNotEmpty();
+
+        for( StationLocation stationLocation : stations ){
+            TestUtils.invokeAllGetters( stationLocation );
+        }
     }
 
     public void testStationById() {

@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StationLocationImpl extends StationImpl implements StationLocation {
 
-    @JsonProperty( KEY_LATITUDE )
+    @JsonProperty( "lat" )
     private float latitude;
 
-    @JsonProperty( KEY_LONGITUDE )
+    @JsonProperty( "lon" )
     private float longitude;
 
     @Override
