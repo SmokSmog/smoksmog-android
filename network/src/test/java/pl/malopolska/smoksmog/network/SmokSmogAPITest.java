@@ -59,7 +59,7 @@ public class SmokSmogAPITest extends TestCase {
 
         ParticulateDescription particulateDescription = smokSmogAPI.particulate( 1 );
 
-        assertThat( particulateDescription );
+        assertThat( particulateDescription ).isNotNull();
     }
 
     /**
@@ -69,6 +69,8 @@ public class SmokSmogAPITest extends TestCase {
      */
     private void checkStationDetails( StationParticulates station ) {
 
+        TestUtils.invokeAllGetters( station );
+
         assertThat( station ).isNotNull();
 
         Collection<ParticulateDetails> particulates = station.getParticulates();
@@ -76,11 +78,15 @@ public class SmokSmogAPITest extends TestCase {
         assertThat( particulates ).isNotNull().isNotEmpty();
 
         for ( ParticulateDetails particulate : particulates ) {
+            TestUtils.invokeAllGetters( particulate );
             assertThat( particulate.getDate() ).isNotNull();
         }
     }
 
     private void checkStationHistory( StationHistory station ) {
+
+        TestUtils.invokeAllGetters( station );
+
         assertThat( station );
 
         Collection<ParticulateHistory> particulates = station.getParticulates();
@@ -88,8 +94,14 @@ public class SmokSmogAPITest extends TestCase {
         assertThat( particulates ).isNotNull().isNotEmpty();
 
         for ( ParticulateHistory particulate : particulates ) {
-            for ( HistoryValue value : particulate.getValues() ) {
-                assertThat( value.getDate() ).isNotNull();
+
+            TestUtils.invokeAllGetters( particulate );
+
+            for ( HistoryValue historyValue : particulate.getValues() ) {
+
+                TestUtils.invokeAllGetters( historyValue );
+                
+                assertThat( historyValue.getDate() ).isNotNull();
             }
         }
     }
