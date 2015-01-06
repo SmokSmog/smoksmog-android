@@ -25,6 +25,24 @@ public final class SmokSmog {
         ObjectGraph objectGraph = ObjectGraph.create( new SmokSmogModule( builder ) );
         objectGraph.inject( this );
 
+        createAccount();
+    }
+
+    /**
+     * Access to network API.
+     *
+     * @return SmokSmogAPI implementation
+     */
+    public SmokSmogAPI getAPI(){
+        return smokSmogAPI;
+    }
+
+    /**
+     * Creates dumb account for application, only one required.
+     */
+    private void createAccount() {
+
+
     }
 
     /**
