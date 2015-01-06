@@ -24,6 +24,7 @@ public final class SmokSmog {
 
         ObjectGraph objectGraph = ObjectGraph.create( new SmokSmogModule( builder ) );
         objectGraph.inject( this );
+
     }
 
     /**
