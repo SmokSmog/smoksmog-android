@@ -15,7 +15,10 @@ import pl.malopolska.smoksmog.network.SmokSmogAPICreator;
  *
  */
 @Module(
-        library = true
+        library = true,
+        injects = {
+                SmokSmog.class
+        }
 )
 class SmokSmogModule {
 
