@@ -1,10 +1,11 @@
 package pl.malopolska.smoksmog.data;
 
 import android.app.Application;
+import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
 
-import dagger.ObjectGraph;
+import dagger.Module;
 import pl.malopolska.smoksmog.network.SmokSmogAPI;
 
 /**
@@ -12,8 +13,7 @@ import pl.malopolska.smoksmog.network.SmokSmogAPI;
  */
 public final class SmokSmog {
 
-    @Inject
-    SmokSmogAPI smokSmogAPI;
+    final SmokSmogAPI smokSmogAPI;
 
     /**
      *
@@ -22,8 +22,7 @@ public final class SmokSmog {
      */
     private SmokSmog( Builder builder ) {
 
-        ObjectGraph objectGraph = ObjectGraph.create( new SmokSmogModule( builder ) );
-        objectGraph.inject( this );
+        smokSmogAPI = builder.smogAPI;
 
         createAccount();
     }
@@ -51,6 +50,7 @@ public final class SmokSmog {
     static final class Builder {
 
         final Application application;
+        final SmokSmogAPI smogAPI;
 
         String endpoint = "http://api.smoksmog.jkostrz.name/";
 
@@ -59,10 +59,18 @@ public final class SmokSmog {
          *
          * @param application
          */
-        public Builder( Application application ){
+        public Builder( @NonNull Application application, @NonNull SmokSmogAPI smogAPI ){
+
             this.application = application;
+            this.smogAPI = smogAPI;
         }
 
+        /**
+         * Set custom endpoint
+         *
+         * @param endpoint new value
+         * @return Builder object for chain call
+         */
         public Builder setEndpoint( String endpoint ){
 
             // TODO validate argument

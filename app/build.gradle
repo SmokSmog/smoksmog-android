@@ -53,11 +53,6 @@ android {
 
     buildTypes {
 
-        debug {
-            // We don't want flood Crashlytics with reports
-            ext.enableCrashlytics = false
-        }
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -80,6 +75,8 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.0-SNAPSHOT'
 
     compile 'com.google.dagger:dagger:2.0-SNAPSHOT'
+
+    provided 'org.glassfish:javax.annotation:10.0-b28'
 
     compile 'com.android.support:appcompat-v7:21.0.3'
 
@@ -115,7 +112,7 @@ dependencies {
         exclude module: 'wagon-provider-api'
     }
 
-    androidTestCompile 'com.squareup:fest-android:1.0.8'
+    androidTestCompile 'org.assertj:assertj-core:1.7.0'
 
     androidTestCompile 'org.mockito:mockito-core:1.10.17'
 }
