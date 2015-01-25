@@ -11,5 +11,5 @@ import dagger.Component;
 )
 public interface GoogleApiComponent {
 
-    public GoogleApiClient googleApi();
+    GoogleApiClient google();
 }

@@ -7,6 +7,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pl.malopolska.smoksmog.BaseActivity;
 import pl.malopolska.smoksmog.R;
+import pl.malopolska.smoksmog.location.Dagger_GoogleApiComponent;
+import pl.malopolska.smoksmog.location.GoogleApiClientModule;
+import pl.malopolska.smoksmog.location.GoogleApiComponent;
 import pl.malopolska.smoksmog.toolbar.ToolbarController;
 
 public class MainActivity extends BaseActivity {
@@ -24,6 +27,10 @@ public class MainActivity extends BaseActivity {
         ButterKnife.inject(this);
 
         toolbarController = new ToolbarController(this, toolbar);
+
+        GoogleApiComponent component = Dagger_GoogleApiComponent.builder()
+                .googleApiClientModule(new GoogleApiClientModule(this))
+                .build();
 
     }
 }

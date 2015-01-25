@@ -14,7 +14,6 @@ import butterknife.InjectView;
 import pl.malopolska.smoksmog.BuildConfig;
 import pl.malopolska.smoksmog.R;
 import pl.malopolska.smoksmog.network.StationLocation;
-import pl.malopolska.smoksmog.network.StationLocationImpl;
 import pl.malopolska.smoksmog.ui.MainActivity;
 
 public class ToolbarController {
@@ -42,8 +41,6 @@ public class ToolbarController {
         }
 
         List<StationLocation> stationList = new ArrayList<>();
-
-        stationList.add(new StationLocationImpl());
 
         spinner.setAdapter(new StationAdapter( stationList ));
     }
