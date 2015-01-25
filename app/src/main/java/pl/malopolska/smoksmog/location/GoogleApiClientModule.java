@@ -10,7 +10,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Module
+@Module(
+        library = false
+)
 public class GoogleApiClientModule {
 
     private final Context context;

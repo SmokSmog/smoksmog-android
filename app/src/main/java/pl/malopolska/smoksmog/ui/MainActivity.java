@@ -24,5 +24,6 @@ public class MainActivity extends BaseActivity {
         ButterKnife.inject(this);
 
         toolbarController = new ToolbarController(this, toolbar);
+
     }
 }
