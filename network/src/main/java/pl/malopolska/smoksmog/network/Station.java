@@ -3,7 +3,7 @@ package pl.malopolska.smoksmog.network;
 /**
  * Minimal station information.
  */
-interface Station {
+public interface Station {
 
     /**
      * Unique identifier for station.
