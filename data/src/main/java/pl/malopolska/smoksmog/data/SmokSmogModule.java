@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import pl.malopolska.smoksmog.network.SmokSmogAPI;
-import pl.malopolska.smoksmog.network.SmokSmogAPICreator;
+import pl.malopolska.smoksmog.network.SmokSmogAPIImpl;
 
 /**
  *
@@ -40,6 +40,6 @@ class SmokSmogModule {
 
         Locale locale = builder.application.getResources().getConfiguration().locale;
 
-        return SmokSmogAPICreator.create( builder.endpoint, locale );
+        return SmokSmogAPIImpl.create(builder.endpoint, locale);
     }
 }

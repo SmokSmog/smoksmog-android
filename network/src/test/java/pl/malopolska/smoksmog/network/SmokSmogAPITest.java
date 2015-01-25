@@ -19,8 +19,8 @@ public class SmokSmogAPITest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        smokSmogAPI = SmokSmogAPICreator.create(
-                "http://api.smoksmog.jkostrz.name/", new Locale( "pl" ) );
+        smokSmogAPI = SmokSmogAPIImpl.create(
+                "http://api.smoksmog.jkostrz.name/", new Locale("pl"));
     }
 
     public void testStations() {

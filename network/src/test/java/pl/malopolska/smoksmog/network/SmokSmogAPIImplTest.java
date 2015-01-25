@@ -2,28 +2,28 @@ package pl.malopolska.smoksmog.network;
 
 import org.junit.Test;
 
-public class SmokSmogAPICreatorTest {
+public class SmokSmogAPIImplTest {
 
     public static final String ENDPOINT = "http://www.onet.pl";
 
     @Test(expected = Exception.class)
     public void testConstructor(){
-        new SmokSmogAPICreator();
+        new SmokSmogAPIImpl();
     }
 
     @Test
     public void testCreateValid() throws Exception {
-        SmokSmogAPICreator.create(ENDPOINT);
-        SmokSmogAPICreator.create(ENDPOINT + "/");
+        SmokSmogAPIImpl.create(ENDPOINT);
+        SmokSmogAPIImpl.create(ENDPOINT + "/");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateInvalid() throws Exception {
-        SmokSmogAPICreator.create(null, null);
+        SmokSmogAPIImpl.create(null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateInvalidSecond() throws Exception {
-        SmokSmogAPICreator.create(ENDPOINT, null);
+        SmokSmogAPIImpl.create(ENDPOINT, null);
     }
 }
