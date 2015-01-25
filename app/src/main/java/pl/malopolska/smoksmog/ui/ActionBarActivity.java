@@ -7,7 +7,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pl.malopolska.smoksmog.BaseActivity;
 import pl.malopolska.smoksmog.R;
-import pl.malopolska.smoksmog.ToolbarController;
+import pl.malopolska.smoksmog.toolbar.ToolbarController;
 
 public class ActionBarActivity extends BaseActivity {
 
