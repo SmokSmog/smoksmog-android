@@ -13,14 +13,8 @@ import dagger.Provides;
 )
 public class GoogleApiClientModule {
 
-    private final Context context;
-
-    public GoogleApiClientModule(Context context) {
-        this.context = context;
-    }
-
     @Provides
-    public GoogleApiClient provideGoogleApiClient() {
+    public GoogleApiClient provideGoogleApiClient(Context context) {
         return new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
                 .build();
