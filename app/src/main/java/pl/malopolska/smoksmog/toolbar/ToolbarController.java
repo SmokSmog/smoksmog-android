@@ -15,7 +15,7 @@ import pl.malopolska.smoksmog.BuildConfig;
 import pl.malopolska.smoksmog.R;
 import pl.malopolska.smoksmog.network.StationLocation;
 import pl.malopolska.smoksmog.network.StationLocationImpl;
-import pl.malopolska.smoksmog.ui.ActionBarActivity;
+import pl.malopolska.smoksmog.ui.MainActivity;
 
 public class ToolbarController {
 
@@ -25,7 +25,7 @@ public class ToolbarController {
     private final Toolbar toolbar;
     private final ActionBar actionBar;
 
-    public ToolbarController(@NonNull ActionBarActivity activity, @NonNull Toolbar toolbar) {
+    public ToolbarController(@NonNull MainActivity activity, @NonNull Toolbar toolbar) {
 
         this.toolbar = toolbar;
 

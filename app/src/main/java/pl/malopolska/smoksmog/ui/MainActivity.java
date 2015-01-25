@@ -9,7 +9,7 @@ import pl.malopolska.smoksmog.BaseActivity;
 import pl.malopolska.smoksmog.R;
 import pl.malopolska.smoksmog.toolbar.ToolbarController;
 
-public class ActionBarActivity extends BaseActivity {
+public class MainActivity extends BaseActivity {
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
