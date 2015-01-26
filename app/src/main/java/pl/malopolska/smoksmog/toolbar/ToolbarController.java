@@ -15,11 +15,13 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnItemSelected;
 import pl.malopolska.smoksmog.BuildConfig;
 import pl.malopolska.smoksmog.R;
 import pl.malopolska.smoksmog.base.BaseActivity;
 import pl.malopolska.smoksmog.network.SmokSmogAPI;
 import pl.malopolska.smoksmog.network.StationLocation;
+import pl.malopolska.smoksmog.ui.MainActivity;
 
 public class ToolbarController {
 
@@ -28,6 +30,7 @@ public class ToolbarController {
     private final StationAdapter stationAdapter;
 
     private final List<StationLocation> stationList = new ArrayList<>();
+    private final BaseActivity activity;
 
     @InjectView(R.id.spinner)
     Spinner spinner;
@@ -43,14 +46,12 @@ public class ToolbarController {
 
         ButterKnife.inject(this, toolbar);
 
-        Toast.makeText(activity, ">> " + spinner, Toast.LENGTH_SHORT).show();
-
         this.toolbar = toolbar;
+        this.activity = activity;
 
         activity.setSupportActionBar(toolbar);
 
         actionBar = activity.getSupportActionBar();
-
         actionBar.setDisplayShowTitleEnabled(false);
 
         if (BuildConfig.DEBUG) {
@@ -58,7 +59,24 @@ public class ToolbarController {
         }
 
         stationAdapter = new StationAdapter(activity, stationList);
+
+        spinner.setEnabled(false);
         spinner.setAdapter(stationAdapter);
+
+        updateList(activity);
+    }
+
+    @OnItemSelected(R.id.spinner)
+    void stationSelected(int position) {
+        MainActivity.start(activity, stationList.get(position));
+    }
+
+    /**
+     * Runs list update for spinner
+     *
+     * @param activity
+     */
+    private void updateList(final BaseActivity activity) {
 
         new Thread(new Runnable() {
             @Override
@@ -73,6 +91,8 @@ public class ToolbarController {
                         stationList.addAll(stations);
 
                         stationAdapter.notifyDataSetChanged();
+
+                        spinner.setEnabled(true);
                     }
                 });
             }
