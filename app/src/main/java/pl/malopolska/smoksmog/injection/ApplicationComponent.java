@@ -1,14 +1,17 @@
 package pl.malopolska.smoksmog.injection;
 
+import android.content.Context;
+
 import dagger.Component;
 import pl.malopolska.smoksmog.location.GoogleApiClientModule;
 
 @Component(
-        dependencies = {
+        modules = {
+                ApplicationModule.class,
                 GoogleApiClientModule.class
         }
 )
-public interface ActivityScope {
+public interface ApplicationComponent {
 
-
+    Context context();
 }

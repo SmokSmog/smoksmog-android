@@ -8,7 +8,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import javax.inject.Inject;
 
 import pl.malopolska.smoksmog.SmokSmogApplication;
-import pl.malopolska.smoksmog.injection.Dagger_ActivityScope;
+import pl.malopolska.smoksmog.injection.Dagger_ActivityComponent;
 
 public class BaseActivity extends ActionBarActivity {
 
@@ -19,8 +19,8 @@ public class BaseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Dagger_ActivityScope.builder()
-                .applicationScope(SmokSmogApplication.get(this).getApplicationScope())
+        Dagger_ActivityComponent.builder()
+                .applicationScope(SmokSmogApplication.get(this).getApplicationComponent())
                 .build();
     }
 
