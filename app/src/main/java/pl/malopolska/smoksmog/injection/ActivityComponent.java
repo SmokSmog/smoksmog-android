@@ -1,14 +1,14 @@
 package pl.malopolska.smoksmog.injection;
 
-import android.content.Context;
-
 import dagger.Component;
+import pl.malopolska.smoksmog.base.BaseActivity;
 
 @Component(
         dependencies = {
-                Context.class
+                ApplicationComponent.class
         }
 )
 public interface ActivityComponent {
 
+    void inject(BaseActivity baseActivity);
 }

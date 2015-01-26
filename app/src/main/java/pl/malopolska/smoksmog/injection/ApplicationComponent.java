@@ -2,6 +2,8 @@ package pl.malopolska.smoksmog.injection;
 
 import android.content.Context;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import dagger.Component;
 import pl.malopolska.smoksmog.location.GoogleApiClientModule;
 
@@ -14,4 +16,6 @@ import pl.malopolska.smoksmog.location.GoogleApiClientModule;
 public interface ApplicationComponent {
 
     Context context();
+
+    GoogleApiClient googleApiClient();
 }

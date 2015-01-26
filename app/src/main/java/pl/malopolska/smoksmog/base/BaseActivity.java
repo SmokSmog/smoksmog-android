@@ -20,8 +20,9 @@ public class BaseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         Dagger_ActivityComponent.builder()
-                .applicationScope(SmokSmogApplication.get(this).getApplicationComponent())
-                .build();
+                .applicationComponent(SmokSmogApplication.get(this).getApplicationComponent())
+                .build()
+                .inject(this);
     }
 
     protected GoogleApiClient getGoogleApiClient() {
