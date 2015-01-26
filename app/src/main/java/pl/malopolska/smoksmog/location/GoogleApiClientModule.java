@@ -16,14 +16,8 @@ public class GoogleApiClientModule {
     @Provides
     public GoogleApiClient provideGoogleApiClient(Context context) {
 
-        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
+        return new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
                 .build();
-
-        if (googleApiClient == null) {
-            throw new IllegalStateException("Missing Google API client");
-        }
-
-        return googleApiClient;
     }
 }
