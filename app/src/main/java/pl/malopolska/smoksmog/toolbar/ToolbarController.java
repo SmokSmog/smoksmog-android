@@ -54,10 +54,6 @@ public class ToolbarController {
         actionBar = activity.getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
-        if (BuildConfig.DEBUG) {
-            toolbar.setBackgroundColor(Color.rgb(234, 42, 120));
-        }
-
         stationAdapter = new StationAdapter(activity, stationList);
 
         spinner.setEnabled(false);

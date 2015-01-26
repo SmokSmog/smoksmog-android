@@ -25,6 +25,8 @@ public class BaseActivity extends ActionBarActivity {
         activityComponent = Dagger_ActivityComponent.builder()
                 .applicationComponent(SmokSmogApplication.get(this).getApplicationComponent())
                 .build();
+
+        activityComponent.inject(this);
     }
 
     public ActivityComponent getActivityComponent() {
