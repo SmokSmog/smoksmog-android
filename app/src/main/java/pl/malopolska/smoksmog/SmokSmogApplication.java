@@ -9,6 +9,7 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import pl.malopolska.smoksmog.injection.ApplicationModule;
 import pl.malopolska.smoksmog.injection.ApplicationScope;
+import pl.malopolska.smoksmog.injection.Dagger_ApplicationScope;
 
 /**
  * Project Application class

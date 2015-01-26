@@ -11,20 +11,20 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pl.malopolska.smoksmog.injection.ApplicationScope;
-import pl.malopolska.smoksmog.Dagger_ActivityScope;
 import pl.malopolska.smoksmog.R;
 import pl.malopolska.smoksmog.SmokSmogApplication;
+import pl.malopolska.smoksmog.injection.Dagger_ActivityScope;
 import pl.malopolska.smoksmog.toolbar.ToolbarController;
 
 public class MainActivity extends ActionBarActivity {
-
-    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
 
     private ToolbarController toolbarController;
 
     @Inject
     GoogleApiClient googleApiClient;
+
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -33,26 +33,16 @@ public class MainActivity extends ActionBarActivity {
 
         ButterKnife.inject(this);
 
-        ApplicationScope applicationScope = SmokSmogApplication.get(this).getApplicationScope();
-
-        Dagger_ActivityScope.builder()
-                .applicationScope(applicationScope)
-                .build().inject(this);
-
         toolbarController = new ToolbarController(this, toolbar);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        googleApiClient.connect();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if(googleApiClient.isConnected()) {
-            googleApiClient.disconnect();
-        }
     }
 }
