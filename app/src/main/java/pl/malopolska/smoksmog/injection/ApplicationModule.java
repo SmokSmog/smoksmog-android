@@ -2,6 +2,8 @@ package pl.malopolska.smoksmog.injection;
 
 import android.content.Context;
 
+import java.util.Locale;
+
 import dagger.Module;
 import dagger.Provides;
 import pl.malopolska.smoksmog.SmokSmogApplication;
@@ -20,5 +22,10 @@ public class ApplicationModule {
     @Provides
     public Context provideContext(){
         return application;
+    }
+
+    @Provides
+    public Locale provideLocale(Context context){
+        return context.getResources().getConfiguration().locale;
     }
 }

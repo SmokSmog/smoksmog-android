@@ -8,9 +8,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import javax.inject.Inject;
 
 import pl.malopolska.smoksmog.SmokSmogApplication;
+import pl.malopolska.smoksmog.injection.ActivityComponent;
 import pl.malopolska.smoksmog.injection.Dagger_ActivityComponent;
 
 public class BaseActivity extends ActionBarActivity {
+
+    private ActivityComponent activityComponent;
 
     @Inject
     GoogleApiClient googleApiClient;
@@ -19,10 +22,13 @@ public class BaseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Dagger_ActivityComponent.builder()
+        activityComponent = Dagger_ActivityComponent.builder()
                 .applicationComponent(SmokSmogApplication.get(this).getApplicationComponent())
-                .build()
-                .inject(this);
+                .build();
+    }
+
+    public ActivityComponent getActivityComponent() {
+        return activityComponent;
     }
 
     protected GoogleApiClient getGoogleApiClient() {
