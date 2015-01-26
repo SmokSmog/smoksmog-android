@@ -1,4 +1,4 @@
-package pl.malopolska.smoksmog;
+package pl.malopolska.smoksmog.injection;
 
 import android.app.Activity;
 

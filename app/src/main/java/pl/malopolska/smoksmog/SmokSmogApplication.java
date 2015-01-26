@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
+import pl.malopolska.smoksmog.injection.ApplicationModule;
+import pl.malopolska.smoksmog.injection.ApplicationScope;
 
 /**
  * Project Application class
@@ -28,8 +30,6 @@ public class SmokSmogApplication extends Application {
         applicationScope = Dagger_ApplicationScope.builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
-
-        applicationScope.incject(this);
     }
 
     public ApplicationScope getApplicationScope() {

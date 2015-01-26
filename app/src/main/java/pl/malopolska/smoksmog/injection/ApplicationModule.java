@@ -1,4 +1,4 @@
-package pl.malopolska.smoksmog;
+package pl.malopolska.smoksmog.injection;
 
 import android.content.Context;
 
@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import pl.malopolska.smoksmog.SmokSmogApplication;
 
 @Module(
         library = true

@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import pl.malopolska.smoksmog.ApplicationScope;
+import pl.malopolska.smoksmog.injection.ApplicationScope;
 import pl.malopolska.smoksmog.Dagger_ActivityScope;
 import pl.malopolska.smoksmog.R;
 import pl.malopolska.smoksmog.SmokSmogApplication;
