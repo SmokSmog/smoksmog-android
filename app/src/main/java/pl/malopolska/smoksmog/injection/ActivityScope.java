@@ -1,13 +1,14 @@
 package pl.malopolska.smoksmog.injection;
 
 import dagger.Component;
-import pl.malopolska.smoksmog.base.BaseActivity;
+import pl.malopolska.smoksmog.location.GoogleApiClientModule;
 
 @Component(
         dependencies = {
-                ApplicationScope.class
+                GoogleApiClientModule.class
         }
 )
 public interface ActivityScope {
+
 
 }
