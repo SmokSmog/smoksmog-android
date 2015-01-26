@@ -36,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
         ApplicationScope applicationScope = SmokSmogApplication.get(this).getApplicationScope();
 
         Dagger_ActivityScope.builder()
-                .applicationComponent(applicationScope)
+                .applicationScope(applicationScope)
                 .build().inject(this);
 
         toolbarController = new ToolbarController(this, toolbar);

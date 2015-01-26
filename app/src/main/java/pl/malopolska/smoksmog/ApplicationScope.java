@@ -1,5 +1,7 @@
 package pl.malopolska.smoksmog;
 
+import android.content.Context;
+
 import dagger.Component;
 
 @Component(
@@ -9,4 +11,5 @@ import dagger.Component;
 )
 public interface ApplicationScope {
 
+    void incject(Context context);
 }

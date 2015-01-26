@@ -29,6 +29,7 @@ public class SmokSmogApplication extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .build();
 
+        applicationScope.incject(this);
     }
 
     public ApplicationScope getApplicationScope() {
