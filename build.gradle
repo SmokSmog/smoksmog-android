@@ -5,11 +5,13 @@ apply plugin: 'com.github.ben-manes.versions'
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.1'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.6'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+        classpath 'me.tatarka:gradle-retrolambda:2.5.0'
     }
 }
 
@@ -20,4 +22,6 @@ allprojects {
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
     }
+
+    apply plugin: 'me.tatarka.retrolambda'
 }

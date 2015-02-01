@@ -2,6 +2,8 @@ apply plugin: 'java'
 apply plugin: 'sonar-runner'
 apply plugin: 'jacoco'
 
+sourceCompatibility = 1.8
+
 dependencies {
 
     compile 'com.squareup.retrofit:retrofit:1.8.0'

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -60,7 +61,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         long stationId = intent.getLongExtra(EXTRA_STATION_ID, -1);
 
-        Toast.makeText(this, ">> " + stationId, Toast.LENGTH_SHORT).show();
+        toolbar.setOnClickListener((View view) -> Toast.makeText(this, "Click", Toast.LENGTH_SHORT).show());
     }
 
     @Override

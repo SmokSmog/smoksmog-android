@@ -6,3 +6,9 @@ SmokSmog application for Android
 * Default english language
 * Support Android 4.0
 * Notifications
+
+
+
+Dependency updates
+
+./gradlew dependencyUpdates
