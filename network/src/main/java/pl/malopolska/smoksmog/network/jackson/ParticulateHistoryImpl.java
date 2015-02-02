@@ -1,7 +1,10 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.jackson;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import pl.malopolska.smoksmog.network.model.HistoryValue;
+import pl.malopolska.smoksmog.network.model.ParticulateHistory;
 
 public class ParticulateHistoryImpl extends ParticulateImpl implements ParticulateHistory {
 

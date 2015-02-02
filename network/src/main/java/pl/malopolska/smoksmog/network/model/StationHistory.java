@@ -1,19 +1,13 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Collection;
 
-/**
- * Created by iwopolanski on 29.12.14.
- */
+import pl.malopolska.smoksmog.network.jackson.StationHistoryImpl;
+
 @JsonDeserialize( as = StationHistoryImpl.class )
 public interface StationHistory extends Station {
 
-    /**
-     * Current state of measurement for station
-     *
-     * @return collection of particulates
-     */
     Collection<ParticulateHistory> getParticulates();
 }

@@ -1,8 +1,10 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.jackson;
 
 import junit.framework.TestCase;
 
 import java.util.Random;
+
+import pl.malopolska.smoksmog.network.jackson.ParticulateImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

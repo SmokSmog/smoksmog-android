@@ -6,11 +6,13 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import java.util.Collection;
 import java.util.Locale;
 
+import pl.malopolska.smoksmog.network.model.ParticulateDescription;
+import pl.malopolska.smoksmog.network.model.StationHistory;
+import pl.malopolska.smoksmog.network.model.StationLocation;
+import pl.malopolska.smoksmog.network.model.StationParticulates;
 import retrofit.RestAdapter;
 import retrofit.converter.Converter;
 import retrofit.converter.JacksonConverter;
-import retrofit.http.GET;
-import retrofit.http.Path;
 
 /**
  * API creator

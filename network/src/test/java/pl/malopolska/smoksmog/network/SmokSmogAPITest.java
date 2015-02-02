@@ -5,6 +5,14 @@ import junit.framework.TestCase;
 import java.util.Collection;
 import java.util.Locale;
 
+import pl.malopolska.smoksmog.network.model.HistoryValue;
+import pl.malopolska.smoksmog.network.model.ParticulateDescription;
+import pl.malopolska.smoksmog.network.model.ParticulateDetails;
+import pl.malopolska.smoksmog.network.model.ParticulateHistory;
+import pl.malopolska.smoksmog.network.model.StationHistory;
+import pl.malopolska.smoksmog.network.model.StationLocation;
+import pl.malopolska.smoksmog.network.model.StationParticulates;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SmokSmogAPITest extends TestCase {

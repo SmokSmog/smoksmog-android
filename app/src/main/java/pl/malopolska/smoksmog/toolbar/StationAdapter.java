@@ -12,7 +12,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import pl.malopolska.smoksmog.network.StationLocation;
+import pl.malopolska.smoksmog.network.model.StationLocation;
 
 public class StationAdapter extends BaseAdapter {
 

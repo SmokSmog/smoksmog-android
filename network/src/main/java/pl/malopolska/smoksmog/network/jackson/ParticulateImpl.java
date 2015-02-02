@@ -1,25 +1,24 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.jackson;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import pl.malopolska.smoksmog.network.model.Particulate;
+
 public class ParticulateImpl implements Particulate {
 
-    static final String KEY_ID = "id";
-    static final String KEY_NAME = "name";
     static final String KEY_SHORT_NAME = "short_name";
-    static final String KEY_NORM = "norm";
 
-    @JsonProperty(KEY_ID)
+    @JsonProperty
     private long id;
 
-    @JsonProperty(KEY_NAME)
+    @JsonProperty
     private String name;
 
     @JsonProperty(KEY_SHORT_NAME)
     private String shortName;
 
-    @JsonProperty(KEY_NORM)
+    @JsonProperty
     private String norm;
 
     @Override

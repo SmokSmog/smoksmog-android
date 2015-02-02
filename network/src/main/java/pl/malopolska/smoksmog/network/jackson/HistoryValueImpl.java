@@ -1,12 +1,11 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.jackson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.joda.time.DateTime;
 
-/**
- * Created by iwopolanski on 29.12.14.
- */
+import pl.malopolska.smoksmog.network.model.HistoryValue;
+
 public class HistoryValueImpl implements HistoryValue {
 
     @JsonProperty

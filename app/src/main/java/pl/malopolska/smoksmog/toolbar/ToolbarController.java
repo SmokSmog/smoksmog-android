@@ -1,11 +1,9 @@
 package pl.malopolska.smoksmog.toolbar;
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,11 +14,10 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemSelected;
-import pl.malopolska.smoksmog.BuildConfig;
 import pl.malopolska.smoksmog.R;
 import pl.malopolska.smoksmog.base.BaseActivity;
 import pl.malopolska.smoksmog.network.SmokSmogAPI;
-import pl.malopolska.smoksmog.network.StationLocation;
+import pl.malopolska.smoksmog.network.model.StationLocation;
 import pl.malopolska.smoksmog.ui.MainActivity;
 
 public class ToolbarController {

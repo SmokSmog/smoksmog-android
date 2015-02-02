@@ -1,4 +1,4 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.jackson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -6,30 +6,26 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public final class ParticulateDetailsImpl extends ParticulateImpl implements ParticulateDetails {
+import pl.malopolska.smoksmog.network.model.ParticulateDetails;
 
-    private static final String KEY_UNIT = "unit";
-    private static final String KEY_VALUE = "value";
-    private static final String KEY_AVG = "avg";
-    private static final String KEY_DATE = "date";
-    private static final String KEY_POSITION = "position";
+public final class ParticulateDetailsImpl extends ParticulateImpl implements ParticulateDetails {
 
     private static final DateTimeFormatter DTF =
             DateTimeFormat.forPattern( "YYYY-MM-dd HH:mm:ss" );
 
-    @JsonProperty( KEY_UNIT )
+    @JsonProperty
     private String unit;
 
-    @JsonProperty( KEY_VALUE )
+    @JsonProperty
     private String value;
 
-    @JsonProperty( KEY_AVG )
+    @JsonProperty( "avg" )
     private String average;
 
-    @JsonProperty( KEY_DATE )
+    @JsonProperty
     private String date;
 
-    @JsonProperty( KEY_POSITION )
+    @JsonProperty
     private String position;
 
     @Override
@@ -43,7 +39,7 @@ public final class ParticulateDetailsImpl extends ParticulateImpl implements Par
     }
 
     @Override
-    public float getAvg() {
+    public float getAverage() {
         return Float.valueOf( average );
     }
 

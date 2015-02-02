@@ -1,8 +1,10 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Collection;
+
+import pl.malopolska.smoksmog.network.jackson.ParticulateHistoryImpl;
 
 /**
  *

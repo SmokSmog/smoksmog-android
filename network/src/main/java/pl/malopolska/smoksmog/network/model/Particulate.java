@@ -1,10 +1,9 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-/**
- * Current state of measurement, returned with stations inforamtions
- */
+import pl.malopolska.smoksmog.network.jackson.ParticulateDetailsImpl;
+
 @JsonDeserialize( as = ParticulateDetailsImpl.class )
 public interface Particulate {
 

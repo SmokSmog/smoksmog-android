@@ -1,10 +1,9 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-/**
- * Created by iwopolanski on 29.12.14.
- */
+import pl.malopolska.smoksmog.network.jackson.ParticulateDescriptionImpl;
+
 @JsonDeserialize( as = ParticulateDescriptionImpl.class )
 public interface ParticulateDescription {
 

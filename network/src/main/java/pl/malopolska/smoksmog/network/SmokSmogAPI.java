@@ -2,6 +2,10 @@ package pl.malopolska.smoksmog.network;
 
 import java.util.Collection;
 
+import pl.malopolska.smoksmog.network.model.ParticulateDescription;
+import pl.malopolska.smoksmog.network.model.StationHistory;
+import pl.malopolska.smoksmog.network.model.StationLocation;
+import pl.malopolska.smoksmog.network.model.StationParticulates;
 import retrofit.http.GET;
 import retrofit.http.Path;
 

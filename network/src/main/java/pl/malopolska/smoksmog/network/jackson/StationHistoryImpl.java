@@ -1,11 +1,11 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.jackson;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Created by iwopolanski on 29.12.14.
- */
+import pl.malopolska.smoksmog.network.model.StationHistory;
+import pl.malopolska.smoksmog.network.model.ParticulateHistory;
+
 public class StationHistoryImpl extends StationImpl implements StationHistory {
 
     private final Collection<ParticulateHistory> particulates = new ArrayList<>();

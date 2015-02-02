@@ -1,6 +1,8 @@
-package pl.malopolska.smoksmog.network;
+package pl.malopolska.smoksmog.network.jackson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import pl.malopolska.smoksmog.network.model.StationLocation;
 
 public class StationLocationImpl extends StationImpl implements StationLocation {
 

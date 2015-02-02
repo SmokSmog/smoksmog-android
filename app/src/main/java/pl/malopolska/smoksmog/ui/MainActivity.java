@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -16,14 +14,17 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pl.malopolska.smoksmog.R;
 import pl.malopolska.smoksmog.base.BaseActivity;
-import pl.malopolska.smoksmog.network.Station;
+import pl.malopolska.smoksmog.network.model.Station;
 import pl.malopolska.smoksmog.toolbar.ToolbarController;
 
 public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String EXTRA_STATION_ID = "EXTRA_STATION_ID";
+    private static final long NO_STATION_SELECTED = Long.MIN_VALUE;
 
     private ToolbarController toolbarController;
+
+    private long stationIdSelected = NO_STATION_SELECTED;
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
@@ -35,12 +36,23 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         ButterKnife.inject(this);
 
+        processIntent(getIntent());
+
         toolbarController = new ToolbarController(this, toolbar);
 
         GoogleApiClient googleApiClient = getGoogleApiClient();
 
         googleApiClient.registerConnectionCallbacks(this);
         googleApiClient.registerConnectionFailedListener(this);
+    }
+
+    /**
+     * Checks intent for extras
+     *
+     * @param intent given
+     */
+    private void processIntent(Intent intent) {
+        stationIdSelected = intent.getLongExtra(EXTRA_STATION_ID, NO_STATION_SELECTED);
     }
 
     @Override
@@ -58,10 +70,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
-        long stationId = intent.getLongExtra(EXTRA_STATION_ID, -1);
-
-        toolbar.setOnClickListener((View view) -> Toast.makeText(this, "Click", Toast.LENGTH_SHORT).show());
+        processIntent(intent);
     }
 
     @Override
