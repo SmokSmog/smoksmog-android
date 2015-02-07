@@ -13,7 +13,6 @@ import pl.malopolska.smoksmog.network.SmokSmogApiModule;
         modules = {
                 ApplicationModule.class,
                 GoogleApiClientModule.class,
-                SmokSmogApiModule.class
         }
 )
 public interface ApplicationComponent {
@@ -21,6 +20,4 @@ public interface ApplicationComponent {
     Context context();
 
     GoogleApiClient googleApiClient();
-
-    SmokSmogAPI smokSmogAPI();
 }
