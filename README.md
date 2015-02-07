@@ -8,6 +8,10 @@ SmokSmog application for Android
 * Notifications
 
 
+Retrolambda
+
+See retrolambda configuration
+
 
 Dependency updates
 

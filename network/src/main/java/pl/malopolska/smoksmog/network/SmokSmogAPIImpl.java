@@ -11,8 +11,12 @@ import pl.malopolska.smoksmog.network.model.StationHistory;
 import pl.malopolska.smoksmog.network.model.StationLocation;
 import pl.malopolska.smoksmog.network.model.StationParticulates;
 import retrofit.RestAdapter;
+import retrofit.client.Client;
 import retrofit.converter.Converter;
 import retrofit.converter.JacksonConverter;
+import retrofit.http.GET;
+import retrofit.http.Path;
+import rx.Observable;
 
 /**
  * API creator
@@ -25,7 +29,7 @@ public final class SmokSmogAPIImpl implements SmokSmogAPI {
         throw new UnsupportedOperationException( "Utility class" );
     }
 
-    SmokSmogAPIImpl(String endpoint, Locale locale){
+    SmokSmogAPIImpl(String endpoint, Locale locale, Client client){
 
         if ( endpoint == null ) {
             throw new IllegalArgumentException( "Endpoint cannot be null" );
@@ -39,41 +43,45 @@ public final class SmokSmogAPIImpl implements SmokSmogAPI {
 
         String baseUrl = endpoint + extraSlash + locale.getLanguage();
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint( baseUrl )
-                .setConverter( jacksonConverter() )
-                .build();
+        RestAdapter.Builder restAdapterBuilder = new RestAdapter.Builder()
+                .setEndpoint(baseUrl)
+                .setConverter(jacksonConverter());
 
-        smogAPI = restAdapter.create( SmokSmogAPI.class );
+        // Add custom client
+        if( client != null ) {
+            restAdapterBuilder.setClient(client);
+        }
+
+        smogAPI = restAdapterBuilder.build().create( SmokSmogAPI.class );
     }
 
     @Override
-    public Collection<StationLocation> stations() {
+    public Observable<Collection<StationLocation>> stations() {
         return smogAPI.stations();
     }
 
     @Override
-    public StationParticulates station( long stationId) {
+    public Observable<StationParticulates> station(@Path("stationId") long stationId) {
         return smogAPI.station(stationId);
     }
 
     @Override
-    public StationParticulates station( float latitude, float longitude) {
+    public Observable<StationParticulates> station(@Path("latitude") float latitude, @Path("longitude") float longitude) {
         return smogAPI.station(latitude, longitude);
     }
 
     @Override
-    public StationHistory stationHistory( long stationId) {
+    public Observable<StationHistory> stationHistory(@Path("stationId") long stationId) {
         return smogAPI.stationHistory(stationId);
     }
 
     @Override
-    public StationHistory stationHistory( float latitude, float longitude) {
+    public Observable<StationHistory> stationHistory(@Path("latitude") float latitude, @Path("longitude") float longitude) {
         return smogAPI.stationHistory(latitude, longitude);
     }
 
     @Override
-    public ParticulateDescription particulate( long particulateId) {
+    public Observable<ParticulateDescription> particulate(@Path("particulateId") long particulateId) {
         return smogAPI.particulate(particulateId);
     }
 
@@ -91,24 +99,15 @@ public final class SmokSmogAPIImpl implements SmokSmogAPI {
         return new JacksonConverter( objectMapper );
     }
 
-    /**
-     * Same as create() calling Locale.getDefault()
-     *
-     * @param endpoint
-     * @return
-     */
     public static SmokSmogAPI create( String endpoint ){
         return create(endpoint, Locale.getDefault());
     }
 
-    /**
-     * Valid way for API creation
-     *
-     * @param endpoint
-     * @param locale
-     * @return
-     */
     public static SmokSmogAPI create( String endpoint, Locale locale ) {
-        return new SmokSmogAPIImpl( endpoint, locale );
+        return create( endpoint, locale, null );
+    }
+
+    public static SmokSmogAPI create( String endpoint, Locale locale, Client client ) {
+        return new SmokSmogAPIImpl( endpoint, locale, client );
     }
 }
