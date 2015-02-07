@@ -11,7 +11,7 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.4.4'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.4.4'
 
-    compile 'io.reactivex:rxandroid:0.24.0'
+    compile 'io.reactivex:rxjava:1.0.5'
 
     /**
      * Testing

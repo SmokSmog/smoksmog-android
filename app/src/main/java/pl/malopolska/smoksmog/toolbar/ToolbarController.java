@@ -19,8 +19,11 @@ import pl.malopolska.smoksmog.base.BaseActivity;
 import pl.malopolska.smoksmog.network.SmokSmogAPI;
 import pl.malopolska.smoksmog.network.model.StationLocation;
 import pl.malopolska.smoksmog.ui.MainActivity;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class ToolbarController {
+public class ToolbarController extends Subscriber<Collection<StationLocation>> {
 
     private final Toolbar toolbar;
     private final ActionBar actionBar;
@@ -56,7 +59,7 @@ public class ToolbarController {
         spinner.setEnabled(false);
         spinner.setAdapter(stationAdapter);
 
-        updateList(activity);
+        updateList();
     }
 
     @OnItemSelected(R.id.spinner)
@@ -66,29 +69,29 @@ public class ToolbarController {
 
     /**
      * Runs list update for spinner
-     *
-     * @param activity
      */
-    private void updateList(final BaseActivity activity) {
+    private void updateList() {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        smokSmogAPI.stations()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this);
+    }
 
-                final Collection<StationLocation> stations = smokSmogAPI.stations();
+    @Override
+    public void onCompleted() {
+        stationAdapter.notifyDataSetChanged();
+        spinner.setEnabled(true);
+    }
 
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        stationList.clear();
-                        stationList.addAll(stations);
+    @Override
+    public void onError(Throwable e) {
+        // TODO
+    }
 
-                        stationAdapter.notifyDataSetChanged();
-
-                        spinner.setEnabled(true);
-                    }
-                });
-            }
-        }).start();
+    @Override
+    public void onNext(Collection<StationLocation> stationLocations) {
+        stationList.clear();
+        stationList.addAll( stationLocations );
     }
 }
