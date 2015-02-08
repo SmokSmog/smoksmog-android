@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import pl.malopolska.smoksmog.SmokSmogApplication;
 import pl.malopolska.smoksmog.injection.ActivityComponent;
 
-public class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends ActionBarActivity {
 
     private ActivityComponent activityComponent;
 
