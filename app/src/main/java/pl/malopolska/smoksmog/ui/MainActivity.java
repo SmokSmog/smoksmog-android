@@ -18,6 +18,7 @@ import pl.malopolska.smoksmog.R;
 import pl.malopolska.smoksmog.base.BaseActivity;
 import pl.malopolska.smoksmog.network.model.Station;
 import pl.malopolska.smoksmog.toolbar.ToolbarController;
+import pl.malopolska.smoksmog.ui.preference.PreferenceActivity;
 
 public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -56,12 +57,14 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         boolean result = super.onOptionsItemSelected(item);
 
         int id = item.getItemId();
 
         if( id == R.id.action_settings ){
-            // TODO start pref activity
+            PreferenceActivity.start( this );
+            result = true;
         }
 
         return result;

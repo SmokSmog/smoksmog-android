@@ -12,6 +12,8 @@
         android:id="@+id/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="80dp"
+        android:layout_marginEnd="80dp"
         android:enabled="false"/>
 
 </android.support.v7.widget.Toolbar>
