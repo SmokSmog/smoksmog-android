@@ -31,6 +31,8 @@ public class SmokSmogApplication extends Application {
         applicationComponent = Dagger_ApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
+
+        //X
     }
 
     public ApplicationComponent getApplicationComponent() {
