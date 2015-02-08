@@ -72,8 +72,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      *
      * @param intent given
      */
-    private void processIntent(Intent intent) {
-        stationIdSelected = intent.getLongExtra(EXTRA_STATION_ID, NO_STATION_SELECTED);
+    private void processIntent( Intent intent ) {
+        stationIdSelected = intent.getLongExtra( EXTRA_STATION_ID, NO_STATION_SELECTED );
     }
 
     @Override
