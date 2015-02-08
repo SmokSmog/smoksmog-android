@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,6 +46,25 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         googleApiClient.registerConnectionCallbacks(this);
         googleApiClient.registerConnectionFailedListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu );
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean result = super.onOptionsItemSelected(item);
+
+        int id = item.getItemId();
+
+        if( id == R.id.action_settings ){
+            // TODO start pref activity
+        }
+
+        return result;
     }
 
     /**
