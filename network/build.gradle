@@ -3,6 +3,7 @@ apply plugin: 'sonar-runner'
 apply plugin: 'jacoco'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
 

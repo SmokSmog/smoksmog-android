@@ -24,4 +24,10 @@ allprojects {
     }
 
     apply plugin: 'me.tatarka.retrolambda'
+
+    retrolambda {
+        jdk System.getenv("JAVA8_HOME")
+        oldJdk System.getenv("JAVA7_HOME")
+        javaVersion JavaVersion.VERSION_1_7
+    }
 }
