@@ -9,7 +9,6 @@ import javax.inject.Inject;
 
 import pl.malopolska.smoksmog.SmokSmogApplication;
 import pl.malopolska.smoksmog.injection.ActivityComponent;
-import pl.malopolska.smoksmog.injection.Dagger_ActivityComponent;
 
 public class BaseActivity extends ActionBarActivity {
 
@@ -22,11 +21,7 @@ public class BaseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        activityComponent = Dagger_ActivityComponent.builder()
-                .applicationComponent(SmokSmogApplication.get(this).getApplicationComponent())
-                .build();
-
-        activityComponent.inject(this);
+        SmokSmogApplication.get(this).getApplicationComponent().inject(this);
     }
 
     public ActivityComponent getActivityComponent() {

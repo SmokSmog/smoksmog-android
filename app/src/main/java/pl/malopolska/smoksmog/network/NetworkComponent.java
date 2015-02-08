@@ -2,6 +2,7 @@ package pl.malopolska.smoksmog.network;
 
 import dagger.Component;
 import pl.malopolska.smoksmog.injection.ApplicationComponent;
+import pl.malopolska.smoksmog.toolbar.ToolbarController;
 
 @Component(
         modules = {
@@ -14,5 +15,5 @@ import pl.malopolska.smoksmog.injection.ApplicationComponent;
 )
 public interface NetworkComponent {
 
-
+    void inject(ToolbarController toolbarController);
 }

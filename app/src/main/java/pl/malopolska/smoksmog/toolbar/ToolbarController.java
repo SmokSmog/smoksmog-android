@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemSelected;
 import pl.malopolska.smoksmog.R;
+import pl.malopolska.smoksmog.SmokSmogApplication;
 import pl.malopolska.smoksmog.base.BaseActivity;
 import pl.malopolska.smoksmog.network.SmokSmogAPI;
 import pl.malopolska.smoksmog.network.model.StationLocation;
@@ -40,9 +41,7 @@ public class ToolbarController extends Subscriber<Collection<StationLocation>> {
 
     public ToolbarController(@NonNull final BaseActivity activity, @NonNull Toolbar toolbar) {
 
-        Dagger_ToolbarComponent.builder()
-                .activityComponent(activity.getActivityComponent())
-                .build().inject(this);
+        SmokSmogApplication.get(activity).getNetworkComponent().inject(this);
 
         ButterKnife.inject(this, toolbar);
 

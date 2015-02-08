@@ -10,6 +10,8 @@ import io.fabric.sdk.android.Fabric;
 import pl.malopolska.smoksmog.injection.ApplicationModule;
 import pl.malopolska.smoksmog.injection.ApplicationComponent;
 import pl.malopolska.smoksmog.injection.Dagger_ApplicationComponent;
+import pl.malopolska.smoksmog.network.Dagger_NetworkComponent;
+import pl.malopolska.smoksmog.network.NetworkComponent;
 
 /**
  * Project Application class
@@ -17,6 +19,7 @@ import pl.malopolska.smoksmog.injection.Dagger_ApplicationComponent;
 public class SmokSmogApplication extends Application {
 
     private ApplicationComponent applicationComponent;
+    private NetworkComponent networkComponent;
 
     @Override
     public void onCreate() {
@@ -32,11 +35,17 @@ public class SmokSmogApplication extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .build();
 
-        //X
+        networkComponent = Dagger_NetworkComponent.builder()
+                .applicationComponent(applicationComponent)
+                .build();
     }
 
     public ApplicationComponent getApplicationComponent() {
         return applicationComponent;
+    }
+
+    public NetworkComponent getNetworkComponent() {
+        return networkComponent;
     }
 
     public static SmokSmogApplication get(@NonNull Context context) {

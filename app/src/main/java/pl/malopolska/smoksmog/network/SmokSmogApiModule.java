@@ -1,7 +1,5 @@
 package pl.malopolska.smoksmog.network;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Locale;
 
 import dagger.Module;
