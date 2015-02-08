@@ -7,7 +7,8 @@ import pl.malopolska.smoksmog.toolbar.ToolbarController;
 @Component(
         modules = {
                 JsonModule.class,
-                SmokSmogApiModule.class
+                SmokSmogApiModule.class,
+                ClientModule.class
         },
         dependencies = {
                 ApplicationComponent.class

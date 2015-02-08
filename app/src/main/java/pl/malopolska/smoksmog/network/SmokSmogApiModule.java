@@ -16,9 +16,11 @@ public class SmokSmogApiModule {
     @Provides
     public SmokSmogAPI smokSmogAPI(Locale locale, Client client, Converter converter){
 
+        String baseUrl = ENDPOINT + locale.getLanguage() + "/";
+
         RestAdapter.Builder restAdapterBuilder = new RestAdapter.Builder()
+                .setEndpoint( baseUrl )
                 .setClient( client )
-                .setEndpoint( ENDPOINT )
                 .setConverter( converter );
 
         return restAdapterBuilder.build().create( SmokSmogAPI.class );
