@@ -1,12 +1,11 @@
 package pl.malopolska.smoksmog.ui.preference;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import pl.malopolska.smoksmog.base.BaseActivity;
-
-public class PreferenceActivity extends BaseActivity {
+public class PreferenceActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

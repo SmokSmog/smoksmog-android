@@ -6,6 +6,11 @@
         android:key="pref_key_storage_settings">
 
         <CheckBoxPreference
+            android:key="gps_use"
+            android:title="Use GPS location"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
             android:key="pref_key_auto_delete"
             android:summary="summary_1"
             android:title="title_1"
@@ -23,10 +28,4 @@
             android:title="title_3" />
 
     </PreferenceCategory>
-
-    <CheckBoxPreference
-        android:key="gps_use"
-        android:title="Use GPS location"
-        android:defaultValue="true" />
-
 </PreferenceScreen>
