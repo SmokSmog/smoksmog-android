@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Use user location -->
+    <PreferenceCategory
+        android:title="Cat sss"
+        android:key="pref_key_storage_settings">
+
+        <CheckBoxPreference
+            android:key="pref_key_auto_delete"
+            android:summary="summary_1"
+            android:title="title_1"
+            android:defaultValue="false" />
+
+        <Preference
+            android:key="pref_key_sms_delete_limit"
+            android:dependency="pref_key_auto_delete"
+            android:summary="summary_2"
+            android:title="title_2" />
+        <Preference
+            android:key="pref_key_mms_delete_limit"
+            android:dependency="pref_key_auto_delete"
+            android:summary="summary_3"
+            android:title="title_3" />
+
+    </PreferenceCategory>
 
     <CheckBoxPreference
+        android:key="gps_use"
+        android:title="Use GPS location"
         android:defaultValue="true" />
 
 </PreferenceScreen>

@@ -12,15 +12,12 @@ public class PreferenceActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if( savedInstanceState != null ){
-
-            getFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, new SmokSmogPreferenceFragment())
-                    .commit();
-        }
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new SmokSmogPreferenceFragment())
+                .commit();
     }
 
-    public static void start( Context context ){
-        context.startActivity( new Intent( context, PreferenceActivity.class ) );
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, PreferenceActivity.class));
     }
 }
