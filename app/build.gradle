@@ -15,7 +15,6 @@ buildscript {
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'robolectric'
 apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
@@ -129,29 +128,4 @@ dependencies {
 
 retrolambda {
     jvmArgs '-noverify'
-}
-
-/**
- * Robolectric configuration
- *
- * Run tests with: ./gradlew clean test
- */
-
-robolectric {
-
-    include '**/*RoboTest.class'
-    //exclude '**/espresso/**/*.class'
-
-    maxHeapSize = '2048m'
-
-    jvmArgs '-XX:MaxPermSize=512m', '-XX:-UseSplitVerifier'
-
-    maxParallelForks = 4
-    forkEvery = 150
-
-    ignoreFailures false
-
-    afterTest { descriptor, result ->
-        println "Executing test for ${descriptor.name} with result: ${result.resultType}"
-    }
 }
