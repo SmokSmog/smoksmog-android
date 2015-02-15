@@ -48,6 +48,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
 
     compile project( ':network' )
+    compile project( ':database' )
 
     androidTestCompile 'org.assertj:assertj-core:1.7.0'
     androidTestCompile 'org.mockito:mockito-core:2.0.2-beta'
