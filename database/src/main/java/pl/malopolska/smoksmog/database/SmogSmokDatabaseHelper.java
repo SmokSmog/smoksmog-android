@@ -4,7 +4,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import pl.malopolska.smoksmog.database.table.StationTable;
+import pl.malopolska.smoksmog.database.table.Table;
+
 public class SmogSmokDatabaseHelper extends SQLiteOpenHelper {
+
+    // Registered tables
+    private static final Table[] TABLES = new Table[]{
+            new StationTable()
+    };
 
     public static final String DATABASE_NAME = "smoksmog.db";
 
@@ -13,8 +21,11 @@ public class SmogSmokDatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase database) {
 
+        for( Table table : TABLES ){
+            table.create( database );
+        }
     }
 
     @Override
