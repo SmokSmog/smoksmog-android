@@ -14,11 +14,22 @@ public class StationTable implements Table {
     public static final String COLUMN_HASH = "hash";
 
     public static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS " + NAME + " ( " +
+            COLUMN_ID + " INTEGER PRIMARY KEY," +
+            COLUMN_NAME + " TEXT NOT NULL," +
+            COLUMN_LATITUDE + " REAL NOT NULL," +
+            COLUMN_LONGITUDE  + " REAL NOT NULL," +
+            COLUMN_HASH + " INTEGER UNIQUE NOT NULL" +
+            ")";
 
-            " )";
+    public static final String SQL_DROP = "DROP TABLE IF EXISTS " + NAME;
 
     @Override
-    public void create(SQLiteDatabase database) {
-        database.execSQL(SQL_CREATE);
+    public void create( SQLiteDatabase database ) {
+        database.execSQL( SQL_CREATE );
+    }
+
+    @Override
+    public void drop( SQLiteDatabase database ) {
+        database.execSQL( SQL_DROP );
     }
 }

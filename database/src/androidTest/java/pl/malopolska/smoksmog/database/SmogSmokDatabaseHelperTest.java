@@ -36,4 +36,15 @@ public class SmogSmokDatabaseHelperTest extends ApplicationTestCase<Application>
 
         assertThat( database ).isNotNull();
     }
+
+    public void testDatabaseUpgradeProcess() throws Exception {
+
+        SmogSmokDatabaseHelper databaseHelper = new SmogSmokDatabaseHelper( getApplication(), 1 );
+
+        databaseHelper.close();
+
+        databaseHelper = new SmogSmokDatabaseHelper( getApplication(), 2 );
+
+        assertThat( databaseHelper.getReadableDatabase().getVersion() ).isEqualTo( 2 );
+    }
 }
