@@ -2,6 +2,7 @@ package pl.malopolska.smoksmog;
 
 import android.app.Application;
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.crashlytics.android.Crashlytics;
@@ -38,6 +39,8 @@ public class SmokSmogApplication extends Application {
         networkComponent = Dagger_NetworkComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build();
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
     public ApplicationComponent getApplicationComponent() {

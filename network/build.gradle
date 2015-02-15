@@ -7,18 +7,18 @@ targetCompatibility = 1.8
 
 dependencies {
 
-    compile 'com.squareup.retrofit:retrofit:1.8.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
 
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.4'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.4.4'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.5.1'
 
-    compile 'io.reactivex:rxjava:1.0.5'
+    compile 'io.reactivex:rxjava:1.0.6'
 
     /**
      * Testing
      */
     testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:1.7.0'
+    testCompile 'org.assertj:assertj-core:1.7.1'
     testCompile 'org.apache.commons:commons-lang3:3.3.2'
 }
 
