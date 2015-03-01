@@ -1,8 +1,10 @@
 package pl.malopolska.smoksmog.network;
 
 import dagger.Component;
+import pl.malopolska.smoksmog.SmokSmogApplication;
 import pl.malopolska.smoksmog.injection.ApplicationComponent;
 import pl.malopolska.smoksmog.toolbar.ToolbarController;
+import pl.malopolska.smoksmog.ui.MainActivity;
 
 @Component(
         modules = {
@@ -16,5 +18,5 @@ import pl.malopolska.smoksmog.toolbar.ToolbarController;
 )
 public interface NetworkComponent {
 
-    void inject(ToolbarController toolbarController);
+    void inject(MainActivity mainActivity);
 }

@@ -24,7 +24,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class ToolbarController extends Subscriber<Collection<StationLocation>> {
+public class ToolbarController {
 
     private final Toolbar toolbar;
     private final ActionBar actionBar;
@@ -57,8 +57,6 @@ public class ToolbarController extends Subscriber<Collection<StationLocation>> {
 
         spinner.setEnabled(false);
         spinner.setAdapter(stationAdapter);
-
-        updateList();
     }
 
     @OnItemSelected(R.id.spinner)
@@ -66,31 +64,4 @@ public class ToolbarController extends Subscriber<Collection<StationLocation>> {
         MainActivity.start(activity, stationList.get(position));
     }
 
-    /**
-     * Runs list update for spinner
-     */
-    private void updateList() {
-
-        smokSmogAPI.stations()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this);
-    }
-
-    @Override
-    public void onCompleted() {
-        stationAdapter.notifyDataSetChanged();
-        spinner.setEnabled(true);
-    }
-
-    @Override
-    public void onError(Throwable e) {
-        // TODO
-    }
-
-    @Override
-    public void onNext(Collection<StationLocation> stationLocations) {
-        stationList.clear();
-        stationList.addAll( stationLocations );
-    }
 }

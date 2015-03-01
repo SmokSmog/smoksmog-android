@@ -7,23 +7,40 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pl.malopolska.smoksmog.R;
+import pl.malopolska.smoksmog.SmokSmogApplication;
 import pl.malopolska.smoksmog.base.BaseActivity;
+import pl.malopolska.smoksmog.network.SmokSmogAPI;
 import pl.malopolska.smoksmog.network.model.Station;
+import pl.malopolska.smoksmog.network.model.StationLocation;
 import pl.malopolska.smoksmog.toolbar.ToolbarController;
 import pl.malopolska.smoksmog.ui.preference.PreferenceActivity;
+import rx.Observer;
+import rx.Subscriber;
+import rx.android.app.AppObservable;
+import rx.schedulers.Schedulers;
 
-public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends BaseActivity implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Observer<Collection<StationLocation>> {
 
     private static final String EXTRA_STATION_ID = "EXTRA_STATION_ID";
     private static final long NO_STATION_SELECTED = Long.MIN_VALUE;
+
+    private final List<StationLocation> stations = new ArrayList<>();
 
     private ToolbarController toolbarController;
 
@@ -32,10 +49,19 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
 
+    @Inject
+    SmokSmogAPI smokSmogAPI;
+
+    @Inject
+    GoogleApiClient googleApiClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SmokSmogApplication.get(this).getApplicationComponent().inject(this);
+        SmokSmogApplication.get(this).getNetworkComponent().inject(this);
 
         ButterKnife.inject(this);
 
@@ -43,15 +69,14 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         toolbarController = new ToolbarController(this, toolbar);
 
-        GoogleApiClient googleApiClient = getGoogleApiClient();
-
         googleApiClient.registerConnectionCallbacks(this);
         googleApiClient.registerConnectionFailedListener(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu );
+        // TODO disable for this stage
+        // getMenuInflater().inflate(R.menu.main, menu );
         return true;
     }
 
@@ -62,8 +87,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         int id = item.getItemId();
 
-        if( id == R.id.action_settings ){
-            PreferenceActivity.start( this );
+        if (id == R.id.action_settings) {
+            PreferenceActivity.start(this);
             result = true;
         }
 
@@ -75,20 +100,44 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      *
      * @param intent given
      */
-    private void processIntent( Intent intent ) {
-        stationIdSelected = intent.getLongExtra( EXTRA_STATION_ID, NO_STATION_SELECTED );
+    private void processIntent(Intent intent) {
+        stationIdSelected = intent.getLongExtra(EXTRA_STATION_ID, NO_STATION_SELECTED);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        getGoogleApiClient().connect();
+        googleApiClient.connect();
+
+        AppObservable.bindActivity(this, smokSmogAPI.stations())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        getGoogleApiClient().disconnect();
+        googleApiClient.disconnect();
+    }
+
+    @Override
+    public void onCompleted() {
+
+        Location lastLocation = LocationServices.
+                FusedLocationApi.getLastLocation(googleApiClient);
+
+        Toast.makeText(this, "" + lastLocation, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onError(Throwable e) {
+
+    }
+
+    @Override
+    public void onNext(Collection<StationLocation> stationLocations) {
+        this.stations.clear();
+        this.stations.addAll(stationLocations);
     }
 
     @Override
@@ -99,7 +148,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void onConnected(Bundle bundle) {
-        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(getGoogleApiClient());
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
 
         // TODO get nearest station for that location
     }

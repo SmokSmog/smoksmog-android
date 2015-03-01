@@ -2,6 +2,8 @@
     package="pl.malopolska.smoksmog.data"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
     <application>
 
         <service

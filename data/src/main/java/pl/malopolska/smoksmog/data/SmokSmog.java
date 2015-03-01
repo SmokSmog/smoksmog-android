@@ -1,5 +1,7 @@
 package pl.malopolska.smoksmog.data;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
@@ -14,6 +16,7 @@ import pl.malopolska.smoksmog.network.SmokSmogAPI;
 public final class SmokSmog {
 
     final SmokSmogAPI smokSmogAPI;
+    final Application application;
 
     /**
      *
@@ -24,7 +27,24 @@ public final class SmokSmog {
 
         smokSmogAPI = builder.smogAPI;
 
-        createAccount();
+        application = builder.application;
+
+        if(!hasAccount()) {
+            createAccount();
+        }
+    }
+
+    /**
+     * Check if there is proper account setup
+     */
+    private boolean hasAccount() {
+
+        AccountManager accountManager = AccountManager.get(application);
+
+        Account[] accounts = accountManager.getAccountsByType(
+                application.getString( R.string.account_type ) );
+
+        return accounts.length != 0;
     }
 
     /**
@@ -47,7 +67,7 @@ public final class SmokSmog {
     /**
      * Construct SmokSmog object
      */
-    static final class Builder {
+    public static final class Builder {
 
         final Application application;
         final SmokSmogAPI smogAPI;
