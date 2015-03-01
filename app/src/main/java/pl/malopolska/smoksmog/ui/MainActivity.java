@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,27 +23,22 @@ import butterknife.InjectView;
 import pl.malopolska.smoksmog.R;
 import pl.malopolska.smoksmog.SmokSmogApplication;
 import pl.malopolska.smoksmog.base.BaseActivity;
+import pl.malopolska.smoksmog.data.StationUtils;
 import pl.malopolska.smoksmog.network.SmokSmogAPI;
 import pl.malopolska.smoksmog.network.model.Station;
 import pl.malopolska.smoksmog.network.model.StationLocation;
 import pl.malopolska.smoksmog.toolbar.ToolbarController;
 import pl.malopolska.smoksmog.ui.preference.PreferenceActivity;
 import rx.Observer;
-import rx.Subscriber;
 import rx.android.app.AppObservable;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Observer<Collection<StationLocation>> {
 
-    private static final String EXTRA_STATION_ID = "EXTRA_STATION_ID";
-    private static final long NO_STATION_SELECTED = Long.MIN_VALUE;
-
     private final List<StationLocation> stations = new ArrayList<>();
 
     private ToolbarController toolbarController;
-
-    private long stationIdSelected = NO_STATION_SELECTED;
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
@@ -66,8 +60,6 @@ public class MainActivity extends BaseActivity implements
         smokSmogApplication.getNetworkComponent().inject(this);
 
         ButterKnife.inject(this);
-
-        processIntent(getIntent());
 
         toolbarController = new ToolbarController(this, toolbar);
 
@@ -97,15 +89,6 @@ public class MainActivity extends BaseActivity implements
         return result;
     }
 
-    /**
-     * Checks intent for extras
-     *
-     * @param intent given
-     */
-    private void processIntent(Intent intent) {
-        stationIdSelected = intent.getLongExtra(EXTRA_STATION_ID, NO_STATION_SELECTED);
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -123,25 +106,26 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onCompleted() {
-        // Data downloaded
-    }
-
-    @Override
-    public void onError(Throwable e) {
-
-    }
-
-    @Override
     public void onNext(Collection<StationLocation> stationLocations) {
         this.stations.clear();
         this.stations.addAll(stationLocations);
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        processIntent(intent);
+    public void onCompleted() {
+        toolbarController.setStations(stations);
+
+        Location lastLocation = LocationServices.
+                FusedLocationApi.getLastLocation(googleApiClient);
+
+        StationLocation closestStation = StationUtils.findClosestStation(stations, lastLocation);
+
+        toolbarController.setSelectedStation( closestStation );
+    }
+
+    @Override
+    public void onError(Throwable e) {
+
     }
 
     /**
@@ -152,10 +136,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onConnected(Bundle bundle) {
 
-        Location lastLocation = LocationServices.
-                FusedLocationApi.getLastLocation(googleApiClient);
-
-        Toast.makeText(this, "" + lastLocation, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -170,15 +150,12 @@ public class MainActivity extends BaseActivity implements
 
     /**
      * Starts activity with default sation selected
+     *  @param context for starting Activity
      *
-     * @param context for starting Activity
-     * @param station provides access to ID
      */
-    public static void start(Context context, Station station) {
+    public static void start(Context context) {
 
         Intent intent = new Intent(context, MainActivity.class);
-
-        intent.putExtra(EXTRA_STATION_ID, station.getId());
 
         context.startActivity(intent);
     }

@@ -6,23 +6,15 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemSelected;
 import pl.malopolska.smoksmog.R;
-import pl.malopolska.smoksmog.SmokSmogApplication;
 import pl.malopolska.smoksmog.base.BaseActivity;
-import pl.malopolska.smoksmog.network.SmokSmogAPI;
 import pl.malopolska.smoksmog.network.model.StationLocation;
 import pl.malopolska.smoksmog.ui.MainActivity;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class ToolbarController {
 
@@ -56,7 +48,27 @@ public class ToolbarController {
 
     @OnItemSelected(R.id.spinner)
     void stationSelected(int position) {
-        MainActivity.start(activity, stationList.get(position));
+        MainActivity.start(activity);
     }
 
+    public void setStations(List<StationLocation> stations) {
+
+        stationList.clear();
+        stationList.addAll(stations);
+
+        stationAdapter.notifyDataSetChanged();
+
+        spinner.setEnabled(true);
+    }
+
+    public void setSelectedStation(@NonNull StationLocation closestStation) {
+
+        for( int i = 0; i < stationAdapter.getCount(); i++ ){
+
+            if( stationAdapter.getItem(i).getId() == closestStation.getId()){
+                spinner.setSelection(i, true);
+                break;
+            }
+        }
+    }
 }
