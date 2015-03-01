@@ -36,12 +36,7 @@ public class ToolbarController {
     @InjectView(R.id.spinner)
     Spinner spinner;
 
-    @Inject
-    SmokSmogAPI smokSmogAPI;
-
     public ToolbarController(@NonNull final BaseActivity activity, @NonNull Toolbar toolbar) {
-
-        SmokSmogApplication.get(activity).getNetworkComponent().inject(this);
 
         ButterKnife.inject(this, toolbar);
 

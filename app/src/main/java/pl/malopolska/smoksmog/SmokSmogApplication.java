@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
-import pl.malopolska.smoksmog.data.DataComponent;
 import pl.malopolska.smoksmog.injection.ApplicationComponent;
 import pl.malopolska.smoksmog.injection.ApplicationModule;
 import pl.malopolska.smoksmog.injection.Dagger_ApplicationComponent;
@@ -22,7 +21,6 @@ public class SmokSmogApplication extends Application {
 
     private ApplicationComponent applicationComponent;
     private NetworkComponent networkComponent;
-    private DataComponent dataComponent;
 
     @Override
     public void onCreate() {

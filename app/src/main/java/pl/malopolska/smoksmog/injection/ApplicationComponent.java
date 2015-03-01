@@ -24,6 +24,8 @@ public interface ApplicationComponent {
 
     Locale locale();
 
+    GoogleApiClient googleApiClient();
+
     // Injections
 
     void inject( BaseActivity baseActivity );
