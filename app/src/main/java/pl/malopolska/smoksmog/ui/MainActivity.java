@@ -60,8 +60,10 @@ public class MainActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SmokSmogApplication.get(this).getApplicationComponent().inject(this);
-        SmokSmogApplication.get(this).getNetworkComponent().inject(this);
+        SmokSmogApplication smokSmogApplication = SmokSmogApplication.get(this);
+
+        smokSmogApplication.getApplicationComponent().inject(this);
+        smokSmogApplication.getNetworkComponent().inject(this);
 
         ButterKnife.inject(this);
 
@@ -122,11 +124,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onCompleted() {
-
-        Location lastLocation = LocationServices.
-                FusedLocationApi.getLastLocation(googleApiClient);
-
-        Toast.makeText(this, "" + lastLocation, Toast.LENGTH_SHORT).show();
+        // Data downloaded
     }
 
     @Override
@@ -146,11 +144,18 @@ public class MainActivity extends BaseActivity implements
         processIntent(intent);
     }
 
+    /**
+     * Google Api Client connected
+     *
+     * @param bundle
+     */
     @Override
     public void onConnected(Bundle bundle) {
-        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
 
-        // TODO get nearest station for that location
+        Location lastLocation = LocationServices.
+                FusedLocationApi.getLastLocation(googleApiClient);
+
+        Toast.makeText(this, "" + lastLocation, Toast.LENGTH_SHORT).show();
     }
 
     @Override
