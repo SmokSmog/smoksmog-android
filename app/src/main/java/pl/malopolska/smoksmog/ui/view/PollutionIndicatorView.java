@@ -1,5 +1,7 @@
 package pl.malopolska.smoksmog.ui.view;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,6 +12,8 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+
+import java.math.BigDecimal;
 
 public class PollutionIndicatorView extends View {
 
@@ -26,6 +30,8 @@ public class PollutionIndicatorView extends View {
 
     private float stroke;
     private float strokeHalf;
+
+    private float value = 0f;
 
     public PollutionIndicatorView(Context context) {
         super(context);
@@ -64,6 +70,14 @@ public class PollutionIndicatorView extends View {
         paintArcProgress.setColor(Color.rgb(254, 23, 45));
     }
 
+    public void setValue(float value){
+        this.value = value;
+
+        arcProgress = createArc(value);
+
+        invalidate();
+    }
+
     @Override
     protected void onSizeChanged(int width, int height, int oldw, int oldh) {
 
@@ -71,7 +85,7 @@ public class PollutionIndicatorView extends View {
 
         arcFull = createArc();
 
-        arcProgress = createArc(0.42f);
+        arcProgress = createArc(value);
 
         super.onSizeChanged(width, height, oldw, oldh);
     }
@@ -82,7 +96,13 @@ public class PollutionIndicatorView extends View {
 
     private Path createArc(float percent) {
 
-        float sweep = Math.min(ANGLE_SWEEP * percent, ANGLE_SWEEP);
+        float value = percent;
+
+        if (percent != 1f) {
+            value = new BigDecimal(percent).abs().remainder(BigDecimal.ONE).floatValue();
+        }
+
+        float sweep = Math.min(ANGLE_SWEEP * value, ANGLE_SWEEP);
 
         Path path = new Path();
         path.addArc(rectArc, ANGLE_START, sweep);

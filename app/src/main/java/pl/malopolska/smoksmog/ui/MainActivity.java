@@ -15,6 +15,8 @@ import com.google.android.gms.location.LocationServices;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -29,8 +31,11 @@ import pl.malopolska.smoksmog.network.model.Station;
 import pl.malopolska.smoksmog.network.model.StationLocation;
 import pl.malopolska.smoksmog.toolbar.ToolbarController;
 import pl.malopolska.smoksmog.ui.preference.PreferenceActivity;
+import pl.malopolska.smoksmog.ui.view.PollutionIndicatorView;
+import rx.Observable;
 import rx.Observer;
 import rx.android.app.AppObservable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements
@@ -42,6 +47,9 @@ public class MainActivity extends BaseActivity implements
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
+
+    @InjectView(R.id.pollutionIndicator)
+    PollutionIndicatorView pollutionIndicator;
 
     @Inject
     SmokSmogAPI smokSmogAPI;
@@ -65,6 +73,15 @@ public class MainActivity extends BaseActivity implements
 
         googleApiClient.registerConnectionCallbacks(this);
         googleApiClient.registerConnectionFailedListener(this);
+
+        Observable<Float> floatObservable = Observable.just(new Random().nextFloat() * 6);
+
+        AppObservable.bindActivity(this, floatObservable)
+                .delay(5, TimeUnit.SECONDS)
+                .repeat(1000)
+                .doOnNext( value -> runOnUiThread(() -> pollutionIndicator.setValue(new Random().nextFloat() * 6)))
+                .subscribeOn(Schedulers.newThread())
+                .subscribe();
     }
 
     @Override
@@ -120,7 +137,7 @@ public class MainActivity extends BaseActivity implements
 
         StationLocation closestStation = StationUtils.findClosestStation(stations, lastLocation);
 
-        toolbarController.setSelectedStation( closestStation );
+        toolbarController.setSelectedStation(closestStation);
     }
 
     @Override
@@ -150,8 +167,8 @@ public class MainActivity extends BaseActivity implements
 
     /**
      * Starts activity with default sation selected
-     *  @param context for starting Activity
      *
+     * @param context for starting Activity
      */
     public static void start(Context context) {
 
