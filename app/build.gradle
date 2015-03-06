@@ -8,14 +8,17 @@ buildscript {
     dependencies {
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
         classpath 'io.fabric.tools:gradle:1.15.2'
+        classpath 'com.stanfy.spoon:spoon-gradle-plugin:0.14.1'
     }
 }
+
+
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
-// apply plugin: 'spoon'
+apply plugin: 'spoon'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -33,7 +36,7 @@ android {
         targetSdkVersion 21
 
         versionCode 1
-        versionName "0.0.1"
+        versionName "0.0.2"
 
         resConfigs "en", "pl"
     }
@@ -58,7 +61,10 @@ android {
     }
 
     packagingOptions {
+        exclude 'asm-license.txt'
+        exclude 'LICENSE'
         exclude 'LICENSE.txt'
+        exclude 'NOTICE'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/license.txt'

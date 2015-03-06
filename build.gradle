@@ -14,7 +14,6 @@ buildscript {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.8'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
         classpath 'me.tatarka:gradle-retrolambda:2.5.0'
-        classpath 'com.stanfy.spoon:spoon-gradle-plugin:0.14.1'
     }
 }
 

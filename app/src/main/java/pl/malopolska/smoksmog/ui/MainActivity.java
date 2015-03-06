@@ -27,7 +27,6 @@ import pl.malopolska.smoksmog.SmokSmogApplication;
 import pl.malopolska.smoksmog.base.BaseActivity;
 import pl.malopolska.smoksmog.data.StationUtils;
 import pl.malopolska.smoksmog.network.SmokSmogAPI;
-import pl.malopolska.smoksmog.network.model.Station;
 import pl.malopolska.smoksmog.network.model.StationLocation;
 import pl.malopolska.smoksmog.toolbar.ToolbarController;
 import pl.malopolska.smoksmog.ui.preference.PreferenceActivity;
@@ -35,7 +34,6 @@ import pl.malopolska.smoksmog.ui.view.PollutionIndicatorView;
 import rx.Observable;
 import rx.Observer;
 import rx.android.app.AppObservable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements
