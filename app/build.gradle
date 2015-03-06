@@ -1,11 +1,13 @@
 buildscript {
+
     repositories {
         mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
     }
+
     dependencies {
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'io.fabric.tools:gradle:1.14.4'
+        classpath 'io.fabric.tools:gradle:1.15.2'
         classpath 'org.robolectric:robolectric-gradle-plugin:0.14.1'
     }
 }
@@ -13,12 +15,11 @@ buildscript {
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'robolectric'
+apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
-
 
 android {
     compileSdkVersion 21
@@ -38,8 +39,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     signingConfigs {
@@ -49,11 +50,6 @@ android {
     }
 
     buildTypes {
-
-        debug {
-            // We don't want flood Crashlytics with reports
-            ext.enableCrashlytics = false
-        }
 
         release {
             minifyEnabled false
@@ -74,13 +70,26 @@ android {
 
 dependencies {
 
-    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
-    compile 'com.squareup.dagger:dagger:1.2.2'
+    // Dagger 2
+
+    apt 'com.google.dagger:dagger-compiler:2.0-SNAPSHOT'
+
+    compile 'com.google.dagger:dagger:2.0-SNAPSHOT'
+
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    compile 'com.jakewharton:butterknife:6.1.0'
 
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.google.android.gms:play-services:6.5.87'
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
+    compile 'io.reactivex:rxandroid:0.24.0'
+
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.1@aar') {
         transitive = true;
     }
 
@@ -112,32 +121,11 @@ dependencies {
         exclude module: 'wagon-provider-api'
     }
 
-    androidTestCompile 'com.squareup:fest-android:1.0.8'
+    androidTestCompile 'org.assertj:assertj-core:1.7.0'
 
     androidTestCompile 'org.mockito:mockito-core:1.10.17'
 }
 
-/**
- * Robolectric configuration
- *
- * Run tests with: ./gradlew clean test
- */
-
-robolectric {
-
-    include '**/*RoboTest.class'
-    //exclude '**/espresso/**/*.class'
-
-    maxHeapSize = '2048m'
-
-    jvmArgs '-XX:MaxPermSize=512m', '-XX:-UseSplitVerifier'
-
-    maxParallelForks = 4
-    forkEvery = 150
-
-    ignoreFailures false
-
-    afterTest { descriptor, result ->
-        println "Executing test for ${descriptor.name} with result: ${result.resultType}"
-    }
+retrolambda {
+    jvmArgs '-noverify'
 }

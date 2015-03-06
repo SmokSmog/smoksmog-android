@@ -1,10 +1,13 @@
 package pl.malopolska.smoksmog.data;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Application;
+import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
 
-import dagger.ObjectGraph;
+import dagger.Module;
 import pl.malopolska.smoksmog.network.SmokSmogAPI;
 
 /**
@@ -12,8 +15,8 @@ import pl.malopolska.smoksmog.network.SmokSmogAPI;
  */
 public final class SmokSmog {
 
-    @Inject
-    SmokSmogAPI smokSmogAPI;
+    final SmokSmogAPI smokSmogAPI;
+    final Application application;
 
     /**
      *
@@ -22,16 +25,52 @@ public final class SmokSmog {
      */
     private SmokSmog( Builder builder ) {
 
-        ObjectGraph objectGraph = ObjectGraph.create( new SmokSmogModule( builder ) );
-        objectGraph.inject( this );
+        smokSmogAPI = builder.smogAPI;
+
+        application = builder.application;
+
+        if(!hasAccount()) {
+            createAccount();
+        }
+    }
+
+    /**
+     * Check if there is proper account setup
+     */
+    private boolean hasAccount() {
+
+        AccountManager accountManager = AccountManager.get(application);
+
+        Account[] accounts = accountManager.getAccountsByType(
+                application.getString( R.string.account_type ) );
+
+        return accounts.length != 0;
+    }
+
+    /**
+     * Access to network API.
+     *
+     * @return SmokSmogAPI implementation
+     */
+    public SmokSmogAPI getAPI(){
+        return smokSmogAPI;
+    }
+
+    /**
+     * Creates dumb account for application, only one required.
+     */
+    private void createAccount() {
+
+
     }
 
     /**
      * Construct SmokSmog object
      */
-    static final class Builder {
+    public static final class Builder {
 
         final Application application;
+        final SmokSmogAPI smogAPI;
 
         String endpoint = "http://api.smoksmog.jkostrz.name/";
 
@@ -40,10 +79,18 @@ public final class SmokSmog {
          *
          * @param application
          */
-        public Builder( Application application ){
+        public Builder( @NonNull Application application, @NonNull SmokSmogAPI smogAPI ){
+
             this.application = application;
+            this.smogAPI = smogAPI;
         }
 
+        /**
+         * Set custom endpoint
+         *
+         * @param endpoint new value
+         * @return Builder object for chain call
+         */
         public Builder setEndpoint( String endpoint ){
 
             // TODO validate argument
