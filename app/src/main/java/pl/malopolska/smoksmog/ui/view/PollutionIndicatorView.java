@@ -1,7 +1,5 @@
 package pl.malopolska.smoksmog.ui.view;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -17,6 +15,7 @@ import java.math.BigDecimal;
 
 public class PollutionIndicatorView extends View {
 
+    // Beginning and ending angle of indicator
     public static final float ANGLE_START = 120f;
     public static final float ANGLE_SWEEP = 300f;
 
