@@ -104,8 +104,6 @@ dependencies {
      * Testing
      */
 
-    androidTestCompile 'junit:junit:4.12'
-
     androidTestCompile 'com.squareup.spoon:spoon-client:1.1.6'
 
     androidTestCompile 'org.assertj:assertj-core:1.7.0'

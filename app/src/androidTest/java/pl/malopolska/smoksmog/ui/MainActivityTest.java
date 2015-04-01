@@ -13,6 +13,13 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     @UiThreadTest
     public void testCreation(){
+
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Spoon.screenshot( getActivity(), "Created" );
     }
 }
