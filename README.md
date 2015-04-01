@@ -6,7 +6,7 @@ SmokSmog application for Android
 * Default english language
 * Support Android 4.0
 * Notifications
-
+* test
 
 Retrolambda
 
