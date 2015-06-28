@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- Lollipop colors -->
-
-    <color name="primary">#FF3300</color>
-    <color name="primary_dark">#AA11FF</color>
-    <color name="accent">#00FF00</color>
-</resources>
