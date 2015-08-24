@@ -1,14 +1,15 @@
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
 
     defaultConfig {
         applicationId "com.antyzero.smoksmog"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -20,7 +21,43 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'com.android.support:support-annotations:23.0.0'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
+
+    compile project(':network')
+
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:support-annotations:23.0.0'
+
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'io.reactivex:rxandroid:1.0.1'
+
+    compile 'com.google.dagger:dagger:2.0.1'
+
+    apt 'com.google.dagger:dagger-compiler:2.0'
+
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    testCompile 'junit:junit:4.12'
+
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test:runner:0.3') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.1.10'
+    androidTestCompile 'com.squareup.assertj:assertj-android:1.1.0'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.1.10'
 }
