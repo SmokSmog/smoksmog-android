@@ -3,3 +3,6 @@ android:
   components:
     - platform-tools
     - tools
+
+script:
+  - gradlew check assembleDebug
