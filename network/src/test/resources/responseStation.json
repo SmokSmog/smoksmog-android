@@ -1,0 +1,39 @@
+{
+  "id": "4",
+  "name": "Krak\u00f3w - Aleja Krasi\u0144skiego",
+  "particulates": [
+    {
+      "id": "7",
+      "name": "Py\u0142 zawieszony",
+      "short_name": "PM\u2081\u2080",
+      "value": "83.4571",
+      "unit": "\u00b5g\/m\u00b3",
+      "norm": "50",
+      "date": "2015-08-25 12:11:03",
+      "avg": "66.46",
+      "position": "1"
+    },
+    {
+      "id": "3",
+      "name": "Dwutlenek azotu",
+      "short_name": "NO\u2082",
+      "value": "109.895",
+      "unit": "\u00b5g\/m\u00b3",
+      "norm": "200",
+      "date": "2015-08-25 12:11:03",
+      "avg": "84.94",
+      "position": "5"
+    },
+    {
+      "id": "4",
+      "name": "Tlenek w\u0119gla",
+      "short_name": "CO",
+      "value": "1180.42",
+      "unit": "\u00b5g\/m\u00b3",
+      "norm": "10000",
+      "date": "2015-08-25 12:11:03",
+      "avg": "1083.54",
+      "position": "6"
+    }
+  ]
+}

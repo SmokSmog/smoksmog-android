@@ -5,10 +5,19 @@ import android.content.Context;
 
 public class SmokSmogApplication extends Application {
 
+    private ApplicationComponent applicationComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
+        applicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule( new ApplicationModule( this ) )
+                .build();
+    }
+
+    public ApplicationComponent getAppComponent() {
+        return applicationComponent;
     }
 
     /**
