@@ -17,13 +17,13 @@ public interface Api {
     Observable<Station> station( @Path( "stationId" ) long stationId );
 
     @GET( "/stations/{lat}/{lon}" )
-    Observable<Station> stationByLocation( @Path( "lat" ) float latitude, @Path( "lon" ) float longitude );
+    Observable<Station> stationByLocation( @Path( "lat" ) double latitude, @Path( "lon" ) double longitude );
 
     @GET( "/stations/{stationId}/history" )
     Observable<Station> stationHistory( @Path( "stationId" ) long stationId );
 
     @GET( "/stations/{lat}/{lon}/history" )
-    Observable<Station> stationHistoryByLocation( @Path( "lat" ) float latitude, @Path( "lon" ) float longitude );
+    Observable<Station> stationHistoryByLocation( @Path( "lat" ) double latitude, @Path( "lon" ) double longitude );
 
     @GET( "/particulates/{id}/desc" )
     Observable<Description> particulateDescription( @Path( "id" ) long particulateId );

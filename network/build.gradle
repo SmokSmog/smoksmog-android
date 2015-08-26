@@ -29,6 +29,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'io.reactivex:rxjava:1.0.14'
+    compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.2.0'
     compile 'joda-time:joda-time:2.8.2'
 
     provided 'org.projectlombok:lombok:1.16.6'

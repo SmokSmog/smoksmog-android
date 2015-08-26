@@ -81,8 +81,8 @@ public class ApiTest {
 
         // given
         server.enqueue( new MockResponse().setBody( TestUtils.readFromResources( "/responseStation.json" ) ) );
-        final float latitude = 50.234234f;
-        final float longitude = 30.123424f;
+        final double latitude = 50.234234f;
+        final double longitude = 30.123424f;
 
         // when
         Station result = api.stationByLocation( latitude, longitude ).toBlocking().first();
@@ -131,8 +131,8 @@ public class ApiTest {
 
         // given
         server.enqueue( new MockResponse().setBody( TestUtils.readFromResources( "/responseStationHistory.json" ) ) );
-        final float latitude = 50.234234f;
-        final float longitude = 30.123424f;
+        final double latitude = 50.234234f;
+        final double longitude = 30.123424f;
 
         // when
         Station result = api.stationHistoryByLocation( latitude, longitude ).toBlocking().first();

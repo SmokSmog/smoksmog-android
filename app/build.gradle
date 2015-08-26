@@ -46,7 +46,13 @@ dependencies {
     compile 'com.android.support:support-annotations:23.0.0'
 
     compile 'com.jakewharton:butterknife:7.0.1'
+
     compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'com.trello:rxlifecycle:0.2.0'
+    compile 'com.trello:rxlifecycle-components:0.2.0'
+
+    compile 'pl.charmas.android:android-reactive-location:0.7@aar'
+    compile 'com.google.android.gms:play-services-location:7.5.0'
 
     compile 'com.google.dagger:dagger:2.0.1'
 

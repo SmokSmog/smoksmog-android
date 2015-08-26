@@ -1,8 +1,8 @@
 package com.antyzero.smoksmog;
 
 import com.antyzero.smoksmog.network.NetworkModule;
-import com.antyzero.smoksmog.ui.ActivityComponent;
 import com.antyzero.smoksmog.ui.ActivityModule;
+import com.antyzero.smoksmog.ui.MainActivityComponent;
 
 import javax.inject.Singleton;
 
@@ -17,5 +17,5 @@ import dagger.Component;
 )
 public interface ApplicationComponent {
 
-    ActivityComponent plus( ActivityModule activityModule );
+    MainActivityComponent plus( ActivityModule activityModule );
 }

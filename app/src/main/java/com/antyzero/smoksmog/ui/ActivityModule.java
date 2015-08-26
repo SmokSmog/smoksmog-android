@@ -1,19 +1,26 @@
 package com.antyzero.smoksmog.ui;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import dagger.Module;
 import dagger.Provides;
 
 @Module
 public class ActivityModule {
 
-    private final BaseActivity baseActivity;
+    private final MainActivity mainActivity;
 
-    public ActivityModule( BaseActivity baseActivity ) {
-        this.baseActivity = baseActivity;
+    public ActivityModule( MainActivity mainActivity ) {
+        this.mainActivity = mainActivity;
     }
 
     @Provides
     public BaseActivity provideActivity(){
-        return baseActivity;
+        return mainActivity;
+    }
+
+    @Provides
+    public GoogleApiClient.ConnectionCallbacks provideConnectionCallbacks(){
+        return mainActivity;
     }
 }

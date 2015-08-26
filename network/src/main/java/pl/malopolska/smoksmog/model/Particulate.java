@@ -2,6 +2,8 @@ package pl.malopolska.smoksmog.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class Particulate {
     private float value;
     private String unit;
     private float norm;
-    private String date;
+    private DateTime date;
     @SerializedName( "avg" )
     private float average;
     private int position;

@@ -1,11 +1,16 @@
 package pl.malopolska.smoksmog;
 
+import com.fatboyindustrial.gsonjodatime.Converters;
+import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.HttpUrl;
+
+import org.joda.time.DateTime;
 
 import java.util.Locale;
 
 import retrofit.RestAdapter;
 import retrofit.client.Client;
+import retrofit.converter.GsonConverter;
 
 public class SmokSmog {
 
@@ -13,8 +18,6 @@ public class SmokSmog {
     private final String endpoint;
 
     /**
-     *
-     *
      * @param builder
      */
     private SmokSmog( SmokSmog.Builder builder ) {
@@ -27,6 +30,11 @@ public class SmokSmog {
             builderRest.setClient( builder.client );
         }
 
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+
+        gsonBuilder.registerTypeAdapter( DateTime.class, new DateTimeDeserializer() );
+        Converters.registerLocalDate( gsonBuilder );
+        builderRest.setConverter( new GsonConverter( gsonBuilder.create() ) );
         RestAdapter restAdapter = builderRest.build();
 
         api = restAdapter.create( Api.class );
@@ -34,8 +42,6 @@ public class SmokSmog {
     }
 
     /**
-     *
-     *
      * @return
      */
     public Api getApi() {
