@@ -1,17 +1,18 @@
 package com.antyzero.smoksmog.ui;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.antyzero.smoksmog.R;
-import com.antyzero.smoksmog.SmokSmogApplication;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.components.ActivityLifecycleProvider;
 
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class BaseActivity extends AppCompatActivity implements ActivityLifecycleProvider {
 
@@ -58,6 +59,11 @@ public class BaseActivity extends AppCompatActivity implements ActivityLifecycle
     protected void onDestroy() {
         this.lifecycleSubject.onNext( ActivityEvent.DESTROY );
         super.onDestroy();
+    }
+
+    @Override
+    protected void attachBaseContext( Context newBase ) {
+        super.attachBaseContext( CalligraphyContextWrapper.wrap( newBase ) );
     }
 
     @Override

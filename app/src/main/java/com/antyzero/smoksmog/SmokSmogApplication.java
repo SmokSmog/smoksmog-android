@@ -3,6 +3,8 @@ package com.antyzero.smoksmog;
 import android.app.Application;
 import android.content.Context;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 public class SmokSmogApplication extends Application {
 
     private ApplicationComponent applicationComponent;
@@ -14,6 +16,10 @@ public class SmokSmogApplication extends Application {
         applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule( new ApplicationModule( this ) )
                 .build();
+
+        CalligraphyConfig.initDefault( new CalligraphyConfig.Builder()
+                //.setDefaultFontPath( "fonts/Roboto-Regular.ttf" )
+                .build() );
     }
 
     public ApplicationComponent getAppComponent() {
