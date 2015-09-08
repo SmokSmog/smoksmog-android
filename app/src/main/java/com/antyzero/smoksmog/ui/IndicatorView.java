@@ -1,10 +1,12 @@
 package com.antyzero.smoksmog.ui;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -27,16 +29,14 @@ public class IndicatorView extends View {
     private float startAngle;
     private float sweepAngle;
     private float strokeWidth;
-    private float top;
-    private float left;
-    private float right;
-    private float bottom;
     private float textSize;
     private float canvasHorizontalMiddle;
     private float canvasVerticalMiddle;
 
     private int currentWidth;
     private int currentHeight;
+
+    private RectF arcRect;
 
     public IndicatorView( Context context ) {
         super( context );
@@ -100,9 +100,6 @@ public class IndicatorView extends View {
 
     /**
      * Recalculate some variables
-     *
-     * @param width
-     * @param height
      */
     private void calculateDrawingVariables() {
 
@@ -111,10 +108,9 @@ public class IndicatorView extends View {
 
         final float halfStrokeWidth = strokeWidth / 2;
 
-        top = halfStrokeWidth;
-        left = halfStrokeWidth;
-        right = currentWidth - halfStrokeWidth;
-        bottom = currentHeight - halfStrokeWidth;
+        //noinspection SuspiciousNameCombination
+        arcRect = new RectF(halfStrokeWidth,halfStrokeWidth,
+                currentWidth - halfStrokeWidth,currentWidth - halfStrokeWidth);
 
         textSize = currentHeight / 2;
 
@@ -130,8 +126,8 @@ public class IndicatorView extends View {
     protected void onDraw( Canvas canvas ) {
         super.onDraw( canvas );
 
-        canvas.drawArc( left, top, right, bottom, startAngle, sweepAngle, false, paintArcBackground );
-        canvas.drawArc( left, top, right, bottom, startAngle, 87, false, paintArcForeground );
+        canvas.drawArc( arcRect, startAngle, sweepAngle, false, paintArcBackground );
+        canvas.drawArc( arcRect, startAngle, 87, false, paintArcForeground );
 
         drawTextCentred( canvas, paintText, "123", canvasHorizontalMiddle, canvasVerticalMiddle );
     }
