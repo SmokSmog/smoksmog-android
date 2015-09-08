@@ -5,7 +5,7 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.1"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -47,9 +47,9 @@ dependencies {
 
     compile project(':network')
 
-    compile 'com.android.support:appcompat-v7:23.0.0'
-    compile 'com.android.support:recyclerview-v7:23.0.0'
-    compile 'com.android.support:support-annotations:23.0.0'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:support-annotations:23.0.1'
 
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 
@@ -60,7 +60,7 @@ dependencies {
     compile 'com.trello:rxlifecycle-components:0.2.0'
 
     compile 'pl.charmas.android:android-reactive-location:0.7@aar'
-    compile 'com.google.android.gms:play-services-location:7.5.0'
+    compile 'com.google.android.gms:play-services-location:7.8.0'
 
     compile 'com.google.dagger:dagger:2.0.1'
 
