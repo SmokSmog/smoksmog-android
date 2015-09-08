@@ -53,7 +53,7 @@ public class IndicatorView extends View {
         init( context );
     }
 
-    @SuppressWarnings( "unused" )
+    @SuppressWarnings( "unused" ) @TargetApi(21)
     public IndicatorView( Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes ) {
         super( context, attrs, defStyleAttr, defStyleRes );
         init( context );
