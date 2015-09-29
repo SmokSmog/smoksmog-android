@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.antyzero.smoksmog.ui.MainActivity;
+import com.squareup.spoon.Spoon;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,11 +17,10 @@ import org.junit.runner.RunWith;
 public class MainActivityTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>( MainActivity.class );
+    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>( MainActivity.class );
 
     @Test
-    public void checkPreconditions() {
-
-
+    public void checkCreation() {
+        Spoon.screenshot( activityTestRule.getActivity(), "Created" );
     }
 }

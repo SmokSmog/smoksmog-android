@@ -2,6 +2,7 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'spoon'
 
 android {
     compileSdkVersion 23
@@ -18,6 +19,8 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -56,8 +59,8 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
 
     compile 'io.reactivex:rxandroid:1.0.1'
-    compile 'com.trello:rxlifecycle:0.2.0'
-    compile 'com.trello:rxlifecycle-components:0.2.0'
+    compile 'com.trello:rxlifecycle:0.3.0'
+    compile 'com.trello:rxlifecycle-components:0.3.0'
 
     compile 'pl.charmas.android:android-reactive-location:0.7@aar'
     compile 'com.google.android.gms:play-services-location:7.8.0'
@@ -76,13 +79,13 @@ dependencies {
     }
     androidTestCompile 'com.squareup.spoon:spoon-client:1.1.10'
     androidTestCompile 'com.squareup.assertj:assertj-android:1.1.0'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
-    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
-    androidTestCompile 'com.squareup.spoon:spoon-client:1.1.10'
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.2.0'
 }
 
 retrolambda {
