@@ -68,7 +68,7 @@ public class IndicatorView extends View {
         paintArcBackground = new Paint();
         paintArcBackground.setAntiAlias( true );
         paintArcBackground.setStrokeCap( Paint.Cap.ROUND );
-        paintArcBackground.setStrokeWidth( strokeWidth - 10 );
+        paintArcBackground.setStrokeWidth( strokeWidth - 2 );
         paintArcBackground.setStyle( Paint.Style.STROKE );
 
         paintArcForeground = new Paint( paintArcBackground );
