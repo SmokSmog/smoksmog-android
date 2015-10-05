@@ -1,6 +1,7 @@
 package com.antyzero.smoksmog.ui;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
@@ -12,6 +13,7 @@ import com.trello.rxlifecycle.RxLifecycle;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.Api;
 import rx.android.schedulers.AndroidSchedulers;
@@ -24,10 +26,15 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Inject
     GoogleApiClient googleApiClient;
 
+    @Bind( R.id.toolbar )
+    Toolbar toolbar;
+
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+
+        setSupportActionBar( toolbar );
 
         SmokSmogApplication.get( this ).getAppComponent()
                 .plus( new ActivityModule( this ) ).inject( this );
