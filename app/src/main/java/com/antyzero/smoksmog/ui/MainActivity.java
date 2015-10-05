@@ -1,9 +1,12 @@
 package com.antyzero.smoksmog.ui;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.RxLifecycle;
 
@@ -38,7 +41,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( this );
 
         reactiveLocationProvider.getLastKnownLocation()
-                .doOnError( (throwable) -> System.out.println( "Error on station acquired, " + throwable ) )
+                .doOnError( ( throwable ) -> System.out.println( "Error on station acquired, " + throwable ) )
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
                 .subscribeOn( Schedulers.newThread() )
                 .concatMap( location -> api.stationByLocation( location.getLatitude(), location.getLongitude() ) )
