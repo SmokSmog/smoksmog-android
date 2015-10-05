@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( this );
 
         reactiveLocationProvider.getLastKnownLocation()
-                .doOnError( (throwable) -> System.out.println( "Error on station acuire, " + throwable ) )
+                .doOnError( (throwable) -> System.out.println( "Error on station acquired, " + throwable ) )
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
                 .subscribeOn( Schedulers.newThread() )
                 .concatMap( location -> api.stationByLocation( location.getLatitude(), location.getLongitude() ) )
