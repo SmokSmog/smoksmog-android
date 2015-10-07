@@ -17,4 +17,9 @@ public class Station {
     @SerializedName( "lat" )
     private float latitude;
     private final List<Particulate> particulates = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
