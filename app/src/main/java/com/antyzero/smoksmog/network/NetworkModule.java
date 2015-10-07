@@ -2,6 +2,8 @@ package com.antyzero.smoksmog.network;
 
 import android.content.Context;
 
+import com.antyzero.smoksmog.BuildConfig;
+
 import java.util.Locale;
 
 import javax.inject.Singleton;
@@ -22,6 +24,8 @@ public class NetworkModule {
 
         final Locale locale = context.getResources().getConfiguration().locale;
         final SmokSmog.Builder builder = new SmokSmog.Builder( ENDPOINT, locale );
+
+        builder.setDebug( BuildConfig.DEBUG );
 
         return builder.build();
     }
