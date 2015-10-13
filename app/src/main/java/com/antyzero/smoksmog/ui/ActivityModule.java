@@ -1,5 +1,9 @@
 package com.antyzero.smoksmog.ui;
 
+import android.app.Activity;
+
+import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.error.SnackBarErrorReporter;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import dagger.Module;
@@ -15,12 +19,22 @@ public class ActivityModule {
     }
 
     @Provides
-    public BaseActivity provideActivity(){
+    public BaseActivity provideBaseActivity() {
         return mainActivity;
     }
 
     @Provides
-    public GoogleApiClient.ConnectionCallbacks provideConnectionCallbacks(){
+    public Activity provideActivity() {
+        return mainActivity;
+    }
+
+    @Provides
+    public ErrorReporter provideErrorReporter( Activity activity ) {
+        return new SnackBarErrorReporter( activity );
+    }
+
+    @Provides
+    public GoogleApiClient.ConnectionCallbacks provideConnectionCallbacks() {
         return mainActivity;
     }
 }

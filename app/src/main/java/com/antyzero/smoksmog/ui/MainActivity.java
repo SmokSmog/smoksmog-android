@@ -8,6 +8,7 @@ import android.widget.Spinner;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
+import com.antyzero.smoksmog.error.ErrorReporter;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.RxLifecycle;
 
@@ -21,9 +22,11 @@ import butterknife.OnItemSelected;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.Api;
 import pl.malopolska.smoksmog.model.Station;
+import rx.Observable;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks {
+public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, Observer<Station> {
 
     private static final String TAG = "MainActivity";
 
@@ -31,6 +34,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     Api api;
     @Inject
     GoogleApiClient googleApiClient;
+    @Inject
+    ErrorReporter errorReporter;
 
     @Bind( R.id.toolbar )
     Toolbar toolbar;
@@ -68,12 +73,16 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     }
 
     @OnItemSelected( value = R.id.spinnerStations )
-    void OnSpinnerSelected( int position ){
-        api.station( stations.get( position ).getId() );
+    void OnSpinnerSelected( int position ) {
+        api.station( stations.get( position ).getId() )
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe( this );
     }
 
-    private void updateWithStation(Station station){
+    private void updateWithStation( Station station ) {
         // TODO UI update here
+        Station local = station;
+        String.valueOf( local );
     }
 
     @Override
@@ -84,14 +93,27 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         reactiveLocationProvider.getLastKnownLocation()
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
                 .concatMap( location -> api.stationByLocation( location.getLatitude(), location.getLongitude() ) )
-                .subscribe(
-                        station -> System.out.println( station.getName() ),
-                        throwable -> Log.e( TAG, "Error on station acquired", throwable ),
-                        () -> System.out.println( "Location acquired" ) );
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe( this );
     }
 
     @Override
     public void onConnectionSuspended( int i ) {
+        // GoogleClient
+    }
 
+    @Override
+    public void onCompleted() {
+        // do nothing
+    }
+
+    @Override
+    public void onError( Throwable e ) {
+        errorReporter.report( "Nie udało się załadować inforacji dla wybranej stacji" );
+    }
+
+    @Override
+    public void onNext( Station station ) {
+        updateWithStation( station );
     }
 }
