@@ -1,26 +1,17 @@
 package com.antyzero.smoksmog;
 
 
-import android.app.Application;
-import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.antyzero.smoksmog.network.NetworkModule;
 import com.antyzero.smoksmog.ui.MainActivity;
 import com.squareup.spoon.Spoon;
 
-import org.assertj.core.util.Lists;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-
-import pl.malopolska.smoksmog.Api;
-import pl.malopolska.smoksmog.SmokSmog;
-import rx.Observable;
 
 @RunWith( AndroidJUnit4.class )
 @LargeTest

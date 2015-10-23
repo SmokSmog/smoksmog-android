@@ -10,7 +10,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import pl.malopolska.smoksmog.Api;
 import pl.malopolska.smoksmog.SmokSmog;
 
 @Module
