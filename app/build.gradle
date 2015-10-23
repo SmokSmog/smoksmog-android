@@ -50,10 +50,12 @@ dependencies {
 
     compile project(':network')
 
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:recyclerview-v7:23.0.1'
-    compile 'com.android.support:support-annotations:23.0.1'
-    compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:support-annotations:23.1.0'
+    compile 'com.android.support:design:23.1.0'
+
+    compile 'com.google.android.gms:play-services-location:8.1.0'
 
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 
@@ -64,7 +66,6 @@ dependencies {
     compile 'com.trello:rxlifecycle-components:0.3.0'
 
     compile 'pl.charmas.android:android-reactive-location:0.8@aar'
-    compile 'com.google.android.gms:play-services-location:8.1.0'
 
     compile 'com.google.dagger:dagger:2.0.1'
 
@@ -75,11 +76,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'org.mockito:mockito-core:2.0.31-beta'
     androidTestCompile('com.android.support.test:runner:0.4.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     androidTestCompile 'com.squareup.spoon:spoon-client:1.1.10'
-    androidTestCompile 'com.squareup.assertj:assertj-android:1.1.0'
+    androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
         exclude group: 'com.android.support', module: 'appcompat'

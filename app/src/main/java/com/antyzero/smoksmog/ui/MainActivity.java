@@ -20,9 +20,8 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.OnItemSelected;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
-import pl.malopolska.smoksmog.Api;
+import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
-import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -31,7 +30,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     private static final String TAG = "MainActivity";
 
     @Inject
-    Api api;
+    SmokSmog smokSmog;
     @Inject
     GoogleApiClient googleApiClient;
     @Inject
@@ -61,7 +60,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         spinnerStations.setAdapter( adapter );
 
-        api.stations()
+        smokSmog.getApi().stations()
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
@@ -74,7 +73,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @OnItemSelected( value = R.id.spinnerStations )
     void OnSpinnerSelected( int position ) {
-        api.station( stations.get( position ).getId() )
+        smokSmog.getApi().station( stations.get( position ).getId() )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe( this );
     }
@@ -92,7 +91,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         reactiveLocationProvider.getLastKnownLocation()
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
-                .concatMap( location -> api.stationByLocation( location.getLatitude(), location.getLongitude() ) )
+                .concatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe( this );
     }

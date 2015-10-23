@@ -29,10 +29,4 @@ public class NetworkModule {
 
         return builder.build();
     }
-
-    @Provides
-    @Singleton
-    public Api provideApi( SmokSmog smokSmog ) {
-        return smokSmog.getApi();
-    }
 }

@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog;
 
+import android.app.Application;
 import android.content.Context;
 
 import javax.inject.Singleton;
@@ -11,9 +12,9 @@ import dagger.Provides;
 @Module
 public class ApplicationModule {
 
-    private final SmokSmogApplication application;
+    private final Application application;
 
-    public ApplicationModule( SmokSmogApplication application ) {
+    public ApplicationModule( Application application ) {
         this.application = application;
     }
 
@@ -25,7 +26,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public SmokSmogApplication provideApplication() {
+    public Application provideApplication() {
         return application;
     }
 

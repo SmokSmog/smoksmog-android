@@ -2,6 +2,7 @@ package com.antyzero.smoksmog;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -24,6 +25,16 @@ public class SmokSmogApplication extends Application {
 
     public ApplicationComponent getAppComponent() {
         return applicationComponent;
+    }
+
+    /**
+     * Kept to inject mocked components.
+     *
+     * @param applicationComponent for replace
+     */
+    @VisibleForTesting
+    public void setAppComponent( ApplicationComponent applicationComponent ) {
+        this.applicationComponent = applicationComponent;
     }
 
     /**
