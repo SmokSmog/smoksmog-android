@@ -36,6 +36,10 @@ public class IndicatorView extends View {
     private int currentWidth;
     private int currentHeight;
 
+    private float value = 0f;
+    private float valueMax = 100f;
+    private float arcValue = 0;
+
     private RectF arcRect;
 
     public IndicatorView( Context context ) {
@@ -98,6 +102,16 @@ public class IndicatorView extends View {
         return TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics );
     }
 
+    public void setValue( float value ) {
+        this.value = value;
+        this.arcValue = ( value / valueMax ) * ( (float) 360 - GAP_ANGLE_DEFAULT );
+        postInvalidate();
+    }
+
+    public void setValueMax( float valueMax ) {
+        this.valueMax = valueMax;
+    }
+
     /**
      * Recalculate some variables
      */
@@ -127,9 +141,9 @@ public class IndicatorView extends View {
         super.onDraw( canvas );
 
         canvas.drawArc( arcRect, startAngle, sweepAngle, false, paintArcBackground );
-        canvas.drawArc( arcRect, startAngle, 87, false, paintArcForeground );
+        canvas.drawArc( arcRect, startAngle, arcValue, false, paintArcForeground );
 
-        drawTextCentred( canvas, paintText, "123", canvasHorizontalMiddle, canvasVerticalMiddle );
+        drawTextCentred( canvas, paintText, String.valueOf( value ), canvasHorizontalMiddle, canvasVerticalMiddle );
     }
 
     private void drawTextCentred( Canvas canvas, Paint paint, String text, float cx, float cy ) {

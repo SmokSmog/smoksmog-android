@@ -40,6 +40,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     Toolbar toolbar;
     @Bind( R.id.spinnerStations )
     Spinner spinnerStations;
+    @Bind( R.id.indicatorMain )
+    IndicatorView indicatorMain;
 
     private final List<Station> stations = new ArrayList<>();
     @SuppressWarnings( "FieldCanBeLocal" )
@@ -78,10 +80,17 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .subscribe( this );
     }
 
-    private void updateWithStation( Station station ) {
+    /**
+     * Update element of the UI with Station object data
+     *
+     * @param station data
+     */
+    private void updateUiWithStation( Station station ) {
         // TODO UI update here
         Station local = station;
         String.valueOf( local );
+
+        indicatorMain.setValue( station.getParticulates().get( 0 ).getValue() );
     }
 
     @Override
@@ -113,6 +122,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void onNext( Station station ) {
-        updateWithStation( station );
+        updateUiWithStation( station );
     }
 }
