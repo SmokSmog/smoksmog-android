@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.ui;
 
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,6 +13,9 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+
+import pl.malopolska.smoksmog.model.Particulate;
 
 public class IndicatorView extends View {
 
@@ -20,16 +24,17 @@ public class IndicatorView extends View {
 
     private float gapAngle = GAP_ANGLE_DEFAULT;
 
+    private final ValueAnimator valueAnimator = ValueAnimator.ofFloat( 0f );
     private final Rect textBounds = new Rect();
 
     private Paint paintArcBackground;
     private Paint paintArcForeground;
-    private Paint paintText;
+    private Paint paintTextName;
+    private Paint paintTextValue;
 
     private float startAngle;
     private float sweepAngle;
     private float strokeWidth;
-    private float textSize;
     private float canvasHorizontalMiddle;
     private float canvasVerticalMiddle;
 
@@ -39,8 +44,17 @@ public class IndicatorView extends View {
     private float value = 0f;
     private float valueMax = 100f;
     private float arcValue = 0;
+    private float textNameSize = 10f;
 
     private RectF arcRect;
+
+    private String particulateName = "";
+
+    {
+        valueAnimator.setDuration( 1000L );
+        valueAnimator.setInterpolator( new AccelerateDecelerateInterpolator() );
+
+    }
 
     public IndicatorView( Context context ) {
         super( context );
@@ -64,8 +78,8 @@ public class IndicatorView extends View {
     }
 
     private void init( Context context ) {
-
         strokeWidth = dipToPixels( context, STROKE_WIDTH_DEFAULT );
+        textNameSize = dipToPixels( context, 32 );
 
         // Init paints
 
@@ -82,11 +96,17 @@ public class IndicatorView extends View {
         paintArcForeground.setColor( Color.CYAN );
         paintArcForeground.setStrokeWidth( strokeWidth );
 
-        paintText = new Paint();
-        paintText.setAntiAlias( true );
-        paintText.setColor( Color.RED );
-        paintText.setStyle( Paint.Style.FILL );
-        paintText.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
+        paintTextValue = new Paint();
+        paintTextValue.setAntiAlias( true );
+        paintTextValue.setColor( Color.RED );
+        paintTextValue.setStyle( Paint.Style.FILL );
+        paintTextValue.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
+
+        paintTextName = new Paint(  );
+        paintTextName.setAntiAlias( true );
+        paintTextName.setColor( Color.RED );
+        paintTextName.setStyle( Paint.Style.FILL );
+        paintTextName.setTextSize( textNameSize );
     }
 
     @Override
@@ -102,13 +122,26 @@ public class IndicatorView extends View {
         return TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics );
     }
 
-    public void setValue( float value ) {
-        this.value = value;
-        this.arcValue = ( value / valueMax ) * ( (float) 360 - GAP_ANGLE_DEFAULT );
-        postInvalidate();
+    public void setParticulate( Particulate particulate ) {
+
+        setValue( particulate.getValue() );
+
+        this.particulateName = particulate.getName();
     }
 
-    public void setValueMax( float valueMax ) {
+    private void setValue( float newValue ) {
+        valueAnimator.end();
+        valueAnimator.setFloatValues( this.value, newValue );
+        valueAnimator.addUpdateListener( animation -> {
+            float currentValue = ( float ) animation.getAnimatedValue();
+            this.value = currentValue;
+            this.arcValue = ( currentValue / valueMax ) * ( ( float ) 360 - GAP_ANGLE_DEFAULT );
+            postInvalidateOnAnimation();
+        } );
+        valueAnimator.start();
+    }
+
+    private void setValueMax( float valueMax ) {
         this.valueMax = valueMax;
     }
 
@@ -126,12 +159,12 @@ public class IndicatorView extends View {
         arcRect = new RectF(halfStrokeWidth,halfStrokeWidth,
                 currentWidth - halfStrokeWidth,currentWidth - halfStrokeWidth);
 
-        textSize = currentHeight / 2;
+        float textSize = currentHeight / 2;
 
         canvasHorizontalMiddle = currentWidth / 2;
         canvasVerticalMiddle = currentWidth / 2;
 
-        paintText.setTextSize( textSize );
+        paintTextValue.setTextSize( textSize );
 
         postInvalidateOnAnimation();
     }
@@ -143,7 +176,9 @@ public class IndicatorView extends View {
         canvas.drawArc( arcRect, startAngle, sweepAngle, false, paintArcBackground );
         canvas.drawArc( arcRect, startAngle, arcValue, false, paintArcForeground );
 
-        drawTextCentred( canvas, paintText, String.valueOf( value ), canvasHorizontalMiddle, canvasVerticalMiddle );
+        String valueText = String.format( "%.0f", value );
+        drawTextCentred( canvas, paintTextValue, valueText, canvasHorizontalMiddle, canvasVerticalMiddle );
+        drawTextCentred( canvas, paintTextName, particulateName, canvasHorizontalMiddle, arcRect.bottom );
     }
 
     private void drawTextCentred( Canvas canvas, Paint paint, String text, float cx, float cy ) {

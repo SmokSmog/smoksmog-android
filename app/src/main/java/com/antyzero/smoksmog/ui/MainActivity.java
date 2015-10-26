@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -42,6 +43,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     Spinner spinnerStations;
     @Bind( R.id.indicatorMain )
     IndicatorView indicatorMain;
+    @Bind( R.id.textViewName )
+    TextView textViewName;
 
     private final List<Station> stations = new ArrayList<>();
     @SuppressWarnings( "FieldCanBeLocal" )
@@ -75,8 +78,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @OnItemSelected( value = R.id.spinnerStations )
     void OnSpinnerSelected( int position ) {
-        smokSmog.getApi().station( stations.get( position ).getId() )
+        Station stationSelected = stations.get( position );
+        smokSmog.getApi().station( stationSelected.getId() )
                 .observeOn( AndroidSchedulers.mainThread() )
+                .doOnError( throwable -> errorReporter.report( "Nie udało się załadować inforacji dla " + stationSelected.getName() ) )
+                .doOnNext( station -> textViewName.setText( station.getName() ) )
                 .subscribe( this );
     }
 
@@ -86,11 +92,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      * @param station data
      */
     private void updateUiWithStation( Station station ) {
-        // TODO UI update here
-        Station local = station;
-        String.valueOf( local );
-
-        indicatorMain.setValue( station.getParticulates().get( 0 ).getValue() );
+        indicatorMain.setParticulate(station.getParticulates().get( 0 ));
     }
 
     @Override
@@ -117,7 +119,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void onError( Throwable e ) {
-        errorReporter.report( "Nie udało się załadować inforacji dla wybranej stacji" );
+
     }
 
     @Override
