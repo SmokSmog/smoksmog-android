@@ -25,12 +25,14 @@ public class IndicatorView extends View {
     private float gapAngle = GAP_ANGLE_DEFAULT;
 
     private final ValueAnimator valueAnimator = ValueAnimator.ofFloat( 0f );
+    private final ValueAnimator valueMaxAnimator = ValueAnimator.ofFloat( 0f );
     private final Rect textBounds = new Rect();
 
     private Paint paintArcBackground;
     private Paint paintArcForeground;
     private Paint paintTextName;
     private Paint paintTextValue;
+    private Paint paintTextMaxValue;
 
     private float startAngle;
     private float sweepAngle;
@@ -43,17 +45,24 @@ public class IndicatorView extends View {
 
     private float value = 0f;
     private float valueMax = 100f;
-    private float arcValue = 0;
+    private float arcValue = 0f;
     private float textNameSize = 10f;
 
     private RectF arcRect;
 
     private String particulateName = "";
 
+    private int overLap = 0;
+
+    /**
+     * Setup variables
+     */
     {
         valueAnimator.setDuration( 1000L );
         valueAnimator.setInterpolator( new AccelerateDecelerateInterpolator() );
 
+        valueMaxAnimator.setDuration( 1000L );
+        valueMaxAnimator.setInterpolator( new AccelerateDecelerateInterpolator() );
     }
 
     public IndicatorView( Context context ) {
@@ -71,13 +80,15 @@ public class IndicatorView extends View {
         init( context );
     }
 
-    @SuppressWarnings( "unused" ) @TargetApi(21)
+    @SuppressWarnings( "unused" )
+    @TargetApi( 21 )
     public IndicatorView( Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes ) {
         super( context, attrs, defStyleAttr, defStyleRes );
         init( context );
     }
 
     private void init( Context context ) {
+
         strokeWidth = dipToPixels( context, STROKE_WIDTH_DEFAULT );
         textNameSize = dipToPixels( context, 32 );
 
@@ -102,11 +113,19 @@ public class IndicatorView extends View {
         paintTextValue.setStyle( Paint.Style.FILL );
         paintTextValue.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
 
-        paintTextName = new Paint(  );
+        paintTextMaxValue = new Paint();
+        paintTextMaxValue.setAntiAlias( true );
+        paintTextMaxValue.setColor( Color.RED );
+        paintTextMaxValue.setStyle( Paint.Style.FILL );
+        paintTextMaxValue.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
+
+        paintTextName = new Paint();
         paintTextName.setAntiAlias( true );
         paintTextName.setColor( Color.RED );
         paintTextName.setStyle( Paint.Style.FILL );
         paintTextName.setTextSize( textNameSize );
+
+        calculateMinorDrawingVariables();
     }
 
     @Override
@@ -123,41 +142,60 @@ public class IndicatorView extends View {
     }
 
     public void setParticulate( Particulate particulate ) {
-
+        setValueMax( particulate.getNorm() );
         setValue( particulate.getValue() );
-
         this.particulateName = particulate.getName();
     }
 
     private void setValue( float newValue ) {
+
+        this.overLap = ( int ) ( value / valueMax ); // How many x times more that max
+
         valueAnimator.end();
-        valueAnimator.setFloatValues( this.value, newValue );
+        valueAnimator.setFloatValues( this.value, newValue % valueMax );
         valueAnimator.addUpdateListener( animation -> {
-            float currentValue = ( float ) animation.getAnimatedValue();
-            this.value = currentValue;
-            this.arcValue = ( currentValue / valueMax ) * ( ( float ) 360 - GAP_ANGLE_DEFAULT );
-            postInvalidateOnAnimation();
+            this.value = ( float ) animation.getAnimatedValue();
+            recalculateDuringAnimation();
         } );
         valueAnimator.start();
     }
 
-    private void setValueMax( float valueMax ) {
-        this.valueMax = valueMax;
+    /**
+     * Value considered to be max value or call it 'norm' for this indicator view
+     *
+     * @param newValueMax to use
+     */
+    private void setValueMax( float newValueMax ) {
+        this.valueMax = newValueMax;
+    }
+
+    /**
+     * This should be called when animating values
+     */
+    private void recalculateDuringAnimation(){
+        this.arcValue = ( ( value % valueMax ) / valueMax ) * sweepAngle;
+        postInvalidateOnAnimation();
+    }
+
+    /**
+     * Non ui dependant variables
+     */
+    private void calculateMinorDrawingVariables() {
+        startAngle = 90f + gapAngle / 2;
+        sweepAngle = 360 - gapAngle;
     }
 
     /**
      * Recalculate some variables
      */
     private void calculateDrawingVariables() {
-
-        startAngle = 90f + gapAngle / 2;
-        sweepAngle = 360 - gapAngle;
+        calculateMinorDrawingVariables();
 
         final float halfStrokeWidth = strokeWidth / 2;
 
         //noinspection SuspiciousNameCombination
-        arcRect = new RectF(halfStrokeWidth,halfStrokeWidth,
-                currentWidth - halfStrokeWidth,currentWidth - halfStrokeWidth);
+        arcRect = new RectF( halfStrokeWidth, halfStrokeWidth,
+                currentWidth - halfStrokeWidth, currentWidth - halfStrokeWidth );
 
         float textSize = currentHeight / 2;
 
@@ -165,6 +203,7 @@ public class IndicatorView extends View {
         canvasVerticalMiddle = currentWidth / 2;
 
         paintTextValue.setTextSize( textSize );
+        paintTextMaxValue.setTextSize( 40f ); // TODO calculate
 
         postInvalidateOnAnimation();
     }
@@ -174,10 +213,16 @@ public class IndicatorView extends View {
         super.onDraw( canvas );
 
         canvas.drawArc( arcRect, startAngle, sweepAngle, false, paintArcBackground );
+
+        // TODO if overlap is > 0 draw pre background ?
+
         canvas.drawArc( arcRect, startAngle, arcValue, false, paintArcForeground );
 
         String valueText = String.format( "%.0f", value );
+        String normText = String.format( "%.0f", valueMax );
+
         drawTextCentred( canvas, paintTextValue, valueText, canvasHorizontalMiddle, canvasVerticalMiddle );
+        drawTextCentred( canvas, paintTextMaxValue, normText, canvasHorizontalMiddle, arcRect.bottom - 150 ); // TODO calculate position
         drawTextCentred( canvas, paintTextName, particulateName, canvasHorizontalMiddle, arcRect.bottom );
     }
 

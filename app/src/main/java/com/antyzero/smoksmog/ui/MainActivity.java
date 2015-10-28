@@ -8,6 +8,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.RxJava;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,6 +25,7 @@ import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, Observer<Station> {
@@ -49,6 +51,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     private final List<Station> stations = new ArrayList<>();
     @SuppressWarnings( "FieldCanBeLocal" )
     private ArrayAdapter<Station> adapter;
+
+    private Subscription spinnerSubscriber = RxJava.EMPTY_SUBSCRIPTION;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -79,7 +83,9 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @OnItemSelected( value = R.id.spinnerStations )
     void OnSpinnerSelected( int position ) {
         Station stationSelected = stations.get( position );
-        smokSmog.getApi().station( stationSelected.getId() )
+
+        spinnerSubscriber.unsubscribe();
+        spinnerSubscriber = smokSmog.getApi().station( stationSelected.getId() )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .doOnError( throwable -> errorReporter.report( "Nie udało się załadować inforacji dla " + stationSelected.getName() ) )
                 .doOnNext( station -> textViewName.setText( station.getName() ) )
