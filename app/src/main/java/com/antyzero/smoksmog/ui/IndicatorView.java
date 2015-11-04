@@ -152,7 +152,7 @@ public class IndicatorView extends View {
         this.overLap = ( int ) ( value / valueMax ); // How many x times more that max
 
         valueAnimator.end();
-        valueAnimator.setFloatValues( this.value, newValue % valueMax );
+        valueAnimator.setFloatValues( this.value, newValue );
         valueAnimator.addUpdateListener( animation -> {
             this.value = ( float ) animation.getAnimatedValue();
             recalculateDuringAnimation();

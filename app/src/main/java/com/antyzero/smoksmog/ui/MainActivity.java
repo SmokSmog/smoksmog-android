@@ -125,7 +125,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void onError( Throwable e ) {
-
+        // TODO change with logger
+        Log.w(TAG, "Error when loading station data", e);
     }
 
     @Override
