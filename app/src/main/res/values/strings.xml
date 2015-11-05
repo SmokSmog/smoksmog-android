@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SmokSmog</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <!-- Errors displayed for user -->
+    <string name="error_unable_to_load_station_data">Unable to load data for %s</string>
+
 </resources>

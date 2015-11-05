@@ -1,6 +1,7 @@
 package com.antyzero.smoksmog.ui;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -47,10 +48,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     IndicatorView indicatorMain;
     @Bind( R.id.textViewName )
     TextView textViewName;
+    @Bind( R.id.recyclerViewParticulates )
+    RecyclerView recyclerViewParticulates;
 
     private final List<Station> stations = new ArrayList<>();
     @SuppressWarnings( "FieldCanBeLocal" )
-    private ArrayAdapter<Station> adapter;
+    private ArrayAdapter<Station> adapterStations;
 
     private Subscription spinnerSubscriber = RxJava.EMPTY_SUBSCRIPTION;
 
@@ -61,13 +64,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         setSupportActionBar( toolbar );
         setTitle( null );
 
-        SmokSmogApplication.get( this ).getAppComponent()
-                .plus( new ActivityModule( this ) ).inject( this );
+        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
 
-        adapter = new ArrayAdapter<>( this, android.R.layout.simple_spinner_item, stations );
-        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+        adapterStations = new ArrayAdapter<>( this, android.R.layout.simple_spinner_item, stations );
+        adapterStations.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 
-        spinnerStations.setAdapter( adapter );
+        spinnerStations.setAdapter( adapterStations );
 
         smokSmog.getApi().stations()
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
@@ -75,7 +77,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .subscribe(
                         this.stations::addAll,
                         throwable -> Log.e( TAG, "Unable to load stations", throwable ),
-                        adapter::notifyDataSetChanged );
+                        adapterStations::notifyDataSetChanged );
 
         googleApiClient.connect();
     }
@@ -87,7 +89,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         spinnerSubscriber.unsubscribe();
         spinnerSubscriber = smokSmog.getApi().station( stationSelected.getId() )
                 .observeOn( AndroidSchedulers.mainThread() )
-                .doOnError( throwable -> errorReporter.report( "Nie udało się załadować inforacji dla " + stationSelected.getName() ) )
+                .doOnError( throwable -> errorReporter.report( getString( R.string.error_unable_to_load_station_data, stationSelected.getName()) ) )
                 .doOnNext( station -> textViewName.setText( station.getName() ) )
                 .subscribe( this );
     }

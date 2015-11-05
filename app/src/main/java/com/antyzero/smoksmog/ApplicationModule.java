@@ -3,6 +3,9 @@ package com.antyzero.smoksmog;
 import android.app.Application;
 import android.content.Context;
 
+import com.antyzero.smoksmog.logger.AndroidLogger;
+import com.antyzero.smoksmog.logger.Logger;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -30,4 +33,9 @@ public class ApplicationModule {
         return application;
     }
 
+    @Provides
+    @Singleton
+    public Logger provideLogger(){
+        return new AndroidLogger();
+    }
 }
