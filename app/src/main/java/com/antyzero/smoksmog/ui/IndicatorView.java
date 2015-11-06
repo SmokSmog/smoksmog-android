@@ -50,14 +50,10 @@ public class IndicatorView extends View {
     private float arcValue = 0f;
     private float textNameSize = 10f;
 
-    private RectF arcRect;
-    private Rect textShortNameRect;
-
-    private String particulateName = "";
+    private RectF arcRect = new RectF();
 
     private int overLap = 0;
 
-    private int arcPositionOffset = 0;
     private String valueText = "";
 
     /**
@@ -170,7 +166,6 @@ public class IndicatorView extends View {
     public void setParticulate( Particulate particulate ) {
         setValueMax( particulate.getNorm() );
         setValue( particulate.getValue() );
-        this.particulateName = particulate.getShortName();
     }
 
     private void setValue( float newValue ) {
@@ -201,10 +196,11 @@ public class IndicatorView extends View {
     private void recalculateDuringAnimation() {
         float progress = ( value % valueMax ) / valueMax;
         this.arcValue = progress * sweepAngle;
-        this.valueText = String.format( "%.0f", value );
-        this.overLap = ( int ) (value / valueMax);
+        this.valueText = String.format( "%.0f%%", value / valueMax * 100 );
+        this.overLap = ( int ) ( value / valueMax );
         int red = ( int ) Math.min( STEP_COLOR * overLap + STEP_COLOR * progress, 255 );
-        this.paintArcBackground.setARGB( 255,red,0,0 );
+        this.paintArcBackground.setARGB( 255, red, 0, 0 );
+
         postInvalidateOnAnimation();
     }
 
@@ -222,25 +218,19 @@ public class IndicatorView extends View {
     private void calculateDrawingVariables() {
         calculateMinorDrawingVariables();
 
-        // Calculate areas
-
-        arcPositionOffset = ( currentHeight - currentWidth ) / 2;
-
-        textShortNameRect = new Rect( 0,0, currentWidth, arcPositionOffset );
-
-        // ...
-
         final float halfStrokeWidth = strokeWidth / 2;
 
         //noinspection SuspiciousNameCombination
         arcRect = new RectF(
                 halfStrokeWidth,
-                halfStrokeWidth + arcPositionOffset,
+                halfStrokeWidth,
                 currentWidth - halfStrokeWidth,
-                currentWidth - halfStrokeWidth + arcPositionOffset );
+                currentWidth - halfStrokeWidth );
 
         canvasHorizontalMiddle = currentWidth / 2;
         canvasVerticalMiddle = currentWidth / 2;
+
+        paintValue.setTextSize( ( arcRect.bottom - arcRect.top ) / 4f );
 
         postInvalidateOnAnimation();
     }
@@ -256,9 +246,6 @@ public class IndicatorView extends View {
         canvas.drawArc( arcRect, startAngle, arcValue, false, paintArcForeground );
 
         drawTextCentred( canvas, paintValue, valueText, arcRect );
-
-        //drawTextCentred( canvas, paintMaxValue, normText, canvasHorizontalMiddle, arcRect.bottom - 150 );
-        //drawTextCentred( canvas, paintNameShort, particulateName, canvasHorizontalMiddle, arcRect.bottom );
     }
 
     private void drawTextCentred( Canvas canvas, Paint paint, String text, RectF bounds ) {
