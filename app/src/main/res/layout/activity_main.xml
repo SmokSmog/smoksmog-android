@@ -38,8 +38,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewParticulates"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         android:layout_alignParentBottom="true"
-        android:background="#0FF"/>
+        android:background="#0FF"
+        tools:layout_height="80dp"/>
 
 </RelativeLayout>

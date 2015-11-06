@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -21,18 +23,18 @@ public class IndicatorView extends View {
 
     private static final float GAP_ANGLE_DEFAULT = 90;
     private static final int STROKE_WIDTH_DEFAULT = 10;
+    public static final int STEP_COLOR = 50;
 
     private float gapAngle = GAP_ANGLE_DEFAULT;
 
     private final ValueAnimator valueAnimator = ValueAnimator.ofFloat( 0f );
     private final ValueAnimator valueMaxAnimator = ValueAnimator.ofFloat( 0f );
-    private final Rect textBounds = new Rect();
 
     private Paint paintArcBackground;
     private Paint paintArcForeground;
-    private Paint paintTextName;
-    private Paint paintTextValue;
-    private Paint paintTextMaxValue;
+    private Paint paintNameShort;
+    private Paint paintValue;
+    private Paint paintMaxValue;
 
     private float startAngle;
     private float sweepAngle;
@@ -49,15 +51,18 @@ public class IndicatorView extends View {
     private float textNameSize = 10f;
 
     private RectF arcRect;
+    private Rect textShortNameRect;
 
     private String particulateName = "";
 
     private int overLap = 0;
 
+    private int arcPositionOffset = 0;
+    private String valueText = "";
+
     /**
      * Setup variables
-     */
-    {
+     */ {
         valueAnimator.setDuration( 1000L );
         valueAnimator.setInterpolator( new AccelerateDecelerateInterpolator() );
 
@@ -107,25 +112,46 @@ public class IndicatorView extends View {
         paintArcForeground.setColor( Color.CYAN );
         paintArcForeground.setStrokeWidth( strokeWidth );
 
-        paintTextValue = new Paint();
-        paintTextValue.setAntiAlias( true );
-        paintTextValue.setColor( Color.RED );
-        paintTextValue.setStyle( Paint.Style.FILL );
-        paintTextValue.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
+        paintValue = new Paint();
+        paintValue.setAntiAlias( true );
+        paintValue.setColor( Color.RED );
+        paintValue.setStyle( Paint.Style.FILL );
+        paintValue.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
 
-        paintTextMaxValue = new Paint();
-        paintTextMaxValue.setAntiAlias( true );
-        paintTextMaxValue.setColor( Color.RED );
-        paintTextMaxValue.setStyle( Paint.Style.FILL );
-        paintTextMaxValue.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
+        paintMaxValue = new Paint();
+        paintMaxValue.setAntiAlias( true );
+        paintMaxValue.setColor( Color.RED );
+        paintMaxValue.setStyle( Paint.Style.FILL );
+        paintMaxValue.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
 
-        paintTextName = new Paint();
-        paintTextName.setAntiAlias( true );
-        paintTextName.setColor( Color.RED );
-        paintTextName.setStyle( Paint.Style.FILL );
-        paintTextName.setTextSize( textNameSize );
+        paintNameShort = new Paint();
+        paintNameShort.setAntiAlias( true );
+        paintNameShort.setColor( Color.RED );
+        paintNameShort.setStyle( Paint.Style.FILL );
+        paintNameShort.setTextSize( textNameSize );
 
         calculateMinorDrawingVariables();
+    }
+
+    @Override
+    protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec ) {
+        int widthMode = MeasureSpec.getMode( widthMeasureSpec );
+        int widthSize = MeasureSpec.getSize( widthMeasureSpec );
+        int heightMode = MeasureSpec.getMode( heightMeasureSpec );
+        int heightSize = MeasureSpec.getSize( heightMeasureSpec );
+
+        int size;
+        if ( widthMode == MeasureSpec.EXACTLY && widthSize > 0 ) {
+            size = widthSize;
+        } else if ( heightMode == MeasureSpec.EXACTLY && heightSize > 0 ) {
+            size = heightSize;
+        } else {
+            size = widthSize < heightSize ? widthSize : heightSize;
+        }
+
+        int widthNewSpec = MeasureSpec.makeMeasureSpec( size, MeasureSpec.EXACTLY );
+        int heightNewSpec = MeasureSpec.makeMeasureSpec( size * 2, MeasureSpec.EXACTLY );
+        super.onMeasure( widthNewSpec, heightNewSpec );
     }
 
     @Override
@@ -144,7 +170,7 @@ public class IndicatorView extends View {
     public void setParticulate( Particulate particulate ) {
         setValueMax( particulate.getNorm() );
         setValue( particulate.getValue() );
-        this.particulateName = particulate.getName();
+        this.particulateName = particulate.getShortName();
     }
 
     private void setValue( float newValue ) {
@@ -172,8 +198,13 @@ public class IndicatorView extends View {
     /**
      * This should be called when animating values
      */
-    private void recalculateDuringAnimation(){
-        this.arcValue = ( ( value % valueMax ) / valueMax ) * sweepAngle;
+    private void recalculateDuringAnimation() {
+        float progress = ( value % valueMax ) / valueMax;
+        this.arcValue = progress * sweepAngle;
+        this.valueText = String.format( "%.0f", value );
+        this.overLap = ( int ) (value / valueMax);
+        int red = ( int ) Math.min( STEP_COLOR * overLap + STEP_COLOR * progress, 255 );
+        this.paintArcBackground.setARGB( 255,red,0,0 );
         postInvalidateOnAnimation();
     }
 
@@ -186,24 +217,30 @@ public class IndicatorView extends View {
     }
 
     /**
-     * Recalculate some variables
+     * Recalculate some variables, important when view changes its size
      */
     private void calculateDrawingVariables() {
         calculateMinorDrawingVariables();
 
+        // Calculate areas
+
+        arcPositionOffset = ( currentHeight - currentWidth ) / 2;
+
+        textShortNameRect = new Rect( 0,0, currentWidth, arcPositionOffset );
+
+        // ...
+
         final float halfStrokeWidth = strokeWidth / 2;
 
         //noinspection SuspiciousNameCombination
-        arcRect = new RectF( halfStrokeWidth, halfStrokeWidth,
-                currentWidth - halfStrokeWidth, currentWidth - halfStrokeWidth );
-
-        float textSize = currentHeight / 2;
+        arcRect = new RectF(
+                halfStrokeWidth,
+                halfStrokeWidth + arcPositionOffset,
+                currentWidth - halfStrokeWidth,
+                currentWidth - halfStrokeWidth + arcPositionOffset );
 
         canvasHorizontalMiddle = currentWidth / 2;
         canvasVerticalMiddle = currentWidth / 2;
-
-        paintTextValue.setTextSize( textSize );
-        paintTextMaxValue.setTextSize( 40f ); // TODO calculate
 
         postInvalidateOnAnimation();
     }
@@ -218,15 +255,21 @@ public class IndicatorView extends View {
 
         canvas.drawArc( arcRect, startAngle, arcValue, false, paintArcForeground );
 
-        String valueText = String.format( "%.0f", value );
-        String normText = String.format( "%.0f", valueMax );
+        drawTextCentred( canvas, paintValue, valueText, arcRect );
 
-        drawTextCentred( canvas, paintTextValue, valueText, canvasHorizontalMiddle, canvasVerticalMiddle );
-        drawTextCentred( canvas, paintTextMaxValue, normText, canvasHorizontalMiddle, arcRect.bottom - 150 ); // TODO calculate position
-        drawTextCentred( canvas, paintTextName, particulateName, canvasHorizontalMiddle, arcRect.bottom );
+        //drawTextCentred( canvas, paintMaxValue, normText, canvasHorizontalMiddle, arcRect.bottom - 150 );
+        //drawTextCentred( canvas, paintNameShort, particulateName, canvasHorizontalMiddle, arcRect.bottom );
+    }
+
+    private void drawTextCentred( Canvas canvas, Paint paint, String text, RectF bounds ) {
+        drawTextCentred( canvas, paint, text, bounds.centerX(), bounds.centerY(), new Rect() );
     }
 
     private void drawTextCentred( Canvas canvas, Paint paint, String text, float cx, float cy ) {
+        drawTextCentred( canvas, paint, text, cx, cy, new Rect() );
+    }
+
+    private void drawTextCentred( Canvas canvas, Paint paint, String text, float cx, float cy, Rect textBounds ) {
         paint.getTextBounds( text, 0, text.length(), textBounds );
         canvas.drawText( text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(), paint );
     }
