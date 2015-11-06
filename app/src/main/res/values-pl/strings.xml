@@ -2,4 +2,5 @@
 <resources>
 
     <string name="error_unable_to_load_station_data">Nie udało się załadować inforacji dla %s</string>
+    <string name="error_unable_to_load_stations">Nie udało się załadować listy stacji</string>
 </resources>

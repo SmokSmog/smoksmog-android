@@ -1,9 +1,9 @@
 package com.antyzero.smoksmog.ui;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -12,6 +12,7 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.RxJava;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.logger.Logger;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.RxLifecycle;
 
@@ -24,6 +25,7 @@ import butterknife.Bind;
 import butterknife.OnItemSelected;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.SmokSmog;
+import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
 import rx.Observer;
 import rx.Subscription;
@@ -39,6 +41,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     GoogleApiClient googleApiClient;
     @Inject
     ErrorReporter errorReporter;
+    @Inject
+    Logger logger;
 
     @Bind( R.id.toolbar )
     Toolbar toolbar;
@@ -52,6 +56,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     RecyclerView recyclerViewParticulates;
 
     private final List<Station> stations = new ArrayList<>();
+    private final List<Particulate> particulates = new ArrayList<>();
     @SuppressWarnings( "FieldCanBeLocal" )
     private ArrayAdapter<Station> adapterStations;
 
@@ -66,6 +71,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
 
+        recyclerViewParticulates.setLayoutManager(
+                new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false ) );
+        recyclerViewParticulates.setAdapter( new ParticulateAdapter( particulates ) );
+
         adapterStations = new ArrayAdapter<>( this, android.R.layout.simple_spinner_item, stations );
         adapterStations.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 
@@ -76,7 +85,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
                         this.stations::addAll,
-                        throwable -> Log.e( TAG, "Unable to load stations", throwable ),
+                        throwable -> {
+                            String errorMessage = getString( R.string.error_unable_to_load_stations );
+                            errorReporter.report( errorMessage );
+                            logger.e( TAG, errorMessage, throwable );
+                        },
                         adapterStations::notifyDataSetChanged );
 
         googleApiClient.connect();
@@ -89,7 +102,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         spinnerSubscriber.unsubscribe();
         spinnerSubscriber = smokSmog.getApi().station( stationSelected.getId() )
                 .observeOn( AndroidSchedulers.mainThread() )
-                .doOnError( throwable -> errorReporter.report( getString( R.string.error_unable_to_load_station_data, stationSelected.getName()) ) )
+                .doOnError( throwable -> {
+                    String errorMessage = getString( R.string.error_unable_to_load_station_data, stationSelected.getName() );
+                    errorReporter.report( errorMessage );
+                    logger.w( TAG, errorMessage, throwable );
+                } )
                 .doOnNext( station -> textViewName.setText( station.getName() ) )
                 .subscribe( this );
     }
@@ -100,7 +117,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      * @param station data
      */
     private void updateUiWithStation( Station station ) {
-        indicatorMain.setParticulate(station.getParticulates().get( 0 ));
+        indicatorMain.setParticulate( station.getParticulates().get( 0 ) );
     }
 
     @Override
@@ -121,18 +138,17 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     }
 
     @Override
+    public void onNext( Station station ) {
+        updateUiWithStation( station );
+    }
+
+    @Override
     public void onCompleted() {
         // do nothing
     }
 
     @Override
     public void onError( Throwable e ) {
-        // TODO change with logger
-        Log.w(TAG, "Error when loading station data", e);
-    }
-
-    @Override
-    public void onNext( Station station ) {
-        updateUiWithStation( station );
+        logger.w( TAG, "Error when loading station data", e );
     }
 }
