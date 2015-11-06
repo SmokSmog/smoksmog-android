@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     private ArrayAdapter<Station> adapterStations;
 
     private Subscription spinnerSubscriber = RxJava.EMPTY_SUBSCRIPTION;
+    private ParticulateAdapter particulateAdapter;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -71,9 +72,9 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
 
-        recyclerViewParticulates.setLayoutManager(
-                new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false ) );
-        recyclerViewParticulates.setAdapter( new ParticulateAdapter( particulates ) );
+        particulateAdapter = new ParticulateAdapter( particulates );
+        recyclerViewParticulates.setLayoutManager( new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false ) );
+        recyclerViewParticulates.setAdapter( particulateAdapter );
 
         adapterStations = new ArrayAdapter<>( this, android.R.layout.simple_spinner_item, stations );
         adapterStations.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
@@ -118,6 +119,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      */
     private void updateUiWithStation( Station station ) {
         indicatorMain.setParticulate( station.getParticulates().get( 0 ) );
+
+        particulates.clear();
+        particulates.addAll( station.getParticulates() );
+        particulateAdapter.notifyDataSetChanged();
     }
 
     @Override

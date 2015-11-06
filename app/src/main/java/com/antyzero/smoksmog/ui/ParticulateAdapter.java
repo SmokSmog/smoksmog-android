@@ -10,6 +10,7 @@ import com.antyzero.smoksmog.R;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.malopolska.smoksmog.model.Particulate;
 
@@ -33,7 +34,7 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
 
     @Override
     public void onBindViewHolder( ParticulateViewHolder holder, int position ) {
-
+        holder.bind(particulateList.get( position ));
     }
 
     @Override
@@ -43,9 +44,16 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
 
     public static class ParticulateViewHolder extends RecyclerView.ViewHolder {
 
+        @Bind( R.id.indicatorView )
+        IndicatorView indicatorView;
+
         public ParticulateViewHolder( View itemView ) {
             super( itemView );
             ButterKnife.bind( this, itemView );
+        }
+
+        public void bind( Particulate particulate ) {
+            indicatorView.setParticulate( particulate );
         }
     }
 }
