@@ -146,7 +146,7 @@ public class IndicatorView extends View {
         }
 
         int widthNewSpec = MeasureSpec.makeMeasureSpec( size, MeasureSpec.EXACTLY );
-        int heightNewSpec = MeasureSpec.makeMeasureSpec( size * 2, MeasureSpec.EXACTLY );
+        int heightNewSpec = MeasureSpec.makeMeasureSpec( size, MeasureSpec.EXACTLY );
         super.onMeasure( widthNewSpec, heightNewSpec );
     }
 

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
 
@@ -44,6 +45,10 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
 
     public static class ParticulateViewHolder extends RecyclerView.ViewHolder {
 
+        @Bind( R.id.textViewName )
+        TextView textViewName;
+        @Bind( R.id.textViewNorm )
+        TextView textViewNorm;
         @Bind( R.id.indicatorView )
         IndicatorView indicatorView;
 
@@ -54,6 +59,8 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
 
         public void bind( Particulate particulate ) {
             indicatorView.setParticulate( particulate );
+            textViewName.setText( particulate.getShortName() );
+            textViewNorm.setText( String.format( "%s%s", particulate.getNorm(), particulate.getUnit() ) );
         }
     }
 }

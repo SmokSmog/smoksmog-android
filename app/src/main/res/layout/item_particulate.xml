@@ -1,11 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.antyzero.smoksmog.ui.IndicatorView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/indicatorView"
     android:layout_width="60dp"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     android:layout_margin="8dp"
-    android:background="#FF0"
-    tools:layout_width="60dp"
-    tools:layout_height="80dp"/>
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        tools:text="123"/>
+
+    <com.antyzero.smoksmog.ui.IndicatorView
+        android:id="@+id/indicatorView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        tools:layout_height="60dp"
+        tools:layout_width="60dp"/>
+
+    <TextView
+        android:id="@+id/textViewNorm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="10sp"
+        tools:text="123"/>
+
+</LinearLayout>
