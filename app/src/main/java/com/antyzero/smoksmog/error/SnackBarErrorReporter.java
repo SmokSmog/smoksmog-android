@@ -27,6 +27,12 @@ public class SnackBarErrorReporter implements ErrorReporter {
         processSnackbar( Snackbar.make( activity.findViewById( android.R.id.content ), stringId, DURATION ) );
     }
 
+    @Override
+    public void report( @StringRes int stringId, Object... objects ) {
+        String message = activity.getResources().getString( stringId, objects );
+        processSnackbar( Snackbar.make( activity.findViewById( android.R.id.content ), message, DURATION ) );
+    }
+
     private void processSnackbar( Snackbar snackbar ) {
         snackbar.show();
     }

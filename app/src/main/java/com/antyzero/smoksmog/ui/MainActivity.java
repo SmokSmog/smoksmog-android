@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,7 +36,7 @@ import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, Observer<Station> {
+public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks {
 
     private static final String TAG = "MainActivity";
 
@@ -98,6 +101,40 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         googleApiClient.connect();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu( Menu menu ) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate( R.menu.main, menu );
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item ) {
+        switch ( item.getItemId() ) {
+            case R.id.action_my_location:
+                if ( googleApiClient.isConnected() ) {
+
+                    ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( this );
+
+                    reactiveLocationProvider.getLastKnownLocation()
+                            .observeOn( AndroidSchedulers.mainThread() )
+                            .subscribe(
+                                    location -> {
+
+                                    },
+                                    throwable -> {
+                                        // Unable to get local data
+                                    }
+                            );
+                }
+
+                break;
+            default:
+                return super.onOptionsItemSelected( item );
+        }
+        return true;
+    }
+
     @OnItemSelected( value = R.id.spinnerStations )
     void OnSpinnerSelected( int position ) {
         Station stationSelected = stations.get( position );
@@ -105,13 +142,16 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         spinnerSubscriber.unsubscribe();
         spinnerSubscriber = smokSmog.getApi().station( stationSelected.getId() )
                 .observeOn( AndroidSchedulers.mainThread() )
-                .doOnError( throwable -> {
-                    String errorMessage = getString( R.string.error_unable_to_load_station_data, stationSelected.getName() );
-                    errorReporter.report( errorMessage );
-                    logger.w( TAG, errorMessage, throwable );
-                } )
-                .doOnNext( station -> textViewName.setText( station.getName() ) )
-                .subscribe( this );
+                .subscribe(
+                        station -> {
+                            textViewName.setText( station.getName() );
+                            updateUiWithStation( station );
+                        },
+                        throwable -> {
+                            errorReporter.report( R.string.error_unable_to_load_station_data, stationSelected.getName() );
+                            logger.w( TAG, "Unable to load data for selected station: " + stationSelected.getName(), throwable );
+                        }
+                );
     }
 
     /**
@@ -120,14 +160,24 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      * @param station data
      */
     private void updateUiWithStation( Station station ) {
-        indicatorMain.setParticulate( station.getParticulates().get( 0 ) );
 
-        Collection<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
+        List<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
                 .toList().toBlocking().first();
 
         particulates.clear();
         particulates.addAll( sorted );
         particulateAdapter.notifyDataSetChanged();
+
+        updateUiWithMainParticulate( sorted.get( 0 ) );
+    }
+
+    /**
+     * Updates information about given particulate
+     *
+     * @param particulate
+     */
+    private void updateUiWithMainParticulate( Particulate particulate ) {
+        indicatorMain.setParticulate( particulate );
     }
 
     @Override
@@ -139,26 +189,17 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
                 .concatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
-                .subscribe( this );
+                .subscribe(
+                        this::updateUiWithStation,
+                        throwable -> {
+                            errorReporter.report( R.string.error_no_near_Station );
+                            logger.w( TAG, "Unable to find nearest station data", throwable );
+                        }
+                );
     }
 
     @Override
     public void onConnectionSuspended( int i ) {
         // GoogleClient
-    }
-
-    @Override
-    public void onNext( Station station ) {
-        updateUiWithStation( station );
-    }
-
-    @Override
-    public void onCompleted() {
-        // do nothing
-    }
-
-    @Override
-    public void onError( Throwable e ) {
-        logger.w( TAG, "Error when loading station data", e );
     }
 }
