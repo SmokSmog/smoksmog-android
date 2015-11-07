@@ -17,6 +17,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.RxLifecycle;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.OnItemSelected;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
+import pl.malopolska.smoksmog.ApiUtils;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
@@ -120,8 +122,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     private void updateUiWithStation( Station station ) {
         indicatorMain.setParticulate( station.getParticulates().get( 0 ) );
 
+        Collection<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
+                .toList().toBlocking().first();
+
         particulates.clear();
-        particulates.addAll( station.getParticulates() );
+        particulates.addAll( sorted );
         particulateAdapter.notifyDataSetChanged();
     }
 

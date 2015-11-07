@@ -25,6 +25,7 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
             throw new IllegalArgumentException( "particulateList cannot be null" );
         }
         this.particulateList = particulateList;
+        setHasStableIds( true );
     }
 
     @Override
@@ -36,6 +37,11 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
     @Override
     public void onBindViewHolder( ParticulateViewHolder holder, int position ) {
         holder.bind(particulateList.get( position ));
+    }
+
+    @Override
+    public long getItemId( int position ) {
+        return particulateList.get( position ).getId();
     }
 
     @Override
