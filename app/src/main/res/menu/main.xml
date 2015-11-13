@@ -7,6 +7,6 @@
         android:id="@+id/action_my_location"
         android:icon="@drawable/ic_my_location_white_48dp"
         android:title="@string/action_my_location"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
 </menu>

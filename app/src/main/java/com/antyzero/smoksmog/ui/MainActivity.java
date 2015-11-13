@@ -32,9 +32,11 @@ import pl.malopolska.smoksmog.ApiUtils;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func2;
 
 public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks {
 
@@ -120,7 +122,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                             .observeOn( AndroidSchedulers.mainThread() )
                             .subscribe(
                                     location -> {
-
+                                        // TODO pick closes location
                                     },
                                     throwable -> {
                                         // Unable to get local data
