@@ -5,4 +5,6 @@
     <string name="error_unable_to_load_stations">Nie udało się załadować listy stacji</string>
     <string name="error_no_near_Station">Nie można odnaleść najbliższej stacji dla twojego położenia</string>
     <string name="action_my_location">Moje położenie</string>
+    <string name="info_average">Stężenie z ostatniej doby</string>
+    <string name="info_concentration">Aktualne stężenie</string>
 </resources>

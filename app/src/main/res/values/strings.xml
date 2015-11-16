@@ -5,5 +5,7 @@
     <string name="error_unable_to_load_stations">Unable to load stations list</string>
     <string name="error_no_near_Station">Unable to find station for your location</string>
     <string name="action_my_location">My location</string>
+    <string name="info_average">Average of the last day</string>
+    <string name="info_concentration">Current concentration</string>
 
 </resources>

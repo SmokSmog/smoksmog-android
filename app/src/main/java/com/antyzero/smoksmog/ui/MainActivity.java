@@ -20,7 +20,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.RxLifecycle;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,13 +31,11 @@ import pl.malopolska.smoksmog.ApiUtils;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
-import rx.Observable;
-import rx.Observer;
+import pl.malopolska.smoksmog.utils.StationUtils;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func2;
 
-public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks {
+public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, ParticulateAdapter.OnItemClickListener {
 
     private static final String TAG = "MainActivity";
 
@@ -59,6 +56,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     IndicatorView indicatorMain;
     @Bind( R.id.textViewName )
     TextView textViewName;
+    @Bind( R.id.textViewConcentration )
+    TextView textViewConcentration;
+    @Bind( R.id.textViewAverage )
+    TextView textViewAverage;
     @Bind( R.id.recyclerViewParticulates )
     RecyclerView recyclerViewParticulates;
 
@@ -69,6 +70,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     private Subscription spinnerSubscriber = RxJava.EMPTY_SUBSCRIPTION;
     private ParticulateAdapter particulateAdapter;
+    private Station currentStation;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -79,7 +81,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
 
-        particulateAdapter = new ParticulateAdapter( particulates );
+        particulateAdapter = new ParticulateAdapter( particulates, this );
         recyclerViewParticulates.setLayoutManager( new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false ) );
         recyclerViewParticulates.setAdapter( particulateAdapter );
 
@@ -122,10 +124,13 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                             .observeOn( AndroidSchedulers.mainThread() )
                             .subscribe(
                                     location -> {
-                                        // TODO pick closes location
+                                        updateUiSpinnerSelectionWithStation(
+                                                StationUtils.findClosest( stations,
+                                                        location.getLatitude(), location.getLongitude() ) );
                                     },
                                     throwable -> {
-                                        // Unable to get local data
+                                        errorReporter.report( R.string.error_no_near_Station );
+                                        logger.w( TAG, "Unable to find nearest station data", throwable );
                                     }
                             );
                 }
@@ -137,23 +142,41 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         return true;
     }
 
+    /**
+     * Called when user want to manually pick up station
+     *
+     * @param position data
+     */
     @OnItemSelected( value = R.id.spinnerStations )
     void OnSpinnerSelected( int position ) {
         Station stationSelected = stations.get( position );
+
+        // Do not update if same station is selected
+        if ( stationSelected.equals( currentStation ) ) {
+            return;
+        }
 
         spinnerSubscriber.unsubscribe();
         spinnerSubscriber = smokSmog.getApi().station( stationSelected.getId() )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
-                        station -> {
-                            textViewName.setText( station.getName() );
-                            updateUiWithStation( station );
-                        },
+                        this::updateUiWithStation,
                         throwable -> {
                             errorReporter.report( R.string.error_unable_to_load_station_data, stationSelected.getName() );
                             logger.w( TAG, "Unable to load data for selected station: " + stationSelected.getName(), throwable );
+                            updateUiSpinnerSelectionWithStation( currentStation );
                         }
                 );
+    }
+
+    /**
+     * Called when particulate is clicked on horizontal scroll
+     *
+     * @param particulate
+     */
+    @Override
+    public void onItemClick( Particulate particulate ) {
+        updateUiWithMainParticulate( particulate );
     }
 
     /**
@@ -162,6 +185,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      * @param station data
      */
     private void updateUiWithStation( Station station ) {
+
+        textViewName.setText( station.getName() );
+
+        currentStation = station;
 
         List<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
                 .toList().toBlocking().first();
@@ -174,12 +201,26 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     }
 
     /**
+     * Set selected spinner station to given value (only if within adapter data)
+     *
+     * @param station data
+     */
+    private void updateUiSpinnerSelectionWithStation( Station station ) {
+        if ( station == null ) {
+            return;
+        }
+        spinnerStations.setSelection( adapterStations.getPosition( station ), false );
+    }
+
+    /**
      * Updates information about given particulate
      *
-     * @param particulate
+     * @param particulate data
      */
     private void updateUiWithMainParticulate( Particulate particulate ) {
         indicatorMain.setParticulate( particulate );
+        textViewConcentration.setText( String.format( "%s %s", particulate.getValue(), particulate.getUnit() ) );
+        textViewAverage.setText( String.format( "%s %s", particulate.getAverage(), particulate.getUnit() ) );
     }
 
     @Override

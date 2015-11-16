@@ -19,12 +19,20 @@ import pl.malopolska.smoksmog.model.Particulate;
 public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.ParticulateViewHolder> {
 
     private final List<Particulate> particulateList;
+    private final OnItemClickListener listener;
 
-    public ParticulateAdapter( List<Particulate> particulateList ) {
-        if( particulateList == null){
+    public ParticulateAdapter( List<Particulate> particulateList, OnItemClickListener listener ) {
+
+        if ( particulateList == null ) {
             throw new IllegalArgumentException( "particulateList cannot be null" );
         }
+        if ( listener == null ) {
+            throw new IllegalArgumentException( "Listener cannot be null" );
+        }
+
+        this.listener = listener;
         this.particulateList = particulateList;
+
         setHasStableIds( true );
     }
 
@@ -36,7 +44,7 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
 
     @Override
     public void onBindViewHolder( ParticulateViewHolder holder, int position ) {
-        holder.bind(particulateList.get( position ));
+        holder.bind( particulateList.get( position ), listener );
     }
 
     @Override
@@ -63,10 +71,21 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
             ButterKnife.bind( this, itemView );
         }
 
-        public void bind( Particulate particulate ) {
+        public void bind( Particulate particulate, OnItemClickListener listener ) {
             indicatorView.setParticulate( particulate );
             textViewName.setText( particulate.getShortName() );
             textViewNorm.setText( String.format( "%s%s", particulate.getNorm(), particulate.getUnit() ) );
+
+            // Root view
+            itemView.setOnClickListener( v -> listener.onItemClick( particulate ) );
         }
+    }
+
+    /**
+     *
+     */
+    public interface OnItemClickListener {
+
+        void onItemClick( Particulate particulate );
     }
 }
