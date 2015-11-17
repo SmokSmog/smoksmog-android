@@ -1,5 +1,6 @@
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'spoon'
@@ -14,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.antyzero.smoksmog"
+        applicationId "pl.malopolska.smoksmog"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
@@ -35,6 +36,7 @@ android {
 
         debug {
             signingConfig signingConfigs.debug
+            applicationIdSuffix ".debug"
         }
 
         release {
@@ -102,6 +104,9 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
     androidTestCompile 'com.squareup.spoon:spoon-client:1.2.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+        transitive = true;
+    }
 }
 
 retrolambda {

@@ -4,6 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
+
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class SmokSmogApplication extends Application {
@@ -13,6 +17,9 @@ public class SmokSmogApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with( this, new CrashlyticsCore.Builder()
+                .disabled( BuildConfig.DEBUG )
+                .build() );
 
         applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule( new ApplicationModule( this ) )

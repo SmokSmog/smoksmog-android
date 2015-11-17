@@ -196,10 +196,13 @@ public class IndicatorView extends View {
     private void recalculateDuringAnimation() {
         float progress = ( value % valueMax ) / valueMax;
         this.arcValue = progress * sweepAngle;
-        this.valueText = String.format( "%.0f%%", value / valueMax * 100 );
+        float calculatedValue = valueMax == 0 ? 0 : value / valueMax * 100;
+        this.valueText = String.format( "%.0f%%", calculatedValue );
         this.overLap = ( int ) ( value / valueMax );
         int red = ( int ) Math.min( STEP_COLOR * overLap + STEP_COLOR * progress, 255 );
+
         this.paintArcBackground.setARGB( 255, red, 0, 0 );
+        this.paintValue.setARGB( 255, red, 0, 0 ); // TODO change text color to red in case of over limits
 
         postInvalidateOnAnimation();
     }
@@ -244,7 +247,6 @@ public class IndicatorView extends View {
         // TODO if overlap is > 0 draw pre background ?
 
         canvas.drawArc( arcRect, startAngle, arcValue, false, paintArcForeground );
-
         drawTextCentred( canvas, paintValue, valueText, arcRect );
     }
 
