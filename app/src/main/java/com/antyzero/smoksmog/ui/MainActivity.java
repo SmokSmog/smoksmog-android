@@ -19,6 +19,10 @@ import com.antyzero.smoksmog.logger.Logger;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.RxLifecycle;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +64,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     TextView textViewConcentration;
     @Bind( R.id.textViewAverage )
     TextView textViewAverage;
+    @Bind( R.id.textViewData )
+    TextView textViewData;
     @Bind( R.id.recyclerViewParticulates )
     RecyclerView recyclerViewParticulates;
 
@@ -221,6 +227,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         indicatorMain.setParticulate( particulate );
         textViewConcentration.setText( String.format( "%s %s", particulate.getValue(), particulate.getUnit() ) );
         textViewAverage.setText( String.format( "%s %s", particulate.getAverage(), particulate.getUnit() ) );
+        textViewData.setText( DateTimeFormat.longDateTime().print( particulate.getDate() ) );
     }
 
     @Override
