@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.RxJava;
@@ -112,6 +113,13 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        // TODO optional
+        loadDataForCurrentLocation();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate( R.menu.main, menu );
@@ -204,6 +212,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         particulateAdapter.notifyDataSetChanged();
 
         updateUiWithMainParticulate( sorted.get( 0 ) );
+        updateUiSpinnerSelectionWithStation( station );
     }
 
     /**
@@ -232,7 +241,13 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void onConnected( Bundle bundle ) {
+        loadDataForCurrentLocation();
+    }
 
+    /**
+     * Check current location and load data to UI
+     */
+    private void loadDataForCurrentLocation() {
         ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( this );
 
         reactiveLocationProvider.getLastKnownLocation()
