@@ -17,9 +17,10 @@ android {
     defaultConfig {
         applicationId "pl.malopolska.smoksmog"
         minSdkVersion 16
+        //noinspection OldTargetApi // TODO since it's not tested against new permission system we keep 22
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 190000
+        versionName "1.9"
 
         multiDexEnabled true
 
@@ -54,6 +55,7 @@ android {
     }
 }
 
+//noinspection GroovyAssignabilityCheck
 configurations.all {
     resolutionStrategy {
         force 'com.android.support:support-annotations:23.0.0'
@@ -112,6 +114,7 @@ dependencies {
 retrolambda {
     jdk System.getenv("JAVA8_HOME")
     oldJdk System.getenv("JAVA7_HOME")
+    //noinspection GroovyAssignabilityCheck
     javaVersion JavaVersion.VERSION_1_7
     jvmArgs '-noverify'
 }
