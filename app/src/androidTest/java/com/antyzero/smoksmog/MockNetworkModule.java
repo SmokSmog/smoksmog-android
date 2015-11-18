@@ -13,9 +13,7 @@ import pl.malopolska.smoksmog.SmokSmog;
 public class MockNetworkModule extends NetworkModule {
 
     public MockNetworkModule() {
-        SmokSmog smokSmogMock = Mockito.mock( SmokSmog.class );
-        Api apiMock = Mockito.mock( Api.class );
-
+        
     }
 
     @Override
