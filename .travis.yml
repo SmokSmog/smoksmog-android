@@ -1,0 +1,20 @@
+language: android
+sudo: false
+
+jdk:
+  - oraclejdk8
+
+android:
+  components:
+    - platform-tools
+    - tools
+    - extra-google-m2repository
+    - extra-android-m2repository
+
+before_install:
+  - export JAVA7_HOME=/usr/lib/jvm/java-7-oracle
+  - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+  - export JAVA_HOME=$JAVA7_HOME
+
+script:
+  - gradle clean check assembleDebug

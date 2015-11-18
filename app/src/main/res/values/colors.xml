@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Color palette -->
+
+    <color name="brightGray">#414152</color>
+    <color name="comet">#5A6273</color>
+    <color name="celeste">#CDCDCD</color>
+
+    <color name="neonCarrot">#FFA439</color>
+
+    <color name="viking">#5ADED5</color>
+
+    <color name="astral">#2983AC</color>
+
+    <!-- ... -->
+
+    <color name="primary">@color/comet</color>
+    <color name="primaryDark">@color/brightGray</color>
+    <color name="accent">@color/neonCarrot</color>
+
+    <color name="windowBackground">@color/celeste</color>
+
+</resources>
