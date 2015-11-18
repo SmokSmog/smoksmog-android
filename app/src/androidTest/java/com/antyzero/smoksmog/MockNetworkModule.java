@@ -13,7 +13,7 @@ import pl.malopolska.smoksmog.SmokSmog;
 public class MockNetworkModule extends NetworkModule {
 
     public MockNetworkModule() {
-        
+
     }
 
     @Override
