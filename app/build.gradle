@@ -34,7 +34,7 @@ android {
         }
 
         release {
-            storeFile System.getenv("STOREFILE")
+            storeFile "\"" + System.getenv("STOREFILE") + "\""
             storePassword System.getenv("STOREPASS")
             keyAlias System.getenv("KEYALIAS")
             keyPassword System.getenv("KEYPASS")
