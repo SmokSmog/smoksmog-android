@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.ui;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ViewAnimator;
 
 import pl.malopolska.smoksmog.model.Particulate;
 
@@ -45,7 +47,6 @@ public class IndicatorView extends View {
     private int currentHeight;
 
     private float value = 0f;
-    private float valueMax = 100f;
     private float arcValue = 0f;
     private float textNameSize = 10f;
 
@@ -159,43 +160,58 @@ public class IndicatorView extends View {
         return TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics );
     }
 
-    public void setParticulate( Particulate particulate ) {
-        setValueMax( particulate.getNorm() );
-        setValue( particulate.getValue() );
-    }
+    /**
+     * As 0% -> 100% -> more
+     *
+     * @param newValue
+     */
+    public void setValue( float newValue ) {
 
-    private void setValue( float newValue ) {
+        if ( valueAnimator.isRunning() ) {
+            valueAnimator.cancel();
+        }
 
-        this.overLap = ( int ) ( value / valueMax ); // How many x times more that max
-
-        valueAnimator.end();
         valueAnimator.setFloatValues( this.value, newValue );
         valueAnimator.addUpdateListener( animation -> {
             this.value = ( float ) animation.getAnimatedValue();
             recalculateDuringAnimation();
         } );
-        valueAnimator.start();
-    }
+        valueAnimator.addListener( new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart( Animator animation ) {
+                // Do nothing
+            }
 
-    /**
-     * Value considered to be max value or call it 'norm' for this indicator view
-     *
-     * @param newValueMax to use
-     */
-    private void setValueMax( float newValueMax ) {
-        this.valueMax = newValueMax;
+            @Override
+            public void onAnimationEnd( Animator animation ) {
+                // Do nothing
+            }
+
+            @Override
+            public void onAnimationCancel( Animator animation ) {
+                if ( animation instanceof ValueAnimator ) {
+                    ValueAnimator valueAnimator = ( ValueAnimator ) animation;
+                    IndicatorView.this.value = ( float ) valueAnimator.getAnimatedValue();
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat( Animator animation ) {
+                // Do nothing
+            }
+        } );
+        valueAnimator.start();
     }
 
     /**
      * This should be called when animating values
      */
     private void recalculateDuringAnimation() {
-        float progress = ( value % valueMax ) / valueMax;
-        this.arcValue = progress * sweepAngle;
-        float calculatedValue = valueMax == 0 ? 0 : value / valueMax * 100;
-        this.valueText = String.format( "%.0f%%", calculatedValue );
-        this.overLap = ( int ) ( value / valueMax );
-        int red = ( int ) Math.min( STEP_COLOR * overLap + STEP_COLOR * progress, 255 );
+
+        this.arcValue = ( value * sweepAngle ) % sweepAngle;
+        this.valueText = String.format( "%.0f%%", value * 100 );
+        this.overLap = ( int ) Math.floor( value );
+        int red = ( int ) Math.min( STEP_COLOR * overLap + STEP_COLOR * value, 255 );
 
         this.paintArcBackground.setARGB( 255, red, 0, 0 );
         this.paintValue.setARGB( 255, red, 0, 0 ); // TODO change text color to red in case of over limits
