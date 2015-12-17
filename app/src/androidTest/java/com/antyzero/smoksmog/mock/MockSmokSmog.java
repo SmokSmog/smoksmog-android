@@ -13,9 +13,9 @@ public class MockSmokSmog extends SmokSmog {
     /**
      * @param builder
      */
-    private MockSmokSmog( Builder builder ) {
+    public MockSmokSmog( Builder builder ) {
         super( builder );
-        mockApi = new MockApi( getGson());
+        mockApi = new MockApi( getGson() );
     }
 
     @Override

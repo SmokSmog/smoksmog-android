@@ -97,7 +97,7 @@ dependencies {
     androidTestCompile('com.android.support.test:runner:0.4.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile 'com.squareup.spoon:spoon-client:1.1.10'
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.2.0'
     androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
@@ -105,7 +105,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
-    androidTestCompile 'com.squareup.spoon:spoon-client:1.2.0'
+    androidTestCompile 'org.apache.directory.studio:org.apache.commons.io:2.4'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
