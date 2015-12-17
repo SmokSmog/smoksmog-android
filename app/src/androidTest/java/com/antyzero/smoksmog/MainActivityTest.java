@@ -1,12 +1,9 @@
 package com.antyzero.smoksmog;
 
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.antyzero.smoksmog.mock.MockNetworkModule;
 import com.antyzero.smoksmog.ui.MainActivity;
 import com.squareup.spoon.Spoon;
 
@@ -19,21 +16,14 @@ import org.junit.runner.RunWith;
 public class MainActivityTest {
 
     @Rule
-    public final ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>( MainActivity.class );
+    public final MockedNetworkActivityTestRule<MainActivity> activityTestRule =
+            new MockedNetworkActivityTestRule<>( MainActivity.class );
 
     @Test
     public void checkCreation() {
 
         // given
-        SmokSmogApplication application = ( SmokSmogApplication )
-                InstrumentationRegistry.getTargetContext().getApplicationContext();
-
-        ApplicationComponent applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule( new ApplicationModule( application ) )
-                .networkModule( new MockNetworkModule() )
-                .build();
-
-        application.setAppComponent( applicationComponent );
+        // ... nothing ...
 
         // when
         // ... start app ...
