@@ -20,7 +20,7 @@ public class SmokSmog {
     /**
      * @param builder
      */
-    private SmokSmog( SmokSmog.Builder builder ) {
+    public SmokSmog( SmokSmog.Builder builder ) {
 
         RestAdapter.Builder builderRest = new RestAdapter.Builder();
 
