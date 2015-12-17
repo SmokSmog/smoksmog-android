@@ -1,5 +1,7 @@
 package com.antyzero.smoksmog.mock;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import org.apache.commons.io.IOUtils;
@@ -18,6 +20,7 @@ import rx.Observable;
  */
 public class MockApi implements Api {
 
+    private static final String TAG = "MockApi";
     private final Gson gson;
 
     public MockApi( Gson gson ) {
@@ -26,32 +29,37 @@ public class MockApi implements Api {
 
     @Override
     public Observable<List<Station>> stations() {
-        System.out.println("XXX --- XXX");
+        Log.i( TAG, "Called #stations()" );
         return getObservableFromFile( "stations.json", ( Class<List<Station>> ) new Object() );
     }
 
     @Override
     public Observable<Station> station( @Path( "stationId" ) long stationId ) {
+        Log.i( TAG, "Called #station(" + stationId + ")" );
         return getObservableFromFile( "station-4.json", Station.class );
     }
 
     @Override
     public Observable<Station> stationByLocation( @Path( "lat" ) double latitude, @Path( "lon" ) double longitude ) {
+        Log.i( TAG, "Called #station(" + latitude + "," + longitude + ")" );
         return getObservableFromFile( "station-4.json", Station.class );
     }
 
     @Override
     public Observable<Station> stationHistory( @Path( "stationId" ) long stationId ) {
+        Log.i( TAG, "Called #stationHistory(" + stationId + ")" );
         return getObservableFromFile( "station-4-history.json", Station.class );
     }
 
     @Override
     public Observable<Station> stationHistoryByLocation( @Path( "lat" ) double latitude, @Path( "lon" ) double longitude ) {
+        Log.i( TAG, "Called #stationHistory(" + latitude + "," + longitude + ")" );
         return getObservableFromFile( "station-4-history.json", Station.class );
     }
 
     @Override
     public Observable<Description> particulateDescription( @Path( "id" ) long particulateId ) {
+        Log.i( TAG, "Called #particulateDescription(" + particulateId + ")" );
         return getObservableFromFile( "particulates-1.json", Description.class );
     }
 
