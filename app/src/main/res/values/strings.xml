@@ -7,5 +7,6 @@
     <string name="action_my_location">My location</string>
     <string name="info_average">Average of the last day</string>
     <string name="info_concentration">Current concentration</string>
+    <string name="action_history">Show history</string>
 
 </resources>
