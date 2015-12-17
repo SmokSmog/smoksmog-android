@@ -34,7 +34,7 @@ android {
         }
 
         release {
-            storeFile new File(RELEASE_STORE_FILE)
+            storeFile new File("" + System.getenv("KEYSTORE"))
             storePassword RELEASE_STORE_PASSWORD
             keyAlias RELEASE_KEY_ALIAS
             keyPassword RELEASE_KEY_PASSWORD
