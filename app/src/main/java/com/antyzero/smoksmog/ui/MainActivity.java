@@ -33,6 +33,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.ApiUtils;
@@ -285,6 +286,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                             logger.w( TAG, "Unable to find nearest station data", throwable );
                         }
                 );
+    }
+
+    @OnClick(R.id.buttonHistory)
+    void onHistoryButtonClick() {
+        startActivity(HistoryActivity.createIntent(this, currentStation.getId()));
     }
 
     @Override

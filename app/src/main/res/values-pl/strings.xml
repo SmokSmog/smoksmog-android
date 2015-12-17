@@ -3,8 +3,12 @@
 
     <string name="error_unable_to_load_station_data">Nie udało się załadować informacji dla %s</string>
     <string name="error_unable_to_load_stations">Nie udało się załadować listy stacji</string>
+    <string name="error_unable_to_load_station_history">Nie udało się załadować historii stacji</string>
     <string name="error_no_near_Station">Nie można odnaleść najbliższej stacji dla twojego położenia</string>
     <string name="action_my_location">Moje położenie</string>
     <string name="info_average">Stężenie z ostatniej doby</string>
     <string name="info_concentration">Aktualne stężenie</string>
+    <string name="action_history">Pokaż historię</string>
+    <string name="title_history">Historia</string>
+    <string name="label_norm">Norma</string>
 </resources>

@@ -103,6 +103,8 @@ dependencies {
 
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+
     testCompile 'junit:junit:4.12'
 
     androidTestCompile 'junit:junit:4.12'

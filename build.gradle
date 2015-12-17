@@ -36,6 +36,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        maven { url 'https://jitpack.io' }
     }
     apply plugin: 'com.github.ben-manes.versions'
 }

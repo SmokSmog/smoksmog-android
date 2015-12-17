@@ -20,6 +20,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.HistoryActivity"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8" />

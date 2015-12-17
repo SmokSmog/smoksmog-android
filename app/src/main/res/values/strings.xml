@@ -3,9 +3,13 @@
     <!-- Errors displayed for user -->
     <string name="error_unable_to_load_station_data">Unable to load data for %s</string>
     <string name="error_unable_to_load_stations">Unable to load stations list</string>
+    <string name="error_unable_to_load_station_history">Unable to load station history</string>
     <string name="error_no_near_Station">Unable to find station for your location</string>
     <string name="action_my_location">My location</string>
     <string name="info_average">Average of the last day</string>
     <string name="info_concentration">Current concentration</string>
+    <string name="action_history">Show history</string>
+    <string name="title_history">History</string>
+    <string name="label_norm">Norm</string>
 
 </resources>
