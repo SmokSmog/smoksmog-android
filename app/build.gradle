@@ -28,8 +28,16 @@ android {
     }
 
     signingConfigs {
+
         debug {
             storeFile file('debug.keystore')
+        }
+
+        release {
+            storeFile System.getenv("STOREFILE")
+            storePassword System.getenv("STOREPASS")
+            keyAlias System.getenv("KEYALIAS")
+            keyPassword System.getenv("KEYPASS")
         }
     }
 
@@ -41,6 +49,7 @@ android {
         }
 
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
