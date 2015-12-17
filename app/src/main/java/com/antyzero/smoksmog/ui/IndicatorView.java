@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.ui;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ViewAnimator;
 
 import pl.malopolska.smoksmog.model.Particulate;
 
@@ -165,11 +167,38 @@ public class IndicatorView extends View {
      */
     public void setValue( float newValue ) {
 
-        valueAnimator.end();
+        if ( valueAnimator.isRunning() ) {
+            valueAnimator.cancel();
+        }
+
         valueAnimator.setFloatValues( this.value, newValue );
         valueAnimator.addUpdateListener( animation -> {
             this.value = ( float ) animation.getAnimatedValue();
             recalculateDuringAnimation();
+        } );
+        valueAnimator.addListener( new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart( Animator animation ) {
+                // Do nothing
+            }
+
+            @Override
+            public void onAnimationEnd( Animator animation ) {
+                // Do nothing
+            }
+
+            @Override
+            public void onAnimationCancel( Animator animation ) {
+                if ( animation instanceof ValueAnimator ) {
+                    ValueAnimator valueAnimator = ( ValueAnimator ) animation;
+                    IndicatorView.this.value = ( float ) valueAnimator.getAnimatedValue();
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat( Animator animation ) {
+                // Do nothing
+            }
         } );
         valueAnimator.start();
     }
