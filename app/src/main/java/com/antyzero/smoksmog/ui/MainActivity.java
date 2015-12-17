@@ -106,13 +106,20 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .subscribe(
                         stations -> {
                             this.stations.addAll( stations );
+
                             // Update with first station ASAP
                             if ( !stations.isEmpty() ) {
                                 Station station = stations.get( 0 );
-                                updateUiWithStation( station );
-                                if ( !station.getParticulates().isEmpty() ) {
-                                    updateUiWithMainParticulate( station.getParticulates().get( 0 ) );
-                                }
+                                smokSmog.getApi().station( station.getId() )
+                                        .compose( RxLifecycle.bindActivity( lifecycle() ) )
+                                        .observeOn( AndroidSchedulers.mainThread() )
+                                        .subscribe(
+                                                this::updateUiWithStation,
+                                                throwable -> {
+                                                    String errorMessage = getString( R.string.error_unable_to_load_station_data, station.getName() );
+                                                    errorReporter.report( errorMessage );
+                                                    logger.e( TAG, errorMessage, throwable );
+                                                } );
                             }
                         },
                         throwable -> {
@@ -217,15 +224,19 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         currentStation = station;
 
-        List<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
-                .toList().toBlocking().first();
-
-        particulates.clear();
-        particulates.addAll( sorted );
-        particulateAdapter.notifyDataSetChanged();
-
-        updateUiWithMainParticulate( sorted.get( 0 ) );
         updateUiSpinnerSelectionWithStation( station );
+
+        if ( !station.getParticulates().isEmpty() ) {
+
+            List<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
+                    .toList().toBlocking().first();
+
+            particulates.clear();
+            particulates.addAll( sorted );
+            particulateAdapter.notifyDataSetChanged();
+
+            updateUiWithMainParticulate( sorted.get( 0 ) );
+        }
     }
 
     /**
