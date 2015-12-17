@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog;
 
+import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.network.NetworkModule;
 import com.antyzero.smoksmog.ui.ActivityModule;
 import com.antyzero.smoksmog.ui.MainActivityComponent;
@@ -17,5 +18,5 @@ import dagger.Component;
 )
 public interface ApplicationComponent {
 
-    MainActivityComponent plus( ActivityModule activityModule );
+    MainActivityComponent plus( ActivityModule activityModule, GoogleModule googleModule );
 }

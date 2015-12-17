@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.error.SnackBarErrorReporter;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import dagger.Module;
 import dagger.Provides;
@@ -12,29 +11,24 @@ import dagger.Provides;
 @Module
 public class ActivityModule {
 
-    private final MainActivity mainActivity;
+    private final BaseActivity baseActivity;
 
-    public ActivityModule( MainActivity mainActivity ) {
-        this.mainActivity = mainActivity;
+    public ActivityModule( BaseActivity baseActivity ) {
+        this.baseActivity = baseActivity;
     }
 
     @Provides
     public BaseActivity provideBaseActivity() {
-        return mainActivity;
+        return baseActivity;
     }
 
     @Provides
     public Activity provideActivity() {
-        return mainActivity;
+        return baseActivity;
     }
 
     @Provides
     public ErrorReporter provideErrorReporter( Activity activity ) {
         return new SnackBarErrorReporter( activity );
-    }
-
-    @Provides
-    public GoogleApiClient.ConnectionCallbacks provideConnectionCallbacks() {
-        return mainActivity;
     }
 }
