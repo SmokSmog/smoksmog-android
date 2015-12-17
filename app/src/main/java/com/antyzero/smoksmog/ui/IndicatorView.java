@@ -28,7 +28,6 @@ public class IndicatorView extends View {
     private float gapAngle = GAP_ANGLE_DEFAULT;
 
     private final ValueAnimator valueAnimator = ValueAnimator.ofFloat( 0f );
-    private final ValueAnimator valueMaxAnimator = ValueAnimator.ofFloat( 0f );
 
     private Paint paintArcBackground;
     private Paint paintArcForeground;
@@ -61,9 +60,6 @@ public class IndicatorView extends View {
      */ {
         valueAnimator.setDuration( 1000L );
         valueAnimator.setInterpolator( new AccelerateDecelerateInterpolator() );
-
-        valueMaxAnimator.setDuration( 1000L );
-        valueMaxAnimator.setInterpolator( new AccelerateDecelerateInterpolator() );
     }
 
     public IndicatorView( Context context ) {
