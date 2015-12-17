@@ -1,5 +1,7 @@
 package com.antyzero.smoksmog.mock;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 import pl.malopolska.smoksmog.Api;
@@ -13,8 +15,10 @@ import rx.Observable;
  */
 public class MockApi implements Api {
 
-    public MockApi() {
+    private final Gson gson;
 
+    public MockApi( Gson gson) {
+        this.gson = gson;
     }
 
     @Override
