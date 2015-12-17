@@ -45,7 +45,6 @@ public class IndicatorView extends View {
     private int currentHeight;
 
     private float value = 0f;
-    private float valueMax = 100f;
     private float arcValue = 0f;
     private float textNameSize = 10f;
 
@@ -159,14 +158,12 @@ public class IndicatorView extends View {
         return TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics );
     }
 
-    public void setParticulate( Particulate particulate ) {
-        setValueMax( particulate.getNorm() );
-        setValue( particulate.getValue() );
-    }
-
-    private void setValue( float newValue ) {
-
-        this.overLap = ( int ) ( value / valueMax ); // How many x times more that max
+    /**
+     * As 0% -> 100% -> more
+     *
+     * @param newValue
+     */
+    public void setValue( float newValue ) {
 
         valueAnimator.end();
         valueAnimator.setFloatValues( this.value, newValue );
@@ -178,24 +175,14 @@ public class IndicatorView extends View {
     }
 
     /**
-     * Value considered to be max value or call it 'norm' for this indicator view
-     *
-     * @param newValueMax to use
-     */
-    private void setValueMax( float newValueMax ) {
-        this.valueMax = newValueMax;
-    }
-
-    /**
      * This should be called when animating values
      */
     private void recalculateDuringAnimation() {
-        float progress = ( value % valueMax ) / valueMax;
-        this.arcValue = progress * sweepAngle;
-        float calculatedValue = valueMax == 0 ? 0 : value / valueMax * 100;
-        this.valueText = String.format( "%.0f%%", calculatedValue );
-        this.overLap = ( int ) ( value / valueMax );
-        int red = ( int ) Math.min( STEP_COLOR * overLap + STEP_COLOR * progress, 255 );
+
+        this.arcValue = ( value * sweepAngle ) % sweepAngle;
+        this.valueText = String.format( "%.0f%%", value * 100 );
+        this.overLap = ( int ) Math.floor( value );
+        int red = ( int ) Math.min( STEP_COLOR * overLap + STEP_COLOR * value, 255 );
 
         this.paintArcBackground.setARGB( 255, red, 0, 0 );
         this.paintValue.setARGB( 255, red, 0, 0 ); // TODO change text color to red in case of over limits
