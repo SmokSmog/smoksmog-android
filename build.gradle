@@ -21,12 +21,8 @@ buildscript {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.2.2'
-        classpath 'com.squareup.spoon:spoon-runner:1.2.0'
-
+        classpath 'com.squareup.spoon:spoon-runner:1.2.1'
         classpath 'de.felixschulze.gradle:gradle-spoon-plugin:2.7.3'
-        classpath('com.stanfy.spoon:spoon-gradle-plugin:1.0.3') {
-            exclude module: 'guava'
-        }
         // Fix according to https://github.com/stanfy/spoon-gradle-plugin/issues/33
         //noinspection GradleDependency
         classpath 'com.google.guava:guava:17.0'

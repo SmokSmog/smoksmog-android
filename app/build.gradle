@@ -3,9 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
-
 apply plugin: 'de.felixschulze.gradle.spoon'
-//apply plugin: 'spoon'
 
 android {
     compileSdkVersion 23
