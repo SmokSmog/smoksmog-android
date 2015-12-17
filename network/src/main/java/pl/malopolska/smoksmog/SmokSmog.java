@@ -1,6 +1,7 @@
 package pl.malopolska.smoksmog;
 
 import com.fatboyindustrial.gsonjodatime.Converters;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.HttpUrl;
 
@@ -16,11 +17,12 @@ public class SmokSmog {
 
     private final Api api;
     private final String endpoint;
+    private final Gson gson;
 
     /**
      * @param builder
      */
-    private SmokSmog( SmokSmog.Builder builder ) {
+    public SmokSmog( SmokSmog.Builder builder ) {
 
         RestAdapter.Builder builderRest = new RestAdapter.Builder();
 
@@ -34,15 +36,24 @@ public class SmokSmog {
             builderRest.setClient( builder.client );
         }
 
-        final GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = createGson();
 
-        gsonBuilder.registerTypeAdapter( DateTime.class, new DateTimeDeserializer() );
-        Converters.registerLocalDate( gsonBuilder );
-        builderRest.setConverter( new GsonConverter( gsonBuilder.create() ) );
+        builderRest.setConverter( new GsonConverter( gson ) );
         RestAdapter restAdapter = builderRest.build();
 
         api = restAdapter.create( Api.class );
         endpoint = builder.endpoint;
+    }
+
+    private Gson createGson() {
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter( DateTime.class, new DateTimeDeserializer() );
+        Converters.registerLocalDate( gsonBuilder );
+        return gsonBuilder.create();
+    }
+
+    public Gson getGson() {
+        return gson;
     }
 
     /**

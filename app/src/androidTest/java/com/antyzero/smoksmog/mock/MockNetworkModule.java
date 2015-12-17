@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog;
+package com.antyzero.smoksmog.mock;
 
 import android.content.Context;
 
@@ -12,12 +12,8 @@ import pl.malopolska.smoksmog.SmokSmog;
 
 public class MockNetworkModule extends NetworkModule {
 
-    public MockNetworkModule() {
-
-    }
-
     @Override
     public SmokSmog provideSmokSmog( Context context ) {
-        return super.provideSmokSmog( context );
+        return new MockSmokSmog( createBuilder( context ) );
     }
 }

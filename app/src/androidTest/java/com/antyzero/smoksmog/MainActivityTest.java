@@ -6,6 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
+import com.antyzero.smoksmog.mock.MockNetworkModule;
 import com.antyzero.smoksmog.ui.MainActivity;
 import com.squareup.spoon.Spoon;
 

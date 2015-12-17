@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'spoon'
+apply plugin: 'de.felixschulze.gradle.spoon'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -51,6 +51,10 @@ android {
     }
 
     packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 }
@@ -99,7 +103,7 @@ dependencies {
     androidTestCompile('com.android.support.test:runner:0.4.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile 'com.squareup.spoon:spoon-client:1.1.10'
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.2.0'
     androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
@@ -107,7 +111,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
-    androidTestCompile 'com.squareup.spoon:spoon-client:1.2.0'
+    androidTestCompile 'org.apache.directory.studio:org.apache.commons.io:2.4'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
@@ -119,4 +123,10 @@ retrolambda {
     //noinspection GroovyAssignabilityCheck
     javaVersion JavaVersion.VERSION_1_7
     jvmArgs '-noverify'
+}
+
+spoon {
+    teamCityLog = true
+    debug = true
+    failOnFailure = false
 }

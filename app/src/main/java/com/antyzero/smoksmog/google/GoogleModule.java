@@ -11,8 +11,14 @@ import dagger.Provides;
 @Module
 public class GoogleModule {
 
+    private final GoogleApiClient.ConnectionCallbacks connectionCallbacks;
+
+    public GoogleModule( GoogleApiClient.ConnectionCallbacks connectionCallbacks ) {
+        this.connectionCallbacks = connectionCallbacks;
+    }
+
     @Provides
-    public GoogleApiClient provideGoogleApiClient( Context context, GoogleApiClient.ConnectionCallbacks connectionCallbacks ) {
+    public GoogleApiClient provideGoogleApiClient( Context context ) {
 
         return new GoogleApiClient.Builder( context )
                 .addConnectionCallbacks( connectionCallbacks )
