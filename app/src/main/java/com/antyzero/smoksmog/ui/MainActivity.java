@@ -16,6 +16,7 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.RxJava;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -25,6 +26,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -86,7 +89,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         setSupportActionBar( toolbar );
         setTitle( null );
 
-        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
+        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ), new GoogleModule( this ) ).inject( this );
 
         particulateAdapter = new ParticulateAdapter( particulates, this );
         recyclerViewParticulates.setLayoutManager( new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false ) );
@@ -101,7 +104,24 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
-                        this.stations::addAll,
+                        stations -> {
+                            this.stations.addAll( stations );
+
+                            // Update with first station ASAP
+                            if ( !stations.isEmpty() ) {
+                                Station station = stations.get( 0 );
+                                smokSmog.getApi().station( station.getId() )
+                                        .compose( RxLifecycle.bindActivity( lifecycle() ) )
+                                        .observeOn( AndroidSchedulers.mainThread() )
+                                        .subscribe(
+                                                this::updateUiWithStation,
+                                                throwable -> {
+                                                    String errorMessage = getString( R.string.error_unable_to_load_station_data, station.getName() );
+                                                    errorReporter.report( errorMessage );
+                                                    logger.e( TAG, errorMessage, throwable );
+                                                } );
+                            }
+                        },
                         throwable -> {
                             String errorMessage = getString( R.string.error_unable_to_load_stations );
                             errorReporter.report( errorMessage );
@@ -204,15 +224,19 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         currentStation = station;
 
-        List<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
-                .toList().toBlocking().first();
-
-        particulates.clear();
-        particulates.addAll( sorted );
-        particulateAdapter.notifyDataSetChanged();
-
-        updateUiWithMainParticulate( sorted.get( 0 ) );
         updateUiSpinnerSelectionWithStation( station );
+
+        if ( !station.getParticulates().isEmpty() ) {
+
+            List<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
+                    .toList().toBlocking().first();
+
+            particulates.clear();
+            particulates.addAll( sorted );
+            particulateAdapter.notifyDataSetChanged();
+
+            updateUiWithMainParticulate( sorted.get( 0 ) );
+        }
     }
 
     /**
@@ -233,7 +257,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      * @param particulate data
      */
     private void updateUiWithMainParticulate( Particulate particulate ) {
-        indicatorMain.setParticulate( particulate );
+        indicatorMain.setValue( particulate.getValue() / particulate.getNorm() );
         textViewConcentration.setText( String.format( "%s %s", particulate.getValue(), particulate.getUnit() ) );
         textViewAverage.setText( String.format( "%s %s", particulate.getAverage(), particulate.getUnit() ) );
         textViewData.setText( DateTimeFormat.longDateTime().print( particulate.getDate() ) );

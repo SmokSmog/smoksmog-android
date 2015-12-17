@@ -17,4 +17,4 @@ before_install:
   - export JAVA_HOME=$JAVA7_HOME
 
 script:
-  - gradle clean check assembleDebug
+  - ./gradlew clean check assembleDebug

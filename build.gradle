@@ -5,17 +5,24 @@ buildscript {
         jcenter()
         mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'com.android.tools.build:gradle:1.4.0-beta6'
+
+        classpath 'com.android.tools.build:gradle:2.0.0-alpha3'
+
+        // This is broken when using gradle build tools 2.0.0, work around is to use
+        // SDK manager from jitpack build from commit
+        // more here: http://stackoverflow.com/questions/33881984/errorcause-com-android-sdklib-repository-fullrevision
+        // old classpath
+        // classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+        classpath 'com.github.JakeWharton:sdk-manager-plugin:220bf7a88a7072df3ed16dc8466fb144f2817070'
+
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta2'
-        classpath 'com.squareup.spoon:spoon-runner:1.2.0'
-        classpath('com.stanfy.spoon:spoon-gradle-plugin:1.0.3') {
-            exclude module: 'guava'
-        }
+        classpath 'me.tatarka:gradle-retrolambda:3.2.2'
+        classpath 'com.squareup.spoon:spoon-runner:1.2.1'
+        classpath 'de.felixschulze.gradle:gradle-spoon-plugin:2.7.3'
         // Fix according to https://github.com/stanfy/spoon-gradle-plugin/issues/33
         //noinspection GradleDependency
         classpath 'com.google.guava:guava:17.0'
