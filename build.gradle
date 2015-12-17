@@ -22,6 +22,8 @@ buildscript {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.2.2'
         classpath 'com.squareup.spoon:spoon-runner:1.2.0'
+
+        classpath 'de.felixschulze.gradle:gradle-spoon-plugin:2.7.3'
         classpath('com.stanfy.spoon:spoon-gradle-plugin:1.0.3') {
             exclude module: 'guava'
         }
