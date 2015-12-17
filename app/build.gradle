@@ -124,3 +124,9 @@ retrolambda {
     javaVersion JavaVersion.VERSION_1_7
     jvmArgs '-noverify'
 }
+
+spoon {
+    teamCityLog = true
+    debug = true
+    failOnFailure = false
+}

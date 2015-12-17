@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import pl.malopolska.smoksmog.Api;
@@ -27,6 +26,7 @@ public class MockApi implements Api {
 
     @Override
     public Observable<List<Station>> stations() {
+        System.out.println("XXX --- XXX");
         return getObservableFromFile( "stations.json", ( Class<List<Station>> ) new Object() );
     }
 
