@@ -26,6 +26,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -102,7 +104,17 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
-                        this.stations::addAll,
+                        stations -> {
+                            this.stations.addAll( stations );
+                            // Update with first station ASAP
+                            if ( !stations.isEmpty() ) {
+                                Station station = stations.get( 0 );
+                                updateUiWithStation( station );
+                                if ( !station.getParticulates().isEmpty() ) {
+                                    updateUiWithMainParticulate( station.getParticulates().get( 0 ) );
+                                }
+                            }
+                        },
                         throwable -> {
                             String errorMessage = getString( R.string.error_unable_to_load_stations );
                             errorReporter.report( errorMessage );
