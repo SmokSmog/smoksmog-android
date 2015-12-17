@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.malopolska.smoksmog.Api;
@@ -30,7 +32,8 @@ public class MockApi implements Api {
     @Override
     public Observable<List<Station>> stations() {
         Log.i( TAG, "Called #stations()" );
-        return getObservableFromFile( "stations.json", ( Class<List<Station>> ) new Object() );
+        List<Station> result = gson.fromJson( getStringFromFile( "stations.json" ), ListStation.class );
+        return Observable.just( result );
     }
 
     @Override
@@ -74,15 +77,22 @@ public class MockApi implements Api {
     private String getStringFromFile( String fileName ) {
 
         String result;
-
         ClassLoader classLoader = getClass().getClassLoader();
 
         try {
-            result = IOUtils.toString( classLoader.getResourceAsStream( "/" + fileName ) );
+            InputStream inputStream = classLoader.getResourceAsStream( fileName );
+            if(inputStream == null){
+                throw new RuntimeException( "Unable to get InputStream for " + fileName );
+            }
+            result = IOUtils.toString( inputStream );
         } catch ( IOException e ) {
-            throw new Error( "Unable to read file" );
+            throw new Error( "Unable to read file", e );
         }
 
         return result;
+    }
+
+    public static class ListStation extends ArrayList<Station> {
+
     }
 }

@@ -1,6 +1,7 @@
 package com.antyzero.smoksmog;
 
 
+import android.app.Activity;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -10,6 +11,8 @@ import com.squareup.spoon.Spoon;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.assertj.android.api.Assertions.assertThat;
 
 @RunWith( AndroidJUnit4.class )
 @LargeTest
@@ -26,9 +29,10 @@ public class MainActivityTest {
         // ... nothing ...
 
         // when
-        // ... start app ...
+        Activity activity = activityTestRule.getActivity();
 
         // then
-        Spoon.screenshot( activityTestRule.getActivity(), "Created" );
+        assertThat( activity ).isNotNull();
+        Spoon.screenshot( activity, "Created" );
     }
 }
