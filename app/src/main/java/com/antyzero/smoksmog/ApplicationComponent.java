@@ -3,8 +3,8 @@ package com.antyzero.smoksmog;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.network.NetworkModule;
 import com.antyzero.smoksmog.ui.ActivityModule;
-import com.antyzero.smoksmog.ui.HistoryActivityComponent;
-import com.antyzero.smoksmog.ui.MainActivityComponent;
+import com.antyzero.smoksmog.ui.screen.history.HistoryActivityComponent;
+import com.antyzero.smoksmog.ui.screen.main.MainActivityComponent;
 
 import javax.inject.Singleton;
 

@@ -1,6 +1,6 @@
-package com.antyzero.smoksmog.ui;
+package com.antyzero.smoksmog.ui.screen.history;
 
-import com.antyzero.smoksmog.google.GoogleModule;
+import com.antyzero.smoksmog.ui.ActivityModule;
 
 import dagger.Subcomponent;
 

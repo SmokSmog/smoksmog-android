@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.ui.screen.main.MainActivityComponent;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.components.ActivityLifecycleProvider;
@@ -102,7 +103,4 @@ public class BaseActivity extends AppCompatActivity implements ActivityLifecycle
         return RxLifecycle.bindActivity( this.lifecycleSubject );
     }
 
-    protected MainActivityComponent getActivityComponent() {
-        return activityComponent;
-    }
 }

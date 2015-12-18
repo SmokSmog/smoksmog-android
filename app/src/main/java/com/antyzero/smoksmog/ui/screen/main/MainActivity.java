@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.ui;
+package com.antyzero.smoksmog.ui.screen.main;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.RxJava;
@@ -18,16 +17,18 @@ import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
+import com.antyzero.smoksmog.ui.ActivityModule;
+import com.antyzero.smoksmog.ui.BaseActivity;
+import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
+import com.antyzero.smoksmog.ui.IndicatorView;
+import com.antyzero.smoksmog.ui.ParticulateAdapter;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.RxLifecycle;
 
-import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -131,13 +132,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                         adapterStations::notifyDataSetChanged );
 
         googleApiClient.connect();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        // TODO optional
-        loadDataForCurrentLocation();
     }
 
     @Override
@@ -276,7 +270,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( this );
 
         reactiveLocationProvider.getLastKnownLocation()
-                .compose( RxLifecycle.bindActivity( lifecycle() ) )
+                .compose( RxLifecycle.bindUntilActivityEvent( lifecycle(), ActivityEvent.STOP ) )
                 .concatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
@@ -290,11 +284,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @OnClick(R.id.buttonHistory)
     void onHistoryButtonClick() {
-        startActivity(HistoryActivity.createIntent(this, currentStation.getId()));
+        startActivity( HistoryActivity.createIntent(this, currentStation.getId()));
     }
 
     @Override
     public void onConnectionSuspended( int i ) {
-        // GoogleClient
+        // Do nothing
     }
 }
