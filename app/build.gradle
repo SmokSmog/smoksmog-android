@@ -4,6 +4,7 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'de.felixschulze.gradle.spoon'
+apply plugin: 'com.github.triplet.play'
 
 android {
     compileSdkVersion 23
@@ -140,4 +141,9 @@ spoon {
     teamCityLog = true
     debug = true
     failOnFailure = false
+}
+
+play {
+    jsonFile = new File("" + System.getenv("PLAY_JSON"))
+    track = 'beta'
 }
