@@ -24,4 +24,6 @@ public interface ApplicationComponent {
     MainActivityComponent plus( ActivityModule activityModule, GoogleModule googleModule );
 
     HistoryActivityComponent plus( ActivityModule activityModule );
+
+    void inject( SmokSmogApplication smokSmogApplication );
 }
