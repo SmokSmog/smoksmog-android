@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -28,62 +29,70 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class HistoryActivity extends BaseActivity {
     private static final String STATION_ID_KEY = "station_id_key";
+    private static final String TAG = "HistoryActivity";
 
     @Inject
     SmokSmog smokSmog;
-
     @Inject
     ErrorReporter errorReporter;
+    @Inject
+    Logger logger;
 
-    @Bind(R.id.toolbar)
+    @Bind( R.id.toolbar )
     Toolbar toolbar;
 
-    @Bind(R.id.recyclerViewCharts)
+    @Bind( R.id.recyclerViewCharts )
     RecyclerView chartsRecyclerView;
 
-    public static Intent createIntent(final Context context, final long stationId) {
-        final Intent intent = new Intent(context, HistoryActivity.class);
-        intent.putExtra(STATION_ID_KEY, stationId);
+    public static Intent createIntent( final Context context, final long stationId ) {
+        final Intent intent = new Intent( context, HistoryActivity.class );
+        intent.putExtra( STATION_ID_KEY, stationId );
         return intent;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    protected void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_history );
+        setSupportActionBar( toolbar );
+        if ( getSupportActionBar() != null ) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled( true );
         }
 
-        SmokSmogApplication.get(this).getAppComponent().plus(new ActivityModule(this)).inject(this);
+        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
 
-        final long stationId = getStationIdExtra(getIntent());
+        final long stationId = getStationIdExtra( getIntent() );
 
-        smokSmog.getApi().stationHistory(stationId)
-            .compose(RxLifecycle.bindActivity(lifecycle()))
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(this::showHistory, throwable -> errorReporter.report(getString(R.string.error_unable_to_load_station_history)));
+        smokSmog.getApi().stationHistory( stationId )
+                .compose( bindToLifecycle() )
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe(
+                        this::showHistory,
+                        throwable -> {
+                            String message = getString( R.string.error_unable_to_load_station_history );
+                            errorReporter.report( message );
+                            logger.w( TAG, message, throwable );
+                        } );
     }
 
-    private void showHistory(Station station) {
-        if (station == null || station.getParticulates() == null) {
+    private void showHistory( Station station ) {
+        if ( station == null || station.getParticulates() == null ) {
             //no valid data
             return;
         }
         final int spanCount = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 1 : 2;
-        final HistoryAdapter adapter = new HistoryAdapter(station.getParticulates());
-        chartsRecyclerView.setLayoutManager(new GridLayoutManager(this, spanCount, LinearLayoutManager.VERTICAL, false));
-        chartsRecyclerView.setAdapter(adapter);
+        final HistoryAdapter adapter = new HistoryAdapter( station.getParticulates() );
+        chartsRecyclerView.setLayoutManager( new GridLayoutManager( this, spanCount, LinearLayoutManager.VERTICAL, false ) );
+        chartsRecyclerView.setAdapter( adapter );
     }
 
     /**
      * @return Station ID if available or throws a {@link IllegalArgumentException}
      */
-    private static long getStationIdExtra(final Intent intent) {
-        if (intent == null || !intent.hasExtra(STATION_ID_KEY)) {
+    private static long getStationIdExtra( final Intent intent ) {
+        if ( intent == null || !intent.hasExtra( STATION_ID_KEY ) ) {
             throw new IllegalArgumentException();
         }
-        return intent.getLongExtra(STATION_ID_KEY, -1);
+        return intent.getLongExtra( STATION_ID_KEY, -1 );
     }
 }
