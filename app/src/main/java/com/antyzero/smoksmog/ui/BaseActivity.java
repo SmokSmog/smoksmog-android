@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.ui.screen.main.MainActivityComponent;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.trello.rxlifecycle.ActivityLifecycleProvider;
 import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.components.ActivityLifecycleProvider;
 
 import butterknife.ButterKnife;
 import rx.Observable;
