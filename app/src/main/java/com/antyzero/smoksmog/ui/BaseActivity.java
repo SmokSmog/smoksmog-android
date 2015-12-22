@@ -22,8 +22,6 @@ public class BaseActivity extends AppCompatActivity implements ActivityLifecycle
 
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
-    private MainActivityComponent activityComponent;
-
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -31,7 +29,17 @@ public class BaseActivity extends AppCompatActivity implements ActivityLifecycle
         this.lifecycleSubject.onNext( ActivityEvent.CREATE );
 
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-            getWindow().setNavigationBarColor( getResources().getColor( R.color.primary ) );
+
+            int color;
+
+            if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ){
+                color = getResources().getColor( R.color.primary, getTheme() );
+            } else {
+                //noinspection deprecation
+                color = getResources().getColor( R.color.primary );
+            }
+
+            getWindow().setNavigationBarColor( color );
         }
     }
 
