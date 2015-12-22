@@ -40,17 +40,4 @@ public class ApplicationModule {
         return application;
     }
 
-    @Provides
-    @Singleton
-    public Logger provideLogger() {
-        Collection<Logger> loggerCollection = new ArrayList<>();
-
-        loggerCollection.add( new AndroidLogger() );
-
-        if ( !BuildConfig.DEBUG ) {
-            loggerCollection.add( new LevelBlockingLogger( new CrashlyticsLogger(), Log.WARN ) );
-        }
-
-        return new AggregatingLogger( loggerCollection );
-    }
 }
