@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.ui.screen.main;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -94,7 +95,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ), new GoogleModule( this ) ).inject( this );
 
         particulateAdapter = new ParticulateAdapter( particulates, this );
-        recyclerViewParticulates.setLayoutManager( new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false ) );
+
+        int orientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ?
+                LinearLayoutManager.HORIZONTAL : LinearLayoutManager.VERTICAL;
+
+        recyclerViewParticulates.setLayoutManager( new LinearLayoutManager( this, orientation, false ) );
         recyclerViewParticulates.setAdapter( particulateAdapter );
 
         adapterStations = new ArrayAdapter<>( this, android.R.layout.simple_spinner_item, stations );
