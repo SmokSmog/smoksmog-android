@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.antyzero.smoksmog.logger.Logger;
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 
 import javax.inject.Inject;
@@ -26,9 +27,10 @@ public class SmokSmogApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with( this, new CrashlyticsCore.Builder()
-                .disabled( BuildConfig.DEBUG )
-                .build() );
+        CrashlyticsCore crashlyticsKit = new CrashlyticsCore.Builder()
+                .disabled( BuildConfig.DEBUG ).build();
+
+        Fabric.with( this, crashlyticsKit, new Answers() );
 
         applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule( new ApplicationModule( this ) )
