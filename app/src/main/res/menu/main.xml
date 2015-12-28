@@ -7,6 +7,16 @@
         android:id="@+id/action_my_location"
         android:icon="@drawable/ic_my_location_white_48dp"
         android:title="@string/action_my_location"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/action_about"
+        app:showAsAction="never" />
 
 </menu>
