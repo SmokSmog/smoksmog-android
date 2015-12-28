@@ -152,6 +152,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Override
     public boolean onOptionsItemSelected( MenuItem item ) {
         switch ( item.getItemId() ) {
+
             case R.id.action_my_location:
                 if ( googleApiClient.isConnected() ) {
 
@@ -173,6 +174,15 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 }
 
                 break;
+
+            case R.id.action_settings:
+                // Start PreferencesActivity
+                break;
+
+            case R.id.action_about:
+                // Start AboutActivity
+                break;
+
             default:
                 return super.onOptionsItemSelected( item );
         }

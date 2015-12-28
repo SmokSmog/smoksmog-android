@@ -11,4 +11,6 @@
     <string name="action_history">Pokaż historię</string>
     <string name="title_history">Historia</string>
     <string name="label_norm">Norma</string>
+    <string name="action_about">O aplikacji</string>
+    <string name="action_settings">Ustawienia</string>
 </resources>
