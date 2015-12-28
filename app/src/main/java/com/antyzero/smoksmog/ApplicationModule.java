@@ -39,10 +39,4 @@ public class ApplicationModule {
     public Application provideApplication() {
         return application;
     }
-
-    @Provides
-    @Singleton
-    public Logger provideLogger() {
-        return BuildConfig.DEBUG ? new AndroidLogger() : new CrashlyticsLogger();
-    }
 }

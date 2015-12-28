@@ -20,8 +20,8 @@ android {
         minSdkVersion 16
         //noinspection OldTargetApi // TODO since it's not tested against new permission system we keep 22
         targetSdkVersion 22
-        versionCode 190001
-        versionName "1.9"
+        versionCode 191001
+        versionName "1.9.1"
 
         multiDexEnabled true
 
@@ -94,19 +94,22 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:7.0.1'
 
-    compile 'io.reactivex:rxandroid:1.0.1'
-    compile 'com.trello:rxlifecycle:0.3.0'
-    compile 'com.trello:rxlifecycle-components:0.3.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.trello:rxlifecycle:0.4.0'
+    compile 'com.trello:rxlifecycle-components:0.4.0'
 
     compile 'pl.charmas.android:android-reactive-location:0.8@aar'
 
-    compile 'com.google.dagger:dagger:2.0.1'
+    compile 'com.google.dagger:dagger:2.0.2'
 
-    apt 'com.google.dagger:dagger-compiler:2.0.1'
+    apt 'com.google.dagger:dagger-compiler:2.0.2'
 
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
 
     testCompile 'junit:junit:4.12'
 
@@ -124,9 +127,6 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
     androidTestCompile 'org.apache.directory.studio:org.apache.commons.io:2.4'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
-        transitive = true;
-    }
 }
 
 retrolambda {

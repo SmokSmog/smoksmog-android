@@ -1,6 +1,7 @@
 package com.antyzero.smoksmog;
 
 import com.antyzero.smoksmog.google.GoogleModule;
+import com.antyzero.smoksmog.logger.LoggerModule;
 import com.antyzero.smoksmog.network.NetworkModule;
 import com.antyzero.smoksmog.ui.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivityComponent;
@@ -14,6 +15,7 @@ import dagger.Component;
 @Component(
         modules = {
                 ApplicationModule.class,
+                LoggerModule.class,
                 NetworkModule.class
         }
 )
@@ -22,4 +24,6 @@ public interface ApplicationComponent {
     MainActivityComponent plus( ActivityModule activityModule, GoogleModule googleModule );
 
     HistoryActivityComponent plus( ActivityModule activityModule );
+
+    void inject( SmokSmogApplication smokSmogApplication );
 }

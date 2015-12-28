@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.ui.screen.main;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -74,6 +76,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     TextView textViewData;
     @Bind( R.id.recyclerViewParticulates )
     RecyclerView recyclerViewParticulates;
+    @Bind( R.id.buttonHistory )
+    View buttonHistory;
 
     private final List<Station> stations = new ArrayList<>();
     private final List<Particulate> particulates = new ArrayList<>();
@@ -94,7 +98,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ), new GoogleModule( this ) ).inject( this );
 
         particulateAdapter = new ParticulateAdapter( particulates, this );
-        recyclerViewParticulates.setLayoutManager( new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false ) );
+
+        int orientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ?
+                LinearLayoutManager.HORIZONTAL : LinearLayoutManager.VERTICAL;
+
+        recyclerViewParticulates.setLayoutManager( new LinearLayoutManager( this, orientation, false ) );
         recyclerViewParticulates.setAdapter( particulateAdapter );
 
         adapterStations = new ArrayAdapter<>( this, android.R.layout.simple_spinner_item, stations );
@@ -221,6 +229,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         updateUiSpinnerSelectionWithStation( station );
 
+        buttonHistory.setEnabled(true);
+
         if ( !station.getParticulates().isEmpty() ) {
 
             List<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
@@ -284,7 +294,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @OnClick(R.id.buttonHistory)
     void onHistoryButtonClick() {
-        startActivity( HistoryActivity.createIntent(this, currentStation.getId()));
+        startActivity( HistoryActivity.createIntent(this, currentStation));
     }
 
     @Override
