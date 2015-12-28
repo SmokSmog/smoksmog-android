@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,9 +45,12 @@ public class HistoryActivity extends BaseActivity {
     @Bind( R.id.recyclerViewCharts )
     RecyclerView chartsRecyclerView;
 
-    public static Intent createIntent( final Context context, final long stationId ) {
+    public static Intent createIntent( final Context context, @NonNull Station station ) {
+        if (station == null) {
+            throw new IllegalArgumentException( Station.class.getSimpleName() + " cannot be null" );
+        }
         final Intent intent = new Intent( context, HistoryActivity.class );
-        intent.putExtra( STATION_ID_KEY, stationId );
+        intent.putExtra( STATION_ID_KEY, station.getId() );
         return intent;
     }
 

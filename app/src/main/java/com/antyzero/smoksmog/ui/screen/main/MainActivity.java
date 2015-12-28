@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -75,6 +76,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     TextView textViewData;
     @Bind( R.id.recyclerViewParticulates )
     RecyclerView recyclerViewParticulates;
+    @Bind( R.id.buttonHistory )
+    View buttonHistory;
 
     private final List<Station> stations = new ArrayList<>();
     private final List<Particulate> particulates = new ArrayList<>();
@@ -226,6 +229,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         updateUiSpinnerSelectionWithStation( station );
 
+        buttonHistory.setEnabled(true);
+
         if ( !station.getParticulates().isEmpty() ) {
 
             List<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
@@ -289,7 +294,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @OnClick(R.id.buttonHistory)
     void onHistoryButtonClick() {
-        startActivity( HistoryActivity.createIntent(this, currentStation.getId()));
+        startActivity( HistoryActivity.createIntent(this, currentStation));
     }
 
     @Override
