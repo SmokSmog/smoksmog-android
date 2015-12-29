@@ -27,10 +27,10 @@ public class SmokSmogApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CrashlyticsCore crashlyticsKit = new CrashlyticsCore.Builder()
-                .disabled( BuildConfig.DEBUG ).build();
-
-        Fabric.with( this, crashlyticsKit, new Answers() );
+        
+        Fabric.with( this, new CrashlyticsCore.Builder()
+                .disabled( BuildConfig.DEBUG )
+                .build(), new Answers() );
 
         applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule( new ApplicationModule( this ) )
