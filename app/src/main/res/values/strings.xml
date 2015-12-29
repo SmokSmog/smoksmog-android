@@ -16,5 +16,6 @@
     <string name="action_history">Show history</string>
     <string name="title_history">History</string>
     <string name="label_norm">Norm</string>
+    <string name="title_about" translatable="false">@string/action_about</string>
 
 </resources>

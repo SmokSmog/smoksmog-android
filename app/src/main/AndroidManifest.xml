@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.antyzero.smoksmog" >
+<manifest package="com.antyzero.smoksmog"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
@@ -11,25 +11,34 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme.NoActionBar" >
-
-        <activity android:name=".ui.screen.main.MainActivity" >
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".ui.screen.main.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.screen.history.HistoryActivity"
+        <activity
+            android:name=".ui.screen.history.HistoryActivity"
             android:parentActivityName=".ui.screen.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.screen.main.MainActivity" />
+                android:value=".ui.screen.main.MainActivity"/>
+        </activity>
+
+        <activity
+            android:name=".ui.screen.about.AboutActivity"
+            android:parentActivityName=".ui.screen.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.screen.main.MainActivity"/>
         </activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8" />
+            android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8"/>
+
     </application>
 
 </manifest>
