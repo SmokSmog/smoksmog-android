@@ -21,6 +21,7 @@ import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
+import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
@@ -180,7 +181,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 break;
 
             case R.id.action_about:
-                // Start AboutActivity
+                AboutActivity.start( this );
                 break;
 
             default:
