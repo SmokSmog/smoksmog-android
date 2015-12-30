@@ -111,4 +111,7 @@ public class BaseActivity extends AppCompatActivity implements ActivityLifecycle
         return RxLifecycle.bindActivity( this.lifecycleSubject );
     }
 
+    public BehaviorSubject<ActivityEvent> getLifecycleSubject() {
+        return lifecycleSubject;
+    }
 }
