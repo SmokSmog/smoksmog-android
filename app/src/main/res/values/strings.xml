@@ -17,5 +17,6 @@
     <string name="title_history">History</string>
     <string name="label_norm">Norm</string>
     <string name="title_about" translatable="false">@string/action_about</string>
+    <string name="error_unable_to_show_history">Unable to show history</string>
 
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="about"><![CDATA[Cześć, to my, osoby, które tworzyły i tworzą projekt SmokSmog. Chcemy Ci podziękować za korzystanie z naszej aplikacji, jest to dla nas najlepszy sygnał, że problem stanu czystości powietrza jest ważny dla ludzi w naszym kraju, a dotychczasowe sposoby informowania o zanieczyszczeniu nie są wystarczające.
+
+Jeżeli chcesz nam pomóc podziel się uwagami bądź sugestiami dotyczącymi SmokSmoga dla Androida, na tej stronie
+
+https://groups.google.com/forum/#!forum/smoksmog-android
+
+lub zwyczajnie wysłać nam maila na adres
+
+smoksmog-android@googlegroups.com
+
+Będziemy wdzięczni za kontakt z nami przed napisaniem opinii na Google Play, nie dlatego, że nie lubimy tych opinii :-) ale dlatego, że często nie możemy, w wypadku problemów, nawiązać kontaktu z jej autorem.
+
+Oficjalną stronę projektu SmokSmog znajdziesz pod poniższym linkiem
+
+http://smoksmog.malopolska.pl/
+
+SmokSmog na Androida jest projektem Open Source, czyli kod źródłowy jest jawny i dostępny dla wszystkich, którzy chcieliby zweryfikować naszą pracę lub współtworzyć nasz projekt
+
+https://github.com/SmokSmog/smoksmog-android ]]></string>
+</resources>
