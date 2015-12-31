@@ -1,7 +1,8 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
 
     <item
         android:id="@+id/action_my_location"
@@ -9,10 +10,12 @@
         android:title="@string/action_my_location"
         app:showAsAction="ifRoom"/>
 
+    <!--
     <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+        -->
 
     <item
         android:id="@+id/action_about"
