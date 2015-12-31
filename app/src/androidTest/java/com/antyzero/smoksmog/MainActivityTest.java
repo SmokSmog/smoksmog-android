@@ -33,7 +33,7 @@ public class MainActivityTest {
         MainActivity activity = activityTestRule.getActivity();
 
         // when
-        Espresso.onView( withId( R.id.indicatorMain ) ).check( matches( isDisplayed() ) );
+        //
 
         // then
         Spoon.screenshot( activity, "Created" );
