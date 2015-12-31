@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
@@ -23,6 +24,7 @@ public class AboutActivity extends AppCompatActivity {
         setContentView( R.layout.activity_about );
         ButterKnife.bind( this );
         textView.setText( Html.fromHtml( getString( R.string.about ) ) );
+        textView.setMovementMethod( LinkMovementMethod.getInstance() );
     }
 
     public static void start( Context context ) {

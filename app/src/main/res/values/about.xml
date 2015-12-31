@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string name="about"><![CDATA[Cześć, to my, osoby, które tworzyły i tworzą projekt SmokSmog. Chcemy Ci podziękować za korzystanie z naszej aplikacji, jest to dla nas najlepszy sygnał, że problem stanu czystości powietrza jest ważny dla ludzi w naszym kraju, a dotychczasowe sposoby informowania o zanieczyszczeniu nie są wystarczające.
+<string name="about"><![CDATA[Cześć, to my, osoby, które tworzyły i tworzą projekt SmokSmog. Chcemy Ci podziękować za korzystanie z naszej aplikacji, jest to dla nas najlepszy sygnał, że problem stanu czystości powietrza jest ważny dla ludzi w naszym kraju, a dotychczasowe sposoby informowania o zanieczyszczeniu nie są wystarczające.<br /><br />
 
-Jeżeli chcesz nam pomóc podziel się uwagami bądź sugestiami dotyczącymi SmokSmoga dla Androida, na tej stronie
+Jeżeli chcesz nam pomóc podziel się uwagami bądź sugestiami dotyczącymi SmokSmoga dla Androida, na tej stronie<br /><br />
 
-https://groups.google.com/forum/#!forum/smoksmog-android
+<a href="https://groups.google.com/forum/#!forum/smoksmog-android">https://groups.google.com/forum/#!forum/smoksmog-android</a><br /><br />
 
-lub zwyczajnie wysłać nam maila na adres
+lub zwyczajnie wysłać nam maila na adres<br /><br />
 
-smoksmog-android@googlegroups.com
+<a href="mailto:smoksmog-android@googlegroups.com">smoksmog-android@googlegroups.com</a><br /><br />
 
-Będziemy wdzięczni za kontakt z nami przed napisaniem opinii na Google Play, nie dlatego, że nie lubimy tych opinii :-) ale dlatego, że często nie możemy, w wypadku problemów, nawiązać kontaktu z jej autorem.
+Będziemy wdzięczni za kontakt z nami przed napisaniem opinii na Google Play, nie dlatego, że nie lubimy tych opinii :-) ale dlatego, że często nie możemy, w wypadku problemów, nawiązać kontaktu z jej autorem.<br /><br />
 
-Oficjalną stronę projektu SmokSmog znajdziesz pod poniższym linkiem
+Oficjalną stronę projektu SmokSmog znajdziesz pod poniższym linkiem<br /><br />
 
-http://smoksmog.malopolska.pl/
+<a href="http://smoksmog.malopolska.pl/">http://smoksmog.malopolska.pl/</a><br /><br />
 
-SmokSmog na Androida jest projektem Open Source, czyli kod źródłowy jest jawny i dostępny dla wszystkich, którzy chcieliby zweryfikować naszą pracę lub współtworzyć nasz projekt
+SmokSmog na Androida jest projektem Open Source, czyli kod źródłowy jest jawny i dostępny dla wszystkich, którzy chcieliby zweryfikować naszą pracę lub współtworzyć nasz projekt<br /><br />
 
-https://github.com/SmokSmog/smoksmog-android ]]></string>
+<a href="https://github.com/SmokSmog/smoksmog-android">https://github.com/SmokSmog/smoksmog-android</a> ]]></string>
 </resources>
