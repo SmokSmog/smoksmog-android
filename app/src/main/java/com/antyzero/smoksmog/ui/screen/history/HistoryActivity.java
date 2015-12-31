@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -44,15 +46,21 @@ public class HistoryActivity extends BaseActivity {
     @Bind( R.id.recyclerViewCharts )
     RecyclerView chartsRecyclerView;
 
-    public static Intent createIntent( final Context context, final long stationId ) {
+    public static Intent createIntent( final Context context, Station station ) throws Exception {
+        if ( station == null ) {
+            throw new IllegalArgumentException( Station.class.getSimpleName() + " cannot be null" );
+        }
         final Intent intent = new Intent( context, HistoryActivity.class );
-        intent.putExtra( STATION_ID_KEY, stationId );
+        intent.putExtra( STATION_ID_KEY, station.getId() );
         return intent;
     }
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+
+        final long stationId = getStationIdExtra( getIntent() );
+
         setContentView( R.layout.activity_history );
         setSupportActionBar( toolbar );
         if ( getSupportActionBar() != null ) {
@@ -60,8 +68,6 @@ public class HistoryActivity extends BaseActivity {
         }
 
         SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
-
-        final long stationId = getStationIdExtra( getIntent() );
 
         smokSmog.getApi().stationHistory( stationId )
                 .compose( bindToLifecycle() )
@@ -89,9 +95,12 @@ public class HistoryActivity extends BaseActivity {
     /**
      * @return Station ID if available or throws a {@link IllegalArgumentException}
      */
-    private static long getStationIdExtra( final Intent intent ) {
+    private long getStationIdExtra( final Intent intent ) {
         if ( intent == null || !intent.hasExtra( STATION_ID_KEY ) ) {
-            throw new IllegalArgumentException();
+            Toast.makeText( this, "Pokazanie historii było niemożliwe", Toast.LENGTH_SHORT ).show();
+            logger.e( TAG, "Unable to display History screen, missing start data" );
+            finish();
+            return -1;
         }
         return intent.getLongExtra( STATION_ID_KEY, -1 );
     }

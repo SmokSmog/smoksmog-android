@@ -27,6 +27,7 @@ public class SmokSmogApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        
         Fabric.with( this, new CrashlyticsCore.Builder()
                 .disabled( BuildConfig.DEBUG )
                 .build(), new Answers() );

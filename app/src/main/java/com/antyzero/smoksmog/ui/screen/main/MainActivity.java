@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,10 +22,12 @@ import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
+import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.data.DataBufferObserver;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.RxLifecycle;
 
@@ -31,6 +35,7 @@ import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -43,6 +48,7 @@ import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
 import pl.malopolska.smoksmog.utils.StationUtils;
+import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -75,6 +81,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     TextView textViewData;
     @Bind( R.id.recyclerViewParticulates )
     RecyclerView recyclerViewParticulates;
+    @Bind( R.id.buttonHistory )
+    View buttonHistory;
 
     private final List<Station> stations = new ArrayList<>();
     private final List<Particulate> particulates = new ArrayList<>();
@@ -149,6 +157,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Override
     public boolean onOptionsItemSelected( MenuItem item ) {
         switch ( item.getItemId() ) {
+
             case R.id.action_my_location:
                 if ( googleApiClient.isConnected() ) {
 
@@ -170,6 +179,15 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 }
 
                 break;
+
+            /*case R.id.action_settings:
+                // Start PreferencesActivity
+                break;*/
+
+            case R.id.action_about:
+                AboutActivity.start( this );
+                break;
+
             default:
                 return super.onOptionsItemSelected( item );
         }
@@ -225,6 +243,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         currentStation = station;
 
         updateUiSpinnerSelectionWithStation( station );
+
+        buttonHistory.setEnabled(true);
 
         if ( !station.getParticulates().isEmpty() ) {
 
@@ -289,7 +309,13 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @OnClick(R.id.buttonHistory)
     void onHistoryButtonClick() {
-        startActivity( HistoryActivity.createIntent(this, currentStation.getId()));
+        try {
+            startActivity( HistoryActivity.createIntent(this, currentStation));
+        } catch ( Exception e ) {
+            String message = getString( R.string.error_unable_to_show_history );
+            logger.d( TAG, message, e );
+            errorReporter.report( message );
+        }
     }
 
     @Override

@@ -39,5 +39,4 @@ public class ApplicationModule {
     public Application provideApplication() {
         return application;
     }
-
 }
