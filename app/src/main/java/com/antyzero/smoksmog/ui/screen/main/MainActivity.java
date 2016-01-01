@@ -118,11 +118,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         smokSmog.getApi().stations()
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
-                .map( stations1 -> {
-                    if ( true )
-                        throw new Error( "test" );
-                    return stations1;
-                } )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
                         stations -> {

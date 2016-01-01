@@ -9,11 +9,12 @@ import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.ui.BaseActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends BaseActivity {
 
     @Bind( R.id.textView )
     TextView textView;
