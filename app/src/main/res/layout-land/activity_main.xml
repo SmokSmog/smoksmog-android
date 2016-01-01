@@ -102,7 +102,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewParticulates"
-        android:layout_width="wrap_content"
+        android:layout_width="90dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
