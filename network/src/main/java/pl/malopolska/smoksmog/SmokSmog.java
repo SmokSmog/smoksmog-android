@@ -9,7 +9,9 @@ import org.joda.time.DateTime;
 
 import java.util.Locale;
 
+import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.client.Client;
 import retrofit.converter.GsonConverter;
 
@@ -39,6 +41,14 @@ public class SmokSmog {
         gson = createGson();
 
         builderRest.setConverter( new GsonConverter( gson ) );
+
+        builderRest.setErrorHandler( new ErrorHandler() {
+            @Override
+            public Throwable handleError( RetrofitError cause ) {
+                return new Throwable( cause.getCause() );
+            }
+        } );
+
         RestAdapter restAdapter = builderRest.build();
 
         api = restAdapter.create( Api.class );

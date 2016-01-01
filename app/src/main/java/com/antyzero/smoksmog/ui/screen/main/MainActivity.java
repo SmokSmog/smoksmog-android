@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.RxJava;
@@ -117,6 +118,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         smokSmog.getApi().stations()
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
+                .map( stations1 -> {
+                    if ( true )
+                        throw new Error( "test" );
+                    return stations1;
+                } )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
                         stations -> {
@@ -133,14 +139,14 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                                                 throwable -> {
                                                     String errorMessage = getString( R.string.error_unable_to_load_station_data, station.getName() );
                                                     errorReporter.report( errorMessage );
-                                                    logger.e( TAG, errorMessage, throwable );
+                                                    logger.e( TAG, "Unable to load station data", throwable );
                                                 } );
                             }
                         },
                         throwable -> {
-                            String errorMessage = getString( R.string.error_unable_to_load_stations );
-                            errorReporter.report( errorMessage );
-                            logger.e( TAG, errorMessage, throwable );
+                            Toast.makeText( MainActivity.this, R.string.error_unable_to_load_stations, Toast.LENGTH_SHORT ).show();
+                            logger.e( TAG, "Unable to load stations list", throwable );
+                            MainActivity.this.finish();
                         },
                         adapterStations::notifyDataSetChanged );
 
@@ -244,7 +250,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         updateUiSpinnerSelectionWithStation( station );
 
-        buttonHistory.setEnabled(true);
+        buttonHistory.setEnabled( true );
 
         if ( !station.getParticulates().isEmpty() ) {
 
@@ -307,10 +313,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 );
     }
 
-    @OnClick(R.id.buttonHistory)
+    @OnClick( R.id.buttonHistory )
     void onHistoryButtonClick() {
         try {
-            startActivity( HistoryActivity.createIntent(this, currentStation));
+            startActivity( HistoryActivity.createIntent( this, currentStation ) );
         } catch ( Exception e ) {
             String message = getString( R.string.error_unable_to_show_history );
             logger.d( TAG, message, e );
