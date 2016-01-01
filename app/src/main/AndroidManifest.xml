@@ -26,7 +26,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.screen.main.MainActivity"/>
         </activity>
-
         <activity
             android:name=".ui.screen.about.AboutActivity"
             android:parentActivityName=".ui.screen.main.MainActivity">
@@ -39,6 +38,14 @@
             android:name="io.fabric.ApiKey"
             android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8"/>
 
+        <activity
+            android:name=".ui.screen.settings.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.screen.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.antyzero.smoksmog.ui.screen.main.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

@@ -27,6 +27,7 @@ import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
+import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -196,9 +197,9 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
                 break;
 
-            /*case R.id.action_settings:
-                // Start PreferencesActivity
-                break;*/
+            case R.id.action_settings:
+                SettingsActivity.start( this );
+                break;
 
             case R.id.action_about:
                 AboutActivity.start( this );
