@@ -58,6 +58,7 @@ public class HistoryActivity extends BaseActivity {
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
 
         final long stationId = getStationIdExtra( getIntent() );
 
@@ -66,8 +67,6 @@ public class HistoryActivity extends BaseActivity {
         if ( getSupportActionBar() != null ) {
             getSupportActionBar().setDisplayHomeAsUpEnabled( true );
         }
-
-        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
 
         smokSmog.getApi().stationHistory( stationId )
                 .compose( bindToLifecycle() )
