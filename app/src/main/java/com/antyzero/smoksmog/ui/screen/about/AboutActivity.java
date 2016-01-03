@@ -3,7 +3,6 @@ package com.antyzero.smoksmog.ui.screen.about;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
