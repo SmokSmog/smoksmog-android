@@ -9,8 +9,6 @@ import com.crashlytics.android.core.CrashlyticsCore;
  */
 public class CrashlyticsLogger implements Logger {
 
-
-
     @Override
     public void v( String tag, String message ) {
         CrashlyticsCore.getInstance().log( Log.VERBOSE, tag, message );

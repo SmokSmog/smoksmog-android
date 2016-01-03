@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,19 +18,19 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.RxJava;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.fabric.StationShowEvent;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
-import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
-import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
+import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
+import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
-import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.data.DataBufferObserver;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.RxLifecycle;
 
@@ -39,7 +38,6 @@ import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -52,7 +50,6 @@ import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
 import pl.malopolska.smoksmog.utils.StationUtils;
-import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -258,6 +255,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      * @param station data
      */
     private void updateUiWithStation( Station station ) {
+
+        Answers.getInstance().logContentView( StationShowEvent.create( station ) );
 
         textViewName.setText( station.getName() );
 

@@ -15,4 +15,5 @@
     <string name="action_settings">Ustawienia</string>
     <string name="error_unable_to_show_history">Nie udało się wyświetlić historii</string>
     <string name="title_settings">Ustawienia</string>
+    <string name="version_name_and_code" formatted="false">Wersja %s (%s)</string>
 </resources>

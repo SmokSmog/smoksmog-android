@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,6 @@ import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
-import com.trello.rxlifecycle.RxLifecycle;
 
 import javax.inject.Inject;
 

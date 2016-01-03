@@ -6,7 +6,6 @@ import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.antyzero.smoksmog.logger.Logger;
-import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 
