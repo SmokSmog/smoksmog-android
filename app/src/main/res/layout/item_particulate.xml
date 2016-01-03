@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="60dp"
+    android:layout_width="@dimen/indicator_width_small"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:layout_margin="8dp"
@@ -17,9 +17,9 @@
 
     <com.antyzero.smoksmog.ui.IndicatorView
         android:id="@+id/indicatorView"
-        android:layout_width="60dp"
+        android:layout_width="@dimen/indicator_width_small"
         android:layout_height="60dp"
-        tools:layout_height="60dp"
+        tools:layout_height="@dimen/indicator_width_small"
         tools:layout_width="60dp"/>
 
     <TextView

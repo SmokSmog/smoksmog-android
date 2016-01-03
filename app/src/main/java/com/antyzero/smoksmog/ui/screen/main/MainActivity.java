@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.RxJava;
@@ -25,6 +26,7 @@ import com.antyzero.smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
 import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -127,16 +129,25 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                                         .subscribe(
                                                 this::updateUiWithStation,
                                                 throwable -> {
-                                                    String errorMessage = getString( R.string.error_unable_to_load_station_data, station.getName() );
-                                                    errorReporter.report( errorMessage );
-                                                    logger.e( TAG, errorMessage, throwable );
+                                                    try {
+                                                        String errorMessage = getString( R.string.error_unable_to_load_station_data, station.getName() );
+                                                        errorReporter.report( errorMessage );
+                                                        logger.e( TAG, "Unable to load station data", throwable );
+                                                    } catch ( Exception e ) {
+                                                        CrashlyticsCore.getInstance().logException( e );
+                                                    }
                                                 } );
                             }
                         },
                         throwable -> {
-                            String errorMessage = getString( R.string.error_unable_to_load_stations );
-                            errorReporter.report( errorMessage );
-                            logger.e( TAG, errorMessage, throwable );
+                            try {
+                                Toast.makeText( MainActivity.this, R.string.error_unable_to_load_stations, Toast.LENGTH_SHORT ).show();
+                                logger.e( TAG, "Unable to load stations list", throwable );
+                            } catch ( Exception e ) {
+                                CrashlyticsCore.getInstance().logException( e );
+                            } finally {
+                                MainActivity.this.finish();
+                            }
                         },
                         adapterStations::notifyDataSetChanged );
 
@@ -168,8 +179,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                                                         location.getLatitude(), location.getLongitude() ) );
                                     },
                                     throwable -> {
-                                        errorReporter.report( R.string.error_no_near_Station );
-                                        logger.w( TAG, "Unable to find nearest station data", throwable );
+                                        try {
+                                            errorReporter.report( R.string.error_no_near_Station );
+                                            logger.w( TAG, "Unable to find nearest station data", throwable );
+                                        } catch ( Exception e ) {
+                                            CrashlyticsCore.getInstance().logException( e );
+                                        }
                                     }
                             );
                 }
@@ -210,9 +225,13 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .subscribe(
                         this::updateUiWithStation,
                         throwable -> {
-                            errorReporter.report( R.string.error_unable_to_load_station_data, stationSelected.getName() );
-                            logger.w( TAG, "Unable to load data for selected station: " + stationSelected.getName(), throwable );
-                            updateUiSpinnerSelectionWithStation( currentStation );
+                            try {
+                                errorReporter.report( R.string.error_unable_to_load_station_data, stationSelected.getName() );
+                                logger.w( TAG, "Unable to load data for selected station: " + stationSelected.getName(), throwable );
+                                updateUiSpinnerSelectionWithStation( currentStation );
+                            } catch ( Exception e ) {
+                                CrashlyticsCore.getInstance().logException( e );
+                            }
                         }
                 );
     }
@@ -240,7 +259,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         updateUiSpinnerSelectionWithStation( station );
 
-        buttonHistory.setEnabled(true);
+        buttonHistory.setEnabled( true );
 
         if ( !station.getParticulates().isEmpty() ) {
 
@@ -297,16 +316,20 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .subscribe(
                         this::updateUiWithStation,
                         throwable -> {
-                            errorReporter.report( R.string.error_no_near_Station );
-                            logger.w( TAG, "Unable to find nearest station data", throwable );
+                            try {
+                                errorReporter.report( R.string.error_no_near_Station );
+                                logger.w( TAG, "Unable to find nearest station data", throwable );
+                            } catch ( Exception e ) {
+                                CrashlyticsCore.getInstance().logException( e );
+                            }
                         }
                 );
     }
 
-    @OnClick(R.id.buttonHistory)
+    @OnClick( R.id.buttonHistory )
     void onHistoryButtonClick() {
         try {
-            startActivity( HistoryActivity.createIntent(this, currentStation));
+            startActivity( HistoryActivity.createIntent( this, currentStation ) );
         } catch ( Exception e ) {
             String message = getString( R.string.error_unable_to_show_history );
             logger.d( TAG, message, e );
