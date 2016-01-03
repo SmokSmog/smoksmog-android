@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class AboutActivity extends BaseActivity {
 
     private static final String TAG = "AboutActivity";
-    
+
     @Inject
     Logger logger;
 
