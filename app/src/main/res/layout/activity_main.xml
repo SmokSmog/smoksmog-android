@@ -47,7 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:padding="4dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -85,8 +86,12 @@
 
         <com.antyzero.smoksmog.ui.IndicatorView
             android:id="@+id/indicatorMain"
-            android:layout_width="200dp"
-            android:layout_height="200dp"/>
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:maxWidth="200dp"/>
 
     </LinearLayout>
 

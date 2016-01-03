@@ -19,4 +19,6 @@
     <string name="label_norm">Norm</string>
     <string name="title_about" translatable="false">@string/action_about</string>
 
+    <string name="version_name_and_code" formatted="false">Version %s (%s)</string>
+
 </resources>
