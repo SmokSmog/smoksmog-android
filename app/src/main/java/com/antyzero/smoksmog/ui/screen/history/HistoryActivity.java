@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,6 @@ import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
-import com.trello.rxlifecycle.RxLifecycle;
 
 import javax.inject.Inject;
 
@@ -58,6 +56,7 @@ public class HistoryActivity extends BaseActivity {
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
 
         final long stationId = getStationIdExtra( getIntent() );
 
@@ -66,8 +65,6 @@ public class HistoryActivity extends BaseActivity {
         if ( getSupportActionBar() != null ) {
             getSupportActionBar().setDisplayHomeAsUpEnabled( true );
         }
-
-        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
 
         smokSmog.getApi().stationHistory( stationId )
                 .compose( bindToLifecycle() )
