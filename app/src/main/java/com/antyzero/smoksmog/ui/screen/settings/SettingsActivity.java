@@ -10,12 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.ui.BaseActivity;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        BaseActivity.initOnCreate( this );
         setSupportActionBar( (Toolbar) getLayoutInflater().inflate( R.layout.toolbar, null, false ) );
     }
 

@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,22 +25,8 @@ public class BaseActivity extends AppCompatActivity implements ActivityLifecycle
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-
         this.lifecycleSubject.onNext( ActivityEvent.CREATE );
-
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-
-            int color;
-
-            if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ){
-                color = getResources().getColor( R.color.primary, getTheme() );
-            } else {
-                //noinspection deprecation
-                color = getResources().getColor( R.color.primary );
-            }
-
-            getWindow().setNavigationBarColor( color );
-        }
+        initOnCreate( this );
     }
 
     @Override
@@ -112,5 +99,23 @@ public class BaseActivity extends AppCompatActivity implements ActivityLifecycle
 
     public BehaviorSubject<ActivityEvent> getLifecycleSubject() {
         return lifecycleSubject;
+    }
+
+    /**
+     * Shared initialization among activities, use it you cannot extend BaseActivity
+     *
+     * @param activity for access to various data
+     */
+    public static void initOnCreate( Activity activity ) {
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
+            int color;
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
+                color = activity.getResources().getColor( R.color.primary, activity.getTheme() );
+            } else {
+                //noinspection deprecation
+                color = activity.getResources().getColor( R.color.primary );
+            }
+            activity.getWindow().setNavigationBarColor( color );
+        }
     }
 }
