@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.ui.BaseActivity;
@@ -18,7 +21,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         BaseActivity.initOnCreate( this );
-        setSupportActionBar( (Toolbar) getLayoutInflater().inflate( R.layout.toolbar, null, false ) );
+    }
+
+    @Override
+    protected void onPostCreate( Bundle savedInstanceState ) {
+        super.onPostCreate( savedInstanceState );
+        // TODO f... found on stack but this is ugly approach to get root view
+        LinearLayout root = (LinearLayout) findViewById( android.R.id.list ).getParent().getParent().getParent();
+        Toolbar toolbar = (Toolbar) LayoutInflater.from( this ).inflate( R.layout.toolbar, root, false );
+        root.addView( toolbar, 0 ); // insert at top
+        toolbar.setNavigationOnClickListener( v -> finish() );
+        setSupportActionBar( toolbar );
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+        getSupportActionBar().setTitle( R.string.title_settings );
     }
 
     @Override
@@ -34,8 +49,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     /**
-     *
-     *
      * @param context for starting
      */
     public static void start( Context context ) {
