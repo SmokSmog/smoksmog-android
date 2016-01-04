@@ -335,7 +335,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @OnClick( R.id.buttonHistory )
     void onHistoryButtonClick() {
         try {
-            startActivity( HistoryActivity.createIntent( this, currentStation ) );
+            startActivity( HistoryActivity.intent( this, currentStation ) );
         } catch ( Exception e ) {
             String message = getString( R.string.error_unable_to_show_history );
             logger.d( TAG, message, e );

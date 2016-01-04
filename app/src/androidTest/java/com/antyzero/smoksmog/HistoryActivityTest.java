@@ -2,6 +2,7 @@ package com.antyzero.smoksmog;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.test.annotation.UiThreadTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -19,8 +20,7 @@ import org.junit.runner.RunWith;
 public class HistoryActivityTest {
 
     @Rule
-    public final MockedNetworkActivityTestRule<HistoryActivity> activityTestRule =
-            new MockedNetworkActivityTestRule<>( HistoryActivity.class );
+    public final MockedNetworkActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule();
 
     @Test
     @UiThreadTest
@@ -30,7 +30,7 @@ public class HistoryActivityTest {
         Activity activity = activityTestRule.getActivity();
 
         // when
-        //
+        // do nothing
 
         // then
         Spoon.screenshot( activity, "Created" );
