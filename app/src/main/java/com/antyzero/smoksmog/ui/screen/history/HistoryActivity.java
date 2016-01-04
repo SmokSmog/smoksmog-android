@@ -44,15 +44,6 @@ public class HistoryActivity extends BaseActivity {
     @Bind( R.id.recyclerViewCharts )
     RecyclerView chartsRecyclerView;
 
-    public static Intent createIntent( final Context context, Station station ) throws Exception {
-        if ( station == null ) {
-            throw new IllegalArgumentException( Station.class.getSimpleName() + " cannot be null" );
-        }
-        final Intent intent = new Intent( context, HistoryActivity.class );
-        intent.putExtra( STATION_ID_KEY, station.getId() );
-        return intent;
-    }
-
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -94,11 +85,28 @@ public class HistoryActivity extends BaseActivity {
      */
     private long getStationIdExtra( final Intent intent ) {
         if ( intent == null || !intent.hasExtra( STATION_ID_KEY ) ) {
+            // TODO toast text should be in resources and tranlsted
             Toast.makeText( this, "Pokazanie historii było niemożliwe", Toast.LENGTH_SHORT ).show();
             logger.e( TAG, "Unable to display History screen, missing start data" );
             finish();
             return -1;
         }
         return intent.getLongExtra( STATION_ID_KEY, -1 );
+    }
+
+    public static Intent intent( final Context context, Station station ) throws Exception {
+        if ( station == null ) {
+            throw new IllegalArgumentException( Station.class.getSimpleName() + " argument cannot be null" );
+        }
+        return intent( context, station.getId() );
+    }
+
+    public static Intent intent( final Context context, long stationId ) throws Exception {
+        if ( stationId <= 0 ) {
+            throw new IllegalArgumentException( "Station ID argument cannot be below 0" );
+        }
+        final Intent intent = new Intent( context, HistoryActivity.class );
+        intent.putExtra( STATION_ID_KEY, stationId );
+        return intent;
     }
 }

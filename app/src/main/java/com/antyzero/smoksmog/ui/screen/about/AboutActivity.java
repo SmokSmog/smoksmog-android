@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ public class AboutActivity extends BaseActivity {
     TextView textView;
     @Bind( R.id.textViewVersionName )
     TextView textViewVersionName;
+    @Bind( R.id.toolbar )
+    Toolbar toolbar;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -43,14 +46,16 @@ public class AboutActivity extends BaseActivity {
 
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo( getPackageName(), 0 );
-
             textViewVersionName.setText( getString( R.string.version_name_and_code,
                     packageInfo.versionName,
                     packageInfo.versionCode ) );
-
         } catch ( Exception e ) {
-            logger.e( TAG, "Problem with obaining version", e );
+            logger.e( TAG, "Problem with obtaining version", e );
         }
+
+        setSupportActionBar( toolbar );
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
     }
 
     public static void start( Context context ) {
