@@ -72,7 +72,7 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
         }
 
         public void bind( Particulate particulate, OnItemClickListener listener ) {
-            indicatorView.setValue( particulate.getValue() / particulate.getNorm() );
+            indicatorView.setValue( particulate.getAverage() / particulate.getNorm() );
             textViewName.setText( particulate.getShortName() );
             textViewNorm.setText( String.format( "%s%s", particulate.getNorm(), particulate.getUnit() ) );
 

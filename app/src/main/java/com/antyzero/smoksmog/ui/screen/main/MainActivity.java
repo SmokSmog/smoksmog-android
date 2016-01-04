@@ -297,7 +297,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      * @param particulate data
      */
     private void updateUiWithMainParticulate( Particulate particulate ) {
-        indicatorMain.setValue( particulate.getValue() / particulate.getNorm() );
+        indicatorMain.setValue( particulate.getAverage() / particulate.getNorm() );
+
         textViewConcentration.setText( String.format( "%s %s", particulate.getValue(), particulate.getUnit() ) );
         textViewAverage.setText( String.format( "%s %s", particulate.getAverage(), particulate.getUnit() ) );
         textViewData.setText( DateTimeFormat.longDateTime().print( particulate.getDate() ) );
