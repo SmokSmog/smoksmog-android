@@ -17,7 +17,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setSupportActionBar( (Toolbar) getLayoutInflater().inflate( R.layout.toolbar, null, false ) );
-        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
     }
 
     @Override
