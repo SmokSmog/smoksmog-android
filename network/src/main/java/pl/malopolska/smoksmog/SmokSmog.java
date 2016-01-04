@@ -42,13 +42,6 @@ public class SmokSmog {
 
         builderRest.setConverter( new GsonConverter( gson ) );
 
-        builderRest.setErrorHandler( new ErrorHandler() {
-            @Override
-            public Throwable handleError( RetrofitError cause ) {
-                return new Throwable( cause.getCause() );
-            }
-        } );
-
         RestAdapter restAdapter = builderRest.build();
 
         api = restAdapter.create( Api.class );
