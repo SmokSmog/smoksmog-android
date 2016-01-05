@@ -21,6 +21,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         BaseActivity.initOnCreate( this );
+
+        getFragmentManager().beginTransaction()
+                .replace( android.R.id.content, GeneralSettingsFragment.create() )
+                .commit();
     }
 
     @Override

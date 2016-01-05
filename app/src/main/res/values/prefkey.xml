@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_key_station_default" translatable="false">stationDefault</string>
+</resources>
