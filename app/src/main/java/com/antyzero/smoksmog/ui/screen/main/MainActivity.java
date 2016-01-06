@@ -2,6 +2,7 @@ package com.antyzero.smoksmog.ui.screen.main;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,8 +29,8 @@ import com.antyzero.smoksmog.ui.ParticulateAdapter;
 import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
+import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -57,6 +58,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     private static final String TAG = "MainActivity";
 
+    //<editor-fold desc="Dagger">
     @Inject
     SmokSmog smokSmog;
     @Inject
@@ -65,7 +67,13 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     ErrorReporter errorReporter;
     @Inject
     Logger logger;
+    @Inject
+    Answers answers;
+    @Inject
+    SettingsHelper settingsHelper;
+    //</editor-fold>
 
+    //<editor-fold desc="ViewBindings">
     @Bind( R.id.toolbar )
     Toolbar toolbar;
     @Bind( R.id.spinnerStations )
@@ -84,12 +92,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     RecyclerView recyclerViewParticulates;
     @Bind( R.id.buttonHistory )
     View buttonHistory;
+    //</editor-fold>
 
     private final List<Station> stations = new ArrayList<>();
     private final List<Particulate> particulates = new ArrayList<>();
-    @SuppressWarnings( "FieldCanBeLocal" )
-    private ArrayAdapter<Station> adapterStations;
 
+    private ArrayAdapter<Station> adapterStations;
     private Subscription spinnerSubscriber = RxJava.EMPTY_SUBSCRIPTION;
     private ParticulateAdapter particulateAdapter;
     private Station currentStation;
@@ -97,11 +105,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ), new GoogleModule( this ) ).inject( this );
+
         setContentView( R.layout.activity_main );
         setSupportActionBar( toolbar );
         setTitle( null );
-
-        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ), new GoogleModule( this ) ).inject( this );
 
         particulateAdapter = new ParticulateAdapter( particulates, this );
 
@@ -120,24 +128,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
-                        stations -> {
-                            this.stations.addAll( stations );
-
-                            // Update with first station ASAP
-                            if ( !stations.isEmpty() ) {
-                                Station station = stations.get( 0 );
-                                smokSmog.getApi().station( station.getId() )
-                                        .compose( RxLifecycle.bindActivity( lifecycle() ) )
-                                        .observeOn( AndroidSchedulers.mainThread() )
-                                        .subscribe(
-                                                this::updateUiWithStation,
-                                                throwable -> {
-                                                    String errorMessage = getString( R.string.error_unable_to_load_station_data, station.getName() );
-                                                    errorReporter.report( errorMessage );
-                                                    logger.e( TAG, "Unable to load station data", throwable );
-                                                } );
-                            }
-                        },
+                        this.stations::addAll,
                         throwable -> {
                             Toast.makeText( MainActivity.this, R.string.error_unable_to_load_stations, Toast.LENGTH_SHORT ).show();
                             logger.e( TAG, "Unable to load stations list", throwable );
@@ -225,7 +216,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     /**
      * Called when particulate is clicked on horizontal scroll
      *
-     * @param particulate
+     * @param particulate data
      */
     @Override
     public void onItemClick( Particulate particulate ) {
@@ -239,18 +230,17 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      */
     private void updateUiWithStation( Station station ) {
 
-        Answers.getInstance().logContentView( StationShowEvent.create( station ) );
+        currentStation = station;
+
+        answers.logContentView( StationShowEvent.create( station ) );
 
         textViewName.setText( station.getName() );
-
-        currentStation = station;
 
         updateUiSpinnerSelectionWithStation( station );
 
         buttonHistory.setEnabled( true );
 
         if ( !station.getParticulates().isEmpty() ) {
-
             List<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
                     .toList().toBlocking().first();
 

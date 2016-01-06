@@ -19,7 +19,6 @@ public class GeneralSettingsFragment extends PreferenceFragment {
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         addPreferencesFromResource( R.xml.settings_general );
-
         updateSummaryWithEntry( (ListPreference) findPreference( R.string.pref_key_station_default ) );
     }
 
