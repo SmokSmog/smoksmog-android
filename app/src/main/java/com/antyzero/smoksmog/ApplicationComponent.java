@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog;
 
+import com.antyzero.smoksmog.fabric.FabricModule;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.LoggerModule;
 import com.antyzero.smoksmog.network.NetworkModule;
@@ -16,7 +17,8 @@ import dagger.Component;
         modules = {
                 ApplicationModule.class,
                 LoggerModule.class,
-                NetworkModule.class
+                NetworkModule.class,
+                FabricModule.class
         }
 )
 public interface ApplicationComponent {

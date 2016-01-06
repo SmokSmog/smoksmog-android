@@ -18,5 +18,5 @@
     <string name="pref_station_default_entries_closest">Najbliższą</string>
     <string name="pref_station_default_entries_last">Ostatio wybraną</string>
     <string name="pref_station_default_entries_defined">Zdefiniowaną w ustawieniach</string>
-    <string name="pref_station_default_title">Przy starcie aplikacji wybierac stację</string>
+    <string name="pref_station_default_title">Po uruchomieniu aplikacji pokaż stację</string>
 </resources>
