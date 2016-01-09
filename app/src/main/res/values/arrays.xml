@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="pref_station_default_entries">
-        <item>@string/pref_station_default_entries_last</item>
-        <item>@string/pref_station_default_entries_closest</item>
-        <item>@string/pref_station_default_entries_defined</item>
+        <item>@string/pref_station_selection_mode_entries_last</item>
+        <item>@string/pref_station_selection_mode_entries_closest</item>
+        <item>@string/pref_station_selection_mode_entries_defined</item>
     </string-array>
     <string-array name="pref_station_default_entry_values">
         <item>@string/pref_station_default_value_last</item>

@@ -1,5 +1,7 @@
 package com.antyzero.smoksmog.ui.screen;
 
+import com.antyzero.smoksmog.ui.screen.settings.GeneralSettingsFragment;
+
 import dagger.Subcomponent;
 
 @Subcomponent(
@@ -7,5 +9,7 @@ import dagger.Subcomponent;
                 FragmentModule.class,
         }
 )
-public class FragmentComponent {
+public interface FragmentComponent {
+
+    void inject( GeneralSettingsFragment generalSettingsFragment );
 }

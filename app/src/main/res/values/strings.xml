@@ -24,8 +24,11 @@
     <string name="version_name_and_code" formatted="false">Version %s (%s)</string>
 
     <!-- Preferences -->
-    <string name="pref_station_default_entries_last">Last picked</string>
-    <string name="pref_station_default_entries_closest">Closest location</string>
-    <string name="pref_station_default_entries_defined">Always this one</string>
-    <string name="pref_station_default_title">On app start pick station</string>
+    <string name="pref_station_selection_mode_title">On app start pick station</string>
+    <string name="pref_station_selection_mode_entries_last">Last picked</string>
+    <string name="pref_station_selection_mode_entries_closest">Closest location</string>
+    <string name="pref_station_selection_mode_entries_defined">From settings (default)</string>
+
+    <string name="pref_station_selected_title">Default station</string>
+    <string name="pref_station_selected_summary_default">Pick station</string>
 </resources>
