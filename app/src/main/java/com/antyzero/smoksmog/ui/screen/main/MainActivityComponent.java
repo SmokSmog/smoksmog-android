@@ -1,7 +1,7 @@
 package com.antyzero.smoksmog.ui.screen.main;
 
 import com.antyzero.smoksmog.google.GoogleModule;
-import com.antyzero.smoksmog.ui.ActivityModule;
+import com.antyzero.smoksmog.ui.screen.ActivityModule;
 
 import dagger.Subcomponent;
 

@@ -2,7 +2,6 @@ package com.antyzero.smoksmog.ui.screen.main;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +21,7 @@ import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.fabric.StationShowEvent;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.ui.ActivityModule;
+import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
 import com.antyzero.smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;

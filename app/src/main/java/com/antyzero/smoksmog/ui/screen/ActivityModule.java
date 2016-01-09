@@ -1,9 +1,10 @@
-package com.antyzero.smoksmog.ui;
+package com.antyzero.smoksmog.ui.screen;
 
 import android.app.Activity;
 
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.error.SnackBarErrorReporter;
+import com.antyzero.smoksmog.ui.BaseActivity;
 
 import dagger.Module;
 import dagger.Provides;
@@ -11,20 +12,15 @@ import dagger.Provides;
 @Module
 public class ActivityModule {
 
-    private final BaseActivity baseActivity;
+    private final Activity activity;
 
-    public ActivityModule( BaseActivity baseActivity ) {
-        this.baseActivity = baseActivity;
-    }
-
-    @Provides
-    public BaseActivity provideBaseActivity() {
-        return baseActivity;
+    public ActivityModule( Activity activity ) {
+        this.activity = activity;
     }
 
     @Provides
     public Activity provideActivity() {
-        return baseActivity;
+        return activity;
     }
 
     @Provides
