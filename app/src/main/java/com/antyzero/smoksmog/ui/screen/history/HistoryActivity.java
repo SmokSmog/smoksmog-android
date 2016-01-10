@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +15,7 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.ui.ActivityModule;
+import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
 
 import javax.inject.Inject;
@@ -106,6 +107,11 @@ public class HistoryActivity extends BaseActivity {
             throw new IllegalArgumentException( "Station ID argument cannot be below 0" );
         }
         final Intent intent = new Intent( context, HistoryActivity.class );
+        intent.putExtra( STATION_ID_KEY, stationId );
+        return intent;
+    }
+
+    public static Intent fillIntent( Intent intent, long stationId ){
         intent.putExtra( STATION_ID_KEY, stationId );
         return intent;
     }
