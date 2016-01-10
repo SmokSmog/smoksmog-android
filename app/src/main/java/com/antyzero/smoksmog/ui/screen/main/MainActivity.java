@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,14 +22,14 @@ import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.fabric.StationShowEvent;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.ui.screen.ActivityModule;
+import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseActivity;
 import com.antyzero.smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
+import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
-import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.crashlytics.android.answers.Answers;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.ActivityEvent;
@@ -43,7 +44,6 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import butterknife.OnItemSelected;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.ApiUtils;
 import pl.malopolska.smoksmog.SmokSmog;
@@ -53,9 +53,10 @@ import pl.malopolska.smoksmog.utils.StationUtils;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, ParticulateAdapter.OnItemClickListener {
+public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, ParticulateAdapter.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "MainActivity";
+    public static final String KEY_STATION_ID = "KEY_STATION_ID";
 
     //<editor-fold desc="Dagger">
     @Inject
@@ -109,6 +110,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         setContentView( R.layout.activity_main );
         setSupportActionBar( toolbar );
         setTitle( null );
+        spinnerStations.setEnabled( false );
 
         particulateAdapter = new ParticulateAdapter( particulates, this );
 
@@ -127,15 +129,65 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
-                        this.stations::addAll,
+                        stations1 -> {
+                            this.stations.addAll( stations1 );
+                            adapterStations.notifyDataSetChanged();
+                            if ( currentStation != null ) {
+                                for ( int i = 0; i < stations.size(); i++ ) {
+                                    if ( stations.get( i ).getId() == currentStation.getId() ) {
+                                        spinnerStations.setSelection( i, false );
+                                        break;
+                                    }
+                                }
+                            } else {
+                                spinnerStations.setSelection( 0, false );
+                            }
+                            spinnerStations.setEnabled( true );
+                            spinnerStations.setOnItemSelectedListener( this );
+                        },
                         throwable -> {
                             Toast.makeText( MainActivity.this, R.string.error_unable_to_load_stations, Toast.LENGTH_SHORT ).show();
                             logger.e( TAG, "Unable to load stations list", throwable );
                             MainActivity.this.finish();
-                        },
-                        adapterStations::notifyDataSetChanged );
+                        } );
 
         googleApiClient.connect();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        switch ( settingsHelper.getStationSelectionModeNoException() ) {
+
+            case LAST:
+                long stationId = loadStationPick();
+                smokSmog.getApi().station( stationId )
+                        .observeOn( AndroidSchedulers.mainThread() )
+                        .subscribe(
+                                this::updateUiWithStation,
+                                throwable -> {
+                                    logger.w( TAG, "Unable to load last picked station (id:" + stationId+ ")" );
+                                }
+                        );
+                break;
+            case CLOSEST:
+                loadDataForCurrentLocation();
+                break;
+            case DEFINED:
+                final long defaultStationId = settingsHelper.getDefaultStationId();
+                smokSmog.getApi().station( defaultStationId )
+                        .observeOn( AndroidSchedulers.mainThread() )
+                        .subscribe(
+                                this::updateUiWithStation,
+                                throwable -> {
+                                    logger.w( TAG, "Unable to load defined station (id:" + defaultStationId + ")" );
+                                }
+                        );
+                break;
+            default:
+                logger.w( TAG, "Missing selection mode value for station loading" );
+        }
     }
 
     @Override
@@ -190,14 +242,9 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      *
      * @param position data
      */
-    @OnItemSelected( value = R.id.spinnerStations )
-    void OnSpinnerSelected( int position ) {
+    @Override
+    public void onItemSelected( AdapterView<?> parent, View view, int position, long id ) {
         Station stationSelected = stations.get( position );
-
-        // Do not update if same station is selected
-        if ( stationSelected.equals( currentStation ) ) {
-            return;
-        }
 
         spinnerSubscriber.unsubscribe();
         spinnerSubscriber = smokSmog.getApi().station( stationSelected.getId() )
@@ -207,9 +254,13 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                         throwable -> {
                             errorReporter.report( R.string.error_unable_to_load_station_data, stationSelected.getName() );
                             logger.w( TAG, "Unable to load data for selected station: " + stationSelected.getName(), throwable );
-                            updateUiSpinnerSelectionWithStation( currentStation );
                         }
                 );
+    }
+
+    @Override
+    public void onNothingSelected( AdapterView<?> parent ) {
+        // do nothing
     }
 
     /**
@@ -228,6 +279,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      * @param station data
      */
     private void updateUiWithStation( Station station ) {
+
+        saveStationPick( station );
 
         currentStation = station;
 
@@ -278,7 +331,15 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void onConnected( Bundle bundle ) {
-        loadDataForCurrentLocation();
+        // TODO wait
+    }
+
+    public void saveStationPick( Station station ) {
+        getSharedPreferences( "stationPick", MODE_PRIVATE ).edit().putLong( KEY_STATION_ID, station.getId() ).apply();
+    }
+
+    public long loadStationPick() {
+        return getSharedPreferences( "stationPick", MODE_PRIVATE ).getLong( KEY_STATION_ID, 13 );
     }
 
     /**

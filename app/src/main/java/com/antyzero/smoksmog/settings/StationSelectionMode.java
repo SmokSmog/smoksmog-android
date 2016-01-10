@@ -11,7 +11,9 @@ public enum StationSelectionMode {
 
     CLOSEST( R.string.pref_station_default_value_closest ),
 
-    DEFINED( R.string.pref_station_default_value_defined );
+    DEFINED( R.string.pref_station_default_value_defined ),
+
+    UNKNOWN( android.R.string.unknownName );
 
     private final int prefValueString;
 
