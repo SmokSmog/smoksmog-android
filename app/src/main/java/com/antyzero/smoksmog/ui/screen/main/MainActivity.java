@@ -27,8 +27,8 @@ import com.antyzero.smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
 import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
+import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
 import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.AnswersEvent;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.ActivityEvent;
@@ -194,9 +194,9 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
                 break;
 
-            /*case R.id.action_settings:
-                // Start PreferencesActivity
-                break;*/
+            case R.id.action_settings:
+                SettingsActivity.start( this );
+                break;
 
             case R.id.action_about:
                 AboutActivity.start( this );
@@ -335,7 +335,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @OnClick( R.id.buttonHistory )
     void onHistoryButtonClick() {
         try {
-            startActivity( HistoryActivity.createIntent( this, currentStation ) );
+            startActivity( HistoryActivity.intent( this, currentStation ) );
         } catch ( Exception e ) {
             String message = getString( R.string.error_unable_to_show_history );
             logger.d( TAG, message, e );

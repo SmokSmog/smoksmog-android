@@ -10,12 +10,10 @@
         android:title="@string/action_my_location"
         app:showAsAction="ifRoom"/>
 
-    <!--
     <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         app:showAsAction="never" />
-        -->
 
     <item
         android:id="@+id/action_about"
