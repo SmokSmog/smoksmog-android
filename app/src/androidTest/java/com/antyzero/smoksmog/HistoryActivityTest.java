@@ -23,7 +23,6 @@ public class HistoryActivityTest {
     public final MockedNetworkActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule( true, false );
 
     @Test
-    @UiThreadTest
     public void checkCreation() {
 
         // given
