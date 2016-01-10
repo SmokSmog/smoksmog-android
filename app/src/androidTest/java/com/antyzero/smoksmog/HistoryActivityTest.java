@@ -26,13 +26,17 @@ public class HistoryActivityTest {
     public void checkCreation() {
 
         // given
-        activityTestRule.launchActivity( HistoryActivity.fillIntent( new Intent(), 13 ) );
-        Activity activity = activityTestRule.getActivity();
+        Activity activity = activityTestRule.launchActivity( HistoryActivity.fillIntent( new Intent(), 13 ) );
 
         // when
         // do nothing
 
         // then
-        Spoon.screenshot( activity, "Created" );
+        try {
+            Spoon.screenshot( activity, "Created" );
+        } catch ( Exception e ) {
+            System.out.println( e );
+        }
+
     }
 }
