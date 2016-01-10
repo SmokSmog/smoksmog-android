@@ -15,37 +15,28 @@ import android.widget.LinearLayout;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.ui.BaseActivity;
 
-public class SettingsActivity extends AppCompatPreferenceActivity {
+import butterknife.Bind;
+
+public class SettingsActivity extends BaseActivity {
+
+    @Bind( R.id.toolbar )
+    Toolbar toolbar;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-        BaseActivity.initOnCreate( this );
-    }
+        setContentView( R.layout.activity_settings );
 
-    @Override
-    protected void onPostCreate( Bundle savedInstanceState ) {
-        super.onPostCreate( savedInstanceState );
-        // TODO f... found on stack but this is ugly approach to get root view
-        LinearLayout root = (LinearLayout) findViewById( android.R.id.list ).getParent().getParent().getParent();
-        Toolbar toolbar = (Toolbar) LayoutInflater.from( this ).inflate( R.layout.toolbar, root, false );
-        root.addView( toolbar, 0 ); // insert at top
-        toolbar.setNavigationOnClickListener( v -> finish() );
         setSupportActionBar( toolbar );
-        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-        getSupportActionBar().setTitle( R.string.title_settings );
-    }
 
-    @Override
-    public boolean onMenuItemSelected( int featureId, MenuItem item ) {
-        int id = item.getItemId();
-        if ( id == android.R.id.home ) {
-            if ( !super.onMenuItemSelected( featureId, item ) ) {
-                NavUtils.navigateUpFromSameTask( this );
-            }
-            return true;
+        if ( getSupportActionBar() != null ) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+            getSupportActionBar().setTitle( R.string.title_settings );
         }
-        return super.onMenuItemSelected( featureId, item );
+
+        getFragmentManager().beginTransaction()
+                .replace( R.id.contentFragment, GeneralSettingsFragment.create() )
+                .commit();
     }
 
     /**
