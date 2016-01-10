@@ -12,6 +12,14 @@ public class HistoryActivityTestRule extends MockedNetworkActivityTestRule<Histo
         super( HistoryActivity.class );
     }
 
+    public HistoryActivityTestRule( boolean initialTouchMode ) {
+        super( HistoryActivity.class, initialTouchMode );
+    }
+
+    public HistoryActivityTestRule( boolean initialTouchMode, boolean launchActivity ) {
+        super( HistoryActivity.class, initialTouchMode, launchActivity );
+    }
+
     @Override
     protected Intent getActivityIntent() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
