@@ -15,9 +15,11 @@ import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.settings.StationSelectionMode;
+import com.antyzero.smoksmog.ui.BasePreferenceFragment;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.FragmentModule;
 import com.crashlytics.android.answers.Answers;
+import com.trello.rxlifecycle.RxLifecycle;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  *
  */
-public class GeneralSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class GeneralSettingsFragment extends BasePreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = GeneralSettingsFragment.class.getSimpleName();
 
@@ -72,6 +74,7 @@ public class GeneralSettingsFragment extends PreferenceFragment implements Share
     public void onActivityCreated( Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         smokSmog.getApi().stations()
+                .compose( RxLifecycle.bindFragment( lifecycle() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
                         stations -> {
