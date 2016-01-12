@@ -30,3 +30,8 @@ before_install:
 
 script:
   - ./gradlew check assemble -PdisablePreDex --continue --stacktrace
+
+after_success:
+  - ./gradlew jacocoFullReport
+  - pip install --user codecov
+  - codecov
