@@ -20,19 +20,23 @@ import org.junit.runner.RunWith;
 public class HistoryActivityTest {
 
     @Rule
-    public final MockedNetworkActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule();
+    public final MockedNetworkActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule( true, false );
 
     @Test
-    @UiThreadTest
     public void checkCreation() {
 
         // given
-        Activity activity = activityTestRule.getActivity();
+        Activity activity = activityTestRule.launchActivity( HistoryActivity.fillIntent( new Intent(), 13 ) );
 
         // when
         // do nothing
 
         // then
-        Spoon.screenshot( activity, "Created" );
+        try {
+            Spoon.screenshot( activity, "Created" );
+        } catch ( Exception e ) {
+            System.out.println( e );
+        }
+
     }
 }
