@@ -96,12 +96,12 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
                                 }
 
                             } catch ( Exception e ) {
-                                logger.w( TAG, "Unable to update status of selected station option", e );
+                                logger.e( TAG, "Unable to update status of selected station option", e );
                                 // TODO error report
                             }
                         },
                         throwable -> {
-                            logger.w( TAG, "Problem with loading stations for settings", throwable );
+                            logger.i( TAG, "Problem with loading stations for settings", throwable );
                             // TODO error report
                         } );
     }
