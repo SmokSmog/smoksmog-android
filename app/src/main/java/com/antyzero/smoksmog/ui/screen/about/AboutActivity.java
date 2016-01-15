@@ -50,7 +50,7 @@ public class AboutActivity extends BaseActivity {
                     packageInfo.versionName,
                     packageInfo.versionCode ) );
         } catch ( Exception e ) {
-            logger.e( TAG, "Problem with obtaining version", e );
+            logger.i( TAG, "Problem with obtaining version", e );
         }
 
         setSupportActionBar( toolbar );

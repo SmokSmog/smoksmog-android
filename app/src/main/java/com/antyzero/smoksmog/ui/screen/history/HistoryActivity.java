@@ -66,7 +66,7 @@ public class HistoryActivity extends BaseActivity {
                         throwable -> {
                             String message = getString( R.string.error_unable_to_load_station_history );
                             errorReporter.report( message );
-                            logger.w( TAG, message, throwable );
+                            logger.i( TAG, message, throwable );
                         } );
     }
 

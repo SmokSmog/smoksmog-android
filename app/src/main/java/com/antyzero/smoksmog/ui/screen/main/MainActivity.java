@@ -147,7 +147,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                         },
                         throwable -> {
                             Toast.makeText( MainActivity.this, R.string.error_unable_to_load_stations, Toast.LENGTH_SHORT ).show();
-                            logger.e( TAG, "Unable to load stations list", throwable );
+                            logger.i( TAG, "Unable to load stations list", throwable );
                             MainActivity.this.finish();
                         } );
 
@@ -167,7 +167,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                         .subscribe(
                                 this::updateUiWithStation,
                                 throwable -> {
-                                    logger.w( TAG, "Unable to load last picked station (id:" + stationId+ ")" );
+                                    logger.i( TAG, "Unable to load last picked station (id:" + stationId+ ")" );
                                 }
                         );
                 break;
@@ -181,12 +181,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                         .subscribe(
                                 this::updateUiWithStation,
                                 throwable -> {
-                                    logger.w( TAG, "Unable to load defined station (id:" + defaultStationId + ")" );
+                                    logger.i( TAG, "Unable to load defined station (id:" + defaultStationId + ")" );
                                 }
                         );
                 break;
             default:
-                logger.w( TAG, "Missing selection mode value for station loading" );
+                logger.e( TAG, "Missing selection mode value for station loading" );
         }
     }
 
@@ -216,7 +216,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                                     },
                                     throwable -> {
                                         errorReporter.report( R.string.error_no_near_Station );
-                                        logger.w( TAG, "Unable to find nearest station data", throwable );
+                                        logger.i( TAG, "Unable to find nearest station data", throwable );
                                     }
                             );
                 }
@@ -253,7 +253,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                         this::updateUiWithStation,
                         throwable -> {
                             errorReporter.report( R.string.error_unable_to_load_station_data, stationSelected.getName() );
-                            logger.w( TAG, "Unable to load data for selected station: " + stationSelected.getName(), throwable );
+                            logger.i( TAG, "Unable to load data for selected station: " + stationSelected.getName(), throwable );
                         }
                 );
     }
@@ -356,7 +356,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                         this::updateUiWithStation,
                         throwable -> {
                             errorReporter.report( R.string.error_no_near_Station );
-                            logger.w( TAG, "Unable to find nearest station data", throwable );
+                            logger.i( TAG, "Unable to find nearest station data", throwable );
                         }
                 );
     }
@@ -367,7 +367,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
             startActivity( HistoryActivity.intent( this, currentStation ) );
         } catch ( Exception e ) {
             String message = getString( R.string.error_unable_to_show_history );
-            logger.d( TAG, message, e );
+            logger.e( TAG, message, e );
             errorReporter.report( message );
         }
     }
