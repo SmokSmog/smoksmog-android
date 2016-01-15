@@ -9,6 +9,12 @@ import com.crashlytics.android.core.CrashlyticsCore;
  */
 public class CrashlyticsLogger implements Logger {
 
+    private final ExceptionLevel exceptionLevel;
+
+    public CrashlyticsLogger( ExceptionLevel exceptionLevel ) {
+        this.exceptionLevel = exceptionLevel;
+    }
+
     @Override
     public void v( String tag, String message ) {
         CrashlyticsCore.getInstance().log( Log.VERBOSE, tag, message );
@@ -17,7 +23,9 @@ public class CrashlyticsLogger implements Logger {
     @Override
     public void v( String tag, String message, Throwable throwable ) {
         CrashlyticsCore.getInstance().log( Log.VERBOSE, tag, message );
-        CrashlyticsCore.getInstance().logException( throwable );
+        if ( exceptionLevel.value >= ExceptionLevel.VERBOSE.value ) {
+            CrashlyticsCore.getInstance().logException( throwable );
+        }
     }
 
     @Override
@@ -28,7 +36,9 @@ public class CrashlyticsLogger implements Logger {
     @Override
     public void d( String tag, String message, Throwable throwable ) {
         CrashlyticsCore.getInstance().log( Log.DEBUG, tag, message );
-        CrashlyticsCore.getInstance().logException( throwable );
+        if ( exceptionLevel.value >= ExceptionLevel.DEBUG.value ) {
+            CrashlyticsCore.getInstance().logException( throwable );
+        }
     }
 
     @Override
@@ -39,7 +49,9 @@ public class CrashlyticsLogger implements Logger {
     @Override
     public void i( String tag, String message, Throwable throwable ) {
         CrashlyticsCore.getInstance().log( Log.INFO, tag, message );
-        CrashlyticsCore.getInstance().logException( throwable );
+        if ( exceptionLevel.value >= ExceptionLevel.INFO.value ) {
+            CrashlyticsCore.getInstance().logException( throwable );
+        }
     }
 
     @Override
@@ -50,7 +62,9 @@ public class CrashlyticsLogger implements Logger {
     @Override
     public void w( String tag, String message, Throwable throwable ) {
         CrashlyticsCore.getInstance().log( Log.WARN, tag, message );
-        CrashlyticsCore.getInstance().logException( throwable );
+        if ( exceptionLevel.value >= ExceptionLevel.WARN.value ) {
+            CrashlyticsCore.getInstance().logException( throwable );
+        }
     }
 
     @Override
@@ -61,6 +75,18 @@ public class CrashlyticsLogger implements Logger {
     @Override
     public void e( String tag, String message, Throwable throwable ) {
         CrashlyticsCore.getInstance().log( Log.ERROR, tag, message );
-        CrashlyticsCore.getInstance().logException( throwable );
+        if ( exceptionLevel.value >= ExceptionLevel.ERROR.value ) {
+            CrashlyticsCore.getInstance().logException( throwable );
+        }
+    }
+
+    public enum ExceptionLevel {
+        VERBOSE( 0 ), DEBUG( 1 ), INFO( 2 ), WARN( 3 ), ERROR( 4 );
+
+        private final int value;
+
+        ExceptionLevel( int value ) {
+            this.value = value;
+        }
     }
 }
