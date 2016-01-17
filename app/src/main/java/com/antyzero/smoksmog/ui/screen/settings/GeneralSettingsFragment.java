@@ -21,6 +21,7 @@ import com.antyzero.smoksmog.ui.screen.FragmentModule;
 import com.crashlytics.android.answers.Answers;
 import com.trello.rxlifecycle.RxLifecycle;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -113,8 +114,10 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
 
         stationMode.setOnPreferenceChangeListener( ( preference, newValue ) -> {
             try {
-                stationSelected.setEnabled( stationSelected.getEntries().length > 0 &&
-                        StationSelectionMode.find( getActivity(), String.valueOf( newValue ) ).equals( StationSelectionMode.DEFINED ) );
+                String value = String.valueOf( newValue );
+                stationSelected.setEnabled( stationSelected.getEntries() != null &&
+                        stationSelected.getEntries().length > 0 &&
+                        StationSelectionMode.DEFINED.equals( StationSelectionMode.find( getActivity(), value ) ) );
             } catch ( Exception e ) {
                 logger.e( TAG, "Wrong new value [" + newValue + "] for selection mode", e );
                 // TODO error report
