@@ -21,6 +21,7 @@ import com.antyzero.smoksmog.ui.screen.FragmentModule;
 import com.crashlytics.android.answers.Answers;
 import com.trello.rxlifecycle.RxLifecycle;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,8 +57,8 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         addPreferencesFromResource( R.xml.settings_general );
-        stationSelected = (ListPreference) findPreference( R.string.pref_key_station_selected );
-        stationMode = (ListPreference) findPreference( R.string.pref_key_station_selection_mode );
+        stationSelected = ( ListPreference ) findPreference( R.string.pref_key_station_selected );
+        stationMode = ( ListPreference ) findPreference( R.string.pref_key_station_selection_mode );
     }
 
     @Override
@@ -113,11 +114,12 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
 
         stationMode.setOnPreferenceChangeListener( ( preference, newValue ) -> {
             try {
-                stationSelected.setEnabled( stationSelected.getEntries().length > 0 &&
-                        StationSelectionMode.find( getActivity(), String.valueOf( newValue ) ).equals( StationSelectionMode.DEFINED ) );
+                String value = String.valueOf( newValue );
+                boolean isDefined = StationSelectionMode.DEFINED.equals( StationSelectionMode.find( getActivity(), value ) );
+                stationSelected.setEnabled( stationSelected.getEntries() != null && stationSelected.getEntries().length > 0 && isDefined );
             } catch ( Exception e ) {
-                logger.e( TAG, "Wrong new value [" + newValue + "] for selection mode", e );
-                // TODO error report
+                logger.e( TAG, "Problem with enabling preference StationSelected, passed new value [" + newValue + "]", e );
+                errorReporter.report( R.string.error_unable_to_enable_station_preference );
                 return false;
             }
             return true;
@@ -130,7 +132,7 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
         Preference preference = findPreference( key );
 
         if ( preference instanceof ListPreference ) {
-            ListPreference listPreference = (ListPreference) preference;
+            ListPreference listPreference = ( ListPreference ) preference;
             listPreference.setSummary( listPreference.getEntry() );
         }
 
