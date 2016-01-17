@@ -355,8 +355,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .subscribe(
                         this::updateUiWithStation,
                         throwable -> {
-                            errorReporter.report( R.string.error_no_near_Station );
                             logger.i( TAG, "Unable to find nearest station data", throwable );
+                            errorReporter.report( R.string.error_no_near_Station );
                         }
                 );
     }
