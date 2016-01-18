@@ -20,8 +20,8 @@ android {
         minSdkVersion 16
         //noinspection OldTargetApi // TODO since it's not tested against new permission system we keep 22
         targetSdkVersion 22
-        versionCode 192003
-        versionName "1.9.2"
+        versionCode 193000
+        versionName "1.9.3"
 
         multiDexEnabled true
 
