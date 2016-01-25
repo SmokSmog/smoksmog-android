@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.RxJava;
 import com.antyzero.smoksmog.SmokSmogApplication;
+import com.antyzero.smoksmog.air.AirQuality;
+import com.antyzero.smoksmog.air.AirQualityIndex;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.fabric.StationShowEvent;
 import com.antyzero.smoksmog.google.GoogleModule;
@@ -92,6 +94,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     RecyclerView recyclerViewParticulates;
     @Bind( R.id.buttonHistory )
     View buttonHistory;
+    @Bind( R.id.airQualityIndicator )
+    View airQualityIndicator;
+    @Bind( R.id.textViewAirQuality )
+    TextView textViewAirQuality;
     //</editor-fold>
 
     private final List<Station> stations = new ArrayList<>();
@@ -299,6 +305,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
             particulates.clear();
             particulates.addAll( sorted );
             particulateAdapter.notifyDataSetChanged();
+
+            AirQuality airQuality = AirQuality.findByValue( AirQualityIndex.calculate( station ) );
+
+            airQualityIndicator.setBackgroundColor( airQuality.getColor( this ) );
+            textViewAirQuality.setText( airQuality.getTitle( this ) );
 
             updateUiWithMainParticulate( sorted.get( 0 ) );
         }

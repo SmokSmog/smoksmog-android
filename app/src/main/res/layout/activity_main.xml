@@ -22,36 +22,57 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <View
+            android:id="@+id/airQualityIndicator"
             android:layout_width="50dp"
             android:layout_height="50dp" />
 
-        <TextView
-            android:id="@+id/textViewName"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:textSize="22sp"
-            android:gravity="center_horizontal"
-            tools:text="Some place"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewName"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:gravity="center_horizontal"
-            tools:text="12 listopada 2015"/>
+            <TextView
+                android:id="@+id/textViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="22sp"
+                android:gravity="center_horizontal"
+                tools:text="Kraków - Aleja Krasińskiego"/>
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/airQualityIndex"/>
+
+            <TextView
+                android:id="@+id/textViewAirQuality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                tools:text="Very good"/>
+
+            <TextView
+                android:id="@+id/textViewData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                tools:text="12 listopada 2015"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -40,4 +40,5 @@
     <string name="airQualitySufficient">Sufficient</string>
     <string name="airQualityBad">Bad</string>
     <string name="airQualityVeryBad">Very bad</string>
+    <string name="airQualityIndex">Air quality index</string>
 </resources>

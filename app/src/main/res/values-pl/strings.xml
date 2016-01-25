@@ -28,4 +28,5 @@
     <string name="airQualitySufficient">Dostateczny</string>
     <string name="airQualityVeryBad">Zły</string>
     <string name="airQualityVeryGood">Bardzo zły</string>
+    <string name="airQualityIndex">Indeks jakości powietrza</string>
 </resources>
