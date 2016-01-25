@@ -46,7 +46,7 @@ public class AboutActivity extends BaseActivity {
 
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo( getPackageName(), 0 );
-            textViewVersionName.setText( String.format( getString( R.string.version_name_and_code ),
+            textViewVersionName.setText( getString( R.string.version_name_and_code,
                     packageInfo.versionName,
                     packageInfo.versionCode ) );
         } catch ( Exception e ) {
