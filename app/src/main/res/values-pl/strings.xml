@@ -22,4 +22,10 @@
     <string name="pref_station_selected_title">Stacja domyślna</string>
     <string name="pref_station_selected_summary_default">Wybierz stację</string>
     <string name="error_unable_to_enable_station_preference">Nie można udostępnić opcji \'stacja domyślna\'</string>
+    <string name="airQualityBad">Zły</string>
+    <string name="airQualityGood">Dobry</string>
+    <string name="airQualityModerate">Umiarkowany</string>
+    <string name="airQualitySufficient">Dostateczny</string>
+    <string name="airQualityVeryBad">Zły</string>
+    <string name="airQualityVeryGood">Bardzo zły</string>
 </resources>
