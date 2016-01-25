@@ -59,7 +59,8 @@ android {
     }
 
     lintOptions {
-        disable 'InvalidPackage'
+        // StringFormatInvalid - for some reason strings contain version string thats invalid
+        disable 'InvalidPackage', 'StringFormatInvalid'
     }
 
     packagingOptions {
