@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
+import com.antyzero.smoksmog.ui.screen.ActivityModule;
 
 import javax.inject.Inject;
 
@@ -46,7 +46,7 @@ public class AboutActivity extends BaseActivity {
 
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo( getPackageName(), 0 );
-            textViewVersionName.setText( getString( R.string.version_name_and_code,
+            textViewVersionName.setText( String.format( getString( R.string.version_name_and_code ),
                     packageInfo.versionName,
                     packageInfo.versionCode ) );
         } catch ( Exception e ) {

@@ -30,7 +30,7 @@ public class SmokSmog {
 
         builderRest.setEndpoint( createEndpoint( builder.endpoint, builder.locale ) );
 
-        if( builder.debug ){
+        if ( builder.debug ) {
             builderRest.setLogLevel( RestAdapter.LogLevel.FULL );
         }
 
@@ -92,11 +92,21 @@ public class SmokSmog {
      */
     public static final class Builder {
 
+        private static final String ENDPOINT = "http://api.smoksmog.jkostrz.name/";
+
         private final String endpoint;
         private final Locale locale;
 
         private Client client;
         private boolean debug = false;
+
+        public Builder() {
+            this( ENDPOINT );
+        }
+
+        public Builder( String endpoint ) {
+            this( endpoint, Locale.getDefault() );
+        }
 
         public Builder( String endpoint, Locale locale ) {
             this.endpoint = endpoint;
@@ -108,7 +118,7 @@ public class SmokSmog {
             return this;
         }
 
-        public Builder setDebug( boolean debug ){
+        public Builder setDebug( boolean debug ) {
             this.debug = debug;
             return this;
         }

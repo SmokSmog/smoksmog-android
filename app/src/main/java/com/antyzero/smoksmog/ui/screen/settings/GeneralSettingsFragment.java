@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.support.annotation.StringRes;
 import android.view.View;
 
@@ -21,7 +20,6 @@ import com.antyzero.smoksmog.ui.screen.FragmentModule;
 import com.crashlytics.android.answers.Answers;
 import com.trello.rxlifecycle.RxLifecycle;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
