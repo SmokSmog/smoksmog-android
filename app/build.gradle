@@ -59,7 +59,7 @@ android {
     }
 
     lintOptions {
-        disable 'InvalidPackage'
+        disable 'InvalidPackage', 'StringFormatInvalid'
     }
 
     packagingOptions {
