@@ -10,7 +10,7 @@ public class ColorUtils {
     private ColorUtils() {
         throw new IllegalStateException( "Utils class" );
     }
-
+/*
     public static int contrastColor( int backgroundColor ){
 
         Color color = new Color();
@@ -27,4 +27,5 @@ public class ColorUtils {
 
         return  Color.FromArgb(d, d, d);
     }
+*/
 }
