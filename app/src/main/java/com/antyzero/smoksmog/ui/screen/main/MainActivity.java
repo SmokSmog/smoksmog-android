@@ -1,5 +1,8 @@
 package com.antyzero.smoksmog.ui.screen.main;
 
+import android.animation.Animator;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -119,10 +122,15 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         super.onCreate( savedInstanceState );
         SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ), new GoogleModule( this ) ).inject( this );
 
+        // Setting views
+
         setContentView( R.layout.activity_main );
         setSupportActionBar( toolbar );
         setTitle( null );
         spinnerStations.setEnabled( false );
+        airQualityIndicator.setColorFilter( colorAirQuality, PorterDuff.Mode.SRC_IN );
+
+        // Data oriented setup
 
         particulateAdapter = new ParticulateAdapter( particulates, this );
 
@@ -136,6 +144,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         adapterStations.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 
         spinnerStations.setAdapter( adapterStations );
+
+        // Start getting data
 
         smokSmog.getApi().stations()
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
@@ -325,7 +335,40 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      */
     private void updateUiAirQuality( Station station ) {
         AirQuality airQuality = AirQuality.findByValue( AirQualityIndex.calculate( station ) );
-        airQualityIndicator.setColorFilter( airQuality.getColor( this ), PorterDuff.Mode.SRC_IN );
+
+        int newAirQualityColor = airQuality.getColor( this );
+
+        ValueAnimator valueAnimator = new ValueAnimator();
+        valueAnimator.setIntValues( colorAirQuality, newAirQualityColor );
+        valueAnimator.setEvaluator( new ArgbEvaluator() );
+        valueAnimator.addUpdateListener( animation -> {
+            int color = ( int ) animation.getAnimatedValue();
+            airQualityIndicator.setColorFilter( color, PorterDuff.Mode.SRC_IN );
+        } );
+        valueAnimator.addListener( new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart( Animator animation ) {
+
+            }
+
+            @Override
+            public void onAnimationEnd( Animator animation ) {
+                colorAirQuality = newAirQualityColor;
+            }
+
+            @Override
+            public void onAnimationCancel( Animator animation ) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat( Animator animation ) {
+
+            }
+        } );
+        valueAnimator.setDuration( 300L );
+        valueAnimator.start();
+
         textViewAirQuality.setText( airQuality.getTitle( this ) );
     }
 
