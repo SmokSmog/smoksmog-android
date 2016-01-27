@@ -11,10 +11,10 @@ cache:
 
 addons:
   artifacts: true
-  s3_region: "us-west-2"
-  paths:
-    - app/build/reports/
-    - app/build/outputs/
+    paths:
+      - app/build/reports/
+      - app/build/outputs/
+    s3_region: "us-west-2"
 
 jdk:
   - oraclejdk8
