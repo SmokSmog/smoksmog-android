@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".ui.screen.main.MainActivity">
 
     <android.support.v7.widget.Toolbar
@@ -18,8 +18,8 @@
             android:id="@+id/spinnerStations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:background="@color/celeste"
+            android:gravity="center_vertical"
             android:minWidth="150dp"/>
 
     </android.support.v7.widget.Toolbar>
@@ -30,10 +30,12 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <View
+        <ImageView
             android:id="@+id/airQualityIndicator"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/shape_oval"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -44,22 +46,25 @@
                 android:id="@+id/textViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:textSize="22sp"
+                android:layout_marginTop="8dp"
                 android:gravity="center_horizontal"
+                android:singleLine="true"
+                android:textSize="22sp"
                 tools:text="Kraków - Aleja Krasińskiego"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="@string/airQualityIndex"/>
+                android:singleLine="true"
+                android:text="@string/airQualityIndex"
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/textViewAirQuality"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:textSize="22sp"
                 tools:text="Very good"/>
 
@@ -69,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center_horizontal"
+                android:singleLine="true"
                 tools:text="12 listopada 2015"/>
 
         </LinearLayout>
@@ -121,9 +127,9 @@
             android:id="@+id/indicatorMain"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:layout_weight="1"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:layout_weight="1"
             android:maxWidth="200dp"/>
 
     </LinearLayout>

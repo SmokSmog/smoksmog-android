@@ -1,6 +1,9 @@
 package com.antyzero.smoksmog.ui.screen.main;
 
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +62,7 @@ import rx.android.schedulers.AndroidSchedulers;
 public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, ParticulateAdapter.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "MainActivity";
-    public static final String KEY_STATION_ID = "KEY_STATION_ID";
+    private static final String KEY_STATION_ID = "KEY_STATION_ID";
 
     //<editor-fold desc="Dagger">
     @Inject
@@ -95,7 +99,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Bind( R.id.buttonHistory )
     View buttonHistory;
     @Bind( R.id.airQualityIndicator )
-    View airQualityIndicator;
+    ImageView airQualityIndicator;
     @Bind( R.id.textViewAirQuality )
     TextView textViewAirQuality;
     //</editor-fold>
@@ -107,6 +111,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     private Subscription spinnerSubscriber = RxJava.EMPTY_SUBSCRIPTION;
     private ParticulateAdapter particulateAdapter;
     private Station currentStation;
+
+    private int colorAirQuality = Color.TRANSPARENT;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -173,7 +179,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                         .subscribe(
                                 this::updateUiWithStation,
                                 throwable -> {
-                                    logger.i( TAG, "Unable to load last picked station (id:" + stationId+ ")" );
+                                    logger.i( TAG, "Unable to load last picked station (id:" + stationId + ")" );
                                 }
                         );
                 break;
@@ -306,13 +312,21 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
             particulates.addAll( sorted );
             particulateAdapter.notifyDataSetChanged();
 
-            AirQuality airQuality = AirQuality.findByValue( AirQualityIndex.calculate( station ) );
-
-            airQualityIndicator.setBackgroundColor( airQuality.getColor( this ) );
-            textViewAirQuality.setText( airQuality.getTitle( this ) );
+            updateUiAirQuality( station );
 
             updateUiWithMainParticulate( sorted.get( 0 ) );
         }
+    }
+
+    /**
+     * Update those elements responsible for air quality inforamtion
+     *
+     * @param station for data
+     */
+    private void updateUiAirQuality( Station station ) {
+        AirQuality airQuality = AirQuality.findByValue( AirQualityIndex.calculate( station ) );
+        airQualityIndicator.setColorFilter( airQuality.getColor( this ), PorterDuff.Mode.SRC_IN );
+        textViewAirQuality.setText( airQuality.getTitle( this ) );
     }
 
     /**
