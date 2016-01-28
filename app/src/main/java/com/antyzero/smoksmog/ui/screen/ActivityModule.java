@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.error.SnackBarErrorReporter;
-import com.antyzero.smoksmog.ui.BaseActivity;
 
 import dagger.Module;
 import dagger.Provides;

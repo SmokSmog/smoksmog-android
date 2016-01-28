@@ -20,7 +20,7 @@ android {
         minSdkVersion 16
         //noinspection OldTargetApi // TODO since it's not tested against new permission system we keep 22
         targetSdkVersion 22
-        versionCode 192004
+        versionCode 192005
         versionName "1.9.2"
 
         multiDexEnabled true
@@ -59,7 +59,16 @@ android {
     }
 
     lintOptions {
+        // StringFormatInvalid - for some reason strings contain version string thats invalid
         disable 'InvalidPackage', 'StringFormatInvalid'
+    }
+
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            outputs.upToDateWhen { false }
+            showStandardStreams = true
+        }
     }
 
     packagingOptions {
@@ -92,6 +101,7 @@ dependencies {
     }
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:1.7.1'
 
     androidTestCompile 'junit:junit:4.12'
     androidTestCompile 'org.mockito:mockito-core:2.0.31-beta'
@@ -106,6 +116,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
+
     androidTestCompile 'org.apache.directory.studio:org.apache.commons.io:2.4'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'

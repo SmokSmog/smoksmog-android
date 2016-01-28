@@ -17,6 +17,9 @@ import pl.malopolska.smoksmog.model.Station;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Test API with mocks
+ */
 public class ApiTest {
 
     private MockWebServer server;

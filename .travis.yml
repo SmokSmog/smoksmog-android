@@ -9,6 +9,16 @@ cache:
     - $HOME/.gradle/native
     - $HOME/.gradle/wrapper
 
+deploy:
+  provider: s3
+  region: us-west-2
+  key: $ARTIFACTS_KEY
+  secret: $ARTIFACTS_SECRET
+  bucket: $ARTIFACTS_BUCKET
+  paths:
+    - app/build/reports/
+    - app/build/outputs/
+
 jdk:
   - oraclejdk8
 
@@ -29,7 +39,7 @@ before_install:
   - export JAVA_HOME=$JAVA7_HOME
 
 script:
-  - ./gradlew check assemble -PdisablePreDex --continue --stacktrace
+  - ./gradlew clean check assemble -PdisablePreDex --continue --stacktrace
 
 after_success:
   - ./gradlew jacocoFullReport
