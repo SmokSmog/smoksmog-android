@@ -12,6 +12,7 @@ cache:
 addons:
   artifacts:
     region: "us-west-2"
+    endpoint: "s3-website-us-west-2.amazonaws.com"
     key: $ARTIFACTS_KEY
     secret: $ARTIFACTS_SECRET
     bucket: $ARTIFACTS_BUCKET
