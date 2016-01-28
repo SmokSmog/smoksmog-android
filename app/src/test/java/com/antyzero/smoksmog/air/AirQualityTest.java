@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AirQualityTest {
 
+    /*
     @Test
     public void testValuesAreFound() throws Exception {
 
@@ -20,6 +21,7 @@ public class AirQualityTest {
                     .overridingErrorMessage( "Unable to find proper AirQuality for %s", value );
         }
     }
+    */
 
     @Test
     public void testAreQualitiesCorrect() throws Exception {
