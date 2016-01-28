@@ -10,11 +10,13 @@ cache:
     - $HOME/.gradle/wrapper
 
 addons:
-  artifacts: true
+  artifacts:
+    key: ARTIFACTS_KEY
+    secret: ARTIFACTS_SECRET
+    bucket: ARTIFACTS_BUCKET
     paths:
       - app/build/reports/
       - app/build/outputs/
-    s3_region: "us-west-2"
 
 jdk:
   - oraclejdk8
