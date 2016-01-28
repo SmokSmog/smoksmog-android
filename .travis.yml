@@ -11,9 +11,9 @@ cache:
 
 addons:
   artifacts:
-    key: ARTIFACTS_KEY
-    secret: ARTIFACTS_SECRET
-    bucket: ARTIFACTS_BUCKET
+    key: $ARTIFACTS_KEY
+    secret: $ARTIFACTS_SECRET
+    bucket: $ARTIFACTS_BUCKET
     paths:
       - app/build/reports/
       - app/build/outputs/
