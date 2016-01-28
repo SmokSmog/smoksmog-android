@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AirQualityTest {
-/*
+
     @Test
     public void testValuesAreFound() throws Exception {
 
@@ -20,7 +20,7 @@ public class AirQualityTest {
                     .overridingErrorMessage( "Unable to find proper AirQuality for %s", value );
         }
     }
-*/
+/*
     @Test
     public void testAreQualitiesCorrect() throws Exception {
 
@@ -31,4 +31,5 @@ public class AirQualityTest {
         assertThat( AirQuality.findByValue( 8 ) ).isEqualTo( AirQuality.BAD );
         assertThat( AirQuality.findByValue( 11 ) ).isEqualTo( AirQuality.VERY_BAD );
     }
+    */
 }
