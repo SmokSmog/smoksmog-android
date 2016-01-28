@@ -11,6 +11,7 @@ cache:
 
 addons:
   artifacts:
+    region: "us-west-2"
     key: $ARTIFACTS_KEY
     secret: $ARTIFACTS_SECRET
     bucket: $ARTIFACTS_BUCKET
