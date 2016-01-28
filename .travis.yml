@@ -9,16 +9,15 @@ cache:
     - $HOME/.gradle/native
     - $HOME/.gradle/wrapper
 
-addons:
-  artifacts:
-    region: "us-west-2"
-    endpoint: "s3-website-us-west-2.amazonaws.com"
-    key: $ARTIFACTS_KEY
-    secret: $ARTIFACTS_SECRET
-    bucket: $ARTIFACTS_BUCKET
-    paths:
-      - app/build/reports/
-      - app/build/outputs/
+deploy:
+  provider: s3
+  region: us-west-2
+  key: $ARTIFACTS_KEY
+  secret: $ARTIFACTS_SECRET
+  bucket: $ARTIFACTS_BUCKET
+  paths:
+    - app/build/reports/
+    - app/build/outputs/
 
 jdk:
   - oraclejdk8
