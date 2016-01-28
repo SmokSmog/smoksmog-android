@@ -45,3 +45,6 @@ after_success:
   - ./gradlew jacocoFullReport
   - pip install --user codecov
   - codecov
+
+after_failure:
+  - tar -zcvf artifacts-${TRAVIS_BUILD_ID}.tar.gz ./app/build/reports/
