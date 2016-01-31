@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.annotation.IntegerRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +15,8 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.ui.ActivityModule;
+import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
-import com.trello.rxlifecycle.RxLifecycle;
 
 import javax.inject.Inject;
 
@@ -46,18 +45,10 @@ public class HistoryActivity extends BaseActivity {
     @Bind( R.id.recyclerViewCharts )
     RecyclerView chartsRecyclerView;
 
-    public static Intent createIntent( final Context context, Station station ) throws Exception {
-        if ( station == null ) {
-            throw new IllegalArgumentException( Station.class.getSimpleName() + " cannot be null" );
-        }
-        final Intent intent = new Intent( context, HistoryActivity.class );
-        intent.putExtra( STATION_ID_KEY, station.getId() );
-        return intent;
-    }
-
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
 
         final long stationId = getStationIdExtra( getIntent() );
 
@@ -67,8 +58,6 @@ public class HistoryActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled( true );
         }
 
-        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
-
         smokSmog.getApi().stationHistory( stationId )
                 .compose( bindToLifecycle() )
                 .observeOn( AndroidSchedulers.mainThread() )
@@ -77,7 +66,7 @@ public class HistoryActivity extends BaseActivity {
                         throwable -> {
                             String message = getString( R.string.error_unable_to_load_station_history );
                             errorReporter.report( message );
-                            logger.w( TAG, message, throwable );
+                            logger.i( TAG, message, throwable );
                         } );
     }
 
@@ -97,11 +86,33 @@ public class HistoryActivity extends BaseActivity {
      */
     private long getStationIdExtra( final Intent intent ) {
         if ( intent == null || !intent.hasExtra( STATION_ID_KEY ) ) {
+            // TODO toast text should be in resources and tranlsted
             Toast.makeText( this, "Pokazanie historii było niemożliwe", Toast.LENGTH_SHORT ).show();
             logger.e( TAG, "Unable to display History screen, missing start data" );
             finish();
             return -1;
         }
         return intent.getLongExtra( STATION_ID_KEY, -1 );
+    }
+
+    public static Intent intent( final Context context, Station station ) throws Exception {
+        if ( station == null ) {
+            throw new IllegalArgumentException( Station.class.getSimpleName() + " argument cannot be null" );
+        }
+        return intent( context, station.getId() );
+    }
+
+    public static Intent intent( final Context context, long stationId ) throws Exception {
+        if ( stationId <= 0 ) {
+            throw new IllegalArgumentException( "Station ID argument cannot be below 0" );
+        }
+        final Intent intent = new Intent( context, HistoryActivity.class );
+        intent.putExtra( STATION_ID_KEY, stationId );
+        return intent;
+    }
+
+    public static Intent fillIntent( Intent intent, long stationId ){
+        intent.putExtra( STATION_ID_KEY, stationId );
+        return intent;
     }
 }

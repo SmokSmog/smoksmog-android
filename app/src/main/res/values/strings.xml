@@ -6,6 +6,7 @@
     <string name="error_unable_to_load_station_history">Unable to load station history</string>
     <string name="error_no_near_Station">Unable to find station for your location</string>
     <string name="error_unable_to_show_history">Unable to show history</string>
+    <string name="error_unable_to_enable_station_preference">Unable to enable \'default station\' preference</string>
 
     <string name="action_my_location">My location</string>
     <string name="action_settings">Settings</string>
@@ -15,8 +16,20 @@
     <string name="info_concentration">Current concentration</string>
 
     <string name="action_history">Show history</string>
-    <string name="title_history">History</string>
     <string name="label_norm">Norm</string>
-    <string name="title_about" translatable="false">@string/action_about</string>
 
+    <string name="title_history">History</string>
+    <string name="title_about" translatable="false">@string/action_about</string>
+    <string name="title_settings" translatable="false">@string/action_settings</string>
+
+    <string name="version_name_and_code" formatted="false">Version %s (%s)</string>
+
+    <!-- Preferences -->
+    <string name="pref_station_selection_mode_title">On app start pick station</string>
+    <string name="pref_station_selection_mode_entries_last">Last picked</string>
+    <string name="pref_station_selection_mode_entries_closest">Closest location</string>
+    <string name="pref_station_selection_mode_entries_defined">From settings (default)</string>
+
+    <string name="pref_station_selected_title">Default station</string>
+    <string name="pref_station_selected_summary_default">Pick station</string>
 </resources>

@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,18 +19,19 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.RxJava;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.fabric.StationShowEvent;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.ui.ActivityModule;
+import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseActivity;
-import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
-import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
+import com.antyzero.smoksmog.ui.screen.ActivityModule;
+import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
+import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
+import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
+import com.crashlytics.android.answers.Answers;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.data.DataBufferObserver;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.RxLifecycle;
 
@@ -38,27 +39,26 @@ import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import butterknife.OnItemSelected;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.ApiUtils;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
 import pl.malopolska.smoksmog.utils.StationUtils;
-import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, ParticulateAdapter.OnItemClickListener {
+public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, ParticulateAdapter.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "MainActivity";
+    public static final String KEY_STATION_ID = "KEY_STATION_ID";
 
+    //<editor-fold desc="Dagger">
     @Inject
     SmokSmog smokSmog;
     @Inject
@@ -67,7 +67,13 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     ErrorReporter errorReporter;
     @Inject
     Logger logger;
+    @Inject
+    Answers answers;
+    @Inject
+    SettingsHelper settingsHelper;
+    //</editor-fold>
 
+    //<editor-fold desc="ViewBindings">
     @Bind( R.id.toolbar )
     Toolbar toolbar;
     @Bind( R.id.spinnerStations )
@@ -86,12 +92,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     RecyclerView recyclerViewParticulates;
     @Bind( R.id.buttonHistory )
     View buttonHistory;
+    //</editor-fold>
 
     private final List<Station> stations = new ArrayList<>();
     private final List<Particulate> particulates = new ArrayList<>();
-    @SuppressWarnings( "FieldCanBeLocal" )
-    private ArrayAdapter<Station> adapterStations;
 
+    private ArrayAdapter<Station> adapterStations;
     private Subscription spinnerSubscriber = RxJava.EMPTY_SUBSCRIPTION;
     private ParticulateAdapter particulateAdapter;
     private Station currentStation;
@@ -99,11 +105,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ), new GoogleModule( this ) ).inject( this );
+
         setContentView( R.layout.activity_main );
         setSupportActionBar( toolbar );
         setTitle( null );
-
-        SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ), new GoogleModule( this ) ).inject( this );
+        spinnerStations.setEnabled( false );
 
         particulateAdapter = new ParticulateAdapter( particulates, this );
 
@@ -122,41 +129,65 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
-                        stations -> {
-                            this.stations.addAll( stations );
-
-                            // Update with first station ASAP
-                            if ( !stations.isEmpty() ) {
-                                Station station = stations.get( 0 );
-                                smokSmog.getApi().station( station.getId() )
-                                        .compose( RxLifecycle.bindActivity( lifecycle() ) )
-                                        .observeOn( AndroidSchedulers.mainThread() )
-                                        .subscribe(
-                                                this::updateUiWithStation,
-                                                throwable -> {
-                                                    try {
-                                                        String errorMessage = getString( R.string.error_unable_to_load_station_data, station.getName() );
-                                                        errorReporter.report( errorMessage );
-                                                        logger.e( TAG, "Unable to load station data", throwable );
-                                                    } catch ( Exception e ) {
-                                                        CrashlyticsCore.getInstance().logException( e );
-                                                    }
-                                                } );
+                        stations1 -> {
+                            this.stations.addAll( stations1 );
+                            adapterStations.notifyDataSetChanged();
+                            if ( currentStation != null ) {
+                                for ( int i = 0; i < stations.size(); i++ ) {
+                                    if ( stations.get( i ).getId() == currentStation.getId() ) {
+                                        spinnerStations.setSelection( i, false );
+                                        break;
+                                    }
+                                }
+                            } else {
+                                spinnerStations.setSelection( 0, false );
                             }
+                            spinnerStations.setEnabled( true );
+                            spinnerStations.setOnItemSelectedListener( this );
                         },
                         throwable -> {
-                            try {
-                                Toast.makeText( MainActivity.this, R.string.error_unable_to_load_stations, Toast.LENGTH_SHORT ).show();
-                                logger.e( TAG, "Unable to load stations list", throwable );
-                            } catch ( Exception e ) {
-                                CrashlyticsCore.getInstance().logException( e );
-                            } finally {
-                                MainActivity.this.finish();
-                            }
-                        },
-                        adapterStations::notifyDataSetChanged );
+                            Toast.makeText( MainActivity.this, R.string.error_unable_to_load_stations, Toast.LENGTH_SHORT ).show();
+                            logger.i( TAG, "Unable to load stations list", throwable );
+                            MainActivity.this.finish();
+                        } );
 
         googleApiClient.connect();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        switch ( settingsHelper.getStationSelectionModeNoException() ) {
+
+            case LAST:
+                long stationId = loadStationPick();
+                smokSmog.getApi().station( stationId )
+                        .observeOn( AndroidSchedulers.mainThread() )
+                        .subscribe(
+                                this::updateUiWithStation,
+                                throwable -> {
+                                    logger.i( TAG, "Unable to load last picked station (id:" + stationId+ ")" );
+                                }
+                        );
+                break;
+            case CLOSEST:
+                loadDataForCurrentLocation();
+                break;
+            case DEFINED:
+                final long defaultStationId = settingsHelper.getDefaultStationId();
+                smokSmog.getApi().station( defaultStationId )
+                        .observeOn( AndroidSchedulers.mainThread() )
+                        .subscribe(
+                                this::updateUiWithStation,
+                                throwable -> {
+                                    logger.i( TAG, "Unable to load defined station (id:" + defaultStationId + ")" );
+                                }
+                        );
+                break;
+            default:
+                logger.e( TAG, "Missing selection mode value for station loading" );
+        }
     }
 
     @Override
@@ -184,21 +215,17 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                                                         location.getLatitude(), location.getLongitude() ) );
                                     },
                                     throwable -> {
-                                        try {
-                                            errorReporter.report( R.string.error_no_near_Station );
-                                            logger.w( TAG, "Unable to find nearest station data", throwable );
-                                        } catch ( Exception e ) {
-                                            CrashlyticsCore.getInstance().logException( e );
-                                        }
+                                        errorReporter.report( R.string.error_no_near_Station );
+                                        logger.i( TAG, "Unable to find nearest station data", throwable );
                                     }
                             );
                 }
 
                 break;
 
-            /*case R.id.action_settings:
-                // Start PreferencesActivity
-                break;*/
+            case R.id.action_settings:
+                SettingsActivity.start( this );
+                break;
 
             case R.id.action_about:
                 AboutActivity.start( this );
@@ -215,14 +242,9 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      *
      * @param position data
      */
-    @OnItemSelected( value = R.id.spinnerStations )
-    void OnSpinnerSelected( int position ) {
+    @Override
+    public void onItemSelected( AdapterView<?> parent, View view, int position, long id ) {
         Station stationSelected = stations.get( position );
-
-        // Do not update if same station is selected
-        if ( stationSelected.equals( currentStation ) ) {
-            return;
-        }
 
         spinnerSubscriber.unsubscribe();
         spinnerSubscriber = smokSmog.getApi().station( stationSelected.getId() )
@@ -230,21 +252,21 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .subscribe(
                         this::updateUiWithStation,
                         throwable -> {
-                            try {
-                                errorReporter.report( R.string.error_unable_to_load_station_data, stationSelected.getName() );
-                                logger.w( TAG, "Unable to load data for selected station: " + stationSelected.getName(), throwable );
-                                updateUiSpinnerSelectionWithStation( currentStation );
-                            } catch ( Exception e ) {
-                                CrashlyticsCore.getInstance().logException( e );
-                            }
+                            errorReporter.report( R.string.error_unable_to_load_station_data, stationSelected.getName() );
+                            logger.i( TAG, "Unable to load data for selected station: " + stationSelected.getName(), throwable );
                         }
                 );
+    }
+
+    @Override
+    public void onNothingSelected( AdapterView<?> parent ) {
+        // do nothing
     }
 
     /**
      * Called when particulate is clicked on horizontal scroll
      *
-     * @param particulate
+     * @param particulate data
      */
     @Override
     public void onItemClick( Particulate particulate ) {
@@ -258,16 +280,19 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      */
     private void updateUiWithStation( Station station ) {
 
-        textViewName.setText( station.getName() );
+        saveStationPick( station );
 
         currentStation = station;
+
+        answers.logContentView( StationShowEvent.create( station ) );
+
+        textViewName.setText( station.getName() );
 
         updateUiSpinnerSelectionWithStation( station );
 
         buttonHistory.setEnabled( true );
 
         if ( !station.getParticulates().isEmpty() ) {
-
             List<Particulate> sorted = ApiUtils.sortParticulates( station.getParticulates() )
                     .toList().toBlocking().first();
 
@@ -297,7 +322,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
      * @param particulate data
      */
     private void updateUiWithMainParticulate( Particulate particulate ) {
-        indicatorMain.setValue( particulate.getValue() / particulate.getNorm() );
+        indicatorMain.setValue( particulate.getAverage() / particulate.getNorm() );
+
         textViewConcentration.setText( String.format( "%s %s", particulate.getValue(), particulate.getUnit() ) );
         textViewAverage.setText( String.format( "%s %s", particulate.getAverage(), particulate.getUnit() ) );
         textViewData.setText( DateTimeFormat.longDateTime().print( particulate.getDate() ) );
@@ -305,7 +331,15 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     @Override
     public void onConnected( Bundle bundle ) {
-        loadDataForCurrentLocation();
+        // TODO wait
+    }
+
+    public void saveStationPick( Station station ) {
+        getSharedPreferences( "stationPick", MODE_PRIVATE ).edit().putLong( KEY_STATION_ID, station.getId() ).apply();
+    }
+
+    public long loadStationPick() {
+        return getSharedPreferences( "stationPick", MODE_PRIVATE ).getLong( KEY_STATION_ID, 13 );
     }
 
     /**
@@ -321,12 +355,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 .subscribe(
                         this::updateUiWithStation,
                         throwable -> {
-                            try {
-                                errorReporter.report( R.string.error_no_near_Station );
-                                logger.w( TAG, "Unable to find nearest station data", throwable );
-                            } catch ( Exception e ) {
-                                CrashlyticsCore.getInstance().logException( e );
-                            }
+                            logger.i( TAG, "Unable to find nearest station data", throwable );
+                            errorReporter.report( R.string.error_no_near_Station );
                         }
                 );
     }
@@ -334,10 +364,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @OnClick( R.id.buttonHistory )
     void onHistoryButtonClick() {
         try {
-            startActivity( HistoryActivity.createIntent( this, currentStation ) );
+            startActivity( HistoryActivity.intent( this, currentStation ) );
         } catch ( Exception e ) {
             String message = getString( R.string.error_unable_to_show_history );
-            logger.d( TAG, message, e );
+            logger.e( TAG, message, e );
             errorReporter.report( message );
         }
     }

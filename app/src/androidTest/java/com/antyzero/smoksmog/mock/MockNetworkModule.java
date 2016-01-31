@@ -4,9 +4,6 @@ import android.content.Context;
 
 import com.antyzero.smoksmog.network.NetworkModule;
 
-import org.mockito.Mockito;
-
-import pl.malopolska.smoksmog.Api;
 import pl.malopolska.smoksmog.SmokSmog;
 
 

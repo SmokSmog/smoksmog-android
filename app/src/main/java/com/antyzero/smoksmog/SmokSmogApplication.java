@@ -6,7 +6,6 @@ import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.antyzero.smoksmog.logger.Logger;
-import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 
@@ -41,16 +40,6 @@ public class SmokSmogApplication extends Application {
         CalligraphyConfig.initDefault( new CalligraphyConfig.Builder()
                 //.setDefaultFontPath( "fonts/Roboto-Regular.ttf" )
                 .build() );
-
-        if ( BuildConfig.DEBUG ) {
-            RxJavaPlugins.getInstance().registerErrorHandler( new RxJavaErrorHandler() {
-                @Override
-                public void handleError( Throwable e ) {
-                    super.handleError( e );
-                    Log.w( "RxError", e );
-                }
-            } );
-        }
     }
 
     public ApplicationComponent getAppComponent() {

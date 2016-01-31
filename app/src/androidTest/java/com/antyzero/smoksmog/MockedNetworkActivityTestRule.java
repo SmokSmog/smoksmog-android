@@ -15,6 +15,14 @@ public class MockedNetworkActivityTestRule<T extends Activity> extends ActivityT
         super( activityClass );
     }
 
+    public MockedNetworkActivityTestRule( Class<T> activityClass, boolean initialTouchMode ) {
+        super( activityClass, initialTouchMode );
+    }
+
+    public MockedNetworkActivityTestRule( Class<T> activityClass, boolean initialTouchMode, boolean launchActivity ) {
+        super( activityClass, initialTouchMode, launchActivity );
+    }
+
     @Override
     protected void beforeActivityLaunched() {
         super.beforeActivityLaunched();

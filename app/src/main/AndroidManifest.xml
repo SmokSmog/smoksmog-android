@@ -21,15 +21,25 @@
         </activity>
         <activity
             android:name=".ui.screen.history.HistoryActivity"
-            android:parentActivityName=".ui.screen.main.MainActivity">
+            android:parentActivityName=".ui.screen.main.MainActivity"
+            android:label="@string/title_history">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.screen.main.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.screen.about.AboutActivity"
+            android:parentActivityName=".ui.screen.main.MainActivity"
+            android:label="@string/title_about">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.screen.main.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.screen.about.AboutActivity"
-            android:parentActivityName=".ui.screen.main.MainActivity">
+            android:name=".ui.screen.settings.SettingsActivity"
+            android:parentActivityName=".ui.screen.main.MainActivity"
+            android:label="@string/title_settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.screen.main.MainActivity"/>
@@ -37,8 +47,11 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8"/>
-
+            android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
     </application>
 
 </manifest>

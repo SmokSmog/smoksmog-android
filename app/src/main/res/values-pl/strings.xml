@@ -14,4 +14,12 @@
     <string name="action_about">O aplikacji</string>
     <string name="action_settings">Ustawienia</string>
     <string name="error_unable_to_show_history">Nie udało się wyświetlić historii</string>
+    <string name="version_name_and_code" formatted="false">Wersja %s (%s)</string>
+    <string name="pref_station_selection_mode_entries_closest">Najbliższą</string>
+    <string name="pref_station_selection_mode_entries_last">Ostatio wybraną</string>
+    <string name="pref_station_selection_mode_entries_defined">Zdefiniowaną w ustawieniach (domyślna)</string>
+    <string name="pref_station_selection_mode_title">Po uruchomieniu aplikacji pokaż stację</string>
+    <string name="pref_station_selected_title">Stacja domyślna</string>
+    <string name="pref_station_selected_summary_default">Wybierz stację</string>
+    <string name="error_unable_to_enable_station_preference">Nie można udostępnić opcji \'stacja domyślna\'</string>
 </resources>
