@@ -45,6 +45,15 @@
                 android:value=".ui.screen.main.MainActivity"/>
         </activity>
 
+        <activity android:name=".ui.screen.start.WorkingOnActivity"
+                  android:theme="@style/DragonTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for

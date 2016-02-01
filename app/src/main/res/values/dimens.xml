@@ -4,4 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="indicator_width_small">60dp</dimen>
+
+
+    <dimen name="dragon_margin_bottom_default">200dp</dimen>
 </resources>
