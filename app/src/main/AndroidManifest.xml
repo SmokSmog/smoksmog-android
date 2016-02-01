@@ -45,7 +45,7 @@
                 android:value=".ui.screen.main.MainActivity"/>
         </activity>
 
-        <activity android:name=".ui.screen.start.WorkingOnActivity"
+        <activity android:name=".ui.screen.start.StartActivity"
                   android:theme="@style/DragonTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
