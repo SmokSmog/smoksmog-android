@@ -3,6 +3,7 @@ package com.antyzero.smoksmog.ui.screen.start;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.antyzero.smoksmog.BuildConfig;
@@ -37,6 +38,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     @Inject
     ErrorReporter errorReporter;
 
+    @Bind( R.id.toolbar )
+    Toolbar toolbar;
     @Bind( R.id.viewPager )
     ViewPager viewPager;
 
@@ -44,7 +47,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
     {
         // First station is closest one, marked with -1 value (or just negative TODO?)
-        stationIds.add( -1L );
+        stationIds.add( 0L );
 
         if ( BuildConfig.DEBUG ) {
             stationIds.add( 4L );
@@ -62,13 +65,20 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
         setContentView( R.layout.activity_start );
 
+        setSupportActionBar( toolbar );
+
         viewPager.setAdapter( new StationSlideAdapter( getSupportFragmentManager(), stationIds ) );
         viewPager.addOnPageChangeListener( this );
     }
 
     @Override
-    public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ) {
+    public void onPageScrollStateChanged( int state ) {
+        // do nothing
+    }
 
+    @Override
+    public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ) {
+        // do nothing
     }
 
     @Override
@@ -90,14 +100,10 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     /**
      * Update activity ActionBar title with station name
      *
-     * @param station
+     * @param station data
      */
     private void updateUITitle( Station station ) {
         Toast.makeText( this, station.getName(), Toast.LENGTH_SHORT ).show();
-    }
-
-    @Override
-    public void onPageScrollStateChanged( int state ) {
-
+        getSupportActionBar().setTitle( "xxx" );
     }
 }
