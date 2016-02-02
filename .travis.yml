@@ -9,16 +9,6 @@ cache:
     - $HOME/.gradle/native
     - $HOME/.gradle/wrapper
 
-deploy:
-  provider: s3
-  region: us-west-2
-  key: $ARTIFACTS_KEY
-  secret: $ARTIFACTS_SECRET
-  bucket: $ARTIFACTS_BUCKET
-  paths:
-    - app/build/reports/
-    - app/build/outputs/
-
 jdk:
   - oraclejdk8
 
@@ -45,6 +35,3 @@ after_success:
   - ./gradlew jacocoFullReport
   - pip install --user codecov
   - codecov
-
-after_failure:
-  - tar -zcvf artifacts-${TRAVIS_BUILD_ID}.tar.gz ./app/build/reports/
