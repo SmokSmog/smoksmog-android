@@ -14,6 +14,8 @@ public interface ActivityComponent {
 
     FragmentComponent plus( FragmentModule fragmentModule );
 
+    SupportFragmentComponent plus( SupportFragmentModule fragmentModule );
+
     void inject( HistoryActivity activity );
 
     void inject( AboutActivity activity );

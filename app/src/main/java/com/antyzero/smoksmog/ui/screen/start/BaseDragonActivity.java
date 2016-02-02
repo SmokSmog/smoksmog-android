@@ -33,8 +33,6 @@ public abstract class BaseDragonActivity extends AppCompatActivity {
         imageViewDragon = ( ImageView ) findViewById( R.id.imageViewDragon );
         container = ( ViewGroup ) findViewById( R.id.container );
 
-        setupDragon();
-
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
             int color;
             int colorResourceId = android.R.color.transparent;
@@ -46,6 +44,8 @@ public abstract class BaseDragonActivity extends AppCompatActivity {
             }
             getWindow().setNavigationBarColor( color );
         }
+
+        setupDragon();
     }
 
     @Override

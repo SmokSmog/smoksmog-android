@@ -11,11 +11,10 @@
 
     <ImageView
         android:id="@+id/imageViewDragon"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:adjustViewBounds="true"
         android:alpha="0.4"
         android:src="@drawable/smoksmog"
         android:visibility="invisible"
