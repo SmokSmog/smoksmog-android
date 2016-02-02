@@ -6,7 +6,7 @@ import dagger.Subcomponent;
 
 @Subcomponent(
         modules = {
-                FragmentModule.class,
+                SupportFragmentModule.class,
         }
 )
 public interface SupportFragmentComponent {

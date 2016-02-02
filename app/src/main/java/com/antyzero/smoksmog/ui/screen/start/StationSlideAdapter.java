@@ -4,22 +4,25 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-/**
- * Created by iwopolanski on 01.02.16.
- */
+import java.util.List;
+
+
 public class StationSlideAdapter extends FragmentStatePagerAdapter {
 
-    public StationSlideAdapter( FragmentManager fragmentManager ) {
+    private final List<Long> stationIds;
+
+    public StationSlideAdapter( FragmentManager fragmentManager, List<Long> stationIds ) {
         super( fragmentManager );
+        this.stationIds = stationIds;
     }
 
     @Override
     public Fragment getItem( int position ) {
-        return StationFragment.newInstance();
+        return StationFragment.newInstance( stationIds.get( position ) );
     }
 
     @Override
     public int getCount() {
-        return 5;
+        return stationIds.size();
     }
 }
