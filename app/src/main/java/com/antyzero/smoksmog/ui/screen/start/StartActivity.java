@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.antyzero.smoksmog.BuildConfig;
@@ -69,6 +71,13 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
         viewPager.setAdapter( new StationSlideAdapter( getSupportFragmentManager(), stationIds ) );
         viewPager.addOnPageChangeListener( this );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu( Menu menu ) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate( R.menu.main, menu );
+        return true;
     }
 
     @Override
