@@ -223,7 +223,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     public boolean onOptionsItemSelected( MenuItem item ) {
         switch ( item.getItemId() ) {
 
-            case R.id.action_my_location:
+            /*case R.id.action_my_location:
                 if ( googleApiClient.isConnected() ) {
 
                     ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( this );
@@ -243,7 +243,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                             );
                 }
 
-                break;
+                break;*/
 
             case R.id.action_settings:
                 SettingsActivity.start( this );

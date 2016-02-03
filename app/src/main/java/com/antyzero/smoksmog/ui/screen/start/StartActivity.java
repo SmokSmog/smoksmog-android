@@ -24,6 +24,7 @@ import butterknife.Bind;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -53,7 +54,9 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
         if ( BuildConfig.DEBUG ) {
             stationIds.add( 4L );
-            stationIds.add( 12L );
+            stationIds.add( 13L );
+            stationIds.add( 21L );
+            stationIds.add( 23L );
         }
     }
 
@@ -71,6 +74,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
         viewPager.setAdapter( new StationSlideAdapter( getSupportFragmentManager(), stationIds ) );
         viewPager.addOnPageChangeListener( this );
+        // TODO this may change
+        viewPager.setCurrentItem( 0 );
     }
 
     @Override
@@ -98,21 +103,27 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
             smokSmog.getApi().station( stationId )
                     .subscribeOn( Schedulers.newThread() )
                     .observeOn( AndroidSchedulers.mainThread() )
-                    .subscribe( this::updateUITitle,
+                    .subscribe( new Action1<Station>() {
+                                    @Override
+                                    public void call( Station station ) {
+                                        updateUITitle( station.getName() );
+                                    }
+                                },
                             throwable -> {
                                 logger.i( TAG, "Unable to load station data (stationID:" + stationId + ")", throwable );
                                 errorReporter.report( R.string.error_unable_to_load_station_data, stationId );
                             } );
+        } else {
+            updateUITitle( "Najbliższa stacja" );
         }
     }
 
     /**
      * Update activity ActionBar title with station name
      *
-     * @param station data
+     * @param title
      */
-    private void updateUITitle( Station station ) {
-        Toast.makeText( this, station.getName(), Toast.LENGTH_SHORT ).show();
-        getSupportActionBar().setTitle( "xxx" );
+    private void updateUITitle( CharSequence title ) {
+        getSupportActionBar().setTitle( title );
     }
 }

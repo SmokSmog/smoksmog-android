@@ -13,8 +13,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme.NoActionBar">
 
-        <activity android:name=".ui.screen.start.StartActivity"
-                  android:theme="@style/DragonTheme.NoActionBar">
+        <activity
+            android:name=".ui.screen.start.StartActivity"
+            android:theme="@style/DragonTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -23,16 +24,16 @@
 
         <activity
             android:name=".ui.screen.history.HistoryActivity"
-            android:parentActivityName=".ui.screen.main.MainActivity"
-            android:label="@string/title_history">
+            android:label="@string/title_history"
+            android:parentActivityName=".ui.screen.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.screen.main.MainActivity"/>
         </activity>
         <activity
             android:name=".ui.screen.about.AboutActivity"
-            android:parentActivityName=".ui.screen.main.MainActivity"
-            android:label="@string/title_about">
+            android:label="@string/title_about"
+            android:parentActivityName=".ui.screen.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.screen.main.MainActivity"/>
@@ -40,8 +41,8 @@
 
         <activity
             android:name=".ui.screen.settings.SettingsActivity"
-            android:parentActivityName=".ui.screen.main.MainActivity"
-            android:label="@string/title_settings">
+            android:label="@string/title_settings"
+            android:parentActivityName=".ui.screen.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.screen.main.MainActivity"/>

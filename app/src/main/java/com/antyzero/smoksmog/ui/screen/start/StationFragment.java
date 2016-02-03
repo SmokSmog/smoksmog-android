@@ -17,7 +17,10 @@ import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.SupportFragmentModule;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -47,7 +50,7 @@ public class StationFragment extends BaseFragment {
 
     private long stationId;
 
-    private Set<Station> stationContainer = new HashSet<>();
+    private List<Station> stationContainer = new ArrayList<>();
 
     @Override
     public void onCreate( @Nullable Bundle savedInstanceState ) {
