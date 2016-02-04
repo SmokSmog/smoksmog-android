@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.antyzero.smoksmog.R;
-import com.antyzero.smoksmog.ui.screen.start.item.AirQuality;
+import com.antyzero.smoksmog.ui.screen.start.item.AirQualityViewDelegate;
+import com.antyzero.smoksmog.ui.screen.start.item.AirQualityViewHolder;
+import com.antyzero.smoksmog.ui.screen.start.item.ParticulateViewDelegate;
 import com.antyzero.smoksmog.ui.screen.start.item.ParticulateViewHolder;
 
 import java.util.List;
@@ -18,37 +20,46 @@ import pl.malopolska.smoksmog.model.Station;
 public class StationAdapter extends RecyclerView.Adapter {
 
     private static final int TYPE_AIR_QUALITY = Integer.MIN_VALUE;
+    private static final int TYPE_PARTICULATE = 0;
 
     private final List<Station> stationContainer;
+
+    private final AirQualityViewDelegate airQualityViewDelegate;
+    private final ParticulateViewDelegate particulateViewDelegate;
 
     public StationAdapter( List<Station> stationContainer ) {
         this.stationContainer = stationContainer;
         setHasStableIds( true );
+
+        airQualityViewDelegate = new AirQualityViewDelegate( TYPE_AIR_QUALITY );
+        particulateViewDelegate = new ParticulateViewDelegate( TYPE_PARTICULATE );
     }
 
     @Override
     public int getItemViewType( int position ) {
-        return position == 0 ? TYPE_AIR_QUALITY : super.getItemViewType( position );
+        return position == 0 ? TYPE_AIR_QUALITY : TYPE_PARTICULATE;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
 
-        LayoutInflater layoutInflater = LayoutInflater.from( parent.getContext() );
 
-        switch ( viewType ) {
-
-            case TYPE_AIR_QUALITY:
-                return new AirQuality( layoutInflater.inflate( R.layout.item_air_quility, parent, false ) );
-
-            default:
-                return new ParticulateViewHolder( layoutInflater.inflate( R.layout.item_particulate, parent, false ) );
-        }
     }
 
     @Override
     public void onBindViewHolder( RecyclerView.ViewHolder holder, int position ) {
 
+        Station station = stationContainer.get( 0 );
+
+        if ( station == null ) {
+            return;
+        }
+
+        if ( position == 0 ) {
+            airQualityViewDelegate.onBindViewHolder( (AirQualityViewHolder) holder, station.getParticulates() );
+        } else {
+
+        }
 
     }
 
