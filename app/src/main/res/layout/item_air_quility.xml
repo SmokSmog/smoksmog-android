@@ -35,14 +35,16 @@
         android:orientation="horizontal">
 
         <View
+            android:id="@+id/airIndicator"
             android:layout_width="20dp"
             android:layout_height="20dp"/>
 
         <TextView
+            android:id="@+id/textViewAirQuality"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="bardzo dobra jakość powietrza"
-            android:textAppearance="@style/TextAppearance"/>
+            android:textAppearance="@style/TextAppearance"
+            tools:text="bardzo dobra jakość powietrza"/>
 
     </LinearLayout>
 

@@ -33,7 +33,7 @@ public class ViewPagerIndicator extends View implements ViewPager.OnPageChangeLi
 
     private Path arrow;
 
-    private int activePosition = Integer.MIN_VALUE;
+    private int activePosition = 0;
 
     public ViewPagerIndicator( Context context ) {
         super( context );
@@ -66,9 +66,9 @@ public class ViewPagerIndicator extends View implements ViewPager.OnPageChangeLi
         arrow = new Path();
         arrow.reset();
         arrow.moveTo( itemSideHalfSize, itemSideHalfSize );
-        arrow.moveTo( itemSideHalfSize, itemSideSize );
-        arrow.moveTo( itemSideSize, 0 );
-        arrow.moveTo( 0, itemSideHalfSize );
+        arrow.lineTo( itemSideHalfSize, itemSideSize );
+        arrow.lineTo( itemSideSize, 0 );
+        arrow.lineTo( 0, itemSideHalfSize );
         arrow.close();
     }
 

@@ -3,7 +3,7 @@ package com.antyzero.smoksmog.ui.screen.start.item;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-public abstract class ViewDelegate<T extends RecyclerView.ViewHolder, R> {
+public abstract class ViewDelegate<T extends ListViewHolder<R>, R> {
 
     private final int viewType;
 

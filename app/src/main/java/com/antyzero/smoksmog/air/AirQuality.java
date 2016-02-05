@@ -66,6 +66,11 @@ public enum AirQuality implements ValueCheck {
         return context.getString( nameId );
     }
 
+    @StringRes
+    public int getTitleResId() {
+        return nameId;
+    }
+
     public int getColor( Context context ){
         // Deprecated since 23 API, quite fresh
         //noinspection deprecation

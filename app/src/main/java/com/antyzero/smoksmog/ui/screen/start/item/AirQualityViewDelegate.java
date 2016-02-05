@@ -23,6 +23,6 @@ public class AirQualityViewDelegate extends ViewDelegate<AirQualityViewHolder, L
 
     @Override
     public void onBindViewHolder( AirQualityViewHolder holder, List<Particulate> data ) {
-
+        holder.bind( data );
     }
 }

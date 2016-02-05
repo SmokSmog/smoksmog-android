@@ -34,11 +34,11 @@
     <string name="pref_station_selected_summary_default">Pick station</string>
 
 
-    <string name="airQualityVeryGood">Very good</string>
-    <string name="airQualityGood">Good</string>
-    <string name="airQualityModerate">Moderate</string>
-    <string name="airQualitySufficient">Sufficient</string>
-    <string name="airQualityBad">Bad</string>
-    <string name="airQualityVeryBad">Very bad</string>
+    <string name="airQualityVeryGood">very good air quality</string>
+    <string name="airQualityGood">good air quality</string>
+    <string name="airQualityModerate">moderate air quality</string>
+    <string name="airQualitySufficient">sufficient air quality</string>
+    <string name="airQualityBad">bad air quality</string>
+    <string name="airQualityVeryBad">very bad air quality</string>
     <string name="airQualityIndex">Air quality index</string>
 </resources>
