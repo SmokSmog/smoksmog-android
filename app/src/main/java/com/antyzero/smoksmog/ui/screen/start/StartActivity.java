@@ -14,6 +14,7 @@ import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
+import com.antyzero.smoksmog.ui.view.ViewPagerIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +47,10 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     Toolbar toolbar;
     @Bind( R.id.viewPager )
     ViewPager viewPager;
+    @Bind( R.id.viewPagerIndicator )
+    ViewPagerIndicator viewPagerIndicator;
 
-    final List<Long> stationIds = new ArrayList<>();
+    private final List<Long> stationIds = new ArrayList<>();
 
     {
         // First station is closest one, marked with 0 value
@@ -79,6 +82,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         viewPager.setOffscreenPageLimit( PAGE_LIMIT );
         // TODO this may change
         viewPager.setCurrentItem( 0 );
+
+        viewPager.addOnPageChangeListener( viewPagerIndicator );
     }
 
     @Override

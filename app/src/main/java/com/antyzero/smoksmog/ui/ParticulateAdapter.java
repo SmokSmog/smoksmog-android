@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.ui.view.IndicatorView;
 
 import java.util.List;
 

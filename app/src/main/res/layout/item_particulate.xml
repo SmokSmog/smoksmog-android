@@ -15,7 +15,7 @@
         android:gravity="center_horizontal"
         tools:text="123"/>
 
-    <com.antyzero.smoksmog.ui.IndicatorView
+    <com.antyzero.smoksmog.ui.view.IndicatorView
         android:id="@+id/indicatorView"
         android:layout_width="@dimen/indicator_width_small"
         android:layout_height="60dp"

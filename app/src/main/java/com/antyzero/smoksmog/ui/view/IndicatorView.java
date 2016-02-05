@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.ui;
+package com.antyzero.smoksmog.ui.view;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
