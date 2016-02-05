@@ -33,6 +33,7 @@ import rx.schedulers.Schedulers;
 public class StartActivity extends BaseDragonActivity implements ViewPager.OnPageChangeListener {
 
     private static final String TAG = StartActivity.class.getSimpleName();
+    private static final int PAGE_LIMIT = 5;
 
     @Inject
     SmokSmog smokSmog;
@@ -49,9 +50,10 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     final List<Long> stationIds = new ArrayList<>();
 
     {
-        // First station is closest one, marked with -1 value (or just negative TODO?)
+        // First station is closest one, marked with 0 value
         stationIds.add( 0L );
 
+        // TODO delete in future
         if ( BuildConfig.DEBUG ) {
             stationIds.add( 4L );
             stationIds.add( 13L );
@@ -74,6 +76,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
         viewPager.setAdapter( new StationSlideAdapter( getSupportFragmentManager(), stationIds ) );
         viewPager.addOnPageChangeListener( this );
+        viewPager.setOffscreenPageLimit( PAGE_LIMIT );
         // TODO this may change
         viewPager.setCurrentItem( 0 );
     }
