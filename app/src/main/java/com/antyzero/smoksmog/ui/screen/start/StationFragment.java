@@ -113,10 +113,12 @@ public class StationFragment extends BaseFragment {
     }
 
     /**
-     * @param stationId
-     * @return
+     * Proper way to create fragment
+     *
+     * @param stationId for data download
+     * @return StationFragment instance
      */
-    public static Fragment newInstance( long stationId ) {
+    public static StationFragment newInstance( long stationId ) {
 
         Bundle arguments = new Bundle();
 
