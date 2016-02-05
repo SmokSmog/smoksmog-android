@@ -7,6 +7,6 @@
 
     <dimen name="dragon_margin_bottom_default">30dp</dimen>
 
-    <dimen name="indicator_item_size">20dp</dimen>
-    <dimen name="indicator_item_spacing">10dp</dimen>
+    <dimen name="indicator_item_size">8dp</dimen>
+    <dimen name="indicator_item_spacing">7dp</dimen>
 </resources>

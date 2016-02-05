@@ -15,7 +15,8 @@
 
         <activity
             android:name=".ui.screen.start.StartActivity"
-            android:theme="@style/DragonTheme.NoActionBar">
+            android:theme="@style/DragonTheme.NoActionBar"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
