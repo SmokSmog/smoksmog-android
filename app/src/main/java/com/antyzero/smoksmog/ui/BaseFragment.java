@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.ui.screen.start;
+package com.antyzero.smoksmog.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

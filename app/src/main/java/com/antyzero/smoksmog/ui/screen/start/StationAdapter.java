@@ -43,17 +43,26 @@ public class StationAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
 
+        switch ( viewType ){
 
+            case TYPE_AIR_QUALITY:
+                return airQualityViewDelegate.onCreateViewHolder( parent );
+            case TYPE_PARTICULATE:
+                return particulateViewDelegate.onCreateViewHolder( parent );
+
+            default:
+                throw new IllegalStateException( "Unsupported view type" );
+        }
     }
 
     @Override
     public void onBindViewHolder( RecyclerView.ViewHolder holder, int position ) {
 
-        Station station = stationContainer.get( 0 );
-
-        if ( station == null ) {
+        if ( stationContainer.isEmpty() ) {
             return;
         }
+
+        Station station = stationContainer.get( 0 );
 
         if ( position == 0 ) {
             airQualityViewDelegate.onBindViewHolder( (AirQualityViewHolder) holder, station.getParticulates() );
