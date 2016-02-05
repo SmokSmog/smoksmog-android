@@ -88,4 +88,9 @@ public enum AirQuality implements ValueCheck {
 
         throw new IllegalStateException( "Unable to find AirQuality for given value (" + value + ")" );
     }
+
+    @ColorRes
+    public int getColorResId() {
+        return colorId;
+    }
 }

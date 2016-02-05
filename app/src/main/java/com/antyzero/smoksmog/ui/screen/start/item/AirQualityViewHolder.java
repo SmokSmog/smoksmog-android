@@ -1,6 +1,7 @@
 package com.antyzero.smoksmog.ui.screen.start.item;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
@@ -14,6 +15,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.malopolska.smoksmog.model.Particulate;
 
+import static android.view.View.VISIBLE;
+
 public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
 
     @Bind( R.id.textViewIndexValue )
@@ -21,7 +24,7 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
     @Bind( R.id.textViewAirQuality )
     TextView textViewAirQuality;
     @Bind( R.id.airIndicator )
-    View airIndicator;
+    ImageView airIndicator;
 
     public AirQualityViewHolder( View itemView ) {
         super( itemView );
@@ -36,5 +39,7 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
 
         textViewIndexValue.setText( String.format( Locale.getDefault(), "%.1f", indexValue ) );
         textViewAirQuality.setText( airQuality.getTitleResId() );
+        airIndicator.setColorFilter( airQuality.getColor( itemView.getContext() ) );
+        airIndicator.setVisibility( VISIBLE );
     }
 }
