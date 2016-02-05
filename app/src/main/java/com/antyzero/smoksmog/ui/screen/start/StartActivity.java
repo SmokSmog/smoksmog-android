@@ -82,8 +82,9 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         viewPager.setOffscreenPageLimit( PAGE_LIMIT );
         // TODO this may change
         viewPager.setCurrentItem( 0 );
-
         viewPager.addOnPageChangeListener( viewPagerIndicator );
+
+        viewPagerIndicator.setStationIds( stationIds );
     }
 
     @Override
@@ -111,12 +112,9 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
             smokSmog.getApi().station( stationId )
                     .subscribeOn( Schedulers.newThread() )
                     .observeOn( AndroidSchedulers.mainThread() )
-                    .subscribe( new Action1<Station>() {
-                                    @Override
-                                    public void call( Station station ) {
-                                        updateUITitle( station.getName() );
-                                    }
-                                },
+                    .subscribe( station -> {
+                                updateUITitle( station.getName() );
+                            },
                             throwable -> {
                                 logger.i( TAG, "Unable to load station data (stationID:" + stationId + ")", throwable );
                                 errorReporter.report( R.string.error_unable_to_load_station_data, stationId );

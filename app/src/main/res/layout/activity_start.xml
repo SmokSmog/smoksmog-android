@@ -17,8 +17,10 @@
 
     <com.antyzero.smoksmog.ui.view.ViewPagerIndicator
         android:id="@+id/viewPagerIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/indicator_item_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"

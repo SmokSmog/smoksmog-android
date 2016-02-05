@@ -59,6 +59,8 @@ public class ViewPagerIndicator extends View implements ViewPager.OnPageChangeLi
                 desiredWidth += itemSideSize + itemSpacing;
             }
         }
+
+        invalidate();
     }
 
     @Override
