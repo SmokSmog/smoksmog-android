@@ -11,6 +11,8 @@
     android:background="@color/item_background"
     android:orientation="horizontal">
 
+    <!-- Particulate name -->
+
     <TextView
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
@@ -18,12 +20,16 @@
         android:gravity="center_horizontal"
         tools:text="PM10"/>
 
+    <!-- Percent indicator -->
+
     <com.antyzero.smoksmog.ui.view.IndicatorView
         android:id="@+id/indicatorView"
         android:layout_width="@dimen/indicator_width_small"
         android:layout_height="60dp"
         tools:layout_height="@dimen/indicator_width_small"
         tools:layout_width="60dp"/>
+
+    <!-- Values 24 and 1 hour -->
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -35,9 +41,38 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24h"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="289 mg/m3"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24h"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="289 mg/m3"/>
+
         </LinearLayout>
 
     </LinearLayout>
+
+    <!-- See more details arrow -->
 
     <TextView
         android:id="@+id/textViewNorm"
