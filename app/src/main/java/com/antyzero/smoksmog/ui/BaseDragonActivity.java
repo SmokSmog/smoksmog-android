@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.ui;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -16,6 +17,7 @@ import com.antyzero.smoksmog.ui.utils.DimenUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Base Activity that contains Dragon image and pollution background
@@ -46,6 +48,11 @@ public abstract class BaseDragonActivity extends AppCompatActivity {
         }
 
         setupDragon();
+    }
+
+    @Override
+    protected void attachBaseContext( Context newBase ) {
+        super.attachBaseContext( CalligraphyContextWrapper.wrap( newBase ) );
     }
 
     @Override

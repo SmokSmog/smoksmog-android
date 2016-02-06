@@ -6,15 +6,17 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:layout_marginBottom="8dp"
+    android:gravity="center_vertical"
+    android:padding="8dp"
     android:background="@color/item_background"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/textViewName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        tools:text="123"/>
+        tools:text="PM10"/>
 
     <com.antyzero.smoksmog.ui.view.IndicatorView
         android:id="@+id/indicatorView"
@@ -22,6 +24,20 @@
         android:layout_height="60dp"
         tools:layout_height="@dimen/indicator_width_small"
         tools:layout_width="60dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewNorm"
