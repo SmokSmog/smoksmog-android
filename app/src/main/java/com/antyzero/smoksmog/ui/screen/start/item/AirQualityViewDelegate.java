@@ -20,9 +20,4 @@ public class AirQualityViewDelegate extends ViewDelegate<AirQualityViewHolder, L
         LayoutInflater layoutInflater = LayoutInflater.from( parent.getContext() );
         return new AirQualityViewHolder( layoutInflater.inflate( R.layout.item_air_quility, parent, false ) );
     }
-
-    @Override
-    public void onBindViewHolder( AirQualityViewHolder holder, List<Particulate> data ) {
-        holder.bind( data );
-    }
 }

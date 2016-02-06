@@ -18,9 +18,4 @@ public class ParticulateViewDelegate  extends ViewDelegate<ParticulateViewHolder
         LayoutInflater inflater = LayoutInflater.from( parent.getContext() );
         return new ParticulateViewHolder( inflater.inflate( R.layout.item_particulate, parent, false ) );
     }
-
-    @Override
-    public void onBindViewHolder( ParticulateViewHolder holder, Particulate data ) {
-
-    }
 }

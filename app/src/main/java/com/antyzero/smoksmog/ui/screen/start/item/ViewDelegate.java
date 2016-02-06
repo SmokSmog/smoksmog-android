@@ -17,5 +17,7 @@ public abstract class ViewDelegate<T extends ListViewHolder<R>, R> {
 
     public abstract T onCreateViewHolder( ViewGroup parent );
 
-    public abstract void onBindViewHolder( T holder, R data );
+    public void onBindViewHolder( T holder, R data ){
+        holder.bind( data );
+    }
 }
