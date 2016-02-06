@@ -6,6 +6,8 @@ env:
     - JAVA7_HOME=/usr/lib/jvm/java-7-oracle
     - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
     - JAVA_HOME=$JAVA7_HOME
+  matrix:
+    - ANDROID_TARGET=android-18 ANDROID_ABI=armeabi-v7a
 
 cache:
   directories:
@@ -17,10 +19,6 @@ cache:
 
 jdk:
   - oraclejdk8
-
-env:
-  matrix:
-    - ANDROID_TARGET=android-18 ANDROID_ABI=armeabi-v7a
 
 android:
   components:
