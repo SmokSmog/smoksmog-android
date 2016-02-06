@@ -27,7 +27,7 @@ android:
     - extra-android-m2repository
 
 script:
-  - ./gradlew clean check assemble -PdisablePreDex --continue --stacktrace
+  - ./gradlew clean check assemble --stacktrace
 
 after_success:
   - ./gradlew jacocoFullReport
