@@ -39,7 +39,7 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
 
         textViewIndexValue.setText( String.format( Locale.getDefault(), "%.1f", indexValue ) );
         textViewAirQuality.setText( airQuality.getTitleResId() );
-        airIndicator.setColorFilter( airQuality.getColor( itemView.getContext() ) );
         airIndicator.setVisibility( VISIBLE );
+        airIndicator.setColorFilter( airQuality.getColor( itemView.getContext() ) );
     }
 }
