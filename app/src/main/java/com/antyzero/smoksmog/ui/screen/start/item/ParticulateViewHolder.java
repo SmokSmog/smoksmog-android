@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.ui.view.IndicatorView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,6 +21,8 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
     TextView textViewMeasureDay;
     @Bind( R.id.textViewMeasureHour )
     TextView textViewMeasureHour;
+    @Bind( R.id.indicatorView )
+    IndicatorView indicatorView;
 
     public ParticulateViewHolder( View itemView ) {
         super( itemView );
@@ -32,5 +35,6 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
         textViewName.setText( data.getShortName() );
         textViewMeasureDay.setText( resources.getString( R.string.measurment, data.getAverage(), data.getUnit() ) );
         textViewMeasureHour.setText( resources.getString( R.string.measurment, data.getValue(), data.getUnit() ) );
+        indicatorView.setValue( data.getAverage() / data.getNorm() );
     }
 }

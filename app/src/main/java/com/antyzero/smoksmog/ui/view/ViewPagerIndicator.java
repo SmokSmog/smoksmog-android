@@ -59,6 +59,7 @@ public class ViewPagerIndicator extends View implements ViewPager.OnPageChangeLi
         paintActiveIndicator.setColor( getResources().getColor( R.color.iron ) );
         paintActiveIndicator.setStyle( Paint.Style.FILL );
         paintActiveIndicator.setStrokeWidth( 0 );
+        paintActiveIndicator.setAntiAlias( true );
 
         paintIndicator = new Paint( paintActiveIndicator );
         paintIndicator.setAlpha( 127 );

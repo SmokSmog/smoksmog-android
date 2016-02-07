@@ -119,8 +119,6 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
                                 logger.i( TAG, "Unable to load station data (stationID:" + stationId + ")", throwable );
                                 errorReporter.report( R.string.error_unable_to_load_station_data, stationId );
                             } );
-        } else {
-            updateUITitle( "Najbliższa stacja" );
         }
     }
 

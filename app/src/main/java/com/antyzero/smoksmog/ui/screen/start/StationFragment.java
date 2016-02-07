@@ -1,9 +1,11 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,10 +15,12 @@ import android.view.ViewGroup;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.SupportFragmentModule;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +28,19 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
-public class StationFragment extends BaseFragment {
+
+public class StationFragment extends BaseFragment implements GoogleApiClient.ConnectionCallbacks {
 
     private static final String TAG = StationFragment.class.getSimpleName();
     private static final String ARG_STATION_ID = "argStationId";
@@ -45,6 +54,9 @@ public class StationFragment extends BaseFragment {
     Logger logger;
     @Inject
     ErrorReporter errorReporter;
+    @Inject
+    GoogleApiClient googleApiClient;
+
 
     private long stationId;
 
@@ -84,8 +96,10 @@ public class StationFragment extends BaseFragment {
         FragmentActivity activity = getActivity();
         SmokSmogApplication.get( activity ).getAppComponent()
                 .plus( new ActivityModule( activity ) )
-                .plus( new SupportFragmentModule( this ) )
+                .plus( new SupportFragmentModule( this ), new GoogleModule( this ) )
                 .inject( this );
+
+        googleApiClient.connect();
 
         if ( stationId > 0 ) {
             smokSmog.getApi().station( stationId )
@@ -97,8 +111,6 @@ public class StationFragment extends BaseFragment {
                                 errorReporter.report( R.string.error_unable_to_load_station_data, stationId );
                             } );
         }
-
-        // TODO add use case for closest station
     }
 
     /**
@@ -110,6 +122,11 @@ public class StationFragment extends BaseFragment {
         stationContainer.clear();
         stationContainer.add( station );
         recyclerView.getAdapter().notifyDataSetChanged();
+        try {
+            (( AppCompatActivity) getActivity()).getSupportActionBar().setTitle( station.getName() );
+        } catch ( Exception e ){
+            // totally ignore this issue
+        }
     }
 
     /**
@@ -128,5 +145,27 @@ public class StationFragment extends BaseFragment {
         stationFragment.setArguments( arguments );
 
         return stationFragment;
+    }
+
+    @Override
+    public void onConnected( @Nullable Bundle bundle ) {
+
+        if( stationId <= 0 ){
+            ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( getActivity() );
+
+            reactiveLocationProvider.getLastKnownLocation()
+                    .subscribeOn( Schedulers.newThread() )
+                    .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
+                    .observeOn( AndroidSchedulers.mainThread() )
+                    .subscribe( this::updateUI, throwable -> {
+                        logger.i( TAG, "Unable to find closes station", throwable );
+                        errorReporter.report( R.string.error_no_near_Station );
+                    } );
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended( int i ) {
+
     }
 }
