@@ -12,6 +12,7 @@ import com.antyzero.smoksmog.ui.screen.start.item.ParticulateViewHolder;
 
 import java.util.List;
 
+import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
 
 /**
@@ -43,7 +44,7 @@ public class StationAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
 
-        switch ( viewType ){
+        switch ( viewType ) {
 
             case TYPE_AIR_QUALITY:
                 return airQualityViewDelegate.onCreateViewHolder( parent );
@@ -65,9 +66,10 @@ public class StationAdapter extends RecyclerView.Adapter {
         Station station = stationContainer.get( 0 );
 
         if ( position == 0 ) {
-            airQualityViewDelegate.onBindViewHolder( (AirQualityViewHolder) holder, station.getParticulates() );
-        } else {
-
+            airQualityViewDelegate.onBindViewHolder( ( AirQualityViewHolder ) holder, station.getParticulates() );
+        } else if ( position > 0 ) {
+            Particulate particulate = station.getParticulates().get( position - 1 );
+            particulateViewDelegate.onBindViewHolder( ( ParticulateViewHolder ) holder, particulate );
         }
 
     }

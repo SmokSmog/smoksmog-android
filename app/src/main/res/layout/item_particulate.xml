@@ -6,10 +6,10 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:layout_marginBottom="8dp"
-    android:gravity="center_vertical"
-    android:padding="8dp"
     android:background="@color/item_background"
-    android:orientation="horizontal">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="8dp">
 
     <!-- Particulate name -->
 
@@ -17,7 +17,11 @@
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:layout_marginRight="8dp"
+        android:gravity="left"
+        android:minWidth="90dp"
+        android:textAppearance="@style/TextAppearance"
+        android:textSize="22sp"
         tools:text="PM10"/>
 
     <!-- Percent indicator -->
@@ -31,46 +35,46 @@
 
     <!-- Values 24 and 1 hour -->
 
-    <LinearLayout
+    <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:columnCount="2"
+        android:rowCount="2">
 
-        <LinearLayout
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/shape_oval_iron"
+            android:gravity="center"
+            android:text="@string/hours_24"
+            android:textAppearance="@style/TextAppearance.Invert"/>
+
+        <TextView
+            android:id="@+id/textViewMeasureDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:textAppearance="@style/TextAppearance"
+            tools:text="1 mg/m3"/>
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/shape_oval_iron"
+            android:gravity="center"
+            android:text="@string/hours_1"
+            android:textAppearance="@style/TextAppearance.Invert"/>
+
+        <TextView
+            android:id="@+id/textViewMeasureHour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_gravity="right"
+            android:textAppearance="@style/TextAppearance"
+            tools:text="289 mg/m3"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="24h"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="289 mg/m3"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="24h"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="289 mg/m3"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </GridLayout>
 
     <!-- See more details arrow -->
 

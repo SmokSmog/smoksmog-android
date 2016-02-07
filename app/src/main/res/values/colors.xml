@@ -4,6 +4,7 @@
     <!-- Color palette -->
 
     <color name="brightGray">#414152</color>
+    <color name="scarpa_flow">#515965</color>
     <color name="comet">#5A6273</color>
     <color name="celeste">#CDCDCD</color>
     <color name="iron">#d6d6d6</color>
@@ -23,6 +24,7 @@
     <!-- Alphas -->
 
     <color name="iron_10">#19d6d6d6</color>
+    <color name="iron_20">#33d6d6d6</color>
 
     <!-- ... -->
 
@@ -33,6 +35,7 @@
     <color name="windowBackground">@color/celeste</color>
 
     <color name="text_light">@color/iron</color>
+    <color name="text_dark">@color/scarpa_flow</color>
 
     <color name="airQualityVeryGood">@color/capri</color>
     <color name="airQualityGood">@color/green</color>
