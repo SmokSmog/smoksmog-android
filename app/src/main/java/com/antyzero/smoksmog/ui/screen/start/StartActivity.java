@@ -1,11 +1,17 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.system.Os;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.antyzero.smoksmog.BuildConfig;
 import com.antyzero.smoksmog.R;
@@ -27,6 +33,8 @@ import pl.malopolska.smoksmog.model.Station;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * Base activity for future
@@ -85,6 +93,16 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         viewPager.addOnPageChangeListener( viewPagerIndicator );
 
         viewPagerIndicator.setStationIds( stationIds );
+
+        correctTitleMargin();
+
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ) {
+            // getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION );
+        }
+    }
+
+    private void correctTitleMargin() {
+        toolbar.setContentInsetsAbsolute( 18, 0 );
     }
 
     @Override
