@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.settings;
+package com.antyzero.smoksmog.settingsold;
 
 
 import android.content.Context;
@@ -8,17 +8,17 @@ import android.support.annotation.NonNull;
 
 import com.antyzero.smoksmog.R;
 
-public class SettingsHelper {
+public class SettingsOldHelper {
 
     private static final String MISSING_STRING_VALUE = "132ad@D@FWEvwefv@$%^";
 
     private final Context context;
     private final SharedPreferences defaultPreferences;
 
-    public SettingsHelper( Context context ) {
+    public SettingsOldHelper( Context context ) {
         this.context = context.getApplicationContext();
 
-        PreferenceManager.setDefaultValues( this.context, R.xml.settings_general, false );
+        PreferenceManager.setDefaultValues( this.context, R.xml.settings_old_general, false );
         defaultPreferences = PreferenceManager.getDefaultSharedPreferences( this.context );
     }
 

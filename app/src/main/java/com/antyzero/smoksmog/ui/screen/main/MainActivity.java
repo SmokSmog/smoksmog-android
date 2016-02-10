@@ -30,7 +30,7 @@ import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.fabric.StationShowEvent;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.settings.SettingsHelper;
+import com.antyzero.smoksmog.settingsold.SettingsOldHelper;
 import com.antyzero.smoksmog.ui.BaseActivity;
 import com.antyzero.smoksmog.ui.view.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Inject
     Answers answers;
     @Inject
-    SettingsHelper settingsHelper;
+    SettingsOldHelper settingsOldHelper;
     //</editor-fold>
 
     //<editor-fold desc="ViewBindings">
@@ -178,7 +178,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     protected void onStart() {
         super.onStart();
 
-        switch ( settingsHelper.getStationSelectionModeNoException() ) {
+        switch ( settingsOldHelper.getStationSelectionModeNoException() ) {
 
             case LAST:
                 long stationId = loadStationPick();
@@ -195,7 +195,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 loadDataForCurrentLocation();
                 break;
             case DEFINED:
-                final long defaultStationId = settingsHelper.getDefaultStationId();
+                final long defaultStationId = settingsOldHelper.getDefaultStationId();
                 smokSmog.getApi().station( defaultStationId )
                         .observeOn( AndroidSchedulers.mainThread() )
                         .subscribe(

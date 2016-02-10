@@ -12,8 +12,8 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.settings.SettingsHelper;
-import com.antyzero.smoksmog.settings.StationSelectionMode;
+import com.antyzero.smoksmog.settingsold.SettingsOldHelper;
+import com.antyzero.smoksmog.settingsold.StationSelectionMode;
 import com.antyzero.smoksmog.ui.BasePreferenceFragment;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.FragmentModule;
@@ -45,7 +45,7 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
     @Inject
     Answers answers;
     @Inject
-    SettingsHelper settingsHelper;
+    SettingsOldHelper settingsOldHelper;
     //</editor-fold>
 
     private ListPreference stationSelected;
@@ -54,7 +54,7 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-        addPreferencesFromResource( R.xml.settings_general );
+        addPreferencesFromResource( R.xml.settings_old_general );
         stationSelected = ( ListPreference ) findPreference( R.string.pref_key_station_selected );
         stationMode = ( ListPreference ) findPreference( R.string.pref_key_station_selection_mode );
     }
@@ -66,7 +66,7 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
                 .plus( new ActivityModule( activity ) )
                 .plus( new FragmentModule( this ) )
                 .inject( this );
-        settingsHelper.getPreferences().registerOnSharedPreferenceChangeListener( this );
+        settingsOldHelper.getPreferences().registerOnSharedPreferenceChangeListener( this );
     }
 
     @Override
@@ -82,9 +82,9 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
 
                             try {
                                 stationSelected.setEnabled( StationSelectionMode.DEFINED.equals(
-                                        settingsHelper.getStationSelectionMode() ) );
+                                        settingsOldHelper.getStationSelectionMode() ) );
 
-                                long stationId = settingsHelper.getDefaultStationId();
+                                long stationId = settingsOldHelper.getDefaultStationId();
 
                                 if ( stationId > 0 ) {
                                     String value = String.valueOf( stationId );
@@ -138,7 +138,7 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
 
     @Override
     public void onDetach() {
-        settingsHelper.getPreferences().unregisterOnSharedPreferenceChangeListener( this );
+        settingsOldHelper.getPreferences().unregisterOnSharedPreferenceChangeListener( this );
         super.onDetach();
     }
 

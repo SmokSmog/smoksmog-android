@@ -2,6 +2,8 @@ package com.antyzero.smoksmog.settings;
 
 import android.content.Context;
 
+import com.antyzero.smoksmog.settingsold.SettingsOldHelper;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -13,7 +15,7 @@ public class SettingsModule {
 
     @Provides
     @Singleton
-    public SettingsHelper provideSettingsHelper( Context context ) {
-        return new SettingsHelper( context );
+    public SettingsOldHelper provideSettingsHelper( Context context ) {
+        return new SettingsOldHelper( context );
     }
 }
