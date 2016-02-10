@@ -1,13 +1,11 @@
 package com.antyzero.smoksmog.settings;
 
+import android.app.Application;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.antyzero.smoksmog.ui.screen.start.StartActivity;
-
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -20,10 +18,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( AndroidJUnit4.class )
 @SmallTest
-public class SettingsHelperTest {
+public class SettingsHelperTest extends ApplicationTestCase<Application> {
 
-    @Rule
-    public final ActivityTestRule<StartActivity> activityTestRule = new ActivityTestRule<>( StartActivity.class );
+    public SettingsHelperTest( ) {
+        super( Application.class );
+    }
 
     @Test
     public void testGetStationIdList() throws Exception {
