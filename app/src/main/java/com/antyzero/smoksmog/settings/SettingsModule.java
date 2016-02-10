@@ -14,7 +14,7 @@ import dagger.Provides;
 public class SettingsModule {
 
     @Provides
-    @Singleton
+    @Singleton @Deprecated
     public SettingsOldHelper provideSettingsHelper( Context context ) {
         return new SettingsOldHelper( context );
     }
