@@ -18,6 +18,7 @@ import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
+import com.antyzero.smoksmog.ui.screen.order.OrderActivity;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 import com.antyzero.smoksmog.ui.view.ViewPagerIndicator;
@@ -116,6 +117,9 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         switch ( item.getItemId() ) {
             case R.id.action_settings:
                 SettingsActivity.start( this );
+                break;
+            case R.id.action_order:
+                OrderActivity.start( this );
                 break;
         }
 
