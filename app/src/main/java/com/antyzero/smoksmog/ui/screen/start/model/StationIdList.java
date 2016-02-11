@@ -1,6 +1,8 @@
 package com.antyzero.smoksmog.ui.screen.start.model;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.settings.SettingsHelper;
@@ -13,12 +15,14 @@ import javax.inject.Inject;
 
 public class StationIdList extends ForwardingList<Long> {
 
+    private final Context context;
     private List<Long> longList = new ArrayList<>();
 
     @Inject
     SettingsHelper settingsHelper;
 
     public StationIdList( Context context ) {
+        this.context = context;
         longList.add( 13L );
         longList.add( 13L );
         SmokSmogApplication.get( context )

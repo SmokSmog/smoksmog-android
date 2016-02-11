@@ -35,6 +35,10 @@ public class SettingsHelper {
         defaultPreferences = PreferenceManager.getDefaultSharedPreferences( context );
     }
 
+    public SharedPreferences getPreferences() {
+        return defaultPreferences;
+    }
+
     public void setClosesStationVisible( boolean value ) {
         defaultPreferences.edit().putBoolean(
                 context.getString( R.string.pref_key_station_closest ), value ).apply();

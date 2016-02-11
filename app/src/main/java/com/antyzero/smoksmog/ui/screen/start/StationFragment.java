@@ -44,6 +44,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
     private static final String TAG = StationFragment.class.getSimpleName();
     private static final String ARG_STATION_ID = "argStationId";
+    public static final int NEAREST_STATION_ID = 0;
 
     @Bind( R.id.recyclerView )
     RecyclerView recyclerView;
@@ -150,7 +151,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     @Override
     public void onConnected( @Nullable Bundle bundle ) {
 
-        if( stationId <= 0 ){
+        if( stationId == NEAREST_STATION_ID ){
             ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( getActivity() );
 
             reactiveLocationProvider.getLastKnownLocation()
@@ -167,5 +168,14 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     @Override
     public void onConnectionSuspended( int i ) {
 
+    }
+
+    /**
+     * Get station Id used to create this fragment
+     *
+     * @return station ID
+     */
+    public long getStationId() {
+        return stationId;
     }
 }

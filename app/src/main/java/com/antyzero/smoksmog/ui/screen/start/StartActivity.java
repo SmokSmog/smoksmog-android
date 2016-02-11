@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -67,10 +68,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
         stationIds = new StationIdList( this );
 
-        Toast.makeText( this, stationIds.size() + "", Toast.LENGTH_SHORT ).show();
-
         setContentView( R.layout.activity_start );
-
         setSupportActionBar( toolbar );
 
         stationSlideAdapter = new StationSlideAdapter( getSupportFragmentManager(), stationIds );
