@@ -28,7 +28,7 @@ public class StationSlideAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition( Object object ) {
-        /*if ( object instanceof StationFragment ) {
+        if ( object instanceof StationFragment ) {
             StationFragment stationFragment = (StationFragment) object;
             long stationId = stationFragment.getStationId();
             for( int position = 0; position < stationIds.size(); position++){
@@ -36,8 +36,7 @@ public class StationSlideAdapter extends FragmentStatePagerAdapter {
                     return position;
                 }
             }
-        }*/
-        // Fall back to not known
+        }
         return PagerAdapter.POSITION_NONE;
     }
 

@@ -23,7 +23,7 @@ public class StationIdList extends ForwardingList<Long> {
 
     public StationIdList( Context context ) {
         this.context = context;
-        longList.add( 13L );
+        longList.add( 4L );
         longList.add( 13L );
         SmokSmogApplication.get( context )
                 .getAppComponent()
