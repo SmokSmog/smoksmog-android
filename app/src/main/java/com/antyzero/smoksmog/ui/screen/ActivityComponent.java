@@ -3,6 +3,7 @@ package com.antyzero.smoksmog.ui.screen;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
+import com.antyzero.smoksmog.ui.screen.order.OrderActivity;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.antyzero.smoksmog.ui.screen.start.StationFragmentComponent;
 
@@ -24,4 +25,6 @@ public interface ActivityComponent {
     void inject( AboutActivity activity );
 
     void inject( StartActivity startActivity );
+
+    void inject( OrderActivity orderActivity );
 }

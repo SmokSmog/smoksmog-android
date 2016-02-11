@@ -8,18 +8,38 @@ import android.support.v7.widget.RecyclerView;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
+import com.antyzero.smoksmog.logger.Logger;
+import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
+import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Func1;
+import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 public class OrderActivity extends BaseDragonActivity {
+
+    private static final String TAG = OrderActivity.class.getSimpleName();
+
+    @Inject
+    SmokSmog smokSmog;
+    @Inject
+    SettingsHelper settingsHelper;
+    @Inject
+    Logger logger;
 
     @Bind( R.id.recyclerView )
     RecyclerView recyclerView;
@@ -37,7 +57,29 @@ public class OrderActivity extends BaseDragonActivity {
                 .inject( this );
 
         recyclerView.setLayoutManager( new LinearLayoutManager( this, VERTICAL, false ) );
-        recyclerView.setAdapter( new OrderAdapter(stationList) );
+        recyclerView.setAdapter( new OrderAdapter( stationList ) );
+
+        List<Long> stationIds = settingsHelper.getStationIdList();
+
+        stationIds.add( 13L );
+        stationIds.add( 4L );
+
+        smokSmog.getApi().stations()
+                .subscribeOn( Schedulers.newThread() )
+                .flatMap( Observable::from )
+                .filter( station -> stationIds.contains( station.getId() ) )
+                .toSortedList( ( station, station2 ) -> stationIds.indexOf( station.getId() ) - stationIds.indexOf( station2.getId() ) )
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe(
+                        stations -> {
+                            stationList.clear();
+                            stationList.addAll( stations );
+                            recyclerView.getAdapter().notifyDataSetChanged();
+                        },
+                        throwable -> {
+                            logger.w( TAG, "Unable to build list", throwable );
+                        });
+
     }
 
     public static void start( Context context ) {
