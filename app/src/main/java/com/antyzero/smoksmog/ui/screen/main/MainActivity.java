@@ -76,8 +76,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     Logger logger;
     @Inject
     Answers answers;
-    @Inject
-    SettingsOldHelper settingsOldHelper;
     //</editor-fold>
 
     //<editor-fold desc="ViewBindings">
@@ -177,7 +175,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Override
     protected void onStart() {
         super.onStart();
-
+/*
         switch ( settingsOldHelper.getStationSelectionModeNoException() ) {
 
             case LAST:
@@ -207,7 +205,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 break;
             default:
                 logger.e( TAG, "Missing selection mode value for station loading" );
-        }
+        }*/
     }
 
     @Override

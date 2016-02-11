@@ -44,7 +44,7 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
     Logger logger;
     @Inject
     Answers answers;
-    @Inject
+
     SettingsOldHelper settingsOldHelper;
     //</editor-fold>
 

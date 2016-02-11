@@ -18,6 +18,7 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
+import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.view.ViewPagerIndicator;
@@ -50,6 +51,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     Logger logger;
     @Inject
     ErrorReporter errorReporter;
+    @Inject
+    SettingsHelper settingsHelper;
 
     @Bind( R.id.toolbar )
     Toolbar toolbar;

@@ -33,6 +33,9 @@
     <string name="pref_station_selected_title">Default station</string>
     <string name="pref_station_selected_summary_default">Pick station</string>
 
+    <string name="pref_station_closest_title">Closest station</string>
+    <string name="pref_station_closest_summary">Show tab with station closest to your location</string>
+
 
     <string name="airQualityVeryGood">very good air quality</string>
     <string name="airQualityGood">good air quality</string>

@@ -29,4 +29,6 @@
     <string name="airQualityVeryBad">bardzo zła jakość powietrza</string>
     <string name="airQualityVeryGood">bardzo dobra jakość powietrza</string>
     <string name="airQualityIndex">Indeks jakości powietrza</string>
+    <string name="pref_station_closest_title">Najbliższa stacja</string>
+    <string name="pref_station_closest_summary">Pokazuj zakłądkę z najbliższą stacją</string>
 </resources>

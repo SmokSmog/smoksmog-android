@@ -15,7 +15,7 @@ public class SettingsModule {
 
     @Provides
     @Singleton @Deprecated
-    public SettingsOldHelper provideSettingsHelper( Context context ) {
-        return new SettingsOldHelper( context );
+    public SettingsHelper provideSettingsHelper( Context context ) {
+        return new SettingsHelper( context );
     }
 }
