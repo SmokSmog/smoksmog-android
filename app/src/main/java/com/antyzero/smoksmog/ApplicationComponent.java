@@ -8,6 +8,8 @@ import com.antyzero.smoksmog.settings.SettingsModule;
 import com.antyzero.smoksmog.ui.screen.ActivityComponent;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.main.MainActivityComponent;
+import com.antyzero.smoksmog.ui.screen.start.StationSlideAdapter;
+import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 
 import javax.inject.Singleton;
 
@@ -30,4 +32,6 @@ public interface ApplicationComponent {
     ActivityComponent plus( ActivityModule activityModule );
 
     void inject( SmokSmogApplication smokSmogApplication );
+
+    void inject( StationIdList longs );
 }

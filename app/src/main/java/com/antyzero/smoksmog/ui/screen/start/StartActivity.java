@@ -1,19 +1,15 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.system.Os;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.antyzero.smoksmog.BuildConfig;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
@@ -21,21 +17,18 @@ import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
+import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
+import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 import com.antyzero.smoksmog.ui.view.ViewPagerIndicator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import pl.malopolska.smoksmog.SmokSmog;
-import pl.malopolska.smoksmog.model.Station;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * Base activity for future
@@ -61,20 +54,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     @Bind( R.id.viewPagerIndicator )
     ViewPagerIndicator viewPagerIndicator;
 
-    private final List<Long> stationIds = new ArrayList<>();
-
-    {
-        // First station is closest one, marked with 0 value
-        stationIds.add( 0L );
-
-        // TODO delete in future
-        if ( BuildConfig.DEBUG ) {
-            stationIds.add( 4L );
-            stationIds.add( 13L );
-            stationIds.add( 21L );
-            stationIds.add( 23L );
-        }
-    }
+    private List<Long> stationIds;
+    private StationSlideAdapter stationSlideAdapter;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -84,11 +65,17 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
                 .plus( new ActivityModule( this ) )
                 .inject( this );
 
+        stationIds = new StationIdList( this );
+
+        Toast.makeText( this, stationIds.size() + "", Toast.LENGTH_SHORT ).show();
+
         setContentView( R.layout.activity_start );
 
         setSupportActionBar( toolbar );
 
-        viewPager.setAdapter( new StationSlideAdapter( getSupportFragmentManager(), stationIds ) );
+        stationSlideAdapter = new StationSlideAdapter( getSupportFragmentManager(), stationIds );
+
+        viewPager.setAdapter( stationSlideAdapter );
         viewPager.addOnPageChangeListener( this );
         viewPager.setOffscreenPageLimit( PAGE_LIMIT );
         // TODO this may change
@@ -104,6 +91,16 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewPagerIndicator.postInvalidate();
+        stationSlideAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Because it's not aligned with main layout margin
+     */
     private void correctTitleMargin() {
         toolbar.setContentInsetsAbsolute( 18, 0 );
     }
@@ -113,6 +110,18 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         MenuInflater inflater = getMenuInflater();
         inflater.inflate( R.menu.main, menu );
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item ) {
+
+        switch ( item.getItemId() ) {
+            case R.id.action_settings:
+                SettingsActivity.start( this );
+                break;
+        }
+
+        return super.onOptionsItemSelected( item );
     }
 
     @Override
@@ -149,6 +158,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
      * @param title
      */
     private void updateUITitle( CharSequence title ) {
-        getSupportActionBar().setTitle( title );
+        if ( getSupportActionBar() != null ) {
+            getSupportActionBar().setTitle( title );
+        }
     }
 }

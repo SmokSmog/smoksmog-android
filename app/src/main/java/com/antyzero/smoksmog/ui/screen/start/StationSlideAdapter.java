@@ -17,7 +17,7 @@ public class StationSlideAdapter extends FragmentStatePagerAdapter {
      * Standard constructor
      *
      * @param fragmentManager for fragment manipulations
-     * @param stationIds list of IDs for data download
+     * @param stationIds      list of IDs for data download
      */
     public StationSlideAdapter( FragmentManager fragmentManager, List<Long> stationIds ) {
         super( fragmentManager );

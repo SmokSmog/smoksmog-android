@@ -105,7 +105,7 @@ public class ViewPagerIndicator extends View implements ViewPager.OnPageChangeLi
                 paint = paintActiveIndicator;
             }
 
-            if ( stationIds.get( i ) == 0 ) {
+            if ( stationIds.get( i ) <= 0 ) {
                 canvas.save();
                 canvas.translate( ( itemSideSize + itemSpacing ) * i, 0 );
                 canvas.drawPath( arrow, paint );

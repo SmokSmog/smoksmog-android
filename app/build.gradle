@@ -23,7 +23,7 @@ android {
         versionCode 193000
         versionName "1.9.3"
 
-        // For some reason Travis is vorking only with multi dex
+        // For some reason Travis is working only with multi dex
         if (Boolean.parseBoolean(System.getenv("TRAVIS"))) {
             multiDexEnabled true
         }
