@@ -1,62 +1,74 @@
 package com.antyzero.smoksmog.settings;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.utils.Convert;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Working on settings helper.
+ *
+ * This class should be responsible for data manipulation of every user-changeable data
+ */
 public class SettingsHelper {
 
-    private static final String MISSING_STRING_VALUE = "132ad@D@FWEvwefv@$%^";
+    private static final String TAG = SettingsHelper.class.getSimpleName();
 
-    private final Context context;
+    private static final String EMPTY_STRING = "awd5ijsadf";
+    private static final String SPLIT_CHAR = "%!@";
+    private static final String KEY_STATION_ID_LIST = "KEY_STATION_ID_LIST";
+
     private final SharedPreferences defaultPreferences;
 
+    private final Convert stringConvert = new Convert();
+
     public SettingsHelper( Context context ) {
-        this.context = context.getApplicationContext();
-
-        PreferenceManager.setDefaultValues( this.context, R.xml.settings_general, false );
-        defaultPreferences = PreferenceManager.getDefaultSharedPreferences( this.context );
-    }
-
-    public SharedPreferences getPreferences() {
-        return defaultPreferences;
-    }
-
-    public long getDefaultStationId() {
-        String key = context.getString( R.string.pref_key_station_selected );
-        String value = defaultPreferences.getString( key, null );
-        return value != null ? Long.valueOf( value ) : -1;
+        PreferenceManager.setDefaultValues( context, R.xml.settings_general, false );
+        defaultPreferences = PreferenceManager.getDefaultSharedPreferences( context );
     }
 
     /**
-     * @return
-     * @throws Exception
+     * Get current station id list
+     *
+     * @return station id list
      */
-    @NonNull
-    public StationSelectionMode getStationSelectionMode() throws Exception {
-
-        String key = context.getString( R.string.pref_key_station_selection_mode );
-        String value = defaultPreferences.getString( key, MISSING_STRING_VALUE );
-
-        if ( MISSING_STRING_VALUE.equalsIgnoreCase( value ) ) {
-            throw new IllegalStateException( "Missing preference value" );
-        }
-
-        return StationSelectionMode.find( context, value );
+    public List<Long> getStationIdList() {
+        return getList( defaultPreferences, KEY_STATION_ID_LIST, Long.class );
     }
 
-    @NonNull
-    public StationSelectionMode getStationSelectionModeNoException() {
-        try {
-            return getStationSelectionMode();
-        } catch ( Exception e ) {
-            e.printStackTrace();
-            return StationSelectionMode.UNKNOWN;
+    /**
+     * Update station list
+     *
+     * @param longList
+     */
+    public void setStationIdList( List<Long> longList ) {
+        defaultPreferences.edit().putString( KEY_STATION_ID_LIST, TextUtils.join( SPLIT_CHAR, longList ) ).apply();
+    }
+
+    /**
+     * Converts string into list of objects of requested type
+     *
+     * @param sharedPreferences for data
+     * @param key which to get data from
+     * @param type of list
+     * @param <T> generic for list
+     * @return list of requested type
+     */
+    private <T> List<T> getList( SharedPreferences sharedPreferences, String key, Class<T> type ) {
+        List<T> result = new ArrayList<>();
+        String string = sharedPreferences.getString( key, EMPTY_STRING );
+        if( !TextUtils.isEmpty( string ) && !string.equalsIgnoreCase( EMPTY_STRING ) ){
+            String[] array = string.split( SPLIT_CHAR );
+            for( String item : array ){
+                result.add( ( T ) stringConvert.getConverterFor( type ).convert( item ) );
+            }
         }
+        return result;
     }
 }

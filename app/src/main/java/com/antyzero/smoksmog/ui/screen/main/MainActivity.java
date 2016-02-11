@@ -1,6 +1,11 @@
 package com.antyzero.smoksmog.ui.screen.main;
 
+import android.animation.Animator;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,13 +24,15 @@ import android.widget.Toast;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.RxJava;
 import com.antyzero.smoksmog.SmokSmogApplication;
+import com.antyzero.smoksmog.air.AirQuality;
+import com.antyzero.smoksmog.air.AirQualityIndex;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.fabric.StationShowEvent;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.settings.SettingsHelper;
+import com.antyzero.smoksmog.settingsold.SettingsOldHelper;
 import com.antyzero.smoksmog.ui.BaseActivity;
-import com.antyzero.smoksmog.ui.IndicatorView;
+import com.antyzero.smoksmog.ui.view.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
@@ -49,14 +57,13 @@ import pl.malopolska.smoksmog.ApiUtils;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
-import pl.malopolska.smoksmog.utils.StationUtils;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks, ParticulateAdapter.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "MainActivity";
-    public static final String KEY_STATION_ID = "KEY_STATION_ID";
+    private static final String KEY_STATION_ID = "KEY_STATION_ID";
 
     //<editor-fold desc="Dagger">
     @Inject
@@ -69,8 +76,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     Logger logger;
     @Inject
     Answers answers;
-    @Inject
-    SettingsHelper settingsHelper;
     //</editor-fold>
 
     //<editor-fold desc="ViewBindings">
@@ -92,6 +97,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     RecyclerView recyclerViewParticulates;
     @Bind( R.id.buttonHistory )
     View buttonHistory;
+    @Bind( R.id.airQualityIndicator )
+    ImageView airQualityIndicator;
+    @Bind( R.id.textViewAirQuality )
+    TextView textViewAirQuality;
     //</editor-fold>
 
     private final List<Station> stations = new ArrayList<>();
@@ -102,15 +111,22 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     private ParticulateAdapter particulateAdapter;
     private Station currentStation;
 
+    private int colorAirQuality = Color.TRANSPARENT;
+
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ), new GoogleModule( this ) ).inject( this );
 
+        // Setting views
+
         setContentView( R.layout.activity_main );
         setSupportActionBar( toolbar );
         setTitle( null );
         spinnerStations.setEnabled( false );
+        airQualityIndicator.setColorFilter( colorAirQuality, PorterDuff.Mode.SRC_IN );
+
+        // Data oriented setup
 
         particulateAdapter = new ParticulateAdapter( particulates, this );
 
@@ -124,6 +140,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         adapterStations.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
 
         spinnerStations.setAdapter( adapterStations );
+
+        // Start getting data
 
         smokSmog.getApi().stations()
                 .compose( RxLifecycle.bindActivity( lifecycle() ) )
@@ -157,8 +175,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Override
     protected void onStart() {
         super.onStart();
-
-        switch ( settingsHelper.getStationSelectionModeNoException() ) {
+/*
+        switch ( settingsOldHelper.getStationSelectionModeNoException() ) {
 
             case LAST:
                 long stationId = loadStationPick();
@@ -167,7 +185,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                         .subscribe(
                                 this::updateUiWithStation,
                                 throwable -> {
-                                    logger.i( TAG, "Unable to load last picked station (id:" + stationId+ ")" );
+                                    logger.i( TAG, "Unable to load last picked station (id:" + stationId + ")" );
                                 }
                         );
                 break;
@@ -175,7 +193,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 loadDataForCurrentLocation();
                 break;
             case DEFINED:
-                final long defaultStationId = settingsHelper.getDefaultStationId();
+                final long defaultStationId = settingsOldHelper.getDefaultStationId();
                 smokSmog.getApi().station( defaultStationId )
                         .observeOn( AndroidSchedulers.mainThread() )
                         .subscribe(
@@ -187,7 +205,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 break;
             default:
                 logger.e( TAG, "Missing selection mode value for station loading" );
-        }
+        }*/
     }
 
     @Override
@@ -201,7 +219,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     public boolean onOptionsItemSelected( MenuItem item ) {
         switch ( item.getItemId() ) {
 
-            case R.id.action_my_location:
+            /*case R.id.action_my_location:
                 if ( googleApiClient.isConnected() ) {
 
                     ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( this );
@@ -221,7 +239,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                             );
                 }
 
-                break;
+                break;*/
 
             case R.id.action_settings:
                 SettingsActivity.start( this );
@@ -300,8 +318,54 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
             particulates.addAll( sorted );
             particulateAdapter.notifyDataSetChanged();
 
+            updateUiAirQuality( station );
+
             updateUiWithMainParticulate( sorted.get( 0 ) );
         }
+    }
+
+    /**
+     * Update those elements responsible for air quality inforamtion
+     *
+     * @param station for data
+     */
+    private void updateUiAirQuality( Station station ) {
+        AirQuality airQuality = AirQuality.findByValue( AirQualityIndex.calculate( station ) );
+
+        int newAirQualityColor = airQuality.getColor( this );
+
+        ValueAnimator valueAnimator = new ValueAnimator();
+        valueAnimator.setIntValues( colorAirQuality, newAirQualityColor );
+        valueAnimator.setEvaluator( new ArgbEvaluator() );
+        valueAnimator.addUpdateListener( animation -> {
+            int color = ( int ) animation.getAnimatedValue();
+            airQualityIndicator.setColorFilter( color, PorterDuff.Mode.SRC_IN );
+        } );
+        valueAnimator.addListener( new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart( Animator animation ) {
+
+            }
+
+            @Override
+            public void onAnimationEnd( Animator animation ) {
+                colorAirQuality = newAirQualityColor;
+            }
+
+            @Override
+            public void onAnimationCancel( Animator animation ) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat( Animator animation ) {
+
+            }
+        } );
+        valueAnimator.setDuration( 300L );
+        valueAnimator.start();
+
+        textViewAirQuality.setText( airQuality.getTitle( this ) );
     }
 
     /**

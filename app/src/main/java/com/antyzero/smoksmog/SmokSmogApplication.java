@@ -3,7 +3,6 @@ package com.antyzero.smoksmog;
 import android.app.Application;
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
 
 import com.antyzero.smoksmog.logger.Logger;
 import com.crashlytics.android.answers.Answers;
@@ -12,8 +11,6 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import javax.inject.Inject;
 
 import io.fabric.sdk.android.Fabric;
-import rx.plugins.RxJavaErrorHandler;
-import rx.plugins.RxJavaPlugins;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class SmokSmogApplication extends Application {
@@ -38,7 +35,7 @@ public class SmokSmogApplication extends Application {
         applicationComponent.inject( this );
 
         CalligraphyConfig.initDefault( new CalligraphyConfig.Builder()
-                //.setDefaultFontPath( "fonts/Roboto-Regular.ttf" )
+                .setDefaultFontPath( "fonts/Lato-Light.ttf" )
                 .build() );
     }
 

@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.ui;
+package com.antyzero.smoksmog.ui.view;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -16,11 +16,12 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import com.antyzero.smoksmog.R;
+
 public class IndicatorView extends View {
 
-    private static final float GAP_ANGLE_DEFAULT = 90;
-    private static final int STROKE_WIDTH_DEFAULT = 10;
-    public static final int STEP_COLOR = 50;
+    private static final float GAP_ANGLE_DEFAULT = 0;
+    private static final int STROKE_WIDTH_DEFAULT = 3;
 
     private float gapAngle = GAP_ANGLE_DEFAULT;
 
@@ -92,29 +93,29 @@ public class IndicatorView extends View {
         paintArcBackground.setStrokeCap( Paint.Cap.ROUND );
         paintArcBackground.setStrokeWidth( strokeWidth - 2 );
         paintArcBackground.setStyle( Paint.Style.STROKE );
+        paintArcBackground.setColor( getResources().getColor( R.color.iron ) );
+        paintArcBackground.setAlpha( 104 );
 
         paintArcForeground = new Paint( paintArcBackground );
         paintArcForeground.setAntiAlias( true );
         paintArcForeground.setStrokeCap( Paint.Cap.ROUND );
         paintArcForeground.setStyle( Paint.Style.STROKE );
-        paintArcForeground.setColor( Color.CYAN );
+        paintArcForeground.setColor( Color.parseColor( "#5be6dc" ) );
         paintArcForeground.setStrokeWidth( strokeWidth );
 
         paintValue = new Paint();
         paintValue.setAntiAlias( true );
-        paintValue.setColor( Color.RED );
+        paintValue.setColor( context.getResources().getColor( R.color.iron ) );
         paintValue.setStyle( Paint.Style.FILL );
-        paintValue.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
+        paintValue.setTypeface( Typeface.createFromAsset( context.getAssets(), "fonts/Lato-Light.ttf" ) );
 
         paintMaxValue = new Paint();
         paintMaxValue.setAntiAlias( true );
-        paintMaxValue.setColor( Color.RED );
         paintMaxValue.setStyle( Paint.Style.FILL );
         paintMaxValue.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
 
         paintNameShort = new Paint();
         paintNameShort.setAntiAlias( true );
-        paintNameShort.setColor( Color.RED );
         paintNameShort.setStyle( Paint.Style.FILL );
         paintNameShort.setTextSize( textNameSize );
 
@@ -206,10 +207,6 @@ public class IndicatorView extends View {
         this.arcValue = ( value * sweepAngle ) % sweepAngle;
         this.valueText = String.format( "%.0f%%", value * 100 );
         this.overLap = ( int ) Math.floor( value );
-        int red = ( int ) Math.min( STEP_COLOR * overLap + STEP_COLOR * value, 255 );
-
-        this.paintArcBackground.setARGB( 255, red, 0, 0 );
-        this.paintValue.setARGB( 255, red, 0, 0 ); // TODO change text color to red in case of over limits
 
         postInvalidateOnAnimation();
     }
@@ -218,7 +215,7 @@ public class IndicatorView extends View {
      * Non ui dependant variables
      */
     private void calculateMinorDrawingVariables() {
-        startAngle = 90f + gapAngle / 2;
+        startAngle = 270f + gapAngle / 2;
         sweepAngle = 360 - gapAngle;
     }
 
