@@ -3,8 +3,11 @@ package com.antyzero.smoksmog.ui.screen.order;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -56,13 +59,22 @@ public class OrderActivity extends BaseDragonActivity {
                 .plus( new ActivityModule( this ) )
                 .inject( this );
 
+        OrderAdapter adapter = new OrderAdapter( stationList );
+
         recyclerView.setLayoutManager( new LinearLayoutManager( this, VERTICAL, false ) );
-        recyclerView.setAdapter( new OrderAdapter( stationList ) );
+        recyclerView.setAdapter( adapter );
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback( adapter );
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper( callback );
+        itemTouchHelper.attachToRecyclerView( recyclerView );
 
         List<Long> stationIds = settingsHelper.getStationIdList();
 
         stationIds.add( 13L );
         stationIds.add( 4L );
+        stationIds.add( 30L );
+        stationIds.add( 32L );
+        stationIds.add( 44L );
 
         smokSmog.getApi().stations()
                 .subscribeOn( Schedulers.newThread() )
@@ -78,7 +90,7 @@ public class OrderActivity extends BaseDragonActivity {
                         },
                         throwable -> {
                             logger.w( TAG, "Unable to build list", throwable );
-                        });
+                        } );
 
     }
 
