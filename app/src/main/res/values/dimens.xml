@@ -9,4 +9,6 @@
 
     <dimen name="indicator_item_size">8dp</dimen>
     <dimen name="indicator_item_spacing">7dp</dimen>
+
+    <dimen name="nav_bar_height">10dp</dimen>
 </resources>

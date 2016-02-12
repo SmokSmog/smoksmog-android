@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
@@ -15,6 +16,7 @@ import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
+import com.antyzero.smoksmog.ui.utils.DimenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,13 @@ public class OrderActivity extends BaseDragonActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_order );
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION );
+
+        recyclerView.setPadding(
+                0, DimenUtils.getStatusBarHeight( this, R.dimen.nav_bar_height ), 0, 0 );
 
         SmokSmogApplication.get( this )
                 .getAppComponent()
