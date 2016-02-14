@@ -18,6 +18,8 @@ public interface ActivityComponent {
 
     FragmentComponent plus( FragmentModule fragmentModule );
 
+    SupportFragmentComponent plus( SupportFragmentModule fragmentModule );
+
     StationFragmentComponent plus( SupportFragmentModule fragmentModule, GoogleModule googleModule );
 
     void inject( HistoryActivity activity );
