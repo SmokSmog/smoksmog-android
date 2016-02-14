@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.antyzero.smoksmog.R;
+
 import java.util.List;
 
 import pl.malopolska.smoksmog.model.Station;
@@ -19,7 +21,10 @@ public class StationDialogAdapter extends RecyclerView.Adapter<StationViewHolder
 
     @Override
     public StationViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
-        return new StationViewHolder( new TextView(parent.getContext()) );
+        TextView textView = new TextView( parent.getContext() );
+        int padding = parent.getResources().getDimensionPixelSize( R.dimen.margin_16 );
+        textView.setPadding( padding, padding, padding, padding );
+        return new StationViewHolder( textView );
     }
 
     @Override

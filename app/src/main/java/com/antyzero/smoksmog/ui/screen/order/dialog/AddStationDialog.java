@@ -59,15 +59,6 @@ public class AddStationDialog extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated( View view, @Nullable Bundle savedInstanceState ) {
-        super.onViewCreated( view, savedInstanceState );
-        ButterKnife.bind( this, view );
-        recyclerView.setBackgroundColor( Color.CYAN );
-        recyclerView.setLayoutManager( new LinearLayoutManager( getActivity(), LinearLayoutManager.VERTICAL, false ) );
-        recyclerView.setAdapter( new StationDialogAdapter( stationList ) );
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         smokSmog.getApi().stations()
@@ -88,7 +79,13 @@ public class AddStationDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog( Bundle savedInstanceState ) {
         AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
-        builder.setView( getActivity().getLayoutInflater().inflate( R.layout.view_recyclerview, null, false ) );
+        View view = getActivity().getLayoutInflater().inflate( R.layout.view_recyclerview, null, false );
+
+        ButterKnife.bind( this, view );
+        recyclerView.setLayoutManager( new LinearLayoutManager( getActivity(), LinearLayoutManager.VERTICAL, false ) );
+        recyclerView.setAdapter( new StationDialogAdapter( stationList ) );
+
+        builder.setView( view );
         return builder.create();
     }
 
