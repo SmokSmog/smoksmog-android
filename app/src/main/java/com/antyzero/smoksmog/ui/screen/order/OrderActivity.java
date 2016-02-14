@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -19,6 +20,7 @@ import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.order.dialog.AddStationDialog;
+import com.antyzero.smoksmog.ui.screen.order.dialog.StationDialogAdapter;
 import com.antyzero.smoksmog.ui.utils.DimenUtils;
 
 import java.util.ArrayList;
@@ -32,12 +34,13 @@ import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-public class OrderActivity extends BaseDragonActivity implements OnStartDragListener {
+public class OrderActivity extends BaseDragonActivity implements OnStartDragListener, StationDialogAdapter.StationListener {
 
     private static final String TAG = OrderActivity.class.getSimpleName();
 
@@ -134,5 +137,21 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
 
     public static void start( Context context ) {
         context.startActivity( new Intent( context, OrderActivity.class ) );
+    }
+
+    @Override
+    public void onStation( long stationId ) {
+        smokSmog.getApi().station( stationId )
+                .subscribeOn( Schedulers.newThread() )
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe(
+                        station -> {
+                            stationList.add( station );
+                            recyclerView.getAdapter().notifyDataSetChanged();
+                        },
+                        throwable -> {
+                            logger.e( TAG, "Unable to add station to station list", throwable );
+                        }
+                );
     }
 }

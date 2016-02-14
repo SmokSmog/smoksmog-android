@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -34,7 +35,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
-public class AddStationDialog extends DialogFragment {
+public class AddStationDialog extends DialogFragment implements StationDialogAdapter.StationListener {
 
     private static final String TAG = AddStationDialog.class.getSimpleName();
 
@@ -47,15 +48,24 @@ public class AddStationDialog extends DialogFragment {
     RecyclerView recyclerView;
 
     private final List<Station> stationList = new ArrayList<>();
+    private StationDialogAdapter.StationListener stationListener;
 
     @Override
     public void onAttach( Activity activity ) {
         super.onAttach( activity );
+
+        if( !( activity instanceof StationDialogAdapter.StationListener) ){
+            throw new IllegalStateException( "Activity needs to implement StationListener" );
+        }
+
+        stationListener = (StationDialogAdapter.StationListener) activity;
+
         SmokSmogApplication.get( activity )
                 .getAppComponent()
                 .plus( new ActivityModule( activity ) )
                 .plus( new SupportFragmentModule( AddStationDialog.this ) )
                 .inject( this );
+
     }
 
     @Override
@@ -83,7 +93,7 @@ public class AddStationDialog extends DialogFragment {
 
         ButterKnife.bind( this, view );
         recyclerView.setLayoutManager( new LinearLayoutManager( getActivity(), LinearLayoutManager.VERTICAL, false ) );
-        recyclerView.setAdapter( new StationDialogAdapter( stationList ) );
+        recyclerView.setAdapter( new StationDialogAdapter( stationList, this ) );
 
         builder.setView( view );
         return builder.create();
@@ -92,5 +102,11 @@ public class AddStationDialog extends DialogFragment {
     public static void show( FragmentManager supportFragmentManager ) {
         DialogFragment dialogFragment = new AddStationDialog();
         dialogFragment.show( supportFragmentManager, TAG );
+    }
+
+    @Override
+    public void onStation( long stationId ) {
+        stationListener.onStation( stationId );
+        dismiss();
     }
 }
