@@ -16,15 +16,12 @@ import javax.inject.Inject;
 public class StationIdList extends ForwardingList<Long> {
 
     private final Context context;
-    private List<Long> longList = new ArrayList<>();
 
     @Inject
     SettingsHelper settingsHelper;
 
     public StationIdList( Context context ) {
         this.context = context;
-        longList.add( 4L );
-        longList.add( 13L );
         SmokSmogApplication.get( context )
                 .getAppComponent()
                 .inject( this );
@@ -46,7 +43,6 @@ public class StationIdList extends ForwardingList<Long> {
 
     @Override
     protected List<Long> delegate() {
-        return longList;
-        // return settingsHelper.getStationIdList();
+        return settingsHelper.getStationIdList();
     }
 }

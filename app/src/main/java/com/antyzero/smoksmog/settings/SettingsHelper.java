@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.settings;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -68,8 +69,10 @@ public class SettingsHelper {
      *
      * @param longList
      */
+    @SuppressLint( "CommitPrefEdits" )
     public void setStationIdList( List<Long> longList ) {
-        defaultPreferences.edit().putString( KEY_STATION_ID_LIST, TextUtils.join( SPLIT_CHAR, longList ) ).apply();
+        // We need changes as soon as possible
+        defaultPreferences.edit().putString( KEY_STATION_ID_LIST, TextUtils.join( SPLIT_CHAR, longList ) ).commit();
     }
 
     /**
