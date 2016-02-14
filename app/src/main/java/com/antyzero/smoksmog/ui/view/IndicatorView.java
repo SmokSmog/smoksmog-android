@@ -204,9 +204,13 @@ public class IndicatorView extends View {
      */
     private void recalculateDuringAnimation() {
 
-        this.arcValue = ( value * sweepAngle ) % sweepAngle;
+        this.arcValue = ( value * sweepAngle );
         this.valueText = String.format( "%.0f%%", value * 100 );
         this.overLap = ( int ) Math.floor( value );
+
+        paintArcForeground.setColor( arcValue <= 360f ?
+                Color.parseColor( "#5be6dc" ) :
+                Color.rgb( 242, 162, 60 ) );
 
         postInvalidateOnAnimation();
     }

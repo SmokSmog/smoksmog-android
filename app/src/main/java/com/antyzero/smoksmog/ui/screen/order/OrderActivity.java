@@ -3,12 +3,10 @@ package com.antyzero.smoksmog.ui.screen.order;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -28,14 +26,11 @@ import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Func1;
-import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
-public class OrderActivity extends BaseDragonActivity {
+public class OrderActivity extends BaseDragonActivity implements OnStartDragListener {
 
     private static final String TAG = OrderActivity.class.getSimpleName();
 
@@ -50,6 +45,7 @@ public class OrderActivity extends BaseDragonActivity {
     RecyclerView recyclerView;
 
     private List<Station> stationList = new ArrayList<>();
+    private ItemTouchHelper itemTouchHelper;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -68,13 +64,14 @@ public class OrderActivity extends BaseDragonActivity {
                 .plus( new ActivityModule( this ) )
                 .inject( this );
 
-        OrderAdapter adapter = new OrderAdapter( stationList );
+        OrderAdapter adapter = new OrderAdapter( stationList, this );
 
-        recyclerView.setLayoutManager( new LinearLayoutManager( this, VERTICAL, false ) );
+        recyclerView.setHasFixedSize( true );
         recyclerView.setAdapter( adapter );
+        recyclerView.setLayoutManager( new LinearLayoutManager( this, VERTICAL, false ) );
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback( adapter );
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper( callback );
+        itemTouchHelper = new ItemTouchHelper( callback );
         itemTouchHelper.attachToRecyclerView( recyclerView );
 
         List<Long> stationIds = settingsHelper.getStationIdList();
@@ -101,6 +98,11 @@ public class OrderActivity extends BaseDragonActivity {
                             logger.w( TAG, "Unable to build list", throwable );
                         } );
 
+    }
+
+    @Override
+    public void onStartDrag( RecyclerView.ViewHolder viewHolder ) {
+        itemTouchHelper.startDrag( viewHolder );
     }
 
     public static void start( Context context ) {

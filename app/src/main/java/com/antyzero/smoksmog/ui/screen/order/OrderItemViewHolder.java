@@ -14,10 +14,16 @@ public class OrderItemViewHolder extends RecyclerView.ViewHolder {
 
     @Bind( R.id.textView )
     TextView textView;
+    @Bind( R.id.viewHandle )
+    View viewHandle;
 
     public OrderItemViewHolder( View itemView ) {
         super( itemView );
         ButterKnife.bind( this, itemView );
+    }
+
+    public View getHandleView(){
+        return viewHandle;
     }
 
     public void bind( Station station ){

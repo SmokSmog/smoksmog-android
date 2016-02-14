@@ -1,7 +1,10 @@
 package com.antyzero.smoksmog.ui.screen.order;
 
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.antyzero.smoksmog.R;
@@ -14,9 +17,11 @@ import pl.malopolska.smoksmog.model.Station;
 public class OrderAdapter extends RecyclerView.Adapter<OrderItemViewHolder> implements ItemTouchHelperAdapter {
 
     private final List<Station> stationList;
+    private final OnStartDragListener onStartDragListener;
 
-    public OrderAdapter( List<Station> stationList ) {
+    public OrderAdapter( List<Station> stationList, OnStartDragListener onStartDragListener ) {
         this.stationList = stationList;
+        this.onStartDragListener = onStartDragListener;
     }
 
     @Override
@@ -28,6 +33,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderItemViewHolder> impl
     @Override
     public void onBindViewHolder( OrderItemViewHolder holder, int position ) {
         holder.bind( stationList.get( position ) );
+
+        holder.getHandleView().setOnTouchListener( ( view, event ) -> {
+            if( MotionEventCompat.getActionMasked( event ) == MotionEvent.ACTION_DOWN ){
+                onStartDragListener.onStartDrag( holder );
+            }
+            return false;
+        } );
     }
 
     @Override
