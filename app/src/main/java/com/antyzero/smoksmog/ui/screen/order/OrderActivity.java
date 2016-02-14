@@ -3,7 +3,6 @@ package com.antyzero.smoksmog.ui.screen.order;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.CoordinatorLayout.LayoutParams;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,10 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
+import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
@@ -34,7 +33,6 @@ import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
@@ -50,13 +48,15 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     SettingsHelper settingsHelper;
     @Inject
     Logger logger;
+    @Inject
+    ErrorReporter errorReporter;
 
     @Bind( R.id.recyclerView )
     RecyclerView recyclerView;
     @Bind( R.id.fab )
     FloatingActionButton floatingActionButton;
 
-    private List<Station> stationList = new ArrayList<>();
+    private final List<Station> stationList = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
 
     @Override
@@ -100,13 +100,6 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
 
         List<Long> stationIds = settingsHelper.getStationIdList();
 
-        // TODO delete in future
-        stationIds.add( 13L );
-        stationIds.add( 4L );
-        stationIds.add( 30L );
-        stationIds.add( 32L );
-        stationIds.add( 44L );
-
         smokSmog.getApi().stations()
                 .subscribeOn( Schedulers.newThread() )
                 .flatMap( Observable::from )
@@ -125,9 +118,40 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
 
     }
 
-    @OnClick(R.id.fab)
-    void onClickFab(){
-        AddStationDialog.show(getSupportFragmentManager());
+    @Override
+    protected void onDestroy() {
+        settingsHelper.setStationIdList( getStationIdsList() );
+        super.onDestroy();
+    }
+
+    @OnClick( R.id.fab )
+    void onClickFab() {
+        AddStationDialog.show( getSupportFragmentManager(), getStationIdsArray() );
+    }
+
+    /**
+     * Coverts currently visible station list to list of station IDs
+     *
+     * @return list of station IDs
+     */
+    private List<Long> getStationIdsList() {
+        return Observable.from( stationList )
+                .map( Station::getId )
+                .toList().toBlocking().first();
+    }
+
+    /**
+     * Coverts currently visible station list to array of station IDs
+     *
+     * @return array of station IDs
+     */
+    private long[] getStationIdsArray(){
+        List<Long> stationsIds = getStationIdsList();
+        long[] array = new long[stationsIds.size()];
+        for( int i = 0; i < stationsIds.size(); i++ ){
+            array[i] = stationsIds.get( i );
+        }
+        return array;
     }
 
     @Override
@@ -148,9 +172,11 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
                         station -> {
                             stationList.add( station );
                             recyclerView.getAdapter().notifyDataSetChanged();
+                            settingsHelper.setStationIdList( getStationIdsList() );
                         },
                         throwable -> {
                             logger.e( TAG, "Unable to add station to station list", throwable );
+                            errorReporter.report( R.string.error_unable_to_add_station );
                         }
                 );
     }

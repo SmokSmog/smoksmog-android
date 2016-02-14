@@ -2,26 +2,24 @@ package com.antyzero.smoksmog.ui.screen.order.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
-import com.antyzero.smoksmog.ui.screen.FragmentModule;
 import com.antyzero.smoksmog.ui.screen.SupportFragmentModule;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,14 +28,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
+import rx.functions.Action0;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
 public class AddStationDialog extends DialogFragment implements StationDialogAdapter.StationListener {
 
     private static final String TAG = AddStationDialog.class.getSimpleName();
+    public static final String KEY_STATION_IDS = "KEY_STATION_IDS";
 
     @Inject
     SmokSmog smokSmog;
@@ -48,17 +49,29 @@ public class AddStationDialog extends DialogFragment implements StationDialogAda
     RecyclerView recyclerView;
 
     private final List<Station> stationList = new ArrayList<>();
+    private final List<Long> stationIdsNotToShow = new ArrayList<>();
     private StationDialogAdapter.StationListener stationListener;
 
     @Override
     public void onAttach( Activity activity ) {
         super.onAttach( activity );
 
-        if( !( activity instanceof StationDialogAdapter.StationListener) ){
+        if ( !( activity instanceof StationDialogAdapter.StationListener ) ) {
             throw new IllegalStateException( "Activity needs to implement StationListener" );
         }
 
-        stationListener = (StationDialogAdapter.StationListener) activity;
+        if ( !getArguments().containsKey( KEY_STATION_IDS ) ) {
+            throw new IllegalStateException( "Missing station id values" );
+        }
+
+        long[] stationIdsArray = getArguments().getLongArray( KEY_STATION_IDS );
+        if ( stationIdsArray != null ) {
+            for ( long aStationIdsArray : stationIdsArray ) {
+                stationIdsNotToShow.add( aStationIdsArray );
+            }
+        }
+
+        stationListener = ( StationDialogAdapter.StationListener ) activity;
 
         SmokSmogApplication.get( activity )
                 .getAppComponent()
@@ -71,18 +84,18 @@ public class AddStationDialog extends DialogFragment implements StationDialogAda
     @Override
     public void onStart() {
         super.onStart();
+        stationList.clear();
         smokSmog.getApi().stations()
                 .subscribeOn( Schedulers.newThread() )
+                .flatMap( Observable::from )
+                .filter( station -> !stationIdsNotToShow.contains( station.getId() ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
-                        stations -> {
-                            stationList.clear();
-                            stationList.addAll( stations );
-                            recyclerView.getAdapter().notifyDataSetChanged();
-                        },
+                        stationList::add,
                         throwable -> {
                             logger.e( TAG, "Unable to load stations", throwable );
-                        } );
+                        },
+                        () -> recyclerView.getAdapter().notifyDataSetChanged() );
     }
 
     @NonNull
@@ -99,8 +112,11 @@ public class AddStationDialog extends DialogFragment implements StationDialogAda
         return builder.create();
     }
 
-    public static void show( FragmentManager supportFragmentManager ) {
+    public static void show( FragmentManager supportFragmentManager, long[] stationIdsArray ) {
         DialogFragment dialogFragment = new AddStationDialog();
+        Bundle bundle = new Bundle();
+        bundle.putLongArray( KEY_STATION_IDS, stationIdsArray );
+        dialogFragment.setArguments( bundle );
         dialogFragment.show( supportFragmentManager, TAG );
     }
 

@@ -7,6 +7,7 @@
     <string name="error_no_near_Station">Unable to find station for your location</string>
     <string name="error_unable_to_show_history">Unable to show history</string>
     <string name="error_unable_to_enable_station_preference">Unable to enable \'default station\' preference</string>
+    <string name="error_unable_to_add_station">Unable to add station</string>
 
     <string name="action_my_location">My location</string>
     <string name="action_settings">Settings</string>
