@@ -23,6 +23,8 @@
     <string name="title_about" translatable="false">@string/action_about</string>
     <string name="title_settings" translatable="false">@string/action_settings</string>
 
+    <string name="station_closest">Closest station</string>
+
     <string name="version_name_and_code" formatted="false">Version %s (%s)</string>
 
     <!-- Preferences -->
@@ -34,7 +36,7 @@
     <string name="pref_station_selected_title">Default station</string>
     <string name="pref_station_selected_summary_default">Pick station</string>
 
-    <string name="pref_station_closest_title">Closest station</string>
+    <string name="pref_station_closest_title" translatable="false">@string/station_closest</string>
     <string name="pref_station_closest_summary">Show tab with station closest to your location</string>
 
 

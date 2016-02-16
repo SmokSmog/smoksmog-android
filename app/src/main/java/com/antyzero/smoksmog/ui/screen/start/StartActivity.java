@@ -4,7 +4,9 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -94,7 +96,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     @Override
     protected void onResume() {
         super.onResume();
-        viewPagerIndicator.invalidate();
+        viewPagerIndicator.postInvalidate();
         stationSlideAdapter.notifyDataSetChanged();
     }
 
@@ -139,30 +141,15 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
     @Override
     public void onPageSelected( int position ) {
-        Long stationId = stationIds.get( position );
 
-        if ( stationId > 0 ) {
-            smokSmog.getApi().station( stationId )
-                    .subscribeOn( Schedulers.newThread() )
-                    .observeOn( AndroidSchedulers.mainThread() )
-                    .subscribe( station -> {
-                                updateUITitle( station.getName() );
-                            },
-                            throwable -> {
-                                logger.i( TAG, "Unable to load station data (stationID:" + stationId + ")", throwable );
-                                errorReporter.report( R.string.error_unable_to_load_station_data, stationId );
-                            } );
-        }
-    }
-
-    /**
-     * Update activity ActionBar title with station name
-     *
-     * @param title
-     */
-    private void updateUITitle( CharSequence title ) {
-        if ( getSupportActionBar() != null ) {
-            getSupportActionBar().setTitle( title );
+        Fragment fragment = stationSlideAdapter.getItem( position );
+        if ( fragment instanceof StationFragment ) {
+            StationFragment stationFragment = (StationFragment) fragment;
+            String title = stationFragment.getTitle();
+            if ( title != null ) {
+                toolbar.setTitle( title );
+                toolbar.setSubtitle( stationFragment.getSubtitle() );
+            }
         }
     }
 }

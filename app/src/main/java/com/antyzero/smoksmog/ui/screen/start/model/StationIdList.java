@@ -15,13 +15,10 @@ import javax.inject.Inject;
 
 public class StationIdList extends ForwardingList<Long> {
 
-    private final Context context;
-
     @Inject
     SettingsHelper settingsHelper;
 
     public StationIdList( Context context ) {
-        this.context = context;
         SmokSmogApplication.get( context )
                 .getAppComponent()
                 .inject( this );

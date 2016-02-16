@@ -1,11 +1,8 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,19 +28,19 @@ import butterknife.Bind;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 
-public class StationFragment extends BaseFragment implements GoogleApiClient.ConnectionCallbacks {
+public class StationFragment extends BaseFragment implements GoogleApiClient.ConnectionCallbacks, TitleProvider {
 
     private static final String TAG = StationFragment.class.getSimpleName();
     private static final String ARG_STATION_ID = "argStationId";
+    private static final String STATE_STATION_NAME = "Statename";
+
     public static final int NEAREST_STATION_ID = 0;
 
     @Bind( R.id.recyclerView )
@@ -59,6 +56,8 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     GoogleApiClient googleApiClient;
 
     private List<Station> stationContainer = new ArrayList<>();
+
+    private String stationName;
 
     @Override
     public void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -101,12 +100,25 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
             smokSmog.getApi().station( getStationId() )
                     .subscribeOn( Schedulers.newThread() )
                     .observeOn( AndroidSchedulers.mainThread() )
-                    .subscribe( StationFragment.this::updateUI,
+                    .subscribe( station -> {
+                                updateUI( station );
+                                stationName = station.getName();
+                            },
                             throwable -> {
                                 logger.i( TAG, "Unable to load station data (stationID:" + getStationId() + ")", throwable );
                                 errorReporter.report( R.string.error_unable_to_load_station_data, getStationId() );
                             } );
         }
+    }
+
+    @Override
+    public String getTitle() {
+        return stationName;
+    }
+
+    @Override
+    public String getSubtitle() {
+        return getStationId() == NEAREST_STATION_ID ? "Najbliższa stacja" : null;
     }
 
     /**
@@ -118,35 +130,12 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         stationContainer.clear();
         stationContainer.add( station );
         recyclerView.getAdapter().notifyDataSetChanged();
-        try {
-            (( AppCompatActivity) getActivity()).getSupportActionBar().setTitle( station.getName() );
-        } catch ( Exception e ){
-            // totally ignore this issue
-        }
-    }
-
-    /**
-     * Proper way to create fragment
-     *
-     * @param stationId for data download
-     * @return StationFragment instance
-     */
-    public static StationFragment newInstance( long stationId ) {
-
-        Bundle arguments = new Bundle();
-
-        arguments.putLong( ARG_STATION_ID, stationId );
-
-        StationFragment stationFragment = new StationFragment();
-        stationFragment.setArguments( arguments );
-
-        return stationFragment;
     }
 
     @Override
     public void onConnected( @Nullable Bundle bundle ) {
 
-        if( getStationId() == NEAREST_STATION_ID ){
+        if ( getStationId() == NEAREST_STATION_ID ) {
             ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( getActivity() );
 
             reactiveLocationProvider.getLastKnownLocation()
@@ -172,5 +161,37 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
      */
     public long getStationId() {
         return getArguments().getLong( ARG_STATION_ID );
+    }
+
+    @Override
+    public void onSaveInstanceState( Bundle outState ) {
+        outState.putString( STATE_STATION_NAME, stationName );
+        super.onSaveInstanceState( outState );
+    }
+
+    @Override
+    public void onViewStateRestored( @Nullable Bundle savedInstanceState ) {
+        super.onViewStateRestored( savedInstanceState );
+        if ( savedInstanceState != null ) {
+            stationName = savedInstanceState.getString( STATE_STATION_NAME, null );
+        }
+    }
+
+    /**
+     * Proper way to create fragment
+     *
+     * @param stationId for data download
+     * @return StationFragment instance
+     */
+    public static StationFragment newInstance( long stationId ) {
+
+        Bundle arguments = new Bundle();
+
+        arguments.putLong( ARG_STATION_ID, stationId );
+
+        StationFragment stationFragment = new StationFragment();
+        stationFragment.setArguments( arguments );
+
+        return stationFragment;
     }
 }
