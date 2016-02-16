@@ -8,20 +8,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.settings.SettingsHelper;
 
 import java.util.Collections;
 import java.util.List;
 
 import pl.malopolska.smoksmog.model.Station;
+import pl.malopolska.smoksmog.utils.StationUtils;
+
+import static pl.malopolska.smoksmog.utils.StationUtils.convertStationsToIdsList;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderItemViewHolder> implements ItemTouchHelperAdapter {
 
     private final List<Station> stationList;
     private final OnStartDragListener onStartDragListener;
+    private final SettingsHelper settingsHelper;
 
-    public OrderAdapter( List<Station> stationList, OnStartDragListener onStartDragListener ) {
+    public OrderAdapter( List<Station> stationList, OnStartDragListener onStartDragListener, SettingsHelper settingsHelper ) {
         this.stationList = stationList;
         this.onStartDragListener = onStartDragListener;
+        this.settingsHelper = settingsHelper;
     }
 
     @Override
@@ -35,7 +41,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderItemViewHolder> impl
         holder.bind( stationList.get( position ) );
 
         holder.getHandleView().setOnTouchListener( ( view, event ) -> {
-            if( MotionEventCompat.getActionMasked( event ) == MotionEvent.ACTION_DOWN ){
+            if ( MotionEventCompat.getActionMasked( event ) == MotionEvent.ACTION_DOWN ) {
                 onStartDragListener.onStartDrag( holder );
             }
             return false;
@@ -59,11 +65,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderItemViewHolder> impl
             }
         }
         notifyItemMoved( fromPosition, toPosition );
+        settingsHelper.setStationIdList( convertStationsToIdsList( stationList ) );
     }
 
     @Override
     public void onItemDismiss( int position ) {
         stationList.remove( position );
         notifyItemRemoved( position );
+        settingsHelper.setStationIdList( convertStationsToIdsList( stationList ) );
     }
 }

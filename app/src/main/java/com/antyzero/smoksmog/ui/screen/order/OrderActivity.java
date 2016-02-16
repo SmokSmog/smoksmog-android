@@ -31,12 +31,15 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
+import pl.malopolska.smoksmog.utils.StationUtils;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static pl.malopolska.smoksmog.utils.StationUtils.convertStationsToIdsArray;
+import static pl.malopolska.smoksmog.utils.StationUtils.convertStationsToIdsList;
 
 public class OrderActivity extends BaseDragonActivity implements OnStartDragListener, StationDialogAdapter.StationListener {
 
@@ -88,7 +91,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
                 .plus( new ActivityModule( this ) )
                 .inject( this );
 
-        OrderAdapter adapter = new OrderAdapter( stationList, this );
+        OrderAdapter adapter = new OrderAdapter( stationList, this, settingsHelper );
 
         recyclerView.setHasFixedSize( true );
         recyclerView.setAdapter( adapter );
@@ -118,40 +121,9 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
 
     }
 
-    @Override
-    protected void onDestroy() {
-        settingsHelper.setStationIdList( getStationIdsList() );
-        super.onDestroy();
-    }
-
     @OnClick( R.id.fab )
     void onClickFab() {
-        AddStationDialog.show( getSupportFragmentManager(), getStationIdsArray() );
-    }
-
-    /**
-     * Coverts currently visible station list to list of station IDs
-     *
-     * @return list of station IDs
-     */
-    private List<Long> getStationIdsList() {
-        return Observable.from( stationList )
-                .map( Station::getId )
-                .toList().toBlocking().first();
-    }
-
-    /**
-     * Coverts currently visible station list to array of station IDs
-     *
-     * @return array of station IDs
-     */
-    private long[] getStationIdsArray(){
-        List<Long> stationsIds = getStationIdsList();
-        long[] array = new long[stationsIds.size()];
-        for( int i = 0; i < stationsIds.size(); i++ ){
-            array[i] = stationsIds.get( i );
-        }
-        return array;
+        AddStationDialog.show( getSupportFragmentManager(), convertStationsToIdsArray( stationList ) );
     }
 
     @Override
@@ -172,7 +144,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
                         station -> {
                             stationList.add( station );
                             recyclerView.getAdapter().notifyDataSetChanged();
-                            settingsHelper.setStationIdList( getStationIdsList() );
+                            settingsHelper.setStationIdList( convertStationsToIdsList( stationList ) );
                         },
                         throwable -> {
                             logger.e( TAG, "Unable to add station to station list", throwable );
