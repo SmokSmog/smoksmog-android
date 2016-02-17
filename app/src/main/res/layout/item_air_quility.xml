@@ -10,10 +10,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:textAppearance="@style/TextAppearance"
-        android:text="@string/airQualityIndex"/>
+        android:layout_marginTop="4dp"
+        android:text="@string/airQualityIndex"
+        android:textAppearance="@style/TextAppearance"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -34,13 +34,14 @@
             android:textSize="50sp"
             tools:text="8,5"/>
 
-        <View
+        <ImageView
             android:id="@+id/buttonAirQualityInfo"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="#44ff0033"/>
+            android:alpha="0.5"
+            android:src="@drawable/ic_info_outline_white_36dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -77,8 +78,8 @@
         android:id="@+id/textViewMeasureTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
         android:gravity="center_horizontal"
         android:textAppearance="@style/TextAppearance"
         tools:text="zmierzono 5 minut temu"/>

@@ -133,11 +133,17 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     }
 
     private void showLoading() {
-        getActivity().runOnUiThread( () -> viewSwitcher.setDisplayedChild( 1 ) );
+        runOnUiThread( () -> viewSwitcher.setDisplayedChild( 1 ) );
     }
 
     private void showData() {
-        getActivity().runOnUiThread( () -> viewSwitcher.setDisplayedChild( 0 ) );
+        runOnUiThread( () -> viewSwitcher.setDisplayedChild( 0 ) );
+    }
+
+    private void runOnUiThread( Runnable runnable ) {
+        if ( getActivity() != null ) {
+            getActivity().runOnUiThread( runnable );
+        }
     }
 
     /**
