@@ -77,6 +77,9 @@ public class SettingsHelper {
     public void setStationIdList( List<Long> longList ) {
         List<Long> longsTemp = new ArrayList<>( longList );
         stationIds.clear();
+        if ( isClosesStationVisible() ) {
+            stationIds.add( 0L );
+        }
         stationIds.addAll( longsTemp );
         defaultPreferences.edit().putString( KEY_STATION_ID_LIST, TextUtils.join( SPLIT_CHAR, longList ) ).apply();
     }

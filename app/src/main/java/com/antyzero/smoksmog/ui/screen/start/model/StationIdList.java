@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 public class StationIdList extends ForwardingList<Long> implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private final SharedPreferences preferences;
+    private final SharedPreferences settingsPreferences;
 
     @Inject
     SettingsHelper settingsHelper;
@@ -23,22 +23,16 @@ public class StationIdList extends ForwardingList<Long> implements SharedPrefere
                 .getAppComponent()
                 .inject( this );
 
-        preferences = settingsHelper.getPreferences();
-        preferences.registerOnSharedPreferenceChangeListener( this );
+        settingsPreferences = settingsHelper.getPreferences();
+        settingsPreferences.registerOnSharedPreferenceChangeListener( this );
+        updateWithPreferences( settingsPreferences );
     }
 
     @Override
-    public Long get( int location ) {
-        if ( settingsHelper.isClosesStationVisible() ) {
-            return location == 0 ? 0L : super.get( location - 1 );
-        } else {
-            return super.get( location );
+    public void onSharedPreferenceChanged( SharedPreferences sharedPreferences, String key ) {
+        if( key.equals( settingsHelper.getKeyStationClosest() )){
+            updateWithPreferences( sharedPreferences );
         }
-    }
-
-    @Override
-    public int size() {
-        return super.size() + ( settingsHelper.isClosesStationVisible() ? 1 : 0 );
     }
 
     @Override
@@ -46,10 +40,18 @@ public class StationIdList extends ForwardingList<Long> implements SharedPrefere
         return settingsHelper.getStationIdList();
     }
 
-    @Override
-    public void onSharedPreferenceChanged( SharedPreferences sharedPreferences, String key ) {
-        if( key.equals( settingsHelper.getKeyStationClosest() )){
-            boolean value = sharedPreferences.getBoolean( key, false );
+    private void updateWithPreferences( SharedPreferences sharedPreferences ) {
+        boolean value = sharedPreferences.getBoolean( settingsHelper.getKeyStationClosest(), false );
+        if( value ){
+            if( size() > 0 && get( 0 ) != 0 ){
+                add( 0, 0L );
+            } else if ( size() <= 0 ){
+                add( 0L );
+            }
+        } else {
+            if( size() > 0 && get( 0 ) == 0 ){
+                remove( 0 );
+            }
         }
     }
 }
