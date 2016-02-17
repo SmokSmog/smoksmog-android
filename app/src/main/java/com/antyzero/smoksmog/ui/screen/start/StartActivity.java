@@ -90,7 +90,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     @Override
     protected void onResume() {
         super.onResume();
-        viewPagerIndicator.invalidate();
+        viewPagerIndicator.setStationIds( stationIds );
         stationSlideAdapter.notifyDataSetChanged();
     }
 

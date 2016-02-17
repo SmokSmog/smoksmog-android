@@ -75,6 +75,7 @@ public class ViewPagerIndicator extends View implements ViewPager.OnPageChangeLi
 
     public void setStationIds( List<Long> stationIds ) {
         this.stationIds = stationIds;
+        requestLayout();
         invalidate();
     }
 
