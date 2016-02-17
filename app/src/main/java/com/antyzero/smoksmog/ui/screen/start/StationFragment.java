@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ViewSwitcher;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -29,6 +30,7 @@ import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
@@ -43,6 +45,8 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
     public static final int NEAREST_STATION_ID = 0;
 
+    @Bind( R.id.viewSwitcher )
+    ViewSwitcher viewSwitcher;
     @Bind( R.id.recyclerView )
     RecyclerView recyclerView;
 
@@ -99,11 +103,10 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         if ( getStationId() > 0 ) {
             smokSmog.getApi().station( getStationId() )
                     .subscribeOn( Schedulers.newThread() )
+                    .doOnSubscribe( this::showLoading )
+                    .doOnCompleted( this::showData )
                     .observeOn( AndroidSchedulers.mainThread() )
-                    .subscribe( station -> {
-                                updateUI( station );
-                                stationName = station.getName();
-                            },
+                    .subscribe( this::updateUI,
                             throwable -> {
                                 logger.i( TAG, "Unable to load station data (stationID:" + getStationId() + ")", throwable );
                                 errorReporter.report( R.string.error_unable_to_load_station_data, getStationId() );
@@ -119,6 +122,14 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     @Override
     public String getSubtitle() {
         return getStationId() == NEAREST_STATION_ID ? "Najbliższa stacja" : null;
+    }
+
+    private void showLoading(){
+        getActivity().runOnUiThread( () -> viewSwitcher.setDisplayedChild( 1 ) );
+    }
+
+    private void showData(){
+        getActivity().runOnUiThread( () -> viewSwitcher.setDisplayedChild( 0 ) );
     }
 
     /**
