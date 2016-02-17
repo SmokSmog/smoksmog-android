@@ -31,12 +31,15 @@ public class SettingsHelper {
 
     private final Convert stringConvert = new Convert();
     private final Context context;
+    private final String keyStationClosest;
 
     public SettingsHelper( Context context ) {
         this.context = context;
         PreferenceManager.setDefaultValues( context, R.xml.settings_general, false );
         defaultPreferences = PreferenceManager.getDefaultSharedPreferences( context );
         stationIds = getList( defaultPreferences, KEY_STATION_ID_LIST, Long.class );
+
+        keyStationClosest = context.getString( R.string.pref_key_station_closest );
     }
 
     public SharedPreferences getPreferences() {
@@ -44,8 +47,7 @@ public class SettingsHelper {
     }
 
     public void setClosesStationVisible( boolean value ) {
-        defaultPreferences.edit().putBoolean(
-                context.getString( R.string.pref_key_station_closest ), value ).apply();
+        defaultPreferences.edit().putBoolean( keyStationClosest, value ).apply();
     }
 
     /**
@@ -79,6 +81,10 @@ public class SettingsHelper {
         defaultPreferences.edit().putString( KEY_STATION_ID_LIST, TextUtils.join( SPLIT_CHAR, longList ) ).apply();
     }
 
+    public String getKeyStationClosest() {
+        return keyStationClosest;
+    }
+
     /**
      * Converts string into list of objects of requested type
      *
@@ -95,7 +101,7 @@ public class SettingsHelper {
         if ( !TextUtils.isEmpty( string ) && !string.equalsIgnoreCase( EMPTY_STRING ) ) {
             String[] array = string.split( SPLIT_CHAR );
             for ( String item : array ) {
-                result.add( (T) stringConvert.getConverterFor( type ).convert( item ) );
+                result.add( ( T ) stringConvert.getConverterFor( type ).convert( item ) );
             }
         }
         return result;

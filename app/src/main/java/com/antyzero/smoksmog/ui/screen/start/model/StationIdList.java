@@ -1,6 +1,7 @@
 package com.antyzero.smoksmog.ui.screen.start.model;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.settings.SettingsHelper;
@@ -10,7 +11,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class StationIdList extends ForwardingList<Long> {
+public class StationIdList extends ForwardingList<Long> implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private final SharedPreferences preferences;
 
     @Inject
     SettingsHelper settingsHelper;
@@ -19,6 +22,9 @@ public class StationIdList extends ForwardingList<Long> {
         SmokSmogApplication.get( context )
                 .getAppComponent()
                 .inject( this );
+
+        preferences = settingsHelper.getPreferences();
+        preferences.registerOnSharedPreferenceChangeListener( this );
     }
 
     @Override
@@ -38,5 +44,12 @@ public class StationIdList extends ForwardingList<Long> {
     @Override
     protected List<Long> delegate() {
         return settingsHelper.getStationIdList();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged( SharedPreferences sharedPreferences, String key ) {
+        if( key.equals( settingsHelper.getKeyStationClosest() )){
+            boolean value = sharedPreferences.getBoolean( key, false );
+        }
     }
 }

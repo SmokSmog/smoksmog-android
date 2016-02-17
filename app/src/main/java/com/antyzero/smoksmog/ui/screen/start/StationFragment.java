@@ -92,6 +92,8 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         progressBar.getIndeterminateDrawable().setColorFilter(
                 getResources().getColor( R.color.accent ),
                 PorterDuff.Mode.SRC_IN );
+
+        showLoading();
     }
 
     @Override
@@ -109,7 +111,6 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         if ( getStationId() > 0 ) {
             smokSmog.getApi().station( getStationId() )
                     .subscribeOn( Schedulers.newThread() )
-                    .doOnSubscribe( this::showLoading )
                     .observeOn( AndroidSchedulers.mainThread() )
                     .subscribe(
                             this::updateUI,
@@ -158,7 +159,6 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
             reactiveLocationProvider.getLastKnownLocation()
                     .subscribeOn( Schedulers.newThread() )
-                    .doOnSubscribe( this::showLoading )
                     .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
                     .observeOn( AndroidSchedulers.mainThread() )
                     .subscribe(
