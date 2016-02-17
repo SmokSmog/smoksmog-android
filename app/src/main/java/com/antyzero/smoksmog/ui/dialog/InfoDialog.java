@@ -50,4 +50,13 @@ public class InfoDialog extends DialogFragment {
         infoDialog.setArguments( bundle );
         infoDialog.show( fragmentManager, TAG );
     }
+
+    public static class Event{
+
+        public final int layoutId;
+
+        public Event( @LayoutRes int layoutId) {
+            this.layoutId = layoutId;
+        }
+    }
 }
