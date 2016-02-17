@@ -1,7 +1,5 @@
 package com.antyzero.smoksmog.ui;
 
-import android.graphics.Color;
-
 /**
  * Created by iwopolanski on 25.01.16.
  */

@@ -18,8 +18,6 @@ import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.SupportFragmentModule;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,8 +28,6 @@ import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 

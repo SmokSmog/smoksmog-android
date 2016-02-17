@@ -4,7 +4,6 @@ import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.screen.order.OrderActivity;
-import com.antyzero.smoksmog.ui.screen.order.dialog.AddStationDialog;
 import com.antyzero.smoksmog.ui.screen.order.dialog.AddStationDialogComponent;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.antyzero.smoksmog.ui.screen.start.StationFragmentComponent;
@@ -24,7 +23,7 @@ public interface ActivityComponent {
 
     AddStationDialogComponent plus( SupportFragmentModule fragmentModule );
 
-    StationFragmentComponent plus( SupportFragmentModule fragmentModule, GoogleModule googleModule );
+    StationFragmentComponent plus( FragmentModule fragmentModule, GoogleModule googleModule );
 
     void inject( HistoryActivity activity );
 

@@ -1,13 +1,15 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
+import android.app.Activity;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.ViewSwitcher;
 
 import com.antyzero.smoksmog.R;
@@ -17,7 +19,7 @@ import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
-import com.antyzero.smoksmog.ui.screen.SupportFragmentModule;
+import com.antyzero.smoksmog.ui.screen.FragmentModule;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
@@ -30,8 +32,6 @@ import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
@@ -49,6 +49,8 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     ViewSwitcher viewSwitcher;
     @Bind( R.id.recyclerView )
     RecyclerView recyclerView;
+    @Bind( R.id.progressBar )
+    ProgressBar progressBar;
 
     @Inject
     SmokSmog smokSmog;
@@ -86,16 +88,20 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
         recyclerView.setLayoutManager( new LinearLayoutManager( getActivity(), VERTICAL, false ) );
         recyclerView.setAdapter( new StationAdapter( stationContainer ) );
+
+        progressBar.getIndeterminateDrawable().setColorFilter(
+                getResources().getColor( R.color.accent ),
+                PorterDuff.Mode.SRC_IN );
     }
 
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
 
-        FragmentActivity activity = getActivity();
+        Activity activity = getActivity();
         SmokSmogApplication.get( activity ).getAppComponent()
                 .plus( new ActivityModule( activity ) )
-                .plus( new SupportFragmentModule( this ), new GoogleModule( this ) )
+                .plus( new FragmentModule( this ), new GoogleModule( this ) )
                 .inject( this );
 
         googleApiClient.connect();
@@ -104,13 +110,14 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
             smokSmog.getApi().station( getStationId() )
                     .subscribeOn( Schedulers.newThread() )
                     .doOnSubscribe( this::showLoading )
-                    .doOnCompleted( this::showData )
                     .observeOn( AndroidSchedulers.mainThread() )
-                    .subscribe( this::updateUI,
+                    .subscribe(
+                            this::updateUI,
                             throwable -> {
                                 logger.i( TAG, "Unable to load station data (stationID:" + getStationId() + ")", throwable );
                                 errorReporter.report( R.string.error_unable_to_load_station_data, getStationId() );
-                            } );
+                            },
+                            this::showData );
         }
     }
 
@@ -124,11 +131,11 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         return getStationId() == NEAREST_STATION_ID ? "Najbliższa stacja" : null;
     }
 
-    private void showLoading(){
+    private void showLoading() {
         getActivity().runOnUiThread( () -> viewSwitcher.setDisplayedChild( 1 ) );
     }
 
-    private void showData(){
+    private void showData() {
         getActivity().runOnUiThread( () -> viewSwitcher.setDisplayedChild( 0 ) );
     }
 
@@ -151,12 +158,16 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
             reactiveLocationProvider.getLastKnownLocation()
                     .subscribeOn( Schedulers.newThread() )
+                    .doOnSubscribe( this::showLoading )
                     .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
                     .observeOn( AndroidSchedulers.mainThread() )
-                    .subscribe( this::updateUI, throwable -> {
-                        logger.i( TAG, "Unable to find closes station", throwable );
-                        errorReporter.report( R.string.error_no_near_Station );
-                    } );
+                    .subscribe(
+                            this::updateUI,
+                            throwable -> {
+                                logger.i( TAG, "Unable to find closes station", throwable );
+                                errorReporter.report( R.string.error_no_near_Station );
+                            },
+                            this::showData );
         }
     }
 

@@ -1,10 +1,8 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.ui.screen.start.item.AirQualityViewDelegate;
 import com.antyzero.smoksmog.ui.screen.start.item.AirQualityViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.item.ParticulateViewDelegate;

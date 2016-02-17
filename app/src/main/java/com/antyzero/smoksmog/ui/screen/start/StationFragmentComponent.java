@@ -2,13 +2,13 @@ package com.antyzero.smoksmog.ui.screen.start;
 
 
 import com.antyzero.smoksmog.google.GoogleModule;
-import com.antyzero.smoksmog.ui.screen.SupportFragmentModule;
+import com.antyzero.smoksmog.ui.screen.FragmentModule;
 
 import dagger.Subcomponent;
 
 @Subcomponent(
         modules = {
-                SupportFragmentModule.class,
+                FragmentModule.class,
                 GoogleModule.class
         }
 )

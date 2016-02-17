@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.ui.utils.DimenUtils;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 

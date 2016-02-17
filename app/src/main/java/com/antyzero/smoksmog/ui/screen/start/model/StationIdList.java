@@ -1,14 +1,11 @@
 package com.antyzero.smoksmog.ui.screen.start.model;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.widget.Toast;
 
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.utils.ForwardingList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;

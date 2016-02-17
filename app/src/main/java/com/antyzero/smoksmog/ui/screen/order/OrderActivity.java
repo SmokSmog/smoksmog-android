@@ -31,7 +31,6 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
-import pl.malopolska.smoksmog.utils.StationUtils;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

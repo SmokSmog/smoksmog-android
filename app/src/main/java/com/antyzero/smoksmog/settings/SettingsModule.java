@@ -2,8 +2,6 @@ package com.antyzero.smoksmog.settings;
 
 import android.content.Context;
 
-import com.antyzero.smoksmog.settingsold.SettingsOldHelper;
-
 import javax.inject.Singleton;
 
 import dagger.Module;

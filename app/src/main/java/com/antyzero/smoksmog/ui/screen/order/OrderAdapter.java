@@ -4,7 +4,6 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.antyzero.smoksmog.R;
@@ -14,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 import pl.malopolska.smoksmog.model.Station;
-import pl.malopolska.smoksmog.utils.StationUtils;
 
 import static pl.malopolska.smoksmog.utils.StationUtils.convertStationsToIdsList;
 

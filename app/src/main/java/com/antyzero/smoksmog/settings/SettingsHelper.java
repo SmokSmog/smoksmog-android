@@ -1,6 +1,5 @@
 package com.antyzero.smoksmog.settings;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;

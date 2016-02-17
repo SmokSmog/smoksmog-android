@@ -1,7 +1,6 @@
 package com.antyzero.smoksmog.air;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 

@@ -1,18 +1,14 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
-import android.content.SharedPreferences;
+import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -32,8 +28,6 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import pl.malopolska.smoksmog.SmokSmog;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Base activity for future
@@ -75,7 +69,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         setContentView( R.layout.activity_start );
         setSupportActionBar( toolbar );
 
-        stationSlideAdapter = new StationSlideAdapter( getSupportFragmentManager(), stationIds );
+        stationSlideAdapter = new StationSlideAdapter( getFragmentManager(), stationIds );
 
         viewPager.setAdapter( stationSlideAdapter );
         viewPager.addOnPageChangeListener( this );
