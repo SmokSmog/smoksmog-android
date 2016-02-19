@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog;
 
+import com.antyzero.smoksmog.eventbus.EventBusModule;
 import com.antyzero.smoksmog.fabric.FabricModule;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.LoggerModule;
@@ -8,6 +9,7 @@ import com.antyzero.smoksmog.settings.SettingsModule;
 import com.antyzero.smoksmog.ui.screen.ActivityComponent;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.main.MainActivityComponent;
+import com.antyzero.smoksmog.ui.screen.start.item.AirQualityViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 
 import javax.inject.Singleton;
@@ -21,7 +23,8 @@ import dagger.Component;
                 LoggerModule.class,
                 NetworkModule.class,
                 FabricModule.class,
-                SettingsModule.class
+                SettingsModule.class,
+                EventBusModule.class
         }
 )
 public interface ApplicationComponent {
@@ -33,4 +36,6 @@ public interface ApplicationComponent {
     void inject( SmokSmogApplication smokSmogApplication );
 
     void inject( StationIdList longs );
+
+    void inject( AirQualityViewHolder airQualityViewHolder );
 }

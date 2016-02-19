@@ -13,14 +13,17 @@ import android.view.MenuItem;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.eventbus.RxBus;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
+import com.antyzero.smoksmog.ui.dialog.InfoDialog;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.order.OrderActivity;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 import com.antyzero.smoksmog.ui.view.ViewPagerIndicator;
+import com.trello.rxlifecycle.ActivityEvent;
 
 import java.util.List;
 
@@ -28,6 +31,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import pl.malopolska.smoksmog.SmokSmog;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Base activity for future
@@ -45,6 +49,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     ErrorReporter errorReporter;
     @Inject
     SettingsHelper settingsHelper;
+    @Inject
+    RxBus rxBus;
 
     @Bind( R.id.toolbar )
     Toolbar toolbar;
@@ -81,6 +87,16 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         viewPagerIndicator.setStationIds( stationIds );
 
         correctTitleMargin();
+
+        // Listen for info dialog calls
+        rxBus.toObserverable()
+                .compose( bindUntilEvent( ActivityEvent.DESTROY ) )
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe( o -> {
+                    if ( o instanceof InfoDialog.Event ) {
+                        InfoDialog.show( getFragmentManager(), ( InfoDialog.Event ) o );
+                    }
+                } );
 
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ) {
             // getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION );
@@ -138,7 +154,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
         Fragment fragment = stationSlideAdapter.getItem( position );
         if ( fragment instanceof StationFragment ) {
-            StationFragment stationFragment = (StationFragment) fragment;
+            StationFragment stationFragment = ( StationFragment ) fragment;
             String title = stationFragment.getTitle();
             if ( title != null ) {
                 toolbar.setTitle( title );

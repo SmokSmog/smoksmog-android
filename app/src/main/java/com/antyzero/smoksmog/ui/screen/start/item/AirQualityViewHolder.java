@@ -6,11 +6,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.air.AirQuality;
 import com.antyzero.smoksmog.air.AirQualityIndex;
+import com.antyzero.smoksmog.eventbus.RxBus;
+import com.antyzero.smoksmog.ui.dialog.InfoDialog;
 
 import java.util.List;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,6 +25,9 @@ import pl.malopolska.smoksmog.model.Particulate;
 import static android.view.View.VISIBLE;
 
 public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
+
+    @Inject
+    RxBus rxBus;
 
     @Bind( R.id.textViewIndexValue )
     TextView textViewIndexValue;
@@ -33,6 +41,8 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
     public AirQualityViewHolder( View itemView ) {
         super( itemView );
         ButterKnife.bind( this, itemView );
+
+        SmokSmogApplication.get( itemView.getContext() ).getAppComponent().inject( this );
     }
 
     @Override
@@ -49,6 +59,6 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
 
     @OnClick( R.id.buttonAirQualityInfo )
     void clickInfo(){
-        Toast.makeText( itemView.getContext(), "ASD", Toast.LENGTH_SHORT ).show();
+        rxBus.send( new InfoDialog.Event( R.layout.info_air_quality ) );
     }
 }

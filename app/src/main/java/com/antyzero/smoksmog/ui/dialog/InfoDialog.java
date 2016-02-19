@@ -43,12 +43,16 @@ public class InfoDialog extends DialogFragment {
         return getArguments().getInt( KEY_LAYOUT_ID );
     }
 
-    public void show( FragmentManager fragmentManager, @LayoutRes int lauoutId ) {
+    public static void show( FragmentManager fragmentManager, @LayoutRes int lauoutId ) {
         InfoDialog infoDialog = new InfoDialog();
         Bundle bundle = new Bundle();
         bundle.putInt( KEY_LAYOUT_ID, lauoutId );
         infoDialog.setArguments( bundle );
         infoDialog.show( fragmentManager, TAG );
+    }
+
+    public static void show( FragmentManager fragmentManager, Event event ){
+        show( fragmentManager, event.layoutId );
     }
 
     public static class Event{
