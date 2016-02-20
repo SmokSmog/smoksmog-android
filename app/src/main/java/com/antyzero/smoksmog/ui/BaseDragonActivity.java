@@ -1,6 +1,7 @@
 package com.antyzero.smoksmog.ui;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -22,6 +23,8 @@ import butterknife.ButterKnife;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 /**
  * Base Activity that contains Dragon image and pollution background
@@ -51,7 +54,9 @@ public abstract class BaseDragonActivity extends AppCompatActivity implements Ac
                 //noinspection deprecation
                 color = getResources().getColor( colorResourceId );
             }
-            getWindow().setNavigationBarColor( color );
+            if ( getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT ) {
+                getWindow().setNavigationBarColor( color );
+            }
         }
 
         setupDragon();

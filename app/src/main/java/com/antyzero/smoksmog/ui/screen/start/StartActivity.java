@@ -39,6 +39,7 @@ import rx.android.schedulers.AndroidSchedulers;
 public class StartActivity extends BaseDragonActivity implements ViewPager.OnPageChangeListener {
 
     private static final String TAG = StartActivity.class.getSimpleName();
+
     private static final int PAGE_LIMIT = 5;
 
     @Inject
