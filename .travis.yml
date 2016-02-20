@@ -1,20 +1,21 @@
 language: android
 sudo: false
 
+env:
+  global:
+    - JAVA7_HOME=/usr/lib/jvm/java-7-oracle
+    - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+    - JAVA_HOME=$JAVA7_HOME
+  matrix:
+    - ANDROID_TARGET=android-18 ANDROID_ABI=armeabi-v7a
+
 cache:
   directories:
-    - $HOME/.gradle/caches/2.8
-    - $HOME/.gradle/caches/jars-1
+    - $HOME/.gradle/caches
     - $HOME/.gradle/daemon
-    - $HOME/.gradle/native
-    - $HOME/.gradle/wrapper
 
 jdk:
   - oraclejdk8
-
-env:
-  matrix:
-    - ANDROID_TARGET=android-18 ANDROID_ABI=armeabi-v7a
 
 android:
   components:
@@ -23,13 +24,8 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
 
-before_install:
-  - export JAVA7_HOME=/usr/lib/jvm/java-7-oracle
-  - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
-  - export JAVA_HOME=$JAVA7_HOME
-
 script:
-  - ./gradlew check assemble -PdisablePreDex --continue --stacktrace
+  - ./gradlew clean check assemble --stacktrace
 
 after_success:
   - ./gradlew jacocoFullReport

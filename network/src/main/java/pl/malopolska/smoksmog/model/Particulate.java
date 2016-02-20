@@ -25,4 +25,8 @@ public class Particulate {
     private int position;
 
     private List<History> values = new ArrayList<>();
+
+    public ParticulateEnum getEnum() {
+        return ParticulateEnum.findById( id );
+    }
 }

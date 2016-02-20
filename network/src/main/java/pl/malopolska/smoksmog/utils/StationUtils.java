@@ -2,13 +2,49 @@ package pl.malopolska.smoksmog.utils;
 
 
 import java.util.Collection;
+import java.util.List;
 
 import pl.malopolska.smoksmog.model.Station;
+import rx.Observable;
+import rx.functions.Func1;
 
 public class StationUtils {
 
     private StationUtils() {
         throw new IllegalAccessError( "Utils class" );
+    }
+
+    /**
+     * Converts station list to list of station ids
+     *
+     * @param stationList
+     * @return
+     */
+    public static List<Long> convertStationsToIdsList( List<Station> stationList ) {
+        return Observable.from( stationList )
+                .map( new Func1<Station, Long>() {
+                    @Override
+                    public Long call( Station station ) {
+                        return station.getId();
+                    }
+                } )
+                .toList().toBlocking().first();
+    }
+
+    /**
+     *
+     *
+     * @param stations
+     * @return
+     */
+    public static long[] convertStationsToIdsArray( Collection<Station> stations ){
+        long[] result = new long[stations.size()];
+        int i = 0;
+        for( Station station : stations ){
+            result[i] = station.getId();
+            i++;
+        }
+        return result;
     }
 
     /**

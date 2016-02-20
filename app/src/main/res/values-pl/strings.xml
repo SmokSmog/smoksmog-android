@@ -22,4 +22,14 @@
     <string name="pref_station_selected_title">Stacja domyślna</string>
     <string name="pref_station_selected_summary_default">Wybierz stację</string>
     <string name="error_unable_to_enable_station_preference">Nie można udostępnić opcji \'stacja domyślna\'</string>
+    <string name="airQualityBad">zła jakość powietrza</string>
+    <string name="airQualityGood">dobra jakość powietrza</string>
+    <string name="airQualityModerate">umiarkowana jakość powietrza</string>
+    <string name="airQualitySufficient">dostateczna jakość powietrza</string>
+    <string name="airQualityVeryBad">bardzo zła jakość powietrza</string>
+    <string name="airQualityVeryGood">bardzo dobra jakość powietrza</string>
+    <string name="airQualityIndex">Indeks jakości powietrza</string>
+    <string name="pref_station_closest_summary">Pokazuj zakłądkę z najbliższą stacją</string>
+    <string name="error_unable_to_add_station">Nie można dodać stacji</string>
+    <string name="station_closest">Najbliższa stacja</string>
 </resources>

@@ -23,8 +23,10 @@ android {
         versionCode 193000
         versionName "1.9.3"
 
-        multiDexEnabled true
-
+        // For some reason Travis is working only with multi dex
+        if (Boolean.parseBoolean(System.getenv("TRAVIS"))) {
+            multiDexEnabled true
+        }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -59,7 +61,16 @@ android {
     }
 
     lintOptions {
-        disable 'InvalidPackage'
+        // StringFormatInvalid - for some reason strings contain version string thats invalid
+        disable 'InvalidPackage', 'StringFormatInvalid'
+    }
+
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            outputs.upToDateWhen { false }
+            showStandardStreams = true
+        }
     }
 
     packagingOptions {
@@ -91,24 +102,9 @@ dependencies {
         transitive = true;
     }
 
-    testCompile 'junit:junit:4.12'
-
-    androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'org.mockito:mockito-core:2.0.31-beta'
-    androidTestCompile('com.android.support.test:runner:0.4.1') {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    }
-    androidTestCompile 'com.squareup.spoon:spoon-client:1.2.0'
-    androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
-    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
-        exclude group: 'com.android.support', module: 'appcompat'
-        exclude group: 'com.android.support', module: 'support-v4'
-        exclude module: 'recyclerview-v7'
-    }
-    androidTestCompile 'org.apache.directory.studio:org.apache.commons.io:2.4'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:support-v13:23.1.1'
     compile 'com.android.support:support-annotations:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.android.gms:play-services-location:8.4.0'
@@ -123,6 +119,25 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:1.7.1'
+
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'org.mockito:mockito-core:2.0.31-beta'
+    androidTestCompile('com.android.support.test:runner:0.4.1') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.2.0'
+    androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
+
+    androidTestCompile 'org.apache.directory.studio:org.apache.commons.io:2.4'
 }
 
 retrolambda {

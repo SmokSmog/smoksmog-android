@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    tools:background="@drawable/gradient_pollution"
+    tools:context=".ui.screen.start.StartActivity">
+
+    <ImageView
+        android:id="@+id/imageViewDragon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:alpha="0.4"
+        android:src="@drawable/smoksmog"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        tools:ignore="RtlHardcoded"
+        tools:layout_marginBottom="@dimen/dragon_margin_bottom_default"/>
+
+</RelativeLayout>

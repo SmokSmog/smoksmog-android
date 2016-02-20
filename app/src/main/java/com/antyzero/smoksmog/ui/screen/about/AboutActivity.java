@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.BaseActivity;
+import com.antyzero.smoksmog.ui.screen.ActivityModule;
 
 import javax.inject.Inject;
 
