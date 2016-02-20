@@ -6,8 +6,15 @@ import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.antyzero.smoksmog.logger.Logger;
+import com.antyzero.smoksmog.sync.SyncService;
+import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.PeriodicTask;
+import com.google.android.gms.gcm.Task;
+
+import org.joda.time.Period;
 
 import javax.inject.Inject;
 
@@ -26,7 +33,7 @@ public class SmokSmogApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        
+
         Fabric.with( this, new CrashlyticsCore.Builder()
                 .disabled( BuildConfig.DEBUG )
                 .build(), new Answers() );
@@ -40,6 +47,28 @@ public class SmokSmogApplication extends Application {
         CalligraphyConfig.initDefault( new CalligraphyConfig.Builder()
                 //.setDefaultFontPath( "fonts/Roboto-Regular.ttf" )
                 .build() );
+
+        if ( BuildConfig.DEBUG ) {
+            RxJavaPlugins.getInstance().registerErrorHandler( new RxJavaErrorHandler() {
+                @Override
+                public void handleError( Throwable e ) {
+                    super.handleError( e );
+                    Log.w( "RxError", e );
+                }
+            } );
+        }
+
+        Task syncTask = new PeriodicTask.Builder()
+            .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
+            .setPersisted(true)
+            .setRequiresCharging(false)
+            .setUpdateCurrent(true)
+            .setService(SyncService.class)
+            .setPeriod(Period.minutes(1).getSeconds())
+            .setTag(SyncService.TAG)
+            .build();
+
+        GcmNetworkManager.getInstance(this).schedule(syncTask);
     }
 
     public ApplicationComponent getAppComponent() {
