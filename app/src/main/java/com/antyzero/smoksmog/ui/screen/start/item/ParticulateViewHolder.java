@@ -21,6 +21,10 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
     TextView textViewMeasureDay;
     @Bind( R.id.textViewMeasureHour )
     TextView textViewMeasureHour;
+    @Bind( R.id.textViewTimeHour )
+    TextView textViewTimeHour;
+    @Bind( R.id.textViewTimeDay )
+    TextView textViewTimeDay;
     @Bind( R.id.indicatorView )
     IndicatorView indicatorView;
 
@@ -35,6 +39,19 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
         textViewName.setText( data.getShortName() );
         textViewMeasureDay.setText( resources.getString( R.string.measurment, data.getAverage(), data.getUnit() ) );
         textViewMeasureHour.setText( resources.getString( R.string.measurment, data.getValue(), data.getUnit() ) );
+
+        if( data.getValue() > data.getNorm() ){
+            textViewTimeHour.setBackgroundResource( R.drawable.shape_oval_iron_border );
+        } else {
+            textViewTimeHour.setBackgroundResource( R.drawable.shape_oval_iron );
+        }
+
+        if( data.getAverage() > data.getNorm() ){
+            textViewTimeDay.setBackgroundResource( R.drawable.shape_oval_iron_border );
+        } else {
+            textViewTimeDay.setBackgroundResource( R.drawable.shape_oval_iron );
+        }
+
         indicatorView.setValue( data.getAverage() / data.getNorm() );
     }
 }

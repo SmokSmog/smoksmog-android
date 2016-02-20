@@ -5,6 +5,6 @@
         android:key="@string/pref_key_station_closest"
         android:title="@string/pref_station_closest_title"
         android:summary="@string/pref_station_closest_summary"
-        android:defaultValue="true"/>
+        android:defaultValue="false"/>
 
 </PreferenceScreen>
