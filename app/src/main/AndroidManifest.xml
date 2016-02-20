@@ -11,35 +11,49 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".ui.screen.main.MainActivity">
+        android:theme="@style/DragonTheme.NoActionBar">
+
+        <activity
+            android:name=".ui.screen.start.StartActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.screen.order.OrderActivity"
+            android:parentActivityName=".ui.screen.start.StartActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.screen.start.StartActivity"/>
+        </activity>
+
+        <activity
+            android:name=".ui.screen.settings.SettingsActivity"
+            android:label="@string/title_settings"
+            android:parentActivityName=".ui.screen.start.StartActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.screen.start.StartActivity"/>
+        </activity>
+
+        <!-- Old Activities below - TODO correct -->
+
         <activity
             android:name=".ui.screen.history.HistoryActivity"
-            android:parentActivityName=".ui.screen.main.MainActivity"
-            android:label="@string/title_history">
+            android:label="@string/title_history"
+            android:parentActivityName=".ui.screen.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.screen.main.MainActivity"/>
         </activity>
         <activity
             android:name=".ui.screen.about.AboutActivity"
-            android:parentActivityName=".ui.screen.main.MainActivity"
-            android:label="@string/title_about">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.screen.main.MainActivity"/>
-        </activity>
-
-        <activity
-            android:name=".ui.screen.settings.SettingsActivity"
-            android:parentActivityName=".ui.screen.main.MainActivity"
-            android:label="@string/title_settings">
+            android:label="@string/title_about"
+            android:parentActivityName=".ui.screen.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.screen.main.MainActivity"/>
@@ -47,11 +61,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8"/>
     </application>
 
 </manifest>

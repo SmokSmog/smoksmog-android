@@ -6,7 +6,6 @@ import android.animation.ValueAnimator;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,14 +30,13 @@ import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.fabric.StationShowEvent;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseActivity;
-import com.antyzero.smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.ui.ParticulateAdapter;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
+import com.antyzero.smoksmog.ui.view.IndicatorView;
 import com.crashlytics.android.answers.Answers;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.trello.rxlifecycle.ActivityEvent;
@@ -58,7 +56,6 @@ import pl.malopolska.smoksmog.ApiUtils;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
-import pl.malopolska.smoksmog.utils.StationUtils;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -78,8 +75,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     Logger logger;
     @Inject
     Answers answers;
-    @Inject
-    SettingsHelper settingsHelper;
     //</editor-fold>
 
     //<editor-fold desc="ViewBindings">
@@ -179,8 +174,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     @Override
     protected void onStart() {
         super.onStart();
-
-        switch ( settingsHelper.getStationSelectionModeNoException() ) {
+/*
+        switch ( settingsOldHelper.getStationSelectionModeNoException() ) {
 
             case LAST:
                 long stationId = loadStationPick();
@@ -197,7 +192,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 loadDataForCurrentLocation();
                 break;
             case DEFINED:
-                final long defaultStationId = settingsHelper.getDefaultStationId();
+                final long defaultStationId = settingsOldHelper.getDefaultStationId();
                 smokSmog.getApi().station( defaultStationId )
                         .observeOn( AndroidSchedulers.mainThread() )
                         .subscribe(
@@ -209,7 +204,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 break;
             default:
                 logger.e( TAG, "Missing selection mode value for station loading" );
-        }
+        }*/
     }
 
     @Override
@@ -223,7 +218,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     public boolean onOptionsItemSelected( MenuItem item ) {
         switch ( item.getItemId() ) {
 
-            case R.id.action_my_location:
+            /*case R.id.action_my_location:
                 if ( googleApiClient.isConnected() ) {
 
                     ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( this );
@@ -243,7 +238,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                             );
                 }
 
-                break;
+                break;*/
 
             case R.id.action_settings:
                 SettingsActivity.start( this );

@@ -1,7 +1,6 @@
 package com.antyzero.smoksmog.air;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 
@@ -66,6 +65,11 @@ public enum AirQuality implements ValueCheck {
         return context.getString( nameId );
     }
 
+    @StringRes
+    public int getTitleResId() {
+        return nameId;
+    }
+
     public int getColor( Context context ){
         // Deprecated since 23 API, quite fresh
         //noinspection deprecation
@@ -82,5 +86,10 @@ public enum AirQuality implements ValueCheck {
         }
 
         throw new IllegalStateException( "Unable to find AirQuality for given value (" + value + ")" );
+    }
+
+    @ColorRes
+    public int getColorResId() {
+        return colorId;
     }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- For common settings for all API levels, do not use directly -->
+    <style name="DragonThemeBase" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@drawable/gradient_pollution</item>
+    </style>
+
+    <style name="DragonTheme" parent="DragonThemeBase">
+        <!-- Use this for Activities, override in resource dirs for per API changes -->
+    </style>
+
+    <style name="DragonTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+</resources>

@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.settings;
+package com.antyzero.smoksmog.settingsold;
 
 import android.content.Context;
 import android.support.annotation.StringRes;

@@ -10,7 +10,7 @@ import pl.malopolska.smoksmog.model.Station;
  */
 public class AirQualityIndex {
 
-    public static final double calculate( Station station ) {
+    public static double calculate( Station station ) {
         return calculate( station.getParticulates() );
     }
 
@@ -21,7 +21,7 @@ public class AirQualityIndex {
      * @param particulates collection
      * @return index value
      */
-    private static double calculate( Collection<Particulate> particulates ) {
+    public static double calculate( Collection<Particulate> particulates ) {
 
         double index = 0;
 

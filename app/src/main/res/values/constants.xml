@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">SmokSmog</string>
+
+    <string name="hours_24" translatable="false">24h</string>
+    <string name="hours_1" translatable="false">1h</string>
+
+    <string name="measurment" translatable="false">%.1f %s</string>
+
 </resources>

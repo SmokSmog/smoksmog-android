@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.ui.view.IndicatorView;
 
 import java.util.List;
 
@@ -61,8 +62,6 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
 
         @Bind( R.id.textViewName )
         TextView textViewName;
-        @Bind( R.id.textViewNorm )
-        TextView textViewNorm;
         @Bind( R.id.indicatorView )
         IndicatorView indicatorView;
 
@@ -74,7 +73,6 @@ public class ParticulateAdapter extends RecyclerView.Adapter<ParticulateAdapter.
         public void bind( Particulate particulate, OnItemClickListener listener ) {
             indicatorView.setValue( particulate.getAverage() / particulate.getNorm() );
             textViewName.setText( particulate.getShortName() );
-            textViewNorm.setText( String.format( "%s%s", particulate.getNorm(), particulate.getUnit() ) );
 
             // Root view
             itemView.setOnClickListener( v -> listener.onItemClick( particulate ) );

@@ -141,7 +141,7 @@
 
                         </LinearLayout>
 
-                        <com.antyzero.smoksmog.ui.IndicatorView
+                        <com.antyzero.smoksmog.ui.view.IndicatorView
                             android:id="@+id/indicatorMain"
                             android:layout_width="200dp"
                             android:layout_height="200dp"/>
