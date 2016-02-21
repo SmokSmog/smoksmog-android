@@ -6,6 +6,7 @@ import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.LoggerModule;
 import com.antyzero.smoksmog.network.NetworkModule;
 import com.antyzero.smoksmog.settings.SettingsModule;
+import com.antyzero.smoksmog.time.TimeModule;
 import com.antyzero.smoksmog.ui.dialog.AboutDialog;
 import com.antyzero.smoksmog.ui.screen.ActivityComponent;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
@@ -25,7 +26,8 @@ import dagger.Component;
                 NetworkModule.class,
                 FabricModule.class,
                 SettingsModule.class,
-                EventBusModule.class
+                EventBusModule.class,
+                TimeModule.class
         }
 )
 public interface ApplicationComponent {

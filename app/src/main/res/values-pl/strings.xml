@@ -32,4 +32,5 @@
     <string name="pref_station_closest_summary">Pokazuj zakłądkę z najbliższą stacją</string>
     <string name="error_unable_to_add_station">Nie można dodać stacji</string>
     <string name="station_closest">Najbliższa stacja</string>
+    <string name="measure_ago">zmierzono %s temu</string>
 </resources>
