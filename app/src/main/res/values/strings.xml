@@ -47,4 +47,6 @@
     <string name="airQualityBad">bad air quality</string>
     <string name="airQualityVeryBad">very bad air quality</string>
     <string name="airQualityIndex">Air quality index</string>
+
+    <string name="measure_ago">measured %s ago</string>
 </resources>

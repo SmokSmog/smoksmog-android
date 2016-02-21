@@ -17,6 +17,7 @@ import com.antyzero.smoksmog.eventbus.RxBus;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
+import com.antyzero.smoksmog.ui.dialog.AboutDialog;
 import com.antyzero.smoksmog.ui.dialog.InfoDialog;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.order.OrderActivity;
@@ -134,6 +135,9 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
                 break;
             case R.id.action_order:
                 OrderActivity.start( this );
+                break;
+            case R.id.action_about:
+                rxBus.send( new InfoDialog.Event<>( R.layout.info_about, AboutDialog.class ) );
                 break;
         }
 

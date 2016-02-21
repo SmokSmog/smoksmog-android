@@ -49,6 +49,7 @@
         android:rowCount="2">
 
         <TextView
+            android:id="@+id/textViewTimeDay"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginBottom="4dp"
@@ -69,6 +70,7 @@
             tools:text="1 mg/m3"/>
 
         <TextView
+            android:id="@+id/textViewTimeHour"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/shape_oval_iron"
