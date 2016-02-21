@@ -135,6 +135,9 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
             case R.id.action_order:
                 OrderActivity.start( this );
                 break;
+            case R.id.action_about:
+                rxBus.send( new InfoDialog.Event( R.layout.info_about ) );
+                break;
         }
 
         return super.onOptionsItemSelected( item );

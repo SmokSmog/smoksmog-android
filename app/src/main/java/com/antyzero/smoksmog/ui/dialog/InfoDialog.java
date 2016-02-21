@@ -38,6 +38,11 @@ public class InfoDialog extends DialogFragment {
         return builder.create();
     }
 
+    @Override
+    public void onViewCreated( View view, Bundle savedInstanceState ) {
+        super.onViewCreated( view, savedInstanceState );
+    }
+
     @LayoutRes
     private int getLayoutId() {
         return getArguments().getInt( KEY_LAYOUT_ID );

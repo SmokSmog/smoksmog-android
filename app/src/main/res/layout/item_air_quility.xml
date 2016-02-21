@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:background="@color/item_background"
-        android:minHeight="80dp"
+        android:minHeight="@dimen/item_air_quality_height"
         android:orientation="horizontal"
         android:padding="8dp">
 

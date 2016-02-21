@@ -2,6 +2,7 @@ package com.antyzero.smoksmog.ui.screen.order;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout.LayoutParams;
 import android.support.design.widget.FloatingActionButton;
@@ -66,24 +67,12 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_order );
 
-        int margin = getResources().getDimensionPixelSize( R.dimen.margin_16 );
-
-        LayoutParams params = new LayoutParams( WRAP_CONTENT, WRAP_CONTENT );
-        params.bottomMargin = DimenUtils.getNavBarHeight( this ) + margin;
-        params.leftMargin = margin;
-        params.rightMargin = margin;
-        params.gravity = Gravity.BOTTOM | Gravity.END;
-        params.anchorGravity = Gravity.BOTTOM | Gravity.END;
-        params.setAnchorId( R.id.recyclerView );
-
-        floatingActionButton.setLayoutParams( params );
-
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION );
+        setupFAB();
+        setupNAvigationBar();
 
         recyclerView.setPadding(
-                0, DimenUtils.getStatusBarHeight( this, R.dimen.nav_bar_height ), 0, 0 );
+                0, DimenUtils.getStatusBarHeight( this, R.dimen.nav_bar_height ),
+                0, getResources().getDimensionPixelSize( R.dimen.item_air_quality_height ) * 3 );
 
         SmokSmogApplication.get( this )
                 .getAppComponent()
@@ -118,6 +107,34 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
                             logger.w( TAG, "Unable to build list", throwable );
                         } );
 
+    }
+
+    private void setupFAB() {
+        int margin = getResources().getDimensionPixelSize( R.dimen.margin_16 );
+
+        LayoutParams params = new LayoutParams( WRAP_CONTENT, WRAP_CONTENT );
+
+        int bottomMargin = margin;
+
+        if ( getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ) {
+            bottomMargin += DimenUtils.getNavBarHeight( this );
+        }
+
+        params.bottomMargin = bottomMargin;
+        params.leftMargin = margin;
+        params.rightMargin = margin;
+        params.gravity = Gravity.BOTTOM | Gravity.END;
+        params.anchorGravity = Gravity.BOTTOM | Gravity.END;
+        params.setAnchorId( R.id.recyclerView );
+
+        floatingActionButton.setLayoutParams( params );
+    }
+
+    private void setupNAvigationBar() {
+        getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
+        if ( getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ) {
+            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION );
+        }
     }
 
     @OnClick( R.id.fab )
