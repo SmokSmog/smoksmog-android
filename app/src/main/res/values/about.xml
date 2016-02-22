@@ -19,4 +19,9 @@ Oficjalną stronę projektu SmokSmog znajdziesz pod poniższym linkiem<br /><br 
 SmokSmog na Androida jest projektem Open Source, czyli kod źródłowy jest jawny i dostępny dla wszystkich, którzy chcieliby zweryfikować naszą pracę lub współtworzyć nasz projekt<br /><br />
 
 <a href="https://github.com/SmokSmog/smoksmog-android">https://github.com/SmokSmog/smoksmog-android</a> ]]></string>
+
+    <string name="desc_air_quality" translatable="false"><![CDATA[Indeks jakości powietrza jest wskaźnikiem mającym w przystępny sposób zaprezentować poziom zanieczyszczenia powietrza dla kilku substancji jednocześnie. Przyjmuje on wartość najbardziej niekorzystnego w danym momencie stężenia ze wszystkich mierzonych substancji.<br /><br />
+
+    Obliczany jest na podstawie najnowszych pomiarów, pochodzących przeważnie z ostatniej godziny.]]></string>
+
 </resources>

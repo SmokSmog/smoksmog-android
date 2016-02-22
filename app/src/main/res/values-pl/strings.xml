@@ -33,4 +33,6 @@
     <string name="error_unable_to_add_station">Nie można dodać stacji</string>
     <string name="station_closest">Najbliższa stacja</string>
     <string name="measure_ago">zmierzono %s temu</string>
+    <string name="air_quality_index">Indeks jakości powietrza</string>
+    <string name="action_manage_stations">Zarządzaj stacjami</string>
 </resources>

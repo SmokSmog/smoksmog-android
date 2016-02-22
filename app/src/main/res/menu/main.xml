@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/action_order"
-        android:title="Kolejność stacji"
+        android:title="@string/action_manage_stations"
         app:showAsAction="never" />
 
     <item
