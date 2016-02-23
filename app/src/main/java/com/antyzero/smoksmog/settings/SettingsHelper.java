@@ -12,12 +12,13 @@ import com.antyzero.smoksmog.utils.Convert;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Working on settings helper.
  * <p>
  * This class should be responsible for data manipulation of every user-changeable data
  */
-public class SettingsHelper {
+public class SettingsHelper implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = SettingsHelper.class.getSimpleName();
 
@@ -31,15 +32,32 @@ public class SettingsHelper {
 
     private final Convert stringConvert = new Convert();
     private final Context context;
+
     private final String keyStationClosest;
+    private final String keyPercent;
+
+    private Percent percentMode;
 
     public SettingsHelper( Context context ) {
         this.context = context;
         PreferenceManager.setDefaultValues( context, R.xml.settings_general, false );
         defaultPreferences = PreferenceManager.getDefaultSharedPreferences( context );
+        defaultPreferences.registerOnSharedPreferenceChangeListener( this );
         stationIds = getList( defaultPreferences, KEY_STATION_ID_LIST, Long.class );
-
         keyStationClosest = context.getString( R.string.pref_key_station_closest );
+        keyPercent = context.getString( R.string.pref_key_percent );
+
+        updatePercentMode();
+    }
+
+    private void updatePercentMode() {
+        updatePercentMode( defaultPreferences );
+    }
+
+    protected void updatePercentMode( SharedPreferences sharedPreferences ) {
+        String defValue = context.getString( R.string.pref_percent_value_default );
+        String string = sharedPreferences.getString( keyPercent, defValue );
+        percentMode = Percent.find( context, string );
     }
 
     public SharedPreferences getPreferences() {
@@ -58,6 +76,10 @@ public class SettingsHelper {
     public boolean isClosesStationVisible() {
         return defaultPreferences.getBoolean(
                 context.getString( R.string.pref_key_station_closest ), true );
+    }
+
+    public Percent getPercentMode() {
+        return percentMode;
     }
 
     /**
@@ -108,5 +130,12 @@ public class SettingsHelper {
             }
         }
         return result;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged( SharedPreferences sharedPreferences, String key ) {
+        if ( key.equals( keyPercent ) ) {
+            updatePercentMode( sharedPreferences );
+        }
     }
 }

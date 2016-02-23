@@ -15,6 +15,7 @@ import android.widget.ViewSwitcher;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.eventbus.RxBus;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseFragment;
@@ -53,6 +54,8 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     ProgressBar progressBar;
 
     @Inject
+    RxBus rxBus;
+    @Inject
     SmokSmog smokSmog;
     @Inject
     Logger logger;
@@ -63,7 +66,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
     private List<Station> stationContainer = new ArrayList<>();
 
-    private String stationName;
+    private Station station;
 
     @Override
     public void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -124,12 +127,12 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
     @Override
     public String getTitle() {
-        return stationName;
+        return station == null ? null : station.getName();
     }
 
     @Override
     public String getSubtitle() {
-        return getStationId() == NEAREST_STATION_ID ? "Najbliższa stacja" : null;
+        return getStationId() == NEAREST_STATION_ID ? getString( R.string.station_closest ) : null;
     }
 
     private void showLoading() {
@@ -152,9 +155,14 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
      * @param station data
      */
     private void updateUI( Station station ) {
+
+        this.station = station;
+
         stationContainer.clear();
         stationContainer.add( station );
         recyclerView.getAdapter().notifyDataSetChanged();
+
+        rxBus.send( new StartActivity.TitleUpdateEvent() );
     }
 
     @Override
@@ -189,20 +197,6 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
      */
     public long getStationId() {
         return getArguments().getLong( ARG_STATION_ID );
-    }
-
-    @Override
-    public void onSaveInstanceState( Bundle outState ) {
-        outState.putString( STATE_STATION_NAME, stationName );
-        super.onSaveInstanceState( outState );
-    }
-
-    @Override
-    public void onViewStateRestored( @Nullable Bundle savedInstanceState ) {
-        super.onViewStateRestored( savedInstanceState );
-        if ( savedInstanceState != null ) {
-            stationName = savedInstanceState.getString( STATE_STATION_NAME, null );
-        }
     }
 
     /**

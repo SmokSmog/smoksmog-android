@@ -10,11 +10,13 @@ import com.antyzero.smoksmog.air.AirQuality;
 import com.antyzero.smoksmog.air.AirQualityIndex;
 import com.antyzero.smoksmog.eventbus.RxBus;
 import com.antyzero.smoksmog.time.CountdownProvider;
+import com.antyzero.smoksmog.ui.dialog.AirQualityDialog;
 import com.antyzero.smoksmog.ui.dialog.InfoDialog;
 
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,6 +26,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pl.malopolska.smoksmog.model.Particulate;
+import rx.Observable;
+import rx.math.operators.OperatorMinMax;
 
 import static android.view.View.VISIBLE;
 
@@ -48,7 +52,6 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
     public AirQualityViewHolder( View itemView ) {
         super( itemView );
         ButterKnife.bind( this, itemView );
-
         SmokSmogApplication.get( itemView.getContext() ).getAppComponent().inject( this );
     }
 
@@ -65,7 +68,8 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
 
 
         if ( !data.isEmpty() ) {
-            Particulate particulate = data.get( 0 );
+
+            Particulate particulate = getNewest(data);
             int seconds = Seconds.secondsBetween(
                     particulate.getDate(), DateTime.now() ).getSeconds();
 
@@ -75,8 +79,13 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
         }
     }
 
+    private Particulate getNewest( List<Particulate> data ) {
+        return OperatorMinMax.max( Observable.from( data ), ( lhs, rhs ) ->
+                lhs.getDate().compareTo( rhs.getDate() ) ).toBlocking().first();
+    }
+
     @OnClick( R.id.buttonAirQualityInfo )
     void clickInfo() {
-        rxBus.send( new InfoDialog.Event( R.layout.info_air_quality ) );
+        rxBus.send( new InfoDialog.Event<>( AirQualityDialog.class ) );
     }
 }

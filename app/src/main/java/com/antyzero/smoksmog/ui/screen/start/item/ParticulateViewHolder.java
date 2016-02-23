@@ -5,7 +5,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.SmokSmogApplication;
+import com.antyzero.smoksmog.settings.Percent;
+import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.view.IndicatorView;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -14,6 +19,9 @@ import pl.malopolska.smoksmog.model.Particulate;
 public class ParticulateViewHolder extends ListViewHolder<Particulate> {
 
     private final Resources resources;
+
+    @Inject
+    SettingsHelper settingsHelper;
 
     @Bind( R.id.textViewName )
     TextView textViewName;
@@ -30,6 +38,7 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
 
     public ParticulateViewHolder( View itemView ) {
         super( itemView );
+        SmokSmogApplication.get( itemView.getContext() ).getAppComponent().inject( this );
         ButterKnife.bind( this, itemView );
         resources = itemView.getContext().getResources();
     }
@@ -40,18 +49,22 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
         textViewMeasureDay.setText( resources.getString( R.string.measurment, data.getAverage(), data.getUnit() ) );
         textViewMeasureHour.setText( resources.getString( R.string.measurment, data.getValue(), data.getUnit() ) );
 
-        if( data.getValue() > data.getNorm() ){
+        if ( data.getValue() > data.getNorm() ) {
             textViewTimeHour.setBackgroundResource( R.drawable.shape_oval_iron_border );
         } else {
             textViewTimeHour.setBackgroundResource( R.drawable.shape_oval_iron );
         }
 
-        if( data.getAverage() > data.getNorm() ){
+        if ( data.getAverage() > data.getNorm() ) {
             textViewTimeDay.setBackgroundResource( R.drawable.shape_oval_iron_border );
         } else {
             textViewTimeDay.setBackgroundResource( R.drawable.shape_oval_iron );
         }
 
-        indicatorView.setValue( data.getAverage() / data.getNorm() );
+        if ( Percent.HOUR.equals( settingsHelper.getPercentMode() ) ) {
+            indicatorView.setValue( data.getValue() / data.getNorm() );
+        } else {
+            indicatorView.setValue( data.getAverage() / data.getNorm() );
+        }
     }
 }

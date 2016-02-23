@@ -8,11 +8,8 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
-
-import com.antyzero.smoksmog.R;
 
 /**
  * For info dialog
@@ -26,8 +23,8 @@ public class InfoDialog extends DialogFragment {
     public void onAttach( Activity activity ) {
         super.onAttach( activity );
 
-        if ( !getArguments().containsKey( KEY_LAYOUT_ID ) ) {
-            throw new IllegalStateException( "Show dialog with show() method" );
+        if ( getLayoutId() <= 0 && !getArguments().containsKey( KEY_LAYOUT_ID ) ) {
+            throw new IllegalStateException( "Layout ID is not provided via argument or overridden method" );
         }
     }
 
@@ -48,7 +45,7 @@ public class InfoDialog extends DialogFragment {
     }
 
     @LayoutRes
-    private int getLayoutId() {
+    protected int getLayoutId() {
         return getArguments().getInt( KEY_LAYOUT_ID );
     }
 
@@ -67,7 +64,9 @@ public class InfoDialog extends DialogFragment {
         }
 
         Bundle bundle = new Bundle();
-        bundle.putInt( KEY_LAYOUT_ID, event.layoutId );
+        if ( event.layoutId > 0 ) {
+            bundle.putInt( KEY_LAYOUT_ID, event.layoutId );
+        }
         infoDialog.setArguments( bundle );
         infoDialog.show( fragmentManager, TAG );
     }
@@ -78,11 +77,15 @@ public class InfoDialog extends DialogFragment {
         @Nullable
         private final Class<T> dialogFragment;
 
-        public Event( @NonNull @LayoutRes int layoutId ) {
+        public Event( @Nullable @LayoutRes int layoutId ) {
             this( layoutId, null );
         }
 
-        public Event( @NonNull @LayoutRes int layoutId, @Nullable Class<T> dialogFragment ) {
+        public Event( @Nullable Class<T> dialogFragment ) {
+            this( 0, dialogFragment );
+        }
+
+        public Event( @Nullable @LayoutRes int layoutId, @Nullable Class<T> dialogFragment ) {
             this.layoutId = layoutId;
             this.dialogFragment = dialogFragment;
         }

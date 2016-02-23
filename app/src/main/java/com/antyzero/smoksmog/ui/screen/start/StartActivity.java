@@ -1,6 +1,5 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
-import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -23,9 +24,11 @@ import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.order.OrderActivity;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
+import com.antyzero.smoksmog.ui.typeface.TypefaceProvider;
 import com.antyzero.smoksmog.ui.view.ViewPagerIndicator;
 import com.trello.rxlifecycle.ActivityEvent;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,6 +44,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
     private static final String TAG = StartActivity.class.getSimpleName();
 
+    private static final String KEY_LAST_PAGE = "lastSelectedPagePosition";
     private static final int PAGE_LIMIT = 5;
 
     @Inject
@@ -53,6 +57,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     SettingsHelper settingsHelper;
     @Inject
     RxBus rxBus;
+    @Inject
+    TypefaceProvider typefaceProvider;
 
     @Bind( R.id.toolbar )
     Toolbar toolbar;
@@ -63,6 +69,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
     private List<Long> stationIds;
     private StationSlideAdapter stationSlideAdapter;
+    private int lastPageSelected = 0;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -100,8 +107,23 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
                     }
                 } );
 
+        // Listen for title updates
+        rxBus.toObserverable()
+                .compose( bindUntilEvent( ActivityEvent.DESTROY ) )
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe( o -> {
+                    if ( o instanceof TitleUpdateEvent ) {
+                        updateTitleWithStation();
+                    }
+                } );
+
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ) {
             // getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION );
+        }
+
+        if ( savedInstanceState != null ) {
+            lastPageSelected = savedInstanceState.getInt( KEY_LAST_PAGE, 0 );
+            viewPager.setCurrentItem( lastPageSelected, true );
         }
     }
 
@@ -110,13 +132,14 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         super.onResume();
         viewPagerIndicator.setStationIds( stationIds );
         stationSlideAdapter.notifyDataSetChanged();
+        updateTitleWithStation();
     }
 
     /**
      * Because it's not aligned with main layout margin
      */
     private void correctTitleMargin() {
-        toolbar.setContentInsetsAbsolute( 18, 0 );
+        toolbar.setContentInsetsAbsolute( 16, 0 );
     }
 
     @Override
@@ -137,11 +160,17 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
                 OrderActivity.start( this );
                 break;
             case R.id.action_about:
-                rxBus.send( new InfoDialog.Event<>( R.layout.info_about, AboutDialog.class ) );
+                rxBus.send( new InfoDialog.Event<>( R.layout.dialog_info_about, AboutDialog.class ) );
                 break;
         }
 
         return super.onOptionsItemSelected( item );
+    }
+
+    @Override
+    protected void onSaveInstanceState( Bundle outState ) {
+        outState.putInt( KEY_LAST_PAGE, lastPageSelected );
+        super.onSaveInstanceState( outState );
     }
 
     @Override
@@ -156,15 +185,51 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
     @Override
     public void onPageSelected( int position ) {
+        updateTitleWithStation( position );
+        lastPageSelected = position;
+    }
 
-        Fragment fragment = stationSlideAdapter.getItem( position );
-        if ( fragment instanceof StationFragment ) {
-            StationFragment stationFragment = ( StationFragment ) fragment;
-            String title = stationFragment.getTitle();
-            if ( title != null ) {
-                toolbar.setTitle( title );
-                toolbar.setSubtitle( stationFragment.getSubtitle() );
+    protected void updateTitleWithStation() {
+        if ( stationSlideAdapter.getCount() > 0 ) {
+            updateTitleWithStation( viewPager.getCurrentItem() );
+        }
+    }
+
+    protected void updateTitleWithStation( int position ) {
+        WeakReference<StationFragment> reference = stationSlideAdapter.getFragmentReference( position );
+        if ( reference != null ) {
+            StationFragment stationFragment = reference.get();
+            if ( stationFragment != null ) {
+                String title = stationFragment.getTitle();
+                if ( title != null ) {
+                    toolbar.setTitle( title );
+                    toolbar.setSubtitle( stationFragment.getSubtitle() );
+                    changeSubtitleTypeface();
+                }
             }
         }
+    }
+
+    /**
+     * This is messy, Calligraphy should handle this but for some reason it's the only TextView
+     * not updated with default font.
+     * <p>
+     * TODO fix with Calligraphy in future
+     */
+    private void changeSubtitleTypeface() {
+        for ( int i = 1; i < toolbar.getChildCount(); i++ ) {
+            View view = toolbar.getChildAt( i );
+            if ( view instanceof TextView ) {
+                TextView textView = ( TextView ) view;
+                textView.setTypeface( typefaceProvider.getDefault() );
+            }
+        }
+    }
+
+    /**
+     * Ask to check title and update is possible
+     */
+    public static class TitleUpdateEvent {
+
     }
 }

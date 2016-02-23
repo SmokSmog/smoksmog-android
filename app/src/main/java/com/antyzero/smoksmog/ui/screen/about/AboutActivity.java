@@ -38,7 +38,7 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         SmokSmogApplication.get( this ).getAppComponent().plus( new ActivityModule( this ) ).inject( this );
-        setContentView( R.layout.info_about );
+        setContentView( R.layout.dialog_info_about );
         ButterKnife.bind( this );
 
         textView.setText( Html.fromHtml( getString( R.string.about ) ) );

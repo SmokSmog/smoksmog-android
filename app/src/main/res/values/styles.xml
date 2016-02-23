@@ -27,4 +27,8 @@
         <item name="android:textColor">@color/text_dark</item>
     </style>
 
+    <style name="ToolbarSubtitleAppearance" parent="TextAppearance">
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>
