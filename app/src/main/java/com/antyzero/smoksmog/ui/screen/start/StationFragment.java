@@ -63,7 +63,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
     private List<Station> stationContainer = new ArrayList<>();
 
-    private String stationName;
+    private Station station;
 
     @Override
     public void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -124,7 +124,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
     @Override
     public String getTitle() {
-        return stationName;
+        return station == null ? null : station.getName();
     }
 
     @Override
@@ -152,6 +152,9 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
      * @param station data
      */
     private void updateUI( Station station ) {
+
+        this.station = station;
+
         stationContainer.clear();
         stationContainer.add( station );
         recyclerView.getAdapter().notifyDataSetChanged();
@@ -189,20 +192,6 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
      */
     public long getStationId() {
         return getArguments().getLong( ARG_STATION_ID );
-    }
-
-    @Override
-    public void onSaveInstanceState( Bundle outState ) {
-        outState.putString( STATE_STATION_NAME, stationName );
-        super.onSaveInstanceState( outState );
-    }
-
-    @Override
-    public void onViewStateRestored( @Nullable Bundle savedInstanceState ) {
-        super.onViewStateRestored( savedInstanceState );
-        if ( savedInstanceState != null ) {
-            stationName = savedInstanceState.getString( STATE_STATION_NAME, null );
-        }
     }
 
     /**
