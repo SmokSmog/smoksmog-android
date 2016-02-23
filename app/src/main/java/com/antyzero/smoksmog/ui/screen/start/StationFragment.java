@@ -15,6 +15,7 @@ import android.widget.ViewSwitcher;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.eventbus.RxBus;
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseFragment;
@@ -52,6 +53,8 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     @Bind( R.id.progressBar )
     ProgressBar progressBar;
 
+    @Inject
+    RxBus rxBus;
     @Inject
     SmokSmog smokSmog;
     @Inject
@@ -129,7 +132,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
     @Override
     public String getSubtitle() {
-        return getStationId() == NEAREST_STATION_ID ? "Najbliższa stacja" : null;
+        return getStationId() == NEAREST_STATION_ID ? getString( R.string.station_closest ) : null;
     }
 
     private void showLoading() {
@@ -158,6 +161,8 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         stationContainer.clear();
         stationContainer.add( station );
         recyclerView.getAdapter().notifyDataSetChanged();
+
+        rxBus.send( new StartActivity.TitleUpdateEvent() );
     }
 
     @Override

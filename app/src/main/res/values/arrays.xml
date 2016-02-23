@@ -10,4 +10,14 @@
         <item>@string/pref_station_default_value_closest</item>
         <item>@string/pref_station_default_value_defined</item>
     </string-array>
+
+    <string-array name="pref_percent_entries">
+        <item>@string/pref_percent_entry_day</item>
+        <item>@string/pref_percent_entry_hour</item>
+    </string-array>
+    <string-array name="pref_percent_values">
+        <item>@string/pref_percent_value_day</item>
+        <item>@string/pref_percent_value_hour</item>
+    </string-array>
+
 </resources>

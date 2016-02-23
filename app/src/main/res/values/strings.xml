@@ -40,6 +40,10 @@
     <string name="pref_station_closest_title" translatable="false">@string/station_closest</string>
     <string name="pref_station_closest_summary">Show tab with station closest to your location</string>
 
+    <string name="pref_percent_title">Percent value</string>
+    <string name="pref_percent_summary">Which period should be referred</string>
+    <string name="pref_percent_entry_hour">1 hour</string>
+    <string name="pref_percent_entry_day">24 hours</string>
 
     <string name="airQualityVeryGood">very good air quality</string>
     <string name="airQualityGood">good air quality</string>
