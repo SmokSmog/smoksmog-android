@@ -22,6 +22,7 @@ import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.FragmentModule;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,8 +121,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
                             throwable -> {
                                 logger.i( TAG, "Unable to load station data (stationID:" + getStationId() + ")", throwable );
                                 errorReporter.report( R.string.error_unable_to_load_station_data, getStationId() );
-                            },
-                            this::showData );
+                            } );
         }
     }
 
@@ -163,6 +163,8 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         recyclerView.getAdapter().notifyDataSetChanged();
 
         rxBus.send( new StartActivity.TitleUpdateEvent() );
+
+        showData();
     }
 
     @Override
@@ -171,17 +173,23 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         if ( getStationId() == NEAREST_STATION_ID ) {
             ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( getActivity() );
 
-            reactiveLocationProvider.getLastKnownLocation()
+            LocationRequest request = LocationRequest.create()
+                    .setPriority( LocationRequest.PRIORITY_LOW_POWER )
+                    .setNumUpdates( 3 )
+                    .setInterval( 100L );
+
+            reactiveLocationProvider
+                    .getUpdatedLocation( request )
                     .subscribeOn( Schedulers.newThread() )
                     .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
                     .observeOn( AndroidSchedulers.mainThread() )
                     .subscribe(
-                            this::updateUI,
+                            //this::updateUI,
+                            station -> getActivity().runOnUiThread( () -> updateUI( station ) ),
                             throwable -> {
                                 logger.i( TAG, "Unable to find closes station", throwable );
                                 errorReporter.report( R.string.error_no_near_Station );
-                            },
-                            this::showData );
+                            } );
         }
     }
 

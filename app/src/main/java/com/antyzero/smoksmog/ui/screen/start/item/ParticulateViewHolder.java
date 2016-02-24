@@ -45,6 +45,8 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
 
     @Override
     public void bind( Particulate data ) {
+        super.bind( data );
+
         textViewName.setText( data.getShortName() );
         textViewMeasureDay.setText( resources.getString( R.string.measurment, data.getAverage(), data.getUnit() ) );
         textViewMeasureHour.setText( resources.getString( R.string.measurment, data.getValue(), data.getUnit() ) );

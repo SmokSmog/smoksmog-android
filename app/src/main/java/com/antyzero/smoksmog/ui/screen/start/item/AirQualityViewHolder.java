@@ -57,6 +57,7 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
 
     @Override
     public void bind( List<Particulate> data ) {
+        super.bind( data );
 
         double indexValue = AirQualityIndex.calculate( data );
         AirQuality airQuality = AirQuality.findByValue( indexValue );
