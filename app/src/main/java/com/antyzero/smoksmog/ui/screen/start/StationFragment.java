@@ -3,6 +3,8 @@ package com.antyzero.smoksmog.ui.screen.start;
 import android.app.Activity;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -144,9 +146,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     }
 
     private void runOnUiThread( Runnable runnable ) {
-        if ( getActivity() != null ) {
-            getActivity().runOnUiThread( runnable );
-        }
+        new Handler( Looper.getMainLooper() ).post( runnable );
     }
 
     /**
@@ -184,8 +184,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
                     .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
                     .observeOn( AndroidSchedulers.mainThread() )
                     .subscribe(
-                            //this::updateUI,
-                            station -> getActivity().runOnUiThread( () -> updateUI( station ) ),
+                            station -> runOnUiThread( () -> updateUI( station ) ),
                             throwable -> {
                                 logger.i( TAG, "Unable to find closes station", throwable );
                                 errorReporter.report( R.string.error_no_near_Station );
