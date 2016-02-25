@@ -7,7 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.antyzero.smoksmog.ui.screen.about.AboutActivity;
-import com.antyzero.smoksmog.ui.screen.main.MainActivity;
 import com.squareup.spoon.Spoon;
 
 import org.junit.Rule;

@@ -1,1 +1,39 @@
-{"id":"4","name":"Krak\u00f3w - Aleja Krasi\u0144skiego","particulates":[{"id":"7","name":"Py\u0142 zawieszony","short_name":"PM\u2081\u2080","value":"112.675","unit":"\u00b5g\/m\u00b3","norm":"50","date":"2015-12-17 10:11:02","avg":"146.08","position":"1"},{"id":"3","name":"Dwutlenek azotu","short_name":"NO\u2082","value":"75.8005","unit":"\u00b5g\/m\u00b3","norm":"200","date":"2015-12-17 10:11:02","avg":"54.08","position":"5"},{"id":"4","name":"Tlenek w\u0119gla","short_name":"CO","value":"1832.72","unit":"\u00b5g\/m\u00b3","norm":"10000","date":"2015-12-17 10:11:02","avg":"1655.32","position":"6"}]}
+{
+  "id": "4",
+  "name": "Krak\u00f3w - Aleja Krasi\u0144skiego",
+  "particulates": [
+    {
+      "id": "7",
+      "name": "Py\u0142 zawieszony",
+      "short_name": "PM\u2081\u2080",
+      "value": "112.675",
+      "unit": "\u00b5g\/m\u00b3",
+      "norm": "50",
+      "date": "2015-12-17 10:11:02",
+      "avg": "146.08",
+      "position": "1"
+    },
+    {
+      "id": "3",
+      "name": "Dwutlenek azotu",
+      "short_name": "NO\u2082",
+      "value": "75.8005",
+      "unit": "\u00b5g\/m\u00b3",
+      "norm": "200",
+      "date": "2015-12-17 10:11:02",
+      "avg": "54.08",
+      "position": "5"
+    },
+    {
+      "id": "4",
+      "name": "Tlenek w\u0119gla",
+      "short_name": "CO",
+      "value": "1832.72",
+      "unit": "\u00b5g\/m\u00b3",
+      "norm": "10000",
+      "date": "2015-12-17 10:11:02",
+      "avg": "1655.32",
+      "position": "6"
+    }
+  ]
+}

@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SmallTest
 public class SettingsHelperTest extends ApplicationTestCase<SmokSmogApplication> {
 
-    public SettingsHelperTest( ) {
+    public SettingsHelperTest() {
         super( SmokSmogApplication.class );
     }
 

@@ -30,7 +30,7 @@ public class StationIdList extends ForwardingList<Long> implements SharedPrefere
 
     @Override
     public void onSharedPreferenceChanged( SharedPreferences sharedPreferences, String key ) {
-        if( key.equals( settingsHelper.getKeyStationClosest() )){
+        if ( key.equals( settingsHelper.getKeyStationClosest() ) ) {
             updateWithPreferences( sharedPreferences );
         }
     }
@@ -42,14 +42,14 @@ public class StationIdList extends ForwardingList<Long> implements SharedPrefere
 
     private void updateWithPreferences( SharedPreferences sharedPreferences ) {
         boolean value = sharedPreferences.getBoolean( settingsHelper.getKeyStationClosest(), false );
-        if( value ){
-            if( size() > 0 && get( 0 ) != 0 ){
+        if ( value ) {
+            if ( size() > 0 && get( 0 ) != 0 ) {
                 add( 0, 0L );
-            } else if ( size() <= 0 ){
+            } else if ( size() <= 0 ) {
                 add( 0L );
             }
         } else {
-            if( size() > 0 && get( 0 ) == 0 ){
+            if ( size() > 0 && get( 0 ) == 0 ) {
                 remove( 0 );
             }
         }

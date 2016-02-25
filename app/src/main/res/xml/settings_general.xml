@@ -13,6 +13,6 @@
         android:summary="@string/pref_percent_summary"
         android:defaultValue="@string/pref_percent_value_default"
         android:entries="@array/pref_percent_entries"
-        android:entryValues="@array/pref_percent_values" />
+        android:entryValues="@array/pref_percent_values"/>
 
 </PreferenceScreen>

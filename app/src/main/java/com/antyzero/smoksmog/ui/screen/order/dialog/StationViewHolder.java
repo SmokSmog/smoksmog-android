@@ -16,13 +16,13 @@ public class StationViewHolder extends RecyclerView.ViewHolder {
         this.stationClickListener = stationClickListener;
     }
 
-    public void bind( Station station ){
+    public void bind( Station station ) {
         textView.setText( station.getName() );
         itemView.setOnClickListener( v -> stationClickListener.onClick( station.getId() ) );
     }
 
     public interface StationClickListener {
 
-        void onClick(long stationId);
+        void onClick( long stationId );
     }
 }

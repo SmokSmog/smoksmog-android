@@ -20,8 +20,6 @@ public class DimenUtils {
     }
 
     /**
-     *
-     *
      * @param context
      * @return
      */

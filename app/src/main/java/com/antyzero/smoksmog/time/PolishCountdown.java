@@ -11,11 +11,11 @@ public class PolishCountdown implements Countdown {
 
         if ( minutes == 0 ) {
             return secondsAgo( seconds );
-        } else if( hours == 0 ) {
+        } else if ( hours == 0 ) {
             return minutesAgo( minutes );
         }
 
-        return hoursAgo(hours);
+        return hoursAgo( hours );
     }
 
     private String hoursAgo( int hours ) {
@@ -30,7 +30,7 @@ public class PolishCountdown implements Countdown {
         return ago( seconds, "sekundę", "sekundy", "sekund" );
     }
 
-    private String ago( int amount, String single, String some, String many ){
+    private String ago( int amount, String single, String some, String many ) {
         if ( amount == 1 ) {
             return amount + " " + single;
         } else if ( endsWithTwoToFour( amount ) ) {
