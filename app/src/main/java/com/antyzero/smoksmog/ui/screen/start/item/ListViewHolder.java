@@ -7,7 +7,12 @@ public abstract class ListViewHolder<T> extends RecyclerView.ViewHolder {
 
     public ListViewHolder( View itemView ) {
         super( itemView );
+        itemView.setAlpha( 0f );
     }
 
-    public abstract void bind( T data );
+    public void bind( T data ) {
+        itemView.animate().alpha( 1f )
+                .setStartDelay( 100L * getLayoutPosition() )
+                .setDuration( 200L ).start();
+    }
 }

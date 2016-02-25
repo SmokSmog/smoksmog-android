@@ -19,7 +19,7 @@
     <!-- TODO above delete in future -->
     <!-- Styles for elements -->
 
-    <style name="TextAppearance" parent="TextAppearance.AppCompat" >
+    <style name="TextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/text_light</item>
     </style>
 

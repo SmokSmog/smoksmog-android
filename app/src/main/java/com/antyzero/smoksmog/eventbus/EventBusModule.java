@@ -10,7 +10,7 @@ public class EventBusModule {
 
     @Provides
     @Singleton
-    public RxBus provideRxBus(){
+    public RxBus provideRxBus() {
         return new RxBus();
     }
 }

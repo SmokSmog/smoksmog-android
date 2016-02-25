@@ -16,7 +16,6 @@ import com.antyzero.smoksmog.ui.dialog.InfoDialog;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,6 +56,7 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
 
     @Override
     public void bind( List<Particulate> data ) {
+        super.bind( data );
 
         double indexValue = AirQualityIndex.calculate( data );
         AirQuality airQuality = AirQuality.findByValue( indexValue );
@@ -69,7 +69,7 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
 
         if ( !data.isEmpty() ) {
 
-            Particulate particulate = getNewest(data);
+            Particulate particulate = getNewest( data );
             int seconds = Seconds.secondsBetween(
                     particulate.getDate(), DateTime.now() ).getSeconds();
 

@@ -16,7 +16,7 @@ public class AirQualityViewDelegate extends ViewDelegate<AirQualityViewHolder, L
     }
 
     @Override
-    public AirQualityViewHolder onCreateViewHolder( ViewGroup parent ){
+    public AirQualityViewHolder onCreateViewHolder( ViewGroup parent ) {
         LayoutInflater layoutInflater = LayoutInflater.from( parent.getContext() );
         return new AirQualityViewHolder( layoutInflater.inflate( R.layout.item_air_quility, parent, false ) );
     }

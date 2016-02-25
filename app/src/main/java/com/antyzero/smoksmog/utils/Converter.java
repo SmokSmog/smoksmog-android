@@ -5,6 +5,6 @@ package com.antyzero.smoksmog.utils;
  *
  * @param <T>
  */
-public interface Converter<T>{
+public interface Converter<T> {
     T convert( String string );
 }

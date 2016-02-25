@@ -110,7 +110,7 @@ public class HistoryActivity extends BaseActivity {
         return intent;
     }
 
-    public static Intent fillIntent( Intent intent, long stationId ){
+    public static Intent fillIntent( Intent intent, long stationId ) {
         intent.putExtra( STATION_ID_KEY, stationId );
         return intent;
     }

@@ -81,7 +81,7 @@ public class MockApi implements Api {
 
         try {
             InputStream inputStream = classLoader.getResourceAsStream( fileName );
-            if(inputStream == null){
+            if ( inputStream == null ) {
                 throw new RuntimeException( "Unable to get InputStream for " + fileName );
             }
             result = IOUtils.toString( inputStream );

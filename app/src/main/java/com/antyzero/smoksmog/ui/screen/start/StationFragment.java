@@ -3,6 +3,8 @@ package com.antyzero.smoksmog.ui.screen.start;
 import android.app.Activity;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +24,7 @@ import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.FragmentModule;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,8 +123,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
                             throwable -> {
                                 logger.i( TAG, "Unable to load station data (stationID:" + getStationId() + ")", throwable );
                                 errorReporter.report( R.string.error_unable_to_load_station_data, getStationId() );
-                            },
-                            this::showData );
+                            } );
         }
     }
 
@@ -144,9 +146,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     }
 
     private void runOnUiThread( Runnable runnable ) {
-        if ( getActivity() != null ) {
-            getActivity().runOnUiThread( runnable );
-        }
+        new Handler( Looper.getMainLooper() ).post( runnable );
     }
 
     /**
@@ -163,6 +163,8 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         recyclerView.getAdapter().notifyDataSetChanged();
 
         rxBus.send( new StartActivity.TitleUpdateEvent() );
+
+        showData();
     }
 
     @Override
@@ -171,17 +173,22 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         if ( getStationId() == NEAREST_STATION_ID ) {
             ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( getActivity() );
 
-            reactiveLocationProvider.getLastKnownLocation()
+            LocationRequest request = LocationRequest.create()
+                    .setPriority( LocationRequest.PRIORITY_LOW_POWER )
+                    .setNumUpdates( 3 )
+                    .setInterval( 100L );
+
+            reactiveLocationProvider
+                    .getUpdatedLocation( request )
                     .subscribeOn( Schedulers.newThread() )
                     .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
                     .observeOn( AndroidSchedulers.mainThread() )
                     .subscribe(
-                            this::updateUI,
+                            station -> runOnUiThread( () -> updateUI( station ) ),
                             throwable -> {
                                 logger.i( TAG, "Unable to find closes station", throwable );
                                 errorReporter.report( R.string.error_no_near_Station );
-                            },
-                            this::showData );
+                            } );
         }
     }
 

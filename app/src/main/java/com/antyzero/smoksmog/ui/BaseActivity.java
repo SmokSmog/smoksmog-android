@@ -18,7 +18,7 @@ import rx.Observable;
 import rx.subjects.BehaviorSubject;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class BaseActivity extends AppCompatActivity implements ActivityLifecycleProvider {
+public abstract class BaseActivity extends AppCompatActivity implements ActivityLifecycleProvider {
 
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 

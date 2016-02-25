@@ -1,7 +1,6 @@
 package com.antyzero.smoksmog.ui;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;

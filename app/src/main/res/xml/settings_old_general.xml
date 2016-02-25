@@ -6,7 +6,7 @@
         android:title="@string/pref_station_selection_mode_title"
         android:entries="@array/pref_station_default_entries"
         android:entryValues="@array/pref_station_default_entry_values"
-        android:defaultValue="@string/pref_station_default_value_last" />
+        android:defaultValue="@string/pref_station_default_value_last"/>
 
     <ListPreference
         android:key="@string/pref_key_station_selected"
