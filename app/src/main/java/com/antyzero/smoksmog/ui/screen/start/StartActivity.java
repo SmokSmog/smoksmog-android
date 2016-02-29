@@ -131,7 +131,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         stationSlideAdapter.notifyDataSetChanged();
         updateTitleWithStation();
 
-        if( stationIds.isEmpty() ){
+        if ( stationIds.isEmpty() ) {
             visibleNoStations();
         } else {
             visibleStations();
@@ -193,7 +193,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     }
 
     @OnClick( R.id.buttonAddStation )
-    void buttonClickAddStation(){
+    void buttonClickAddStation() {
         OrderActivity.start( this, true );
     }
 
@@ -218,11 +218,15 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         }
     }
 
-    private void visibleStations(){
+    private void visibleStations() {
         viewSwitcher.setDisplayedChild( 0 );
     }
 
-    private void visibleNoStations(){
+    private void visibleNoStations() {
+        if ( getSupportActionBar() != null ) {
+            getSupportActionBar().setTitle( R.string.app_name );
+            getSupportActionBar().setSubtitle( null );
+        }
         viewSwitcher.setDisplayedChild( 1 );
     }
 

@@ -1,6 +1,5 @@
 package com.antyzero.smoksmog.ui.screen.start.item;
 
-import android.os.Debug;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -65,7 +64,7 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
         // TODO remove
         itemView.setOnClickListener( v -> {
             try {
-                if( BuildConfig.DEBUG ){
+                if ( BuildConfig.DEBUG ) {
                     itemView.getContext().startActivity( HistoryActivity.intent( itemView.getContext(), data ) );
                 }
             } catch ( Exception e ) {

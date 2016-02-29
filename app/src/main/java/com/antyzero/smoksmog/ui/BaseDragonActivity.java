@@ -70,7 +70,7 @@ public abstract class BaseDragonActivity extends AppCompatActivity implements Ac
      *
      * @return
      */
-    protected boolean addExtraTopPadding(){
+    protected boolean addExtraTopPadding() {
         return true;
     }
 
