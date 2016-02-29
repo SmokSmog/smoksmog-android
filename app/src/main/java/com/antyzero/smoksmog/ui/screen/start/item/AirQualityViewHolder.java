@@ -1,9 +1,11 @@
 package com.antyzero.smoksmog.ui.screen.start.item;
 
+import android.os.Debug;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.antyzero.smoksmog.BuildConfig;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.air.AirQuality;
@@ -12,6 +14,7 @@ import com.antyzero.smoksmog.eventbus.RxBus;
 import com.antyzero.smoksmog.time.CountdownProvider;
 import com.antyzero.smoksmog.ui.dialog.AirQualityDialog;
 import com.antyzero.smoksmog.ui.dialog.InfoDialog;
+import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
@@ -25,12 +28,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pl.malopolska.smoksmog.model.Particulate;
+import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.math.operators.OperatorMinMax;
 
 import static android.view.View.VISIBLE;
 
-public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
+public class AirQualityViewHolder extends ListViewHolder<Station> {
 
     @Inject
     RxBus rxBus;
@@ -55,8 +59,19 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
     }
 
     @Override
-    public void bind( List<Particulate> data ) {
+    public void bind( Station data ) {
         super.bind( data );
+
+        // TODO remove
+        itemView.setOnClickListener( v -> {
+            try {
+                if( BuildConfig.DEBUG ){
+                    itemView.getContext().startActivity( HistoryActivity.intent( itemView.getContext(), data ) );
+                }
+            } catch ( Exception e ) {
+                e.printStackTrace();
+            }
+        } );
 
         double indexValue = AirQualityIndex.calculate( data );
         AirQuality airQuality = AirQuality.findByValue( indexValue );
@@ -66,10 +81,11 @@ public class AirQualityViewHolder extends ListViewHolder<List<Particulate>> {
         airIndicator.setVisibility( VISIBLE );
         airIndicator.setColorFilter( airQuality.getColor( itemView.getContext() ) );
 
+        List<Particulate> particulates = data.getParticulates();
 
-        if ( !data.isEmpty() ) {
+        if ( !particulates.isEmpty() ) {
 
-            Particulate particulate = getNewest( data );
+            Particulate particulate = getNewest( particulates );
             int seconds = Seconds.secondsBetween(
                     particulate.getDate(), DateTime.now() ).getSeconds();
 

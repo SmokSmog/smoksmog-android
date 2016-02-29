@@ -2,6 +2,7 @@ package com.antyzero.smoksmog.ui.screen.start;
 
 import android.app.Activity;
 import android.graphics.PorterDuff;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -35,6 +36,7 @@ import butterknife.Bind;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -70,6 +72,9 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     private List<Station> stationContainer = new ArrayList<>();
 
     private Station station;
+    private Location locationCurrent;
+    private Location locationStation;
+    private float distanceKilometers;
 
     @Override
     public void onCreate( @Nullable Bundle savedInstanceState ) {
@@ -134,7 +139,11 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
     @Override
     public String getSubtitle() {
-        return getStationId() == NEAREST_STATION_ID ? getString( R.string.station_closest ) : null;
+        String subtitle = getString( R.string.station_closest );
+        if ( distanceKilometers > 0 ) {
+            subtitle += " (" + distanceKilometers + " km)";
+        }
+        return getStationId() == NEAREST_STATION_ID ? subtitle : null;
     }
 
     private void showLoading() {
@@ -164,6 +173,10 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
         rxBus.send( new StartActivity.TitleUpdateEvent() );
 
+        if ( locationCurrent != null && locationStation != null ) {
+            distanceKilometers = locationCurrent.distanceTo( locationStation ) / 1000;
+        }
+
         showData();
     }
 
@@ -181,7 +194,17 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
             reactiveLocationProvider
                     .getUpdatedLocation( request )
                     .subscribeOn( Schedulers.newThread() )
+                    .doOnSubscribe( () -> StationFragment.this.locationCurrent = null )
+                    .doOnNext( location -> StationFragment.this.locationCurrent = location )
                     .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
+                    .doOnNext( givenStation -> smokSmog.getApi().stations()
+                            .concatMap( Observable::from )
+                            .filter( station -> station.getId() == givenStation.getId() )
+                            .subscribe( station1 -> {
+                                locationStation = new Location( locationCurrent );
+                                locationStation.setLongitude( station1.getLongitude() );
+                                locationStation.setLatitude( station1.getLatitude() );
+                            } ) )
                     .observeOn( AndroidSchedulers.mainThread() )
                     .subscribe(
                             station -> runOnUiThread( () -> updateUI( station ) ),

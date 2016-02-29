@@ -44,6 +44,7 @@ import static pl.malopolska.smoksmog.utils.StationUtils.convertStationsToIdsList
 public class OrderActivity extends BaseDragonActivity implements OnStartDragListener, StationDialogAdapter.StationListener {
 
     private static final String TAG = OrderActivity.class.getSimpleName();
+    private static final String EXTRA_DIALOG = "EXTRA_DIALOG";
 
     @Inject
     SmokSmog smokSmog;
@@ -66,6 +67,10 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_order );
+
+        if ( getIntent() != null && getIntent().getBooleanExtra( EXTRA_DIALOG, false ) ) {
+            showAddDialog();
+        }
 
         setupFAB();
         setupNAvigationBar();
@@ -130,6 +135,11 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         floatingActionButton.setLayoutParams( params );
     }
 
+    @Override
+    protected boolean addExtraTopPadding() {
+        return false;
+    }
+
     private void setupNAvigationBar() {
         getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
         if ( getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ) {
@@ -139,6 +149,10 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
 
     @OnClick( R.id.fab )
     void onClickFab() {
+        showAddDialog();
+    }
+
+    private void showAddDialog() {
         AddStationDialog.show( getSupportFragmentManager(), convertStationsToIdsArray( stationList ) );
     }
 
@@ -148,7 +162,13 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     }
 
     public static void start( Context context ) {
-        context.startActivity( new Intent( context, OrderActivity.class ) );
+        start( context, false );
+    }
+
+    public static void start( Context context, boolean showDialog ) {
+        Intent intent = new Intent( context, OrderActivity.class );
+        intent.putExtra( EXTRA_DIALOG, showDialog );
+        context.startActivity( intent );
     }
 
     @Override

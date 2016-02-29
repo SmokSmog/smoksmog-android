@@ -15,6 +15,7 @@ import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseActivity;
+import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 
 import javax.inject.Inject;
@@ -27,7 +28,7 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Shows history chart
  */
-public class HistoryActivity extends BaseActivity {
+public class HistoryActivity extends BaseDragonActivity {
     private static final String STATION_ID_KEY = "station_id_key";
     private static final String TAG = "HistoryActivity";
 
@@ -40,7 +41,6 @@ public class HistoryActivity extends BaseActivity {
 
     @Bind( R.id.toolbar )
     Toolbar toolbar;
-
     @Bind( R.id.recyclerViewCharts )
     RecyclerView chartsRecyclerView;
 

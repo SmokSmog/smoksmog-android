@@ -22,6 +22,8 @@ SmokSmog na Androida jest projektem Open Source, czyli kod źródłowy jest jawn
 
     <string name="desc_air_quality" translatable="false"><![CDATA[Indeks jakości powietrza jest wskaźnikiem mającym w przystępny sposób zaprezentować poziom zanieczyszczenia powietrza dla kilku substancji jednocześnie. Przyjmuje on wartość najbardziej niekorzystnego w danym momencie stężenia ze wszystkich mierzonych substancji.<br /><br />
 
-    Obliczany jest na podstawie najnowszych pomiarów, pochodzących przeważnie z ostatniej godziny.]]></string>
+    Obliczany jest na podstawie najnowszych pomiarów, pochodzących z ostatniej godziny.<br /><br />
+
+    <a href="http://sojp.wios.warszawa.pl/index.php?page=ggg">Więcej na temat indeksu jakości powietrza</a>]]></string>
 
 </resources>

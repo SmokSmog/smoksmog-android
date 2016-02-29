@@ -51,6 +51,8 @@ public class IndicatorView extends View {
     private int overLap = 0;
 
     private String valueText = "";
+    private int colorGood;
+    private int colorBad;
 
     /**
      * Setup variables
@@ -85,6 +87,9 @@ public class IndicatorView extends View {
 
         strokeWidth = dipToPixels( context, STROKE_WIDTH_DEFAULT );
         textNameSize = dipToPixels( context, 32 );
+
+        colorBad = context.getResources().getColor( R.color.indicator_bad );
+        colorGood = context.getResources().getColor( R.color.indicator_good );
 
         // Init paints
 
@@ -209,7 +214,7 @@ public class IndicatorView extends View {
         this.overLap = ( int ) Math.floor( value );
 
         paintArcForeground.setColor( arcValue <= 360f ?
-                Color.parseColor( "#5be6dc" ) :
+                colorGood :
                 Color.rgb( 242, 162, 60 ) );
 
         postInvalidateOnAnimation();

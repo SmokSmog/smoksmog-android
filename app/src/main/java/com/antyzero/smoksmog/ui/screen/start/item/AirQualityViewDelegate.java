@@ -8,8 +8,9 @@ import com.antyzero.smoksmog.R;
 import java.util.List;
 
 import pl.malopolska.smoksmog.model.Particulate;
+import pl.malopolska.smoksmog.model.Station;
 
-public class AirQualityViewDelegate extends ViewDelegate<AirQualityViewHolder, List<Particulate>> {
+public class AirQualityViewDelegate extends ViewDelegate<AirQualityViewHolder, Station> {
 
     public AirQualityViewDelegate( int viewType ) {
         super( viewType );

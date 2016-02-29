@@ -28,6 +28,8 @@
 
     <string name="version_name_and_code" formatted="false">Version %s (%s)</string>
 
+    <string name="station_add">Add station</string>
+
     <!-- Preferences -->
     <string name="pref_station_selection_mode_title">On app start pick station</string>
     <string name="pref_station_selection_mode_entries_last">Last picked</string>
