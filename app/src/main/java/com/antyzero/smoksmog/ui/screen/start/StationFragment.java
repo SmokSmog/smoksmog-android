@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.ViewSwitcher;
+import android.widget.ViewAnimator;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -29,6 +29,7 @@ import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -49,10 +50,12 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     private static final String ARG_STATION_ID = "argStationId";
     private static final String STATE_STATION_NAME = "Statename";
 
+    private static final long LOCATION_TIMEOUT_IN_SECONDS = 4;
+
     public static final int NEAREST_STATION_ID = 0;
 
-    @Bind( R.id.viewSwitcher )
-    ViewSwitcher viewSwitcher;
+    @Bind( R.id.viewAnimator )
+    ViewAnimator viewAnimator;
     @Bind( R.id.recyclerView )
     RecyclerView recyclerView;
     @Bind( R.id.progressBar )
@@ -147,11 +150,15 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     }
 
     private void showLoading() {
-        runOnUiThread( () -> viewSwitcher.setDisplayedChild( 1 ) );
+        runOnUiThread( () -> viewAnimator.setDisplayedChild( 1 ) );
     }
 
     private void showData() {
-        runOnUiThread( () -> viewSwitcher.setDisplayedChild( 0 ) );
+        runOnUiThread( () -> viewAnimator.setDisplayedChild( 0 ) );
+    }
+
+    private void showTryAgain() {
+        runOnUiThread( () -> viewAnimator.setDisplayedChild( 2 ) );
     }
 
     private void runOnUiThread( Runnable runnable ) {
@@ -188,12 +195,14 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
             LocationRequest request = LocationRequest.create()
                     .setPriority( LocationRequest.PRIORITY_LOW_POWER )
-                    .setNumUpdates( 3 )
-                    .setInterval( 100L );
+                    .setNumUpdates( 1 )
+                    .setExpirationDuration( TimeUnit.SECONDS.toMillis( LOCATION_TIMEOUT_IN_SECONDS ) );
 
             reactiveLocationProvider
                     .getUpdatedLocation( request )
                     .subscribeOn( Schedulers.newThread() )
+                    .timeout( LOCATION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS )
+                    .first()
                     .doOnSubscribe( () -> StationFragment.this.locationCurrent = null )
                     .doOnNext( location -> StationFragment.this.locationCurrent = location )
                     .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
@@ -211,6 +220,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
                             throwable -> {
                                 logger.i( TAG, "Unable to find closes station", throwable );
                                 errorReporter.report( R.string.error_no_near_Station );
+                                showTryAgain();
                             } );
         }
     }

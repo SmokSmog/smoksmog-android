@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewSwitcher
-    android:id="@+id/viewSwitcher"
+<ViewAnimator
+    android:id="@+id/viewAnimator"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:inAnimation="@android:anim/fade_in"
     android:outAnimation="@android:anim/fade_out"
     android:animateLayoutChanges="true">
+
+    <!-- Main data view -->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -16,6 +18,8 @@
         android:paddingBottom="100dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"/>
+
+    <!-- Loading progress -->
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -30,4 +34,29 @@
 
     </FrameLayout>
 
-</ViewSwitcher>
+    <!-- Try again button -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu_white_24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kliknij aby spróbować ponownie"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</ViewAnimator>
