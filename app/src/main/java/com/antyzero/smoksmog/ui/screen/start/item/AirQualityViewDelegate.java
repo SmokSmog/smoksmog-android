@@ -5,11 +5,9 @@ import android.view.ViewGroup;
 
 import com.antyzero.smoksmog.R;
 
-import java.util.List;
+import pl.malopolska.smoksmog.model.Station;
 
-import pl.malopolska.smoksmog.model.Particulate;
-
-public class AirQualityViewDelegate extends ViewDelegate<AirQualityViewHolder, List<Particulate>> {
+public class AirQualityViewDelegate extends ViewDelegate<AirQualityViewHolder, Station> {
 
     public AirQualityViewDelegate( int viewType ) {
         super( viewType );

@@ -1,6 +1,5 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -10,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -23,6 +23,7 @@ import com.antyzero.smoksmog.ui.dialog.InfoDialog;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.order.OrderActivity;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
+import com.antyzero.smoksmog.ui.screen.start.fragment.StationFragment;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 import com.antyzero.smoksmog.ui.typeface.TypefaceProvider;
 import com.antyzero.smoksmog.ui.view.ViewPagerIndicator;
@@ -34,6 +35,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import pl.malopolska.smoksmog.SmokSmog;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -41,8 +43,6 @@ import rx.android.schedulers.AndroidSchedulers;
  * Base activity for future
  */
 public class StartActivity extends BaseDragonActivity implements ViewPager.OnPageChangeListener {
-
-    private static final String TAG = StartActivity.class.getSimpleName();
 
     private static final String KEY_LAST_PAGE = "lastSelectedPagePosition";
     private static final int PAGE_LIMIT = 5;
@@ -66,6 +66,10 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     ViewPager viewPager;
     @Bind( R.id.viewPagerIndicator )
     ViewPagerIndicator viewPagerIndicator;
+    @Bind( R.id.viewSwitcher )
+    ViewSwitcher viewSwitcher;
+    @Bind( R.id.buttonAddStation )
+    View buttonAddStation;
 
     private List<Long> stationIds;
     private StationSlideAdapter stationSlideAdapter;
@@ -87,10 +91,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         stationSlideAdapter = new StationSlideAdapter( getFragmentManager(), stationIds );
 
         viewPager.setAdapter( stationSlideAdapter );
-        viewPager.addOnPageChangeListener( this );
         viewPager.setOffscreenPageLimit( PAGE_LIMIT );
-        // TODO this may change
-        viewPager.setCurrentItem( 0 );
+        viewPager.addOnPageChangeListener( this );
         viewPager.addOnPageChangeListener( viewPagerIndicator );
 
         viewPagerIndicator.setStationIds( stationIds );
@@ -117,10 +119,6 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
                     }
                 } );
 
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ) {
-            // getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION );
-        }
-
         if ( savedInstanceState != null ) {
             lastPageSelected = savedInstanceState.getInt( KEY_LAST_PAGE, 0 );
             viewPager.setCurrentItem( lastPageSelected, true );
@@ -133,6 +131,12 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         viewPagerIndicator.setStationIds( stationIds );
         stationSlideAdapter.notifyDataSetChanged();
         updateTitleWithStation();
+
+        if ( stationIds.isEmpty() ) {
+            visibleNoStations();
+        } else {
+            visibleStations();
+        }
     }
 
     /**
@@ -189,6 +193,11 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         lastPageSelected = position;
     }
 
+    @OnClick( R.id.buttonAddStation )
+    void buttonClickAddStation() {
+        OrderActivity.start( this, true );
+    }
+
     protected void updateTitleWithStation() {
         if ( stationSlideAdapter.getCount() > 0 ) {
             updateTitleWithStation( viewPager.getCurrentItem() );
@@ -208,6 +217,18 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
                 }
             }
         }
+    }
+
+    private void visibleStations() {
+        viewSwitcher.setDisplayedChild( 0 );
+    }
+
+    private void visibleNoStations() {
+        if ( getSupportActionBar() != null ) {
+            getSupportActionBar().setTitle( R.string.app_name );
+            getSupportActionBar().setSubtitle( null );
+        }
+        viewSwitcher.setDisplayedChild( 1 );
     }
 
     /**

@@ -44,13 +44,17 @@ public abstract class BaseDragonActivity extends AppCompatActivity implements Ac
         imageViewDragon = ( ImageView ) findViewById( R.id.imageViewDragon );
         container = ( ViewGroup ) findViewById( R.id.container );
 
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT &&
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && addExtraTopPadding() ) {
+            container.setPadding( 0, DimenUtils.getStatusBarHeight( this ), 0, 0 );
+        }
+
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
             int color;
             int colorResourceId = android.R.color.transparent;
             if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
                 color = getResources().getColor( colorResourceId, getTheme() );
-            } else {
-                //noinspection deprecation
+            } else { //noinspection deprecation
                 color = getResources().getColor( colorResourceId );
             }
             if ( getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT ) {
@@ -59,6 +63,15 @@ public abstract class BaseDragonActivity extends AppCompatActivity implements Ac
         }
 
         setupDragon();
+    }
+
+    /**
+     * Override if needed, this solve issue with 4.4 status bar
+     *
+     * @return
+     */
+    protected boolean addExtraTopPadding() {
+        return true;
     }
 
     @Override

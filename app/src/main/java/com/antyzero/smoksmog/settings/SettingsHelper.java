@@ -75,7 +75,7 @@ public class SettingsHelper implements SharedPreferences.OnSharedPreferenceChang
      */
     public boolean isClosesStationVisible() {
         return defaultPreferences.getBoolean(
-                context.getString( R.string.pref_key_station_closest ), true );
+                context.getString( R.string.pref_key_station_closest ), false );
     }
 
     public Percent getPercentMode() {

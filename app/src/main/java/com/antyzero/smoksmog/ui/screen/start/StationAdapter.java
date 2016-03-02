@@ -64,7 +64,7 @@ public class StationAdapter extends RecyclerView.Adapter {
         Station station = stationContainer.get( 0 );
 
         if ( position == 0 ) {
-            airQualityViewDelegate.onBindViewHolder( ( AirQualityViewHolder ) holder, station.getParticulates() );
+            airQualityViewDelegate.onBindViewHolder( ( AirQualityViewHolder ) holder, station );
         } else if ( position > 0 ) {
             Particulate particulate = station.getParticulates().get( position - 1 );
             particulateViewDelegate.onBindViewHolder( ( ParticulateViewHolder ) holder, particulate );

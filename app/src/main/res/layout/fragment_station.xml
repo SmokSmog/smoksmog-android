@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewSwitcher
-    android:id="@+id/viewSwitcher"
+<ViewAnimator
+    android:id="@+id/viewAnimator"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:inAnimation="@android:anim/fade_in"
-    android:outAnimation="@android:anim/fade_out"
-    android:animateLayoutChanges="true">
+    android:outAnimation="@android:anim/fade_out">
+
+    <!-- Main data view -->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -16,6 +18,8 @@
         android:paddingBottom="100dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"/>
+
+    <!-- Loading progress -->
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -30,4 +34,36 @@
 
     </FrameLayout>
 
-</ViewSwitcher>
+    <!-- Try again button -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/buttonTryAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/item_background"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_16">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:src="@drawable/ic_refresh_white_48dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance"
+                android:text="@string/click_to_try_again"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</ViewAnimator>

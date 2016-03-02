@@ -1,6 +1,5 @@
-package com.antyzero.smoksmog.ui.screen.start;
+package com.antyzero.smoksmog.ui.screen.start.fragment;
 
-import android.app.Activity;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,19 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.ViewSwitcher;
+import android.widget.ViewAnimator;
 
 import com.antyzero.smoksmog.R;
-import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.eventbus.RxBus;
-import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseFragment;
-import com.antyzero.smoksmog.ui.screen.ActivityModule;
-import com.antyzero.smoksmog.ui.screen.FragmentModule;
+import com.antyzero.smoksmog.ui.screen.start.StartActivity;
+import com.antyzero.smoksmog.ui.screen.start.StationAdapter;
+import com.antyzero.smoksmog.ui.screen.start.TitleProvider;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,25 +29,21 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
-import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
+import butterknife.OnClick;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 
-public class StationFragment extends BaseFragment implements GoogleApiClient.ConnectionCallbacks, TitleProvider {
+public abstract class StationFragment extends BaseFragment implements TitleProvider {
 
-    private static final String TAG = StationFragment.class.getSimpleName();
     private static final String ARG_STATION_ID = "argStationId";
-    private static final String STATE_STATION_NAME = "Statename";
 
     public static final int NEAREST_STATION_ID = 0;
 
-    @Bind( R.id.viewSwitcher )
-    ViewSwitcher viewSwitcher;
+    @Bind( R.id.viewAnimator )
+    ViewAnimator viewAnimator;
     @Bind( R.id.recyclerView )
     RecyclerView recyclerView;
     @Bind( R.id.progressBar )
@@ -64,8 +57,6 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
     Logger logger;
     @Inject
     ErrorReporter errorReporter;
-    @Inject
-    GoogleApiClient googleApiClient;
 
     private List<Station> stationContainer = new ArrayList<>();
 
@@ -102,30 +93,10 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         showLoading();
     }
 
-    @Override
-    public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
-        super.onActivityCreated( savedInstanceState );
-
-        Activity activity = getActivity();
-        SmokSmogApplication.get( activity ).getAppComponent()
-                .plus( new ActivityModule( activity ) )
-                .plus( new FragmentModule( this ), new GoogleModule( this ) )
-                .inject( this );
-
-        googleApiClient.connect();
-
-        if ( getStationId() > 0 ) {
-            smokSmog.getApi().station( getStationId() )
-                    .subscribeOn( Schedulers.newThread() )
-                    .observeOn( AndroidSchedulers.mainThread() )
-                    .subscribe(
-                            this::updateUI,
-                            throwable -> {
-                                logger.i( TAG, "Unable to load station data (stationID:" + getStationId() + ")", throwable );
-                                errorReporter.report( R.string.error_unable_to_load_station_data, getStationId() );
-                            } );
-        }
-    }
+    /**
+     * Implement for data load
+     */
+    protected abstract void loadData();
 
     @Override
     public String getTitle() {
@@ -137,16 +108,25 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         return getStationId() == NEAREST_STATION_ID ? getString( R.string.station_closest ) : null;
     }
 
-    private void showLoading() {
-        runOnUiThread( () -> viewSwitcher.setDisplayedChild( 1 ) );
+    protected void showLoading() {
+        runOnUiThread( () -> viewAnimator.setDisplayedChild( 1 ) );
     }
 
-    private void showData() {
-        runOnUiThread( () -> viewSwitcher.setDisplayedChild( 0 ) );
+    protected void showData() {
+        runOnUiThread( () -> viewAnimator.setDisplayedChild( 0 ) );
     }
 
-    private void runOnUiThread( Runnable runnable ) {
+    protected void showTryAgain() {
+        runOnUiThread( () -> viewAnimator.setDisplayedChild( 2 ) );
+    }
+
+    protected void runOnUiThread( Runnable runnable ) {
         new Handler( Looper.getMainLooper() ).post( runnable );
+    }
+
+    @OnClick(R.id.buttonTryAgain)
+    void buttonReloadData(){
+        loadData();
     }
 
     /**
@@ -154,7 +134,7 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
      *
      * @param station data
      */
-    private void updateUI( Station station ) {
+    protected void updateUI( Station station ) {
 
         this.station = station;
 
@@ -165,36 +145,6 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
         rxBus.send( new StartActivity.TitleUpdateEvent() );
 
         showData();
-    }
-
-    @Override
-    public void onConnected( @Nullable Bundle bundle ) {
-
-        if ( getStationId() == NEAREST_STATION_ID ) {
-            ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( getActivity() );
-
-            LocationRequest request = LocationRequest.create()
-                    .setPriority( LocationRequest.PRIORITY_LOW_POWER )
-                    .setNumUpdates( 3 )
-                    .setInterval( 100L );
-
-            reactiveLocationProvider
-                    .getUpdatedLocation( request )
-                    .subscribeOn( Schedulers.newThread() )
-                    .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
-                    .observeOn( AndroidSchedulers.mainThread() )
-                    .subscribe(
-                            station -> runOnUiThread( () -> updateUI( station ) ),
-                            throwable -> {
-                                logger.i( TAG, "Unable to find closes station", throwable );
-                                errorReporter.report( R.string.error_no_near_Station );
-                            } );
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended( int i ) {
-
     }
 
     /**
@@ -218,7 +168,9 @@ public class StationFragment extends BaseFragment implements GoogleApiClient.Con
 
         arguments.putLong( ARG_STATION_ID, stationId );
 
-        StationFragment stationFragment = new StationFragment();
+        StationFragment stationFragment = stationId <= 0 ?
+                new LocationStationFragment() :
+                new NetworkStationFragment();
         stationFragment.setArguments( arguments );
 
         return stationFragment;
