@@ -23,6 +23,7 @@ import com.antyzero.smoksmog.ui.dialog.InfoDialog;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.order.OrderActivity;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
+import com.antyzero.smoksmog.ui.screen.start.fragment.StationFragment;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 import com.antyzero.smoksmog.ui.typeface.TypefaceProvider;
 import com.antyzero.smoksmog.ui.view.ViewPagerIndicator;
