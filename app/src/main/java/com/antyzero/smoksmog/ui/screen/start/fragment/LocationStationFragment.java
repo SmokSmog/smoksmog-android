@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 public class LocationStationFragment extends StationFragment implements GoogleApiClient.ConnectionCallbacks {
@@ -49,7 +50,11 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
 
     @Override
     public void onConnected( @Nullable Bundle bundle ) {
+        loadData();
+    }
 
+    @Override
+    protected void loadData() {
         ReactiveLocationProvider reactiveLocationProvider = new ReactiveLocationProvider( getActivity() );
 
         LocationRequest request = LocationRequest.create()
@@ -60,9 +65,12 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
         reactiveLocationProvider
                 .getUpdatedLocation( request )
                 .subscribeOn( Schedulers.newThread() )
+                .doOnSubscribe( () -> {
+                    LocationStationFragment.this.locationCurrent = null;
+                    showLoading();
+                } )
                 .timeout( LOCATION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS )
                 .first()
-                .doOnSubscribe( () -> LocationStationFragment.this.locationCurrent = null )
                 .doOnNext( location -> LocationStationFragment.this.locationCurrent = location )
                 .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
                 .doOnNext( givenStation -> smokSmog.getApi().stations()

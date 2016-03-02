@@ -29,6 +29,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 
@@ -92,6 +93,11 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
         showLoading();
     }
 
+    /**
+     * Implement for data load
+     */
+    protected abstract void loadData();
+
     @Override
     public String getTitle() {
         return station == null ? null : station.getName();
@@ -116,6 +122,11 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
 
     protected void runOnUiThread( Runnable runnable ) {
         new Handler( Looper.getMainLooper() ).post( runnable );
+    }
+
+    @OnClick(R.id.buttonTryAgain)
+    void buttonReloadData(){
+        loadData();
     }
 
     /**

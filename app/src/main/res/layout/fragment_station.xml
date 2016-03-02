@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:inAnimation="@android:anim/fade_in"
-    android:outAnimation="@android:anim/fade_out"
-    android:animateLayoutChanges="true">
+    android:outAnimation="@android:anim/fade_out">
 
     <!-- Main data view -->
 
@@ -41,19 +41,26 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/buttonTryAgain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:background="@color/item_background"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_16">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_white_24dp"/>
+                android:layout_marginBottom="@dimen/margin_8"
+                android:src="@drawable/ic_refresh_white_48dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kliknij aby spróbować ponownie"/>
+                android:textAppearance="@style/TextAppearance"
+                android:text="@string/click_to_try_again"/>
 
         </LinearLayout>
 

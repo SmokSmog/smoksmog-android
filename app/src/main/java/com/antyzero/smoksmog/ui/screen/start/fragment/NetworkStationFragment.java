@@ -10,6 +10,7 @@ import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.FragmentModule;
 
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 public class NetworkStationFragment extends StationFragment {
@@ -26,7 +27,13 @@ public class NetworkStationFragment extends StationFragment {
                 .plus( new FragmentModule( this ) )
                 .inject( this );
 
+        loadData();
+    }
+
+    @Override
+    protected void loadData() {
         smokSmog.getApi().station( getStationId() )
+                .doOnSubscribe( this::showLoading )
                 .subscribeOn( Schedulers.newThread() )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
@@ -34,6 +41,7 @@ public class NetworkStationFragment extends StationFragment {
                         throwable -> {
                             logger.i( TAG, "Unable to load station data (stationID:" + getStationId() + ")", throwable );
                             errorReporter.report( R.string.error_unable_to_load_station_data, getStationId() );
+                            showTryAgain();
                         } );
     }
 }

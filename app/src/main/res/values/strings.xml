@@ -56,4 +56,5 @@
     <string name="airQualityIndex">Air quality index</string>
 
     <string name="measure_ago">measured %s ago</string>
+    <string name="click_to_try_again">Click to try again</string>
 </resources>
