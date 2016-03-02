@@ -7,6 +7,8 @@ import android.support.v4.view.PagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.antyzero.smoksmog.ui.screen.start.fragment.StationFragment;
+
 import java.lang.ref.WeakReference;
 import java.util.List;
 
