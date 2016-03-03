@@ -20,7 +20,6 @@ import javax.inject.Inject;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 public class LocationStationFragment extends StationFragment implements GoogleApiClient.ConnectionCallbacks {
@@ -87,7 +86,7 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
                         throwable -> {
                             logger.i( TAG, "Unable to find closes station", throwable );
                             errorReporter.report( R.string.error_no_near_Station );
-                            showTryAgain();
+                            showTryAgain( R.string.error_no_near_Station );
                         } );
     }
 
