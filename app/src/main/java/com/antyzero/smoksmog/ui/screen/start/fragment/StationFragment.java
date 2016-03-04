@@ -119,7 +119,7 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
         runOnUiThread( () -> viewAnimator.setDisplayedChild( 0 ) );
     }
 
-    protected  void showTryAgain( @StringRes int errorReport ){
+    protected void showTryAgain( @StringRes int errorReport ) {
         showTryAgain( getString( errorReport ) );
     }
 
@@ -132,7 +132,9 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     }
 
     protected void runOnUiThread( Runnable runnable ) {
-        new Handler( Looper.getMainLooper() ).post( runnable );
+        if ( isAdded() ) {
+            new Handler( Looper.getMainLooper() ).post( runnable );
+        }
     }
 
     @OnClick( R.id.buttonTryAgain )

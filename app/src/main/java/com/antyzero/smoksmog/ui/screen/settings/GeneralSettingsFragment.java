@@ -1,9 +1,14 @@
 package com.antyzero.smoksmog.ui.screen.settings;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.antyzero.smoksmog.R;
@@ -27,6 +32,8 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
 
     private static final String TAG = GeneralSettingsFragment.class.getSimpleName();
 
+    private static final int REQUEST_CODE_ASK_PERMISSION = 123;
+
     //<editor-fold desc="Dagger">
     @Inject
     SmokSmog smokSmog;
@@ -40,10 +47,16 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
     SettingsHelper settingsHelper;
     //</editor-fold>
 
+    private String keyStationClosest;
+    private CheckBoxPreference preferenceStationCloset;
+
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         addPreferencesFromResource( R.xml.settings_general );
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener( this );
+        keyStationClosest = getString( R.string.pref_key_station_closest );
+        preferenceStationCloset = ( CheckBoxPreference ) findPreference( keyStationClosest );
     }
 
     @Override
@@ -55,13 +68,47 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
                 .inject( this );
     }
 
+    @Override
+    public void onDestroy() {
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener( this );
+        super.onDestroy();
+    }
+
     protected Preference findPreference( @StringRes int stringResId ) {
         return findPreference( getString( stringResId ) );
     }
 
     @Override
     public void onSharedPreferenceChanged( SharedPreferences sharedPreferences, String key ) {
-        // dynamic charges
+
+        // Check permission - preference if changed
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
+            String accessCoarseLocation = Manifest.permission.ACCESS_COARSE_LOCATION;
+            boolean isClosestStationKey = keyStationClosest.equals( key );
+            boolean hasLocationPermission = getActivity().checkSelfPermission( accessCoarseLocation ) != PackageManager.PERMISSION_GRANTED;
+            if ( isClosestStationKey && hasLocationPermission ) {
+                requestPermissions( new String[]{ accessCoarseLocation }, REQUEST_CODE_ASK_PERMISSION );
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult( int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults ) {
+        switch ( requestCode ) {
+            case REQUEST_CODE_ASK_PERMISSION:
+                // if not granted keep closest station not visible
+                if ( grantResults[0] != PackageManager.PERMISSION_GRANTED ) {
+                    SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
+                    sharedPreferences.unregisterOnSharedPreferenceChangeListener( this );
+                    preferenceStationCloset.setChecked( false );
+                    sharedPreferences.registerOnSharedPreferenceChangeListener( this );
+                    // TODO localize
+                    errorReporter.report( "Location permission not granted" );
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult( requestCode, permissions, grantResults );
+        }
     }
 
     public static GeneralSettingsFragment create() {
