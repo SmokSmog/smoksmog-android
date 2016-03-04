@@ -3,6 +3,7 @@ package com.antyzero.smoksmog;
 import android.app.Application;
 import android.content.Context;
 
+import com.antyzero.smoksmog.permission.PermissionHelper;
 import com.antyzero.smoksmog.ui.typeface.TypefaceProvider;
 
 import javax.inject.Singleton;
@@ -36,5 +37,11 @@ public class ApplicationModule {
     @Singleton
     public TypefaceProvider provideTypefaceProvider( Context context ) {
         return new TypefaceProvider( context );
+    }
+
+    @Provides
+    @Singleton
+    public PermissionHelper providePermissionHelper( Context context ){
+        return new PermissionHelper( context );
     }
 }

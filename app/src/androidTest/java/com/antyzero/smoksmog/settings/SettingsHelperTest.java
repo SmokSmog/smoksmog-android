@@ -22,7 +22,7 @@ public class SettingsHelperTest extends ApplicationTestCase<SmokSmogApplication>
 
         // Given
         createApplication();
-        SettingsHelper settingsHelper = new SettingsHelper( getApplication() );
+        SettingsHelper settingsHelper = new SettingsHelper( getApplication(), permissionHelper );
         List<Long> longList = new ArrayList<>( Arrays.asList( 4L, 3L, 2L ) );
         settingsHelper.setStationIdList( longList );
 
