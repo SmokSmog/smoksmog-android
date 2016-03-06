@@ -132,7 +132,7 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     }
 
     protected void runOnUiThread( Runnable runnable ) {
-        if ( isAdded() ) {
+        if ( !isDetached() ) {
             new Handler( Looper.getMainLooper() ).post( runnable );
         }
     }
