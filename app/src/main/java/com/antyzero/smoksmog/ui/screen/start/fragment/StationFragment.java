@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.antyzero.smoksmog.R;
@@ -21,7 +23,6 @@ import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.antyzero.smoksmog.ui.screen.start.StationAdapter;
 import com.antyzero.smoksmog.ui.screen.start.TitleProvider;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,8 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     RecyclerView recyclerView;
     @Bind( R.id.progressBar )
     ProgressBar progressBar;
+    @Bind( R.id.textViewError )
+    TextView textViewError;
 
     @Inject
     RxBus rxBus;
@@ -116,16 +119,27 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
         runOnUiThread( () -> viewAnimator.setDisplayedChild( 0 ) );
     }
 
-    protected void showTryAgain() {
-        runOnUiThread( () -> viewAnimator.setDisplayedChild( 2 ) );
+    protected void showTryAgain( @StringRes int errorReport ) {
+        showTryAgain( getString( errorReport ) );
+    }
+
+    protected void showTryAgain( CharSequence errorMessage ) {
+        runOnUiThread( () -> {
+            viewAnimator.setDisplayedChild( 2 );
+            textViewError.setVisibility( View.VISIBLE );
+            textViewError.setText( errorMessage );
+        } );
     }
 
     protected void runOnUiThread( Runnable runnable ) {
-        new Handler( Looper.getMainLooper() ).post( runnable );
+        if ( !isDetached() ) {
+            new Handler( Looper.getMainLooper() ).post( runnable );
+        }
     }
 
-    @OnClick(R.id.buttonTryAgain)
-    void buttonReloadData(){
+    @OnClick( R.id.buttonTryAgain )
+    void buttonReloadData() {
+        textViewError.postDelayed( () -> textViewError.setVisibility( View.GONE ), 1000L );
         loadData();
     }
 

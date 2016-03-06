@@ -4,6 +4,7 @@ import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.antyzero.smoksmog.SmokSmogApplication;
+import com.antyzero.smoksmog.permission.PermissionHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,8 @@ public class SettingsHelperTest extends ApplicationTestCase<SmokSmogApplication>
 
         // Given
         createApplication();
-        SettingsHelper settingsHelper = new SettingsHelper( getApplication() );
+        PermissionHelper permissionHelper = new PermissionHelper( getApplication() );
+        SettingsHelper settingsHelper = new SettingsHelper( getApplication(), permissionHelper );
         List<Long> longList = new ArrayList<>( Arrays.asList( 4L, 3L, 2L ) );
         settingsHelper.setStationIdList( longList );
 

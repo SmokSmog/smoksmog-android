@@ -74,10 +74,12 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     private List<Long> stationIds;
     private StationSlideAdapter stationSlideAdapter;
     private int lastPageSelected = 0;
+    private PageSave pageSave;
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        pageSave = new PageSave( this );
 
         SmokSmogApplication.get( this ).getAppComponent()
                 .plus( new ActivityModule( this ) )
@@ -94,6 +96,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         viewPager.setOffscreenPageLimit( PAGE_LIMIT );
         viewPager.addOnPageChangeListener( this );
         viewPager.addOnPageChangeListener( viewPagerIndicator );
+        viewPager.setCurrentItem( pageSave.restorePage() );
 
         viewPagerIndicator.setStationIds( stationIds );
 
@@ -191,6 +194,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     public void onPageSelected( int position ) {
         updateTitleWithStation( position );
         lastPageSelected = position;
+        pageSave.savePage( position );
     }
 
     @OnClick( R.id.buttonAddStation )
