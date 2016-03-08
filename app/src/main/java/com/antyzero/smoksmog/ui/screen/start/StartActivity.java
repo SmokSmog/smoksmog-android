@@ -106,9 +106,9 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         rxBus.toObserverable()
                 .compose( bindUntilEvent( ActivityEvent.DESTROY ) )
                 .observeOn( AndroidSchedulers.mainThread() )
-                .subscribe( o -> {
-                    if ( o instanceof InfoDialog.Event ) {
-                        InfoDialog.show( getFragmentManager(), ( InfoDialog.Event ) o );
+                .subscribe( event -> {
+                    if ( event instanceof InfoDialog.Event ) {
+                        InfoDialog.show( getFragmentManager(), ( InfoDialog.Event ) event );
                     }
                 } );
 
@@ -116,8 +116,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         rxBus.toObserverable()
                 .compose( bindUntilEvent( ActivityEvent.DESTROY ) )
                 .observeOn( AndroidSchedulers.mainThread() )
-                .subscribe( o -> {
-                    if ( o instanceof TitleUpdateEvent ) {
+                .subscribe( event -> {
+                    if ( event instanceof TitleUpdateEvent ) {
                         updateTitleWithStation();
                     }
                 } );

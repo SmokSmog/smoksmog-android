@@ -17,6 +17,7 @@ import com.antyzero.smoksmog.ui.utils.DimenUtils;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.ActivityLifecycleProvider;
 import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
 import rx.Observable;
@@ -28,18 +29,15 @@ import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 /**
  * Base Activity that contains Dragon image and pollution background
  */
-public abstract class BaseDragonActivity extends AppCompatActivity implements ActivityLifecycleProvider {
+public abstract class BaseDragonActivity extends RxAppCompatActivity {
 
     private ImageView imageViewDragon;
     private ViewGroup container;
-
-    private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         super.setContentView( R.layout.activity_base );
-        this.lifecycleSubject.onNext( ActivityEvent.CREATE );
 
         imageViewDragon = ( ImageView ) findViewById( R.id.imageViewDragon );
         container = ( ViewGroup ) findViewById( R.id.container );
@@ -95,51 +93,6 @@ public abstract class BaseDragonActivity extends AppCompatActivity implements Ac
     public void setContentView( View view, ViewGroup.LayoutParams params ) {
         container.addView( view, params );
         ButterKnife.bind( this );
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        this.lifecycleSubject.onNext( ActivityEvent.START );
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        this.lifecycleSubject.onNext( ActivityEvent.RESUME );
-    }
-
-    @Override
-    protected void onPause() {
-        this.lifecycleSubject.onNext( ActivityEvent.PAUSE );
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        this.lifecycleSubject.onNext( ActivityEvent.STOP );
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        this.lifecycleSubject.onNext( ActivityEvent.DESTROY );
-        super.onDestroy();
-    }
-
-    @Override
-    public final Observable<ActivityEvent> lifecycle() {
-        return this.lifecycleSubject.asObservable();
-    }
-
-    @Override
-    public final <T> Observable.Transformer<T, T> bindUntilEvent( ActivityEvent event ) {
-        return RxLifecycle.bindUntilActivityEvent( this.lifecycleSubject, event );
-    }
-
-    @Override
-    public final <T> Observable.Transformer<T, T> bindToLifecycle() {
-        return RxLifecycle.bindActivity( this.lifecycleSubject );
     }
 
     /**

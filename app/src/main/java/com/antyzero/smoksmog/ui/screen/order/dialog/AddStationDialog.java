@@ -88,9 +88,7 @@ public class AddStationDialog extends DialogFragment implements StationDialogAda
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
                         stationList::add,
-                        throwable -> {
-                            logger.e( TAG, "Unable to load stations", throwable );
-                        },
+                        throwable -> logger.e( TAG, "Unable to load stations", throwable ),
                         () -> recyclerView.getAdapter().notifyDataSetChanged() );
     }
 
