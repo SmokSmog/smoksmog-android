@@ -38,9 +38,14 @@ public class NetworkStationFragment extends StationFragment {
                 .subscribe(
                         this::updateUI,
                         throwable -> {
-                            logger.i( TAG, "Unable to load station data (stationID:" + getStationId() + ")", throwable );
-                            errorReporter.report( R.string.error_unable_to_load_station_data, getStationId() );
-                            showTryAgain( R.string.error_unable_to_load_station_data );
+                            try {
+                                showTryAgain( R.string.error_unable_to_load_station_data );
+                            } catch ( Exception e ) {
+                                logger.e( TAG, "Problem with error handling code", e );
+                            } finally {
+                                logger.i( TAG, "Unable to load station data (stationID:" + getStationId() + ")", throwable );
+                                errorReporter.report( R.string.error_unable_to_load_station_data, getStationId() );
+                            }
                         } );
     }
 }

@@ -9,6 +9,7 @@ import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.settings.Percent;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.view.IndicatorView;
+import com.antyzero.smoksmog.utils.TextUtils;
 
 import javax.inject.Inject;
 
@@ -46,8 +47,8 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
     @Override
     public void bind( Particulate data ) {
         super.bind( data );
+        textViewName.setText( TextUtils.spannableSubscript( data.getShortName() ) );
 
-        textViewName.setText( data.getShortName() );
         textViewMeasureDay.setText( resources.getString( R.string.measurment, data.getAverage(), data.getUnit() ) );
         textViewMeasureHour.setText( resources.getString( R.string.measurment, data.getValue(), data.getUnit() ) );
 

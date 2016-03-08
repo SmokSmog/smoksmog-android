@@ -12,6 +12,7 @@ import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.FragmentModule;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
+import com.trello.rxlifecycle.FragmentEvent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -61,8 +62,8 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
                 .setNumUpdates( 1 )
                 .setExpirationDuration( TimeUnit.SECONDS.toMillis( LOCATION_TIMEOUT_IN_SECONDS ) );
 
-        reactiveLocationProvider
-                .getUpdatedLocation( request )
+        reactiveLocationProvider.getUpdatedLocation( request )
+                .compose( bindUntilEvent( FragmentEvent.DESTROY_VIEW ) )
                 .subscribeOn( Schedulers.newThread() )
                 .doOnSubscribe( () -> {
                     LocationStationFragment.this.locationCurrent = null;
@@ -73,8 +74,11 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
                 .doOnNext( location -> LocationStationFragment.this.locationCurrent = location )
                 .flatMap( location -> smokSmog.getApi().stationByLocation( location.getLatitude(), location.getLongitude() ) )
                 .doOnNext( givenStation -> smokSmog.getApi().stations()
+                        .compose( bindUntilEvent( FragmentEvent.DESTROY ) )
+                        .subscribeOn( Schedulers.newThread() )
                         .concatMap( Observable::from )
                         .filter( station -> station.getId() == givenStation.getId() )
+                        .observeOn( AndroidSchedulers.mainThread() )
                         .subscribe( station1 -> {
                             locationStation = new Location( locationCurrent );
                             locationStation.setLongitude( station1.getLongitude() );
@@ -84,9 +88,14 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
                 .subscribe(
                         station -> runOnUiThread( () -> updateUI( station ) ),
                         throwable -> {
-                            logger.i( TAG, "Unable to find closes station", throwable );
-                            errorReporter.report( R.string.error_no_near_Station );
-                            showTryAgain( R.string.error_no_near_Station );
+                            try {
+                                showTryAgain( R.string.error_no_near_Station );
+                            } catch ( Exception e ) {
+                                logger.e( TAG, "Problem with error handling code", e );
+                            } finally {
+                                logger.i( TAG, "Unable to find closes station", throwable );
+                                errorReporter.report( R.string.error_no_near_Station );
+                            }
                         } );
     }
 
