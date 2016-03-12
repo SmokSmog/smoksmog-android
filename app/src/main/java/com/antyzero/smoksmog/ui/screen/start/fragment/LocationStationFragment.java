@@ -86,7 +86,7 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
                         } ) )
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe(
-                        station -> runOnUiThread( () -> updateUI( station ) ),
+                        station -> updateViewsOnUiThread( () -> updateUI( station ) ),
                         throwable -> {
                             try {
                                 showTryAgain( R.string.error_no_near_Station );

@@ -2,8 +2,6 @@ package com.antyzero.smoksmog.ui.screen.start.fragment;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +21,7 @@ import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.antyzero.smoksmog.ui.screen.start.StationAdapter;
 import com.antyzero.smoksmog.ui.screen.start.TitleProvider;
+import com.trello.rxlifecycle.FragmentEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,9 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
@@ -40,9 +42,9 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 public abstract class StationFragment extends BaseFragment implements TitleProvider {
 
     private static final String ARG_STATION_ID = "argStationId";
+    private static final int NEAREST_STATION_ID = 0;
 
-    public static final int NEAREST_STATION_ID = 0;
-
+    //<editor-fold desc="Views">
     @Bind( R.id.viewAnimator )
     ViewAnimator viewAnimator;
     @Bind( R.id.recyclerView )
@@ -51,7 +53,9 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     ProgressBar progressBar;
     @Bind( R.id.textViewError )
     TextView textViewError;
+    //</editor-fold>
 
+    //<editor-fold desc="Injects">
     @Inject
     RxBus rxBus;
     @Inject
@@ -60,9 +64,9 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     Logger logger;
     @Inject
     ErrorReporter errorReporter;
+    //</editor-fold>
 
     private List<Station> stationContainer = new ArrayList<>();
-
     private Station station;
 
     @Override
@@ -111,30 +115,38 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
         return getStationId() == NEAREST_STATION_ID ? getString( R.string.station_closest ) : null;
     }
 
-    protected void showLoading() {
-        runOnUiThread( () -> viewAnimator.setDisplayedChild( 1 ) );
+    protected final void showLoading() {
+        updateViewsOnUiThread( () -> viewAnimator.setDisplayedChild( 1 ) );
     }
 
-    protected void showData() {
-        runOnUiThread( () -> viewAnimator.setDisplayedChild( 0 ) );
+    protected final void showData() {
+        updateViewsOnUiThread( () -> viewAnimator.setDisplayedChild( 0 ) );
     }
 
-    protected void showTryAgain( @StringRes int errorReport ) {
+    protected final void showTryAgain( @StringRes int errorReport ) {
         showTryAgain( getString( errorReport ) );
     }
 
-    protected void showTryAgain( CharSequence errorMessage ) {
-        runOnUiThread( () -> {
+    protected final void showTryAgain( CharSequence errorMessage ) {
+        updateViewsOnUiThread( () -> {
             viewAnimator.setDisplayedChild( 2 );
             textViewError.setVisibility( View.VISIBLE );
             textViewError.setText( errorMessage );
         } );
     }
 
-    protected void runOnUiThread( Runnable runnable ) {
-        if ( !isDetached() ) {
-            new Handler( Looper.getMainLooper() ).post( runnable );
-        }
+    /**
+     * Use to update views on main thread, in case fragment is not accessible (post view destroy)
+     * ignore this call.
+     *
+     * @param givenRunnable for view update
+     */
+    protected void updateViewsOnUiThread( Runnable givenRunnable ) {
+        Observable.just( givenRunnable )
+                .subscribeOn( Schedulers.newThread() )
+                .compose( bindUntilEvent( FragmentEvent.DESTROY_VIEW ) )
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe( Runnable::run );
     }
 
     @OnClick( R.id.buttonTryAgain )
