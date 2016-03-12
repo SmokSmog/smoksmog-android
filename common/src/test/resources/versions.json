@@ -2,9 +2,33 @@
   {
     "versionCode": 123,
     "versionName": "1.9.3",
-    "descriptions": [
+    "releaseDate": "2016-03-12",
+    "changeSets": [
       {
-        "language": "pl"
+        "language": "en",
+        "changes":[
+          {
+            "name":"Some description",
+            "type":"NEW"
+          },
+          {
+            "name":"Some description",
+            "type":"DEFAULT"
+          }
+        ]
+      },
+      {
+        "language": "pl",
+        "changes":[
+          {
+            "name":"Some description",
+            "type":"FIX"
+          },
+          {
+            "name":"Some description",
+            "type":"NEW"
+          }
+        ]
       }
     ]
   }
