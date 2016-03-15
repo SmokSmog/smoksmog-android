@@ -7,7 +7,7 @@ import com.antyzero.smoksmog.R;
 
 import pl.malopolska.smoksmog.model.Particulate;
 
-public class ParticulateViewDelegate  extends ViewDelegate<ParticulateViewHolder, Particulate>{
+public class ParticulateViewDelegate extends ViewDelegate<ParticulateViewHolder, Particulate> {
 
     public ParticulateViewDelegate( int viewType ) {
         super( viewType );

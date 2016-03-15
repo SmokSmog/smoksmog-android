@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:background="@color/item_background"
-        android:minHeight="80dp"
+        android:minHeight="@dimen/item_air_quality_height"
         android:orientation="horizontal"
         android:padding="8dp">
 
@@ -78,8 +78,8 @@
         android:id="@+id/textViewMeasureTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_8"
         android:gravity="center_horizontal"
         android:textAppearance="@style/TextAppearance"
         tools:text="zmierzono 5 minut temu"/>

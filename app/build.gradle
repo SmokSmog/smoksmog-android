@@ -18,9 +18,8 @@ android {
     defaultConfig {
         applicationId "pl.malopolska.smoksmog"
         minSdkVersion 16
-        //noinspection OldTargetApi // TODO since it's not tested against new permission system we keep 22
-        targetSdkVersion 22
-        versionCode 193000
+        targetSdkVersion 23
+        versionCode 193007
         versionName "1.9.3"
 
         // For some reason Travis is working only with multi dex
@@ -90,8 +89,8 @@ configurations.all {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    compile project(':common')
     compile project(':network')
 
     apt 'com.google.dagger:dagger-compiler:2.0.2'
@@ -102,6 +101,7 @@ dependencies {
         transitive = true;
     }
 
+    compile 'com.android.support:support-v4:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:support-v13:23.1.1'
@@ -112,12 +112,12 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.trello:rxlifecycle:0.4.0'
-    compile 'com.trello:rxlifecycle-components:0.4.0'
+    compile 'io.reactivex:rxjava-math:1.0.0'
+    compile 'com.trello:rxlifecycle:0.5.0'
+    compile 'com.trello:rxlifecycle-components:0.5.0'
     compile 'pl.charmas.android:android-reactive-location:0.8@aar'
     compile 'com.google.dagger:dagger:2.0.2'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
-    compile 'com.android.support:support-v4:23.1.1'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 
     testCompile 'junit:junit:4.12'

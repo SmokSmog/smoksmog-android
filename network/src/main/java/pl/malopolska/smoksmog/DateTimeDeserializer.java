@@ -20,7 +20,9 @@ public class DateTimeDeserializer implements JsonDeserializer<DateTime> {
     @Override
     public DateTime deserialize( JsonElement json, Type typeOfT, JsonDeserializationContext context ) throws JsonParseException {
 
-        Matcher matcher = DATE_TIME_PATTERN.matcher( json.getAsString() );
+        String input = json.getAsString();
+
+        Matcher matcher = DATE_TIME_PATTERN.matcher( input );
 
         if(!matcher.matches()){
             throw new JsonParseException( "Invalid date format" );

@@ -6,7 +6,7 @@ import pl.malopolska.smoksmog.model.Station;
 
 public class StationShowEvent extends ContentViewEvent {
 
-    public static StationShowEvent create( Station station ){
+    public static StationShowEvent create( Station station ) {
 
         StationShowEvent event = new StationShowEvent();
 

@@ -14,4 +14,8 @@
 
     <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_16">16dp</dimen>
+
+    <dimen name="item_air_quality_height">80dp</dimen>
+
+    <dimen name="toolbar_elevation_default">2dp</dimen>
 </resources>

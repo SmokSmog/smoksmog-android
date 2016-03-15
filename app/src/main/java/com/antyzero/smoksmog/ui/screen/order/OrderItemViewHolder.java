@@ -22,11 +22,11 @@ public class OrderItemViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind( this, itemView );
     }
 
-    public View getHandleView(){
+    public View getHandleView() {
         return viewHandle;
     }
 
-    public void bind( Station station ){
+    public void bind( Station station ) {
         textView.setText( station.getName() );
     }
 }

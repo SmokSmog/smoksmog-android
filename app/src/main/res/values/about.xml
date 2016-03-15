@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-<string name="about"><![CDATA[Cześć, to my, osoby, które tworzyły i tworzą projekt SmokSmog. Chcemy Ci podziękować za korzystanie z naszej aplikacji, jest to dla nas najlepszy sygnał, że problem stanu czystości powietrza jest ważny dla ludzi w naszym kraju, a dotychczasowe sposoby informowania o zanieczyszczeniu nie są wystarczające.<br /><br />
+<resources xmlns:tools="http://schemas.android.com/tools">
+<string name="about" tools:ignore="Typos"><![CDATA[Cześć, to my, osoby, które tworzyły i tworzą projekt SmokSmog. Chcemy Ci podziękować za korzystanie z naszej aplikacji, jest to dla nas najlepszy sygnał, że problem stanu czystości powietrza jest ważny dla ludzi w naszym kraju, a dotychczasowe sposoby informowania o zanieczyszczeniu nie są wystarczające.<br /><br />
 
 Jeżeli chcesz nam pomóc podziel się uwagami bądź sugestiami dotyczącymi SmokSmoga dla Androida, na tej stronie<br /><br />
 
@@ -19,4 +19,11 @@ Oficjalną stronę projektu SmokSmog znajdziesz pod poniższym linkiem<br /><br 
 SmokSmog na Androida jest projektem Open Source, czyli kod źródłowy jest jawny i dostępny dla wszystkich, którzy chcieliby zweryfikować naszą pracę lub współtworzyć nasz projekt<br /><br />
 
 <a href="https://github.com/SmokSmog/smoksmog-android">https://github.com/SmokSmog/smoksmog-android</a> ]]></string>
+
+    <string name="desc_air_quality" translatable="false"><![CDATA[Indeks jakości powietrza jest wskaźnikiem mającym w przystępny sposób zaprezentować poziom zanieczyszczenia powietrza dla kilku substancji jednocześnie. Przyjmuje on wartość najbardziej niekorzystnego w danym momencie stężenia ze wszystkich mierzonych substancji.<br /><br />
+
+    Obliczany jest na podstawie najnowszych pomiarów, pochodzących z ostatniej godziny.<br /><br />
+
+    <a href="http://sojp.wios.warszawa.pl/index.php?page=ggg">Więcej na temat indeksu jakości powietrza</a>]]></string>
+
 </resources>

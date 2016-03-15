@@ -40,23 +40,13 @@
                 android:value=".ui.screen.start.StartActivity"/>
         </activity>
 
-        <!-- Old Activities below - TODO correct -->
-
         <activity
             android:name=".ui.screen.history.HistoryActivity"
             android:label="@string/title_history"
-            android:parentActivityName=".ui.screen.main.MainActivity">
+            android:parentActivityName=".ui.screen.start.StartActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.screen.main.MainActivity"/>
-        </activity>
-        <activity
-            android:name=".ui.screen.about.AboutActivity"
-            android:label="@string/title_about"
-            android:parentActivityName=".ui.screen.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.screen.main.MainActivity"/>
+                android:value=".ui.screen.start.StartActivity"/>
         </activity>
 
         <meta-data

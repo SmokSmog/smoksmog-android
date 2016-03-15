@@ -9,5 +9,6 @@ public abstract class ListViewHolder<T> extends RecyclerView.ViewHolder {
         super( itemView );
     }
 
-    public abstract void bind( T data );
+    public void bind( T data ) {
+    }
 }

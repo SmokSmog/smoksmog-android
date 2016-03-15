@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.antyzero.smoksmog.SmokSmogApplication;
+import com.antyzero.smoksmog.permission.PermissionHelper;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.utils.ForwardingList;
 
@@ -13,24 +14,24 @@ import javax.inject.Inject;
 
 public class StationIdList extends ForwardingList<Long> implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private final SharedPreferences settingsPreferences;
-
     @Inject
     SettingsHelper settingsHelper;
+    @Inject
+    PermissionHelper permissionHelper;
 
     public StationIdList( Context context ) {
         SmokSmogApplication.get( context )
                 .getAppComponent()
                 .inject( this );
 
-        settingsPreferences = settingsHelper.getPreferences();
+        SharedPreferences settingsPreferences = settingsHelper.getPreferences();
         settingsPreferences.registerOnSharedPreferenceChangeListener( this );
         updateWithPreferences( settingsPreferences );
     }
 
     @Override
     public void onSharedPreferenceChanged( SharedPreferences sharedPreferences, String key ) {
-        if( key.equals( settingsHelper.getKeyStationClosest() )){
+        if ( key.equals( settingsHelper.getKeyStationClosest() ) ) {
             updateWithPreferences( sharedPreferences );
         }
     }
@@ -41,15 +42,15 @@ public class StationIdList extends ForwardingList<Long> implements SharedPrefere
     }
 
     private void updateWithPreferences( SharedPreferences sharedPreferences ) {
-        boolean value = sharedPreferences.getBoolean( settingsHelper.getKeyStationClosest(), false );
-        if( value ){
-            if( size() > 0 && get( 0 ) != 0 ){
+        boolean isClosestStation = sharedPreferences.getBoolean( settingsHelper.getKeyStationClosest(), false );
+        if ( isClosestStation && permissionHelper.isGrantedLocationCorsare() ) {
+            if ( size() > 0 && get( 0 ) != 0 ) {
                 add( 0, 0L );
-            } else if ( size() <= 0 ){
+            } else if ( size() <= 0 ) {
                 add( 0L );
             }
         } else {
-            if( size() > 0 && get( 0 ) == 0 ){
+            if ( size() > 0 && get( 0 ) == 0 ) {
                 remove( 0 );
             }
         }

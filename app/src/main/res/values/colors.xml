@@ -30,12 +30,15 @@
 
     <color name="primary">@color/comet</color>
     <color name="primaryDark">@color/brightGray</color>
-    <color name="accent">@color/neonCarrot</color>
+    <color name="accent">@color/viking</color>
 
     <color name="windowBackground">@color/celeste</color>
 
     <color name="text_light">@color/iron</color>
     <color name="text_dark">@color/scarpa_flow</color>
+
+    <color name="indicator_bad">@color/neonCarrot</color>
+    <color name="indicator_good">@color/viking</color>
 
     <color name="airQualityVeryGood">@color/capri</color>
     <color name="airQualityGood">@color/green</color>
