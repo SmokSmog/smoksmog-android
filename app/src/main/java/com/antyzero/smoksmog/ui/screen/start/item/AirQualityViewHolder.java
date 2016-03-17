@@ -120,6 +120,8 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
             textViewMeasureTime.setText( String.format(
                     itemView.getResources().getText( R.string.measure_ago ).toString(),
                     countdownProvider.get( seconds ) ) );
+            textViewMeasureTime.setBackgroundColor( itemView.getResources().getColor(
+                    seconds >= 4 * 60 * 60 ? R.color.red : android.R.color.transparent ) );
         }
     }
 
