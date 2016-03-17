@@ -8,6 +8,7 @@
     <color name="comet">#5A6273</color>
     <color name="celeste">#CDCDCD</color>
     <color name="iron">#d6d6d6</color>
+    <color name="white">#FFFFFF</color>
 
     <color name="neonCarrot">#FFA439</color>
 
@@ -34,7 +35,7 @@
 
     <color name="windowBackground">@color/celeste</color>
 
-    <color name="text_light">@color/iron</color>
+    <color name="text_light">@color/white</color>
     <color name="text_dark">@color/scarpa_flow</color>
 
     <color name="indicator_bad">@color/neonCarrot</color>
