@@ -34,7 +34,7 @@
 
     <color name="windowBackground">@color/celeste</color>
 
-    <color name="text_light">@color/iron</color>
+    <color name="text_light">@color/white</color>
     <color name="text_dark">@color/scarpa_flow</color>
 
     <color name="indicator_bad">@color/neonCarrot</color>
