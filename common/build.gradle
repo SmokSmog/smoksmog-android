@@ -1,0 +1,31 @@
+apply plugin: 'java'
+apply plugin: 'me.tatarka.retrolambda'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+    compile 'io.reactivex:rxjava:1.1.1'
+
+    testCompile 'com.google.code.gson:gson:2.6.2'
+    testCompile 'junit:junit:4.12'
+}
+
+retrolambda {
+    jdk System.getenv("JAVA8_HOME")
+    oldJdk System.getenv("JAVA7_HOME")
+    //noinspection GroovyAssignabilityCheck
+    javaVersion JavaVersion.VERSION_1_7
+    jvmArgs '-noverify'
+    incremental true
+}
+
+/**
+ * This will copy resources files so they will be accessible throught Java getResource() method
+ */
+task copyTestResources(type: Copy) {
+    from "${projectDir}/src/test/resources"
+    into "${buildDir}/classes/test"
+}
+
+processTestResources.dependsOn copyTestResources
