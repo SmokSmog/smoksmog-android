@@ -16,7 +16,7 @@ import android.widget.ViewAnimator;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.eventbus.RxBus;
-import com.antyzero.smoksmog.logger.Logger;
+import smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.antyzero.smoksmog.ui.screen.start.StationAdapter;

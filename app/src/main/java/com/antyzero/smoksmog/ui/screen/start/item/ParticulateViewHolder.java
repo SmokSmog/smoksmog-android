@@ -8,7 +8,7 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.settings.Percent;
 import com.antyzero.smoksmog.settings.SettingsHelper;
-import com.antyzero.smoksmog.ui.view.IndicatorView;
+import smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.utils.TextUtils;
 
 import javax.inject.Inject;

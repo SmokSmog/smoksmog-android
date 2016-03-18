@@ -47,12 +47,6 @@
     <string name="pref_percent_entry_hour">1 hour</string>
     <string name="pref_percent_entry_day">24 hours</string>
 
-    <string name="airQualityVeryGood">very good air quality</string>
-    <string name="airQualityGood">good air quality</string>
-    <string name="airQualityModerate">moderate air quality</string>
-    <string name="airQualitySufficient">sufficient air quality</string>
-    <string name="airQualityBad">bad air quality</string>
-    <string name="airQualityVeryBad">very bad air quality</string>
     <string name="airQualityIndex">Air quality index</string>
 
     <string name="measure_ago">measured %s ago</string>

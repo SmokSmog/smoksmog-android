@@ -6,6 +6,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import smoksmog.logger.AndroidLogger;
+import smoksmog.logger.Logger;
 
 import static com.antyzero.smoksmog.logger.CrashlyticsLogger.ExceptionLevel.ERROR;
 

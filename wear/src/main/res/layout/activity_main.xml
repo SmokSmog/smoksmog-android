@@ -6,8 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:rectLayout="@layout/rect_activity_main"
+    app:rectLayout="@layout/round_activity_main"
     app:roundLayout="@layout/round_activity_main"
     tools:context="com.antyzero.smoksmog.wear.MainActivity"
-    tools:deviceIds="wear">
-</android.support.wearable.view.WatchViewStub>
+    tools:deviceIds="wear"/>
