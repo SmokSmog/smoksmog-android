@@ -26,5 +26,6 @@ public class MainActivity extends Activity implements WatchViewStub.OnLayoutInfl
     public void onLayoutInflated( WatchViewStub watchViewStub ) {
         ButterKnife.bind( this, watchViewStub );
         mTextView.setText( "asdasd" );
+        
     }
 }

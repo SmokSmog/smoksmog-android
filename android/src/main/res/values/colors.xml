@@ -4,7 +4,7 @@
     <!-- Color palette -->
 
     <color name="brightGray">#414152</color>
-    <color name="scarpa_flow">#515965</color>
+    <color name="scarpaFlow">#515965</color>
     <color name="comet">#5A6273</color>
     <color name="celeste">#CDCDCD</color>
     <color name="iron">#d6d6d6</color>
@@ -36,7 +36,7 @@
     <color name="windowBackground">@color/celeste</color>
 
     <color name="text_light">@color/white</color>
-    <color name="text_dark">@color/scarpa_flow</color>
+    <color name="text_dark">@color/scarpaFlow</color>
 
     <color name="indicator_bad">@color/neonCarrot</color>
     <color name="indicator_good">@color/viking</color>
