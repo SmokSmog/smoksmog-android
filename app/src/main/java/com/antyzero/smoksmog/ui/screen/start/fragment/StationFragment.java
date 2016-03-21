@@ -124,14 +124,10 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     }
 
     protected final void showTryAgain( @StringRes int errorReport ) {
-        showTryAgain( getString( errorReport ) );
-    }
-
-    protected final void showTryAgain( CharSequence errorMessage ) {
         updateViewsOnUiThread( () -> {
             viewAnimator.setDisplayedChild( 2 );
             textViewError.setVisibility( View.VISIBLE );
-            textViewError.setText( errorMessage );
+            textViewError.setText( getString( errorReport ) );
         } );
     }
 
