@@ -30,7 +30,7 @@
 
     <!-- Percent indicator -->
 
-    <com.antyzero.smoksmog.ui.view.IndicatorView
+    <smoksmog.ui.IndicatorView
         android:id="@+id/indicatorView"
         android:layout_width="@dimen/indicator_width_small"
         android:layout_height="@dimen/indicator_width_small"

@@ -1,10 +1,10 @@
-package com.antyzero.smoksmog.air;
+package smoksmog.air;
 
 import android.content.Context;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 
-import com.antyzero.smoksmog.R;
+import smoksmog.R;
 
 /**
  *
