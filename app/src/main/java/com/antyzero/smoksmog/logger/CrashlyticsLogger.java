@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.crashlytics.android.core.CrashlyticsCore;
 
+import smoksmog.logger.Logger;
+
 /**
  * Crashlytics logger
  */

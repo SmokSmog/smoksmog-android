@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.ui.view;
+package smoksmog.ui;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -16,7 +16,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.antyzero.smoksmog.R;
+import smoksmog.R;
 
 public class IndicatorView extends View {
 

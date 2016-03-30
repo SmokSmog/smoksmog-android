@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.air;
+package smoksmog.air;
 
 import java.util.Collection;
 

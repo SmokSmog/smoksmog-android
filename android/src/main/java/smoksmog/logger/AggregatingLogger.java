@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.logger;
+package smoksmog.logger;
 
 
 import java.util.Arrays;

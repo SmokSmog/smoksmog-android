@@ -16,7 +16,7 @@ import android.widget.ViewAnimator;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.eventbus.RxBus;
-import com.antyzero.smoksmog.logger.Logger;
+import smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.antyzero.smoksmog.ui.screen.start.StationAdapter;
@@ -124,14 +124,10 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     }
 
     protected final void showTryAgain( @StringRes int errorReport ) {
-        showTryAgain( getString( errorReport ) );
-    }
-
-    protected final void showTryAgain( CharSequence errorMessage ) {
         updateViewsOnUiThread( () -> {
             viewAnimator.setDisplayedChild( 2 );
             textViewError.setVisibility( View.VISIBLE );
-            textViewError.setText( errorMessage );
+            textViewError.setText( getString( errorReport ) );
         } );
     }
 

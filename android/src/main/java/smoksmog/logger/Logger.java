@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.logger;
+package smoksmog.logger;
 
 
 public interface Logger {

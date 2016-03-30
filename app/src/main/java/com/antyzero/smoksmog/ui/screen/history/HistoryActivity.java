@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +16,6 @@ import android.widget.Toast;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
-import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 
@@ -23,6 +25,7 @@ import butterknife.Bind;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.android.schedulers.AndroidSchedulers;
+import smoksmog.logger.Logger;
 
 /**
  * Shows history chart
@@ -93,23 +96,38 @@ public class HistoryActivity extends BaseDragonActivity {
         return intent.getLongExtra( STATION_ID_KEY, -1 );
     }
 
-    public static Intent intent( final Context context, Station station ) throws Exception {
-        if ( station == null ) {
-            throw new IllegalArgumentException( Station.class.getSimpleName() + " argument cannot be null" );
-        }
+    /**
+     * Simple way to start HistoryActivity
+     *
+     * @param context   for start
+     * @param stationId to show
+     */
+    public static void start( @NonNull Context context, @IntRange( from = 1 ) long stationId ) {
+        context.startActivity( intent( context, stationId ) );
+    }
+
+    /**
+     * @param context for start
+     * @param station to show
+     * @return valid Intent to start HistoryActivity
+     */
+    public static Intent intent( @NonNull final Context context, @NonNull Station station ) {
         return intent( context, station.getId() );
     }
 
-    public static Intent intent( final Context context, long stationId ) throws Exception {
-        if ( stationId <= 0 ) {
-            throw new IllegalArgumentException( "Station ID argument cannot be below 0" );
-        }
+    /**
+     * @param context   for start
+     * @param stationId to show
+     * @return valid Intent to start HistoryActivity
+     */
+    public static Intent intent( @NonNull final Context context, @IntRange( from = 1 ) long stationId ) {
         final Intent intent = new Intent( context, HistoryActivity.class );
-        intent.putExtra( STATION_ID_KEY, stationId );
+        fillIntent( intent, stationId );
         return intent;
     }
 
-    public static Intent fillIntent( Intent intent, long stationId ) {
+    @VisibleForTesting
+    public static Intent fillIntent( @NonNull Intent intent, @IntRange( from = 1 ) long stationId ) {
         intent.putExtra( STATION_ID_KEY, stationId );
         return intent;
     }
