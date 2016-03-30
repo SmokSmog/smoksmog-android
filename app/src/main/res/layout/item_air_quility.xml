@@ -38,10 +38,20 @@
             android:id="@+id/buttonAirQualityInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:alpha="0.3"
+            android:src="@drawable/ic_info_outline_white_36dp"/>
+
+        <ImageView
+            android:id="@+id/buttonTimeline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:alpha="0.3"
-            android:src="@drawable/ic_info_outline_white_36dp"/>
+            android:src="@drawable/ic_timeline_white_36dp"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

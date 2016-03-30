@@ -4,13 +4,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.antyzero.smoksmog.BuildConfig;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
-import smoksmog.air.AirQuality;
-import smoksmog.air.AirQualityIndex;
 import com.antyzero.smoksmog.eventbus.RxBus;
-import smoksmog.logger.Logger;
 import com.antyzero.smoksmog.time.CountdownProvider;
 import com.antyzero.smoksmog.ui.dialog.AirQualityDialog;
 import com.antyzero.smoksmog.ui.dialog.InfoDialog;
@@ -34,6 +30,9 @@ import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.math.operators.OperatorMinMax;
+import smoksmog.air.AirQuality;
+import smoksmog.air.AirQualityIndex;
+import smoksmog.logger.Logger;
 
 import static android.view.View.VISIBLE;
 
@@ -58,6 +57,8 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
     ImageView airIndicator;
     @Bind( R.id.buttonAirQualityInfo )
     View buttonAirQualityInfo;
+    @Bind( R.id.buttonTimeline )
+    View buttonTimeline;
 
     private DateTime measureDate = null;
 
@@ -68,21 +69,13 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
     }
 
     @Override
-    public void bind( Station data ) {
-        super.bind( data );
+    public void bind( Station station ) {
+        super.bind( station );
 
-        // TODO remove
-        itemView.setOnClickListener( v -> {
-            try {
-                if ( BuildConfig.DEBUG ) {
-                    itemView.getContext().startActivity( HistoryActivity.intent( itemView.getContext(), data ) );
-                }
-            } catch ( Exception e ) {
-                e.printStackTrace();
-            }
-        } );
+        buttonTimeline.setOnClickListener( v -> HistoryActivity.start( getContext(), station.getId() ) );
+        buttonTimeline.setVisibility( VISIBLE );
 
-        double indexValue = AirQualityIndex.calculate( data );
+        double indexValue = AirQualityIndex.calculate( station );
         AirQuality airQuality = AirQuality.findByValue( indexValue );
 
         textViewIndexValue.setText( String.format( Locale.getDefault(), "%.1f", indexValue ) );
@@ -90,7 +83,7 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
         airIndicator.setVisibility( VISIBLE );
         airIndicator.setColorFilter( airQuality.getColor( itemView.getContext() ) );
 
-        List<Particulate> particulates = data.getParticulates();
+        List<Particulate> particulates = station.getParticulates();
 
         if ( !particulates.isEmpty() ) {
 
@@ -112,7 +105,7 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
     }
 
     /**
-     * Updates info when last measurement occured
+     * Updates info when last measurement occurred
      */
     private void updateUiTime() {
         if ( measureDate != null ) {
