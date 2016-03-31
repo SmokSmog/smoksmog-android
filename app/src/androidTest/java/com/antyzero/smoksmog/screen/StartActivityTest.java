@@ -5,51 +5,34 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 
+import com.antyzero.smoksmog.R;
+import com.antyzero.smoksmog.rules.RxSchedulerTestRule;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
-import com.antyzero.smoksmog.utils.CustomExecutorScheduler;
-import com.antyzero.smoksmog.utils.SchedulersHook;
-import com.antyzero.smoksmog.utils.ThreadPoolIdlingResource;
 import com.squareup.spoon.Spoon;
 
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-
-import rx.Scheduler;
-import rx.plugins.RxJavaTestPlugins;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 
 public class StartActivityTest {
 
     @Rule
-    public final ActivityTestRule<StartActivity> activityTestRule;
-
-    private final ThreadPoolExecutor threadPoolExecutor;
-
-    public StartActivityTest() {
-        threadPoolExecutor = ( ThreadPoolExecutor ) Executors.newScheduledThreadPool( 16 );
-        Scheduler scheduler = new CustomExecutorScheduler( threadPoolExecutor );
-
-        RxJavaTestPlugins.resetPlugins();
-        RxJavaTestPlugins.getInstance().registerSchedulersHook( new SchedulersHook( scheduler ) );
-
-        activityTestRule = new ActivityTestRule<>( StartActivity.class );
-    }
+    public final ActivityTestRule<StartActivity> activityTestRule = new ActivityTestRule<>( StartActivity.class );
+    @Rule
+    public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
 
     @Test
     public void checkCreation() {
 
         Activity activity = activityTestRule.getActivity();
 
-        Espresso.registerIdlingResources( new ThreadPoolIdlingResource( threadPoolExecutor ) {
-            @Override
-            public String getName() {
-                return ThreadPoolIdlingResource.class.getSimpleName();
-            }
-        } );
+        Espresso.registerIdlingResources( rxSchedulerTestRule.getThreadPoolIdlingResource() );
 
+        onView( withId( R.id.viewPager ) ).perform( click() );
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
         Spoon.screenshot( activity, "Creation" );
