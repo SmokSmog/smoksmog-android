@@ -1,9 +1,13 @@
-package com.antyzero.smoksmog;
+package com.antyzero.smoksmog.screen;
 
 import android.app.Activity;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
+import com.antyzero.smoksmog.ApplicationComponent;
+import com.antyzero.smoksmog.ApplicationModule;
+import com.antyzero.smoksmog.DaggerApplicationComponent;
+import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.mock.MockNetworkModule;
 
 /**

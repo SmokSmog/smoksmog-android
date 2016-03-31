@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'de.felixschulze.gradle.spoon'
+apply plugin: 'spoon'
 apply plugin: 'com.github.triplet.play'
 
 android {
@@ -143,9 +143,8 @@ retrolambda {
 }
 
 spoon {
-    teamCityLog = true
     debug = true
-    failOnFailure = false
+    ignoreFailures = true
 }
 
 play {

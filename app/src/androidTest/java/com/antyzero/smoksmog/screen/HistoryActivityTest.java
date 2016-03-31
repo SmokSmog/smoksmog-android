@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog;
+package com.antyzero.smoksmog.screen;
 
 
 import android.app.Activity;
