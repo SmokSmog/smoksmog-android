@@ -2,7 +2,6 @@ package com.antyzero.smoksmog.screen;
 
 import android.app.Activity;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.annotation.UiThreadTest;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;

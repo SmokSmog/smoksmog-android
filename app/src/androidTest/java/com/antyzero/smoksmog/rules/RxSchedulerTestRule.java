@@ -15,23 +15,23 @@ import rx.plugins.RxJavaTestPlugins;
 
 public class RxSchedulerTestRule implements TestRule {
 
-    private final ThreadPoolExecutor threadPoolExecutor;
-    private final CustomExecutorScheduler scheduler;
     private final SchedulersHook schedulersHook;
+    private final ThreadPoolIdlingResource idlingResource;
 
     public RxSchedulerTestRule() {
-        threadPoolExecutor = ( ThreadPoolExecutor ) Executors.newScheduledThreadPool( 16 );
-        scheduler = new CustomExecutorScheduler( threadPoolExecutor );
+        ThreadPoolExecutor threadPoolExecutor = ( ThreadPoolExecutor ) Executors.newScheduledThreadPool( 16 );
+        CustomExecutorScheduler scheduler = new CustomExecutorScheduler( threadPoolExecutor );
         schedulersHook = new SchedulersHook( scheduler );
-    }
-
-    public ThreadPoolIdlingResource getThreadPoolIdlingResource() {
-        return new ThreadPoolIdlingResource( threadPoolExecutor ) {
+        idlingResource = new ThreadPoolIdlingResource( threadPoolExecutor ) {
             @Override
             public String getName() {
                 return getClass().getSimpleName();
             }
         };
+    }
+
+    public ThreadPoolIdlingResource getThreadPoolIdlingResource() {
+        return idlingResource;
     }
 
     @Override
