@@ -32,7 +32,6 @@ public class StartActivityTest {
     public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
 
     @Test
-    @UiThreadTest
     public void checkCreation() {
 
         Activity activity = activityTestRule.getActivity();

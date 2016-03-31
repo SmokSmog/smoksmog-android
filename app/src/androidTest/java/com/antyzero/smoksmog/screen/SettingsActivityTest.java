@@ -22,7 +22,6 @@ public class SettingsActivityTest {
     public final ActivityTestRule<SettingsActivity> activityTestRule = new MockedNetworkActivityTestRule<>( SettingsActivity.class );
 
     @Test
-    @UiThreadTest
     public void checkCreation() {
 
         // Given
