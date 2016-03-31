@@ -18,20 +18,24 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import rx.Scheduler;
-import rx.plugins.RxJavaPlugins;
+import rx.plugins.RxJavaTestPlugins;
 
 
 public class StartActivityTest {
 
     @Rule
-    public final ActivityTestRule<StartActivity> activityTestRule = new ActivityTestRule<>( StartActivity.class );
+    public final ActivityTestRule<StartActivity> activityTestRule;
 
     private final ThreadPoolExecutor threadPoolExecutor;
 
     public StartActivityTest() {
         threadPoolExecutor = ( ThreadPoolExecutor ) Executors.newScheduledThreadPool( 16 );
         Scheduler scheduler = new CustomExecutorScheduler( threadPoolExecutor );
-        RxJavaPlugins.getInstance().registerSchedulersHook( new SchedulersHook( scheduler ) );
+
+        RxJavaTestPlugins.resetPlugins();
+        RxJavaTestPlugins.getInstance().registerSchedulersHook( new SchedulersHook( scheduler ) );
+
+        activityTestRule = new ActivityTestRule<>( StartActivity.class );
     }
 
     @Test
