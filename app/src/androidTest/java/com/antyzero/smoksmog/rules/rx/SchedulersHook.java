@@ -13,16 +13,6 @@ public class SchedulersHook extends RxJavaSchedulersHook {
     }
 
     @Override
-    public Scheduler getComputationScheduler() {
-        return scheduler;
-    }
-
-    @Override
-    public Scheduler getIOScheduler() {
-        return scheduler;
-    }
-
-    @Override
     public Scheduler getNewThreadScheduler() {
         return scheduler;
     }
