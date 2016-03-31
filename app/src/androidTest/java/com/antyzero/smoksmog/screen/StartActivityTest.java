@@ -2,7 +2,6 @@ package com.antyzero.smoksmog.screen;
 
 import android.app.Activity;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -17,8 +16,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 
 @RunWith( AndroidJUnit4.class )
@@ -35,12 +36,31 @@ public class StartActivityTest {
 
         Activity activity = activityTestRule.getActivity();
 
-        Espresso.registerIdlingResources( rxSchedulerTestRule.getThreadPoolIdlingResource() );
-
-        onView( withId( R.id.viewPager ) ).perform( click() );
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
         Spoon.screenshot( activity, "Creation" );
+    }
+
+    @Test
+    public void addStation() {
+        Activity activity = activityTestRule.getActivity();
+
+        screenshot( activity, "Start_screen" );
+
+        openActionBarOverflowOrOptionsMenu( InstrumentationRegistry.getTargetContext() );
+        screenshot( activity, "Menu_open" );
+
+        onView( withText( R.string.action_manage_stations ) ).perform( click() );
+        screenshot( activity, "Add_station_screen" );
+
+        onView( withId( R.id.fab ) ).perform( click() );
+        screenshot( activity, "Station_pick_dialog" );
+
+    }
+
+    private void screenshot( Activity activity, String name ) {
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        Spoon.screenshot( activity, name );
 
     }
 }

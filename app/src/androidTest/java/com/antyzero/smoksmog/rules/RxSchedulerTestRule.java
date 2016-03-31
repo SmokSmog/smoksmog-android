@@ -1,5 +1,7 @@
 package com.antyzero.smoksmog.rules;
 
+import android.support.test.espresso.Espresso;
+
 import com.antyzero.smoksmog.rules.rx.CustomExecutorScheduler;
 import com.antyzero.smoksmog.rules.rx.SchedulersHook;
 import com.antyzero.smoksmog.rules.rx.ThreadPoolIdlingResource;
@@ -30,32 +32,30 @@ public class RxSchedulerTestRule implements TestRule {
         };
     }
 
-    public ThreadPoolIdlingResource getThreadPoolIdlingResource() {
-        return idlingResource;
-    }
-
     @Override
     public Statement apply( Statement base, Description description ) {
-        return new RxStatement( base, schedulersHook );
+        return new RxStatement( base, this );
     }
 
     private static class RxStatement extends Statement {
         private final Statement base;
-        private final SchedulersHook schedulersHook;
+        private final RxSchedulerTestRule testRule;
 
-        public RxStatement( Statement base, SchedulersHook schedulersHook ) {
+        public RxStatement( Statement base, RxSchedulerTestRule schedulersHook ) {
             this.base = base;
-            this.schedulersHook = schedulersHook;
+            this.testRule = schedulersHook;
         }
 
         @Override
         public void evaluate() throws Throwable {
 
             RxJavaTestPlugins.resetPlugins();
-            RxJavaTestPlugins.getInstance().registerSchedulersHook( schedulersHook );
+            RxJavaTestPlugins.getInstance().registerSchedulersHook( testRule.schedulersHook );
+            Espresso.registerIdlingResources( testRule.idlingResource );
 
             base.evaluate();
 
+            Espresso.unregisterIdlingResources( testRule.idlingResource );
             RxJavaTestPlugins.resetPlugins();
         }
     }

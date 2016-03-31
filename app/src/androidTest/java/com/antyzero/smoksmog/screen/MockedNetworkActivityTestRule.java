@@ -36,9 +36,27 @@ public class MockedNetworkActivityTestRule<T extends Activity> extends ActivityT
 
         ApplicationComponent applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule( new ApplicationModule( application ) )
+                // Replace network with mocked version
                 .networkModule( new MockNetworkModule() )
                 .build();
 
         application.setAppComponent( applicationComponent );
+    }
+
+    @Override
+    protected void afterActivityFinished() {
+
+        // TODO restore old component - seems wierd, but problem is it's carried on to other tests
+
+        SmokSmogApplication application = ( SmokSmogApplication )
+                InstrumentationRegistry.getTargetContext().getApplicationContext();
+
+        ApplicationComponent applicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule( new ApplicationModule( application ) )
+                .build();
+
+        application.setAppComponent( applicationComponent );
+
+        super.afterActivityFinished();
     }
 }
