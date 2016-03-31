@@ -12,7 +12,7 @@ public class SchedulersHook extends RxJavaSchedulersHook {
         this.scheduler = scheduler;
     }
 
-    /*@Override
+    @Override
     public Scheduler getComputationScheduler() {
         return scheduler;
     }
@@ -20,7 +20,7 @@ public class SchedulersHook extends RxJavaSchedulersHook {
     @Override
     public Scheduler getIOScheduler() {
         return scheduler;
-    }*/
+    }
 
     @Override
     public Scheduler getNewThreadScheduler() {

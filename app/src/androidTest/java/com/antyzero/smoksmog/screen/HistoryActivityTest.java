@@ -30,11 +30,6 @@ public class HistoryActivityTest {
         // do nothing
 
         // then
-        try {
-            Spoon.screenshot( activity, "Created" );
-        } catch ( Exception e ) {
-            System.out.println( e );
-        }
-
+        Spoon.screenshot( activity, "Created" );
     }
 }
