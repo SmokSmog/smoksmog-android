@@ -8,6 +8,7 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.FragmentModule;
+import com.trello.rxlifecycle.FragmentEvent;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -32,6 +33,7 @@ public class NetworkStationFragment extends StationFragment {
     @Override
     protected void loadData() {
         smokSmog.getApi().station( getStationId() )
+                .compose( bindUntilEvent( FragmentEvent.DESTROY_VIEW ) )
                 .doOnSubscribe( this::showLoading )
                 .subscribeOn( Schedulers.newThread() )
                 .observeOn( AndroidSchedulers.mainThread() )
