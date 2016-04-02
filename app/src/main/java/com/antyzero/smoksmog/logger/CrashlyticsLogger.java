@@ -11,14 +11,17 @@ import smoksmog.logger.Logger;
  */
 public class CrashlyticsLogger implements Logger {
 
+    private final static ConfigurationCallback EMPTY_CALLBACK = instance -> {};
+
     private final ExceptionLevel logExceptionLevel;
 
     public CrashlyticsLogger() {
-        this( ExceptionLevel.VERBOSE );
+        this( ExceptionLevel.VERBOSE, EMPTY_CALLBACK);
     }
 
-    public CrashlyticsLogger( ExceptionLevel logExceptionLevel ) {
+    public CrashlyticsLogger(ExceptionLevel logExceptionLevel, ConfigurationCallback callback ) {
         this.logExceptionLevel = logExceptionLevel;
+        callback.onConfiguration(CrashlyticsCore.getInstance());
     }
 
     @Override
@@ -94,5 +97,9 @@ public class CrashlyticsLogger implements Logger {
         ExceptionLevel( int value ) {
             this.value = value;
         }
+    }
+
+    public interface ConfigurationCallback {
+        void onConfiguration(CrashlyticsCore instance);
     }
 }
