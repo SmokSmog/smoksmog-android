@@ -11,7 +11,7 @@ buildscript {
     }
     dependencies {
 
-        classpath 'com.android.tools.build:gradle:2.0.0-beta6'
+        classpath 'com.android.tools.build:gradle:2.0.0-rc1'
 
         // This is broken when using gradle build tools 2.0.0, work around is to use
         // SDK manager from jitpack build from commit
