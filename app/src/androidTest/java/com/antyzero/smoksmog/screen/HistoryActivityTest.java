@@ -3,11 +3,13 @@ package com.antyzero.smoksmog.screen;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.annotation.UiThreadTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
+import com.antyzero.smoksmog.rules.RxSchedulerTestRule;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.squareup.spoon.Spoon;
 
@@ -21,6 +23,8 @@ public class HistoryActivityTest {
 
     @Rule
     public final ActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule( true, false );
+    @Rule
+    public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
 
     @Test
     public void checkCreation() {
@@ -29,7 +33,7 @@ public class HistoryActivityTest {
         Activity activity = activityTestRule.launchActivity( HistoryActivity.fillIntent( new Intent(), 13 ) );
 
         // when
-        // do nothing
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
         // then
         Spoon.screenshot( activity, "Created" );

@@ -45,22 +45,15 @@ public class StartActivityTest {
     public void addStation() {
         Activity activity = activityTestRule.getActivity();
 
-        screenshot( activity, "Start_screen" );
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
         openActionBarOverflowOrOptionsMenu( InstrumentationRegistry.getTargetContext() );
-        screenshot( activity, "Menu_open" );
-
         onView( withText( R.string.action_manage_stations ) ).perform( click() );
-        screenshot( activity, "Add_station_screen" );
-
         onView( withId( R.id.fab ) ).perform( click() );
-        screenshot( activity, "Station_pick_dialog" );
-
     }
 
     private void screenshot( Activity activity, String name ) {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
         Spoon.screenshot( activity, name );
-
     }
 }
