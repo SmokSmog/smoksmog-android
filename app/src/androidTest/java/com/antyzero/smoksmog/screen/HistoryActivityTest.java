@@ -1,8 +1,10 @@
-package com.antyzero.smoksmog;
+package com.antyzero.smoksmog.screen;
 
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.test.annotation.UiThreadTest;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -18,7 +20,7 @@ import org.junit.runner.RunWith;
 public class HistoryActivityTest {
 
     @Rule
-    public final MockedNetworkActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule( true, false );
+    public final ActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule( true, false );
 
     @Test
     public void checkCreation() {
@@ -30,11 +32,6 @@ public class HistoryActivityTest {
         // do nothing
 
         // then
-        try {
-            Spoon.screenshot( activity, "Created" );
-        } catch ( Exception e ) {
-            System.out.println( e );
-        }
-
+        Spoon.screenshot( activity, "Created" );
     }
 }

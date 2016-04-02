@@ -1,8 +1,9 @@
-package com.antyzero.smoksmog;
+package com.antyzero.smoksmog.screen;
 
 
 import android.app.Activity;
 import android.support.test.annotation.UiThreadTest;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -18,20 +19,18 @@ import org.junit.runner.RunWith;
 public class SettingsActivityTest {
 
     @Rule
-    public final MockedNetworkActivityTestRule<SettingsActivity> activityTestRule =
-            new MockedNetworkActivityTestRule<>( SettingsActivity.class );
+    public final ActivityTestRule<SettingsActivity> activityTestRule = new MockedNetworkActivityTestRule<>( SettingsActivity.class );
 
     @Test
-    @UiThreadTest
     public void checkCreation() {
 
-        // given
+        // Given
         Activity activity = activityTestRule.getActivity();
 
-        // when
-        //
+        // When
+        // do nothing
 
-        // then
+        // Then
         Spoon.screenshot( activity, "Created" );
     }
 }
