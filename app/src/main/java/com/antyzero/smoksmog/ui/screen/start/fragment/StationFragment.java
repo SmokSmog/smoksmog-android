@@ -139,9 +139,8 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
      */
     protected void updateViewsOnUiThread( Runnable givenRunnable ) {
         Observable.just( givenRunnable )
-                .subscribeOn( Schedulers.newThread() )
-                .compose( bindUntilEvent( FragmentEvent.DESTROY_VIEW ) )
                 .observeOn( AndroidSchedulers.mainThread() )
+                .compose( bindUntilEvent( FragmentEvent.DESTROY_VIEW ) )
                 .subscribe( Runnable::run );
     }
 
