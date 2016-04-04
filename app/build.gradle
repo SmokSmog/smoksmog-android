@@ -19,7 +19,7 @@ android {
         applicationId "pl.malopolska.smoksmog"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 193012
+        versionCode 193016
         versionName "1.9.3"
 
         // For some reason Travis is working only with multi dex
