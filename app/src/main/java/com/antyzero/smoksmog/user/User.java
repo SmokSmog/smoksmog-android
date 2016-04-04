@@ -39,7 +39,7 @@ public class User {
     private String createIdentifier() {
         int value = new Random().nextInt(Integer.MAX_VALUE);
         int hashCode = String.valueOf(value).hashCode();
-        return "ID-" + String.valueOf(hashCode);
+        return "ID-" + String.valueOf(Math.abs(hashCode));
     }
 
     @NonNull
