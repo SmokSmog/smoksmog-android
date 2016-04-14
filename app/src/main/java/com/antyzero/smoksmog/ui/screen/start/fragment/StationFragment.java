@@ -16,6 +16,9 @@ import android.widget.ViewAnimator;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.eventbus.RxBus;
+
+import rx.functions.Action1;
+import rx.functions.Func1;
 import smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
@@ -41,6 +44,7 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 public abstract class StationFragment extends BaseFragment implements TitleProvider {
 
+    private static final String TAG = StationFragment.class.getSimpleName();
     private static final String ARG_STATION_ID = "argStationId";
     private static final int NEAREST_STATION_ID = 0;
 
@@ -139,10 +143,13 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
      */
     protected void updateViewsOnUiThread( Runnable givenRunnable ) {
         Observable.just( givenRunnable )
-                .subscribeOn( Schedulers.newThread() )
-                .compose( bindUntilEvent( FragmentEvent.DESTROY_VIEW ) )
                 .observeOn( AndroidSchedulers.mainThread() )
-                .subscribe( Runnable::run );
+                .compose( bindUntilEvent( FragmentEvent.DESTROY_VIEW ) )
+                .filter(runnable -> !isDetached())
+                .subscribe(Runnable::run,
+                        throwable -> {
+                            logger.e(TAG, "Unable to update views");
+                        });
     }
 
     @OnClick( R.id.buttonTryAgain )

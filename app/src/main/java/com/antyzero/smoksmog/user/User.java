@@ -14,7 +14,7 @@ import java.util.Random;
 public class User {
 
     private static final String PREFERENCES_USER = "USER";
-    private static final String KEY_USER_ID = "KEY_USER_ID";
+    private static final String KEY_USER_ID = "KEY_USER_ID_V3";
     private static final String DEF_VALUE = "DEF_VALUE";
 
     private final String identifier;
@@ -39,7 +39,7 @@ public class User {
     private String createIdentifier() {
         int value = new Random().nextInt(Integer.MAX_VALUE);
         int hashCode = String.valueOf(value).hashCode();
-        return "ID-" + String.valueOf(hashCode);
+        return "ID-" + String.valueOf(Math.abs(hashCode));
     }
 
     @NonNull

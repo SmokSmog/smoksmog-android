@@ -7,8 +7,10 @@ apply plugin: 'spoon'
 apply plugin: 'com.github.triplet.play'
 
 android {
-    compileSdkVersion 23
+    
+    //noinspection GradleDependency // Keep 23.0.2 for travis
     buildToolsVersion "23.0.2"
+    compileSdkVersion 23
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -19,8 +21,8 @@ android {
         applicationId "pl.malopolska.smoksmog"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 193015
-        versionName "1.9.3"
+        versionCode 194000
+        versionName "1.9.4"
 
         // For some reason Travis is working only with multi dex
         if (Boolean.parseBoolean(System.getenv("TRAVIS"))) {
@@ -112,6 +114,7 @@ dependencies {
     compile 'com.google.dagger:dagger:2.0.2'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'nl.littlerobots.rxlint:rxlint:1.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:1.7.1'

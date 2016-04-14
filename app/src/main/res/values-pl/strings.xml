@@ -29,9 +29,11 @@
     <string name="measure_ago">zmierzono %s temu</string>
     <string name="action_manage_stations">Zarządzaj stacjami</string>
     <string name="pref_percent_entry_day">24 godziny</string>
-    <string name="pref_percent_entry_hour">1 godzina</string>
+    <string name="pref_percent_entry_hour">1 godzina (nie daje informacji o przekroczeniu normy)</string>
     <string name="pref_percent_title">Wartość procentowa</string>
     <string name="pref_percent_summary">Do jakiego przedziału czasu ma się odnosić</string>
     <string name="station_add">Dodaj stację</string>
     <string name="click_to_try_again">Kliknij aby spróbować ponownie</string>
+    <string name="cs_about_air_quality_index">Czym jest Indeks Jakości Powietrza ?</string>
+    <string name="cs_measurement_history_graphs">Wykresy pomiarów dotychczasowych</string>
 </resources>

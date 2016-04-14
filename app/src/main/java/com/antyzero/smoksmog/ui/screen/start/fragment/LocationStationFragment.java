@@ -63,7 +63,6 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
                 .setExpirationDuration( TimeUnit.SECONDS.toMillis( LOCATION_TIMEOUT_IN_SECONDS ) );
 
         reactiveLocationProvider.getUpdatedLocation( request )
-                .compose( bindUntilEvent( FragmentEvent.DESTROY_VIEW ) )
                 .subscribeOn( Schedulers.newThread() )
                 .doOnSubscribe( () -> {
                     LocationStationFragment.this.locationCurrent = null;
@@ -85,6 +84,7 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
                             locationStation.setLatitude( station1.getLatitude() );
                         } ) )
                 .observeOn( AndroidSchedulers.mainThread() )
+                .compose( bindUntilEvent( FragmentEvent.DESTROY_VIEW ) )
                 .subscribe(
                         station -> updateViewsOnUiThread( () -> updateUI( station ) ),
                         throwable -> {
@@ -94,7 +94,6 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
                                 logger.e( TAG, "Problem with error handling code", e );
                             } finally {
                                 logger.i( TAG, "Unable to find closes station", throwable );
-                                errorReporter.report( R.string.error_no_near_Station );
                             }
                         } );
     }
