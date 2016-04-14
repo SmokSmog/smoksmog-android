@@ -7,8 +7,10 @@ apply plugin: 'spoon'
 apply plugin: 'com.github.triplet.play'
 
 android {
+    
+    //noinspection GradleDependency // Keep 23.0.2 for travis
+    buildToolsVersion "23.0.2"
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
