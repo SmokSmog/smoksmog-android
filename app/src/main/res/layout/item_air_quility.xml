@@ -42,6 +42,7 @@
             android:paddingBottom="12dp"
             android:paddingEnd="12dp"
             android:paddingRight="12dp"
+            android:contentDescription="@string/cs_about_air_quality_index"
             android:src="@drawable/ic_info_outline_white_36dp"
             tools:ignore="RtlSymmetry" />
 
@@ -56,6 +57,7 @@
             android:paddingStart="12dp"
             android:src="@drawable/ic_timeline_white_36dp"
             android:visibility="gone"
+            android:contentDescription="@string/cs_measurement_history_graphs"
             tools:ignore="RtlSymmetry"
             tools:visibility="visible" />
 

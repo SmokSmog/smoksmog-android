@@ -34,4 +34,6 @@
     <string name="pref_percent_summary">Do jakiego przedziału czasu ma się odnosić</string>
     <string name="station_add">Dodaj stację</string>
     <string name="click_to_try_again">Kliknij aby spróbować ponownie</string>
+    <string name="cs_about_air_quality_index">Czym jest Indeks Jakości Powietrza ?</string>
+    <string name="cs_measurement_history_graphs">Wykresy pomiarów dotychczasowych</string>
 </resources>
