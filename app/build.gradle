@@ -3,12 +3,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'de.felixschulze.gradle.spoon'
+apply plugin: 'spoon'
 apply plugin: 'com.github.triplet.play'
 
 android {
-    compileSdkVersion 23
+    
+    //noinspection GradleDependency // Keep 23.0.2 for travis
     buildToolsVersion "23.0.2"
+    compileSdkVersion 23
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -19,8 +21,8 @@ android {
         applicationId "pl.malopolska.smoksmog"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 193007
-        versionName "1.9.3"
+        versionCode 194000
+        versionName "1.9.4"
 
         // For some reason Travis is working only with multi dex
         if (Boolean.parseBoolean(System.getenv("TRAVIS"))) {
@@ -90,8 +92,7 @@ configurations.all {
 
 dependencies {
 
-    compile project(':common')
-    compile project(':network')
+    compile project(':android')
 
     apt 'com.google.dagger:dagger-compiler:2.0.2'
 
@@ -110,15 +111,11 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'io.reactivex:rxjava-math:1.0.0'
-    compile 'com.trello:rxlifecycle:0.5.0'
-    compile 'com.trello:rxlifecycle-components:0.5.0'
     compile 'pl.charmas.android:android-reactive-location:0.8@aar'
     compile 'com.google.dagger:dagger:2.0.2'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'nl.littlerobots.rxlint:rxlint:1.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:1.7.1'
@@ -128,7 +125,7 @@ dependencies {
     androidTestCompile('com.android.support.test:runner:0.4.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile 'com.squareup.spoon:spoon-client:1.2.0'
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.3.2'
     androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
@@ -150,9 +147,8 @@ retrolambda {
 }
 
 spoon {
-    teamCityLog = true
     debug = true
-    failOnFailure = false
+    ignoreFailures = true
 }
 
 play {

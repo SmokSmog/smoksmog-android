@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="airQualityVeryGood">very good air quality</string>
+    <string name="airQualityGood">good air quality</string>
+    <string name="airQualityModerate">moderate air quality</string>
+    <string name="airQualitySufficient">sufficient air quality</string>
+    <string name="airQualityBad">bad air quality</string>
+    <string name="airQualityVeryBad">very bad air quality</string>
+
+</resources>

@@ -4,9 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 
-import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.sync.SyncService;
-import com.crashlytics.android.Crashlytics;
+import smoksmog.logger.Logger;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -45,25 +43,15 @@ public class SmokSmogApplication extends Application {
                 .setDefaultFontPath( "fonts/Lato-Light.ttf" )
                 .build() );
 
-        if ( BuildConfig.DEBUG ) {
-            RxJavaPlugins.getInstance().registerErrorHandler( new RxJavaErrorHandler() {
-                @Override
-                public void handleError( Throwable e ) {
-                    super.handleError( e );
-                    Log.w( "RxError", e );
-                }
-            } );
-        }
-
         Task syncTask = new PeriodicTask.Builder()
-            .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
-            .setPersisted(true)
-            .setRequiresCharging(false)
-            .setUpdateCurrent(true)
-            .setService(SyncService.class)
-            .setPeriod(Period.minutes(1).getSeconds())
-            .setTag(SyncService.TAG)
-            .build();
+                .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
+                .setPersisted(true)
+                .setRequiresCharging(false)
+                .setUpdateCurrent(true)
+                .setService(SyncService.class)
+                .setPeriod(Period.minutes(1).getSeconds())
+                .setTag(SyncService.TAG)
+                .build();
 
         GcmNetworkManager.getInstance(this).schedule(syncTask);
     }

@@ -22,12 +22,6 @@
     <string name="pref_station_selected_title">Stacja domyślna</string>
     <string name="pref_station_selected_summary_default">Wybierz stację</string>
     <string name="error_unable_to_enable_station_preference">Nie można udostępnić opcji \'stacja domyślna\'</string>
-    <string name="airQualityBad">zła jakość powietrza</string>
-    <string name="airQualityGood">dobra jakość powietrza</string>
-    <string name="airQualityModerate">umiarkowana jakość powietrza</string>
-    <string name="airQualitySufficient">dostateczna jakość powietrza</string>
-    <string name="airQualityVeryBad">bardzo zła jakość powietrza</string>
-    <string name="airQualityVeryGood">bardzo dobra jakość powietrza</string>
     <string name="airQualityIndex">Indeks jakości powietrza</string>
     <string name="notificationLevelExceededFor">Przekroczony poziom dla: %s</string>
     <string name="pref_station_closest_summary">Pokazuj zakłądkę z najbliższą stacją</string>
@@ -36,9 +30,11 @@
     <string name="measure_ago">zmierzono %s temu</string>
     <string name="action_manage_stations">Zarządzaj stacjami</string>
     <string name="pref_percent_entry_day">24 godziny</string>
-    <string name="pref_percent_entry_hour">1 godzina</string>
+    <string name="pref_percent_entry_hour">1 godzina (nie daje informacji o przekroczeniu normy)</string>
     <string name="pref_percent_title">Wartość procentowa</string>
     <string name="pref_percent_summary">Do jakiego przedziału czasu ma się odnosić</string>
     <string name="station_add">Dodaj stację</string>
     <string name="click_to_try_again">Kliknij aby spróbować ponownie</string>
+    <string name="cs_about_air_quality_index">Czym jest Indeks Jakości Powietrza ?</string>
+    <string name="cs_measurement_history_graphs">Wykresy pomiarów dotychczasowych</string>
 </resources>

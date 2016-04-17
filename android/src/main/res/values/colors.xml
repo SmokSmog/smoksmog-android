@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Color palette -->
+
+    <color name="brightGray">#414152</color>
+    <color name="scarpaFlow">#515965</color>
+    <color name="comet">#5A6273</color>
+    <color name="celeste">#CDCDCD</color>
+    <color name="iron">#d6d6d6</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="neonCarrot">#FFA439</color>
+
+    <color name="viking">#5ADED5</color>
+    <color name="astral">#2983AC</color>
+
+    <color name="capri">#00cbff</color>
+    <color name="green">#00e600</color>
+    <color name="yellow">#ffff00</color>
+    <color name="amber">#ff7e00</color>
+    <color name="red">#ff0000</color>
+    <color name="burgundy">#800021</color>
+
+    <!-- Alphas -->
+
+    <color name="iron_10">#19d6d6d6</color>
+    <color name="iron_20">#33d6d6d6</color>
+
+    <!-- ... -->
+
+    <color name="primary">@color/comet</color>
+    <color name="primaryDark">@color/brightGray</color>
+    <color name="accent">@color/viking</color>
+
+    <color name="windowBackground">@color/celeste</color>
+
+    <color name="text_light">@color/white</color>
+    <color name="text_dark">@color/scarpaFlow</color>
+
+    <color name="indicator_bad">@color/neonCarrot</color>
+    <color name="indicator_good">@color/viking</color>
+
+    <color name="airQualityVeryGood">@color/capri</color>
+    <color name="airQualityGood">@color/green</color>
+    <color name="airQualityModerate">@color/yellow</color>
+    <color name="airQualitySufficient">@color/amber</color>
+    <color name="airQualityBad">@color/red</color>
+    <color name="airQualityVeryBad">@color/burgundy</color>
+
+    <color name="item_background">@color/iron_10</color>
+
+</resources>

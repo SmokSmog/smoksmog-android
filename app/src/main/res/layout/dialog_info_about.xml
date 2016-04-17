@@ -42,11 +42,24 @@
                     android:layout_marginRight="4dp"
                     android:src="@mipmap/ic_launcher"/>
 
-                <TextView
-                    android:id="@+id/textViewVersionName"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Version name 1.9.1 (191004)"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textViewVersionName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Version name 1.9.1 (191004)"/>
+
+                    <TextView
+                        android:id="@+id/textViewUserId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="TMP12309D098908"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

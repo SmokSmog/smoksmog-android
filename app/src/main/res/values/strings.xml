@@ -47,16 +47,15 @@
     <string name="pref_percent_entry_hour">1 hour</string>
     <string name="pref_percent_entry_day">24 hours</string>
 
-    <string name="airQualityVeryGood">very good air quality</string>
-    <string name="airQualityGood">good air quality</string>
-    <string name="airQualityModerate">moderate air quality</string>
-    <string name="airQualitySufficient">sufficient air quality</string>
-    <string name="airQualityBad">bad air quality</string>
-    <string name="airQualityVeryBad">very bad air quality</string>
     <string name="airQualityIndex">Air quality index</string>
 
     <string name="notificationLevelExceededFor">Level exceeded for: %s</string>
 
     <string name="measure_ago">measured %s ago</string>
     <string name="click_to_try_again">Click to try again</string>
+
+    <!-- Content description -->
+
+    <string name="cs_about_air_quality_index">What is Air Quality Index ?</string>
+    <string name="cs_measurement_history_graphs">Measurement history graphs</string>
 </resources>

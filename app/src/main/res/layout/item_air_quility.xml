@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,7 +12,7 @@
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         android:text="@string/airQualityIndex"
-        android:textAppearance="@style/TextAppearance"/>
+        android:textAppearance="@style/TextAppearance" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,16 +31,35 @@
             android:layout_marginBottom="10dp"
             android:textAppearance="@style/TextAppearance"
             android:textSize="50sp"
-            tools:text="8,5"/>
+            tools:text="8,5" />
 
         <ImageView
             android:id="@+id/buttonAirQualityInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingBottom="12dp"
+            android:paddingEnd="12dp"
+            android:paddingRight="12dp"
+            android:contentDescription="@string/cs_about_air_quality_index"
+            android:src="@drawable/ic_info_outline_white_36dp"
+            tools:ignore="RtlSymmetry" />
+
+        <ImageView
+            android:id="@+id/buttonTimeline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:alpha="0.3"
-            android:src="@drawable/ic_info_outline_white_36dp"/>
+            android:paddingBottom="12dp"
+            android:paddingLeft="12dp"
+            android:paddingStart="12dp"
+            android:src="@drawable/ic_timeline_white_36dp"
+            android:visibility="gone"
+            android:contentDescription="@string/cs_measurement_history_graphs"
+            tools:ignore="RtlSymmetry"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -60,7 +78,7 @@
                 android:src="@drawable/shape_oval"
                 android:visibility="gone"
                 tools:ignore="RtlHardcoded"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/textViewAirQuality"
@@ -68,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance"
                 android:textSize="16sp"
-                tools:text="bardzo dobra jakość powietrza"/>
+                tools:text="bardzo dobra jakość powietrza" />
 
         </LinearLayout>
 
@@ -76,12 +94,14 @@
 
     <TextView
         android:id="@+id/textViewMeasureTime"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_8"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="4dp"
         android:gravity="center_horizontal"
+        android:padding="4dp"
         android:textAppearance="@style/TextAppearance"
-        tools:text="zmierzono 5 minut temu"/>
+        tools:text="zmierzono 5 minut temu" />
 
 </LinearLayout>

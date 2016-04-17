@@ -9,7 +9,11 @@ import android.widget.TextView;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
-import com.antyzero.smoksmog.logger.Logger;
+import com.antyzero.smoksmog.user.User;
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
+
+import smoksmog.logger.Logger;
 
 import javax.inject.Inject;
 
@@ -22,11 +26,15 @@ public class AboutDialog extends InfoDialog {
 
     @Inject
     Logger logger;
+    @Inject
+    User user;
 
     @Bind( R.id.textView )
     TextView textView;
     @Bind( R.id.textViewVersionName )
     TextView textViewVersionName;
+    @Bind( R.id.textViewUserId)
+    TextView textViewUserId;
 
     @Override
     public void onCreate( Bundle savedInstanceState ) {
@@ -52,6 +60,8 @@ public class AboutDialog extends InfoDialog {
         } catch ( Exception e ) {
             logger.i( TAG, "Problem with obtaining version", e );
         }
+
+        textViewUserId.setText(user.getIdentifier());
     }
 
 
