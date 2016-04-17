@@ -1,17 +1,10 @@
 package com.antyzero.smoksmog.sync;
 
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v7.app.NotificationCompat;
-
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
-import com.antyzero.smoksmog.logger.Logger;
 import com.antyzero.smoksmog.ui.ServiceModule;
-import com.antyzero.smoksmog.ui.screen.start.StartActivity;
+import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
 
@@ -19,8 +12,7 @@ import javax.inject.Inject;
 
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import pl.malopolska.smoksmog.SmokSmog;
-import pl.malopolska.smoksmog.model.Particulate;
-import pl.malopolska.smoksmog.model.Station;
+import smoksmog.logger.Logger;
 
 /**
  * An implementation of {@link com.google.android.gms.gcm.GcmTaskService} (backed up by regular {@link android.app.Service class})
@@ -39,6 +31,9 @@ public class SyncService extends GcmTaskService {
     @Inject
     Logger logger;
 
+    @Inject
+    IStationNotificationHandler stationNotificationHandler;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -49,7 +44,7 @@ public class SyncService extends GcmTaskService {
     @Override
     public int onRunTask(TaskParams taskParams) {
         loadDataForCurrentLocation();
-        return 0;
+        return GcmNetworkManager.RESULT_SUCCESS;
     }
 
     /**
@@ -61,39 +56,11 @@ public class SyncService extends GcmTaskService {
         reactiveLocationProvider.getLastKnownLocation()
                 .concatMap(location -> smokSmog.getApi().stationByLocation(location.getLatitude(), location.getLongitude()))
                 .subscribe(
-                        this::handleSystemNotification,
+                        station -> stationNotificationHandler.handleNotification(station),
                         throwable -> {
                             logger.i(TAG, "Unable to find nearest station data", throwable);
                             errorReporter.report(R.string.error_no_near_Station);
                         }
                 );
-    }
-
-    private void handleSystemNotification(Station station) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext());
-        notificationBuilder.setContentTitle(station.getName());
-
-        StringBuilder contentTextBuilder = new StringBuilder();
-        for (Particulate particulate : station.getParticulates()) {
-            if (particulate.getValue() > particulate.getNorm()) {
-                if (contentTextBuilder.length() != 0) {
-                    contentTextBuilder.append(", ");
-                    contentTextBuilder.append(particulate.getShortName());
-                } else {
-                    contentTextBuilder.append(getString(R.string.notificationLevelExceededFor, particulate.getShortName()));
-                }
-            }
-        }
-
-        notificationBuilder.setContentText(contentTextBuilder);
-
-        Intent intent = new Intent(getApplicationContext(), StartActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notificationBuilder.setContentIntent(pendingIntent);
-
-        Notification notification = notificationBuilder.build();
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-        notificationManager.notify(0, notification);
     }
 }

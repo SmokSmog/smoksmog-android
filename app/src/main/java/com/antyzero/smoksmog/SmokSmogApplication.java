@@ -4,18 +4,19 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 
-import smoksmog.logger.Logger;
+import com.antyzero.smoksmog.sync.SyncService;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 
-import org.joda.time.Period;
+import org.joda.time.Duration;
 
 import javax.inject.Inject;
 
 import io.fabric.sdk.android.Fabric;
+import smoksmog.logger.Logger;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class SmokSmogApplication extends Application {
@@ -49,7 +50,7 @@ public class SmokSmogApplication extends Application {
                 .setRequiresCharging(false)
                 .setUpdateCurrent(true)
                 .setService(SyncService.class)
-                .setPeriod(Period.minutes(1).getSeconds())
+                .setPeriod(Duration.standardHours(1).getStandardSeconds())
                 .setTag(SyncService.TAG)
                 .build();
 

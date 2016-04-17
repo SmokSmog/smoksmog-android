@@ -5,16 +5,16 @@ import com.antyzero.smoksmog.fabric.FabricModule;
 import com.antyzero.smoksmog.logger.LoggerModule;
 import com.antyzero.smoksmog.network.NetworkModule;
 import com.antyzero.smoksmog.settings.SettingsModule;
-import com.antyzero.smoksmog.time.TimeModule;
-import com.antyzero.smoksmog.ui.dialog.AboutDialog;
+import com.antyzero.smoksmog.sync.StationNotificationModule;
 import com.antyzero.smoksmog.sync.SyncServiceComponent;
+import com.antyzero.smoksmog.time.TimeModule;
 import com.antyzero.smoksmog.ui.ServiceModule;
+import com.antyzero.smoksmog.ui.dialog.AboutDialog;
 import com.antyzero.smoksmog.ui.screen.ActivityComponent;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.start.item.AirQualityViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.item.ParticulateViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
-import com.antyzero.smoksmog.user.User;
 import com.antyzero.smoksmog.user.UserModule;
 
 import javax.inject.Singleton;
@@ -31,7 +31,8 @@ import dagger.Component;
                 SettingsModule.class,
                 EventBusModule.class,
                 TimeModule.class,
-                UserModule.class
+                UserModule.class,
+                StationNotificationModule.class
         }
 )
 public interface ApplicationComponent {
