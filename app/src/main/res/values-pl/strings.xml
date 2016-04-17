@@ -29,6 +29,7 @@
     <string name="airQualityVeryBad">bardzo zła jakość powietrza</string>
     <string name="airQualityVeryGood">bardzo dobra jakość powietrza</string>
     <string name="airQualityIndex">Indeks jakości powietrza</string>
+    <string name="notificationLevelExceededFor">Przekroczony poziom dla: %s</string>
     <string name="pref_station_closest_summary">Pokazuj zakłądkę z najbliższą stacją</string>
     <string name="error_unable_to_add_station">Nie można dodać stacji</string>
     <string name="station_closest">Najbliższa stacja</string>

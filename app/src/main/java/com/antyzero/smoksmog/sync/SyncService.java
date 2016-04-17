@@ -2,19 +2,16 @@ package com.antyzero.smoksmog.sync;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.NotificationCompat;
 
-import com.antyzero.smoksmog.ApplicationModule;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.logger.Logger;
-import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.ServiceModule;
-import com.antyzero.smoksmog.ui.screen.main.MainActivity;
+import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
 
@@ -83,15 +80,14 @@ public class SyncService extends GcmTaskService {
                     contentTextBuilder.append(", ");
                     contentTextBuilder.append(particulate.getShortName());
                 } else {
-                    contentTextBuilder.append("Przekroczony poziom dla: ");
-                    contentTextBuilder.append(particulate.getShortName());
+                    contentTextBuilder.append(getString(R.string.notificationLevelExceededFor, particulate.getShortName()));
                 }
             }
         }
 
         notificationBuilder.setContentText(contentTextBuilder);
 
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), StartActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationBuilder.setContentIntent(pendingIntent);
 
