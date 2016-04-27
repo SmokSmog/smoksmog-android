@@ -40,6 +40,15 @@ dependencies {
 }
 
 /**
+ * Optionally disable test failures
+ */
+project.gradle.taskGraph.whenReady {
+    -> project.tasks.findAll { it.name =~ /connected.+AndroidTest/ }.each {
+        it.ignoreFailures = project.hasProperty('ignoreFailures') ? ignoreFailures : false
+    }
+}
+
+/**
  * This will copy resources files so they will be accessible throught Java getResource() method
  */
 task copyTestResources(type: Copy) {
