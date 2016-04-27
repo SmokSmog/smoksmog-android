@@ -35,7 +35,7 @@ buildscript {
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
 
-ext.ignoreFailures = project.hasProperty('ignoreFailures') ? Boolean.valueOf(ignoreFailures) : false
+ext.ignoreFailures = project.hasProperty('ignoreFailures') ? ignoreFailures : false
 
 allprojects {
     repositories {

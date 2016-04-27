@@ -42,10 +42,8 @@ dependencies {
 /**
  * Optionally disable test failures
  */
-project.gradle.taskGraph.whenReady {
-    -> project.tasks.findAll { it.name =~ /connected.+AndroidTest/ }.each {
-        it.ignoreFailures = rootProject.ext.ignoreFailures
-    }
+test {
+    ignoreFailures = rootProject.ext.ignoreFailures
 }
 
 /**
