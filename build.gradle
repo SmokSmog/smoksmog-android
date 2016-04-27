@@ -42,4 +42,8 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
     apply plugin: 'com.github.ben-manes.versions'
+
+    if(!project.hasProperty('ignoreFailures')) {
+        project.setProperty('ignoreFailures', false)
+    }
 }
