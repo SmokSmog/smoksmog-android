@@ -35,6 +35,8 @@ buildscript {
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
 
+ext.ignoreFailures = project.hasProperty('ignoreFailures') ? ignoreFailures : false
+
 allprojects {
     repositories {
         jcenter()
@@ -42,8 +44,4 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
     apply plugin: 'com.github.ben-manes.versions'
-
-    if(!project.hasProperty('ignoreFailures')) {
-        project.setProperty('ignoreFailures', false)
-    }
 }
