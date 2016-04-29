@@ -50,8 +50,8 @@ test {
  * This will copy resources files so they will be accessible throught Java getResource() method
  */
 task copyTestResources(type: Copy) {
-    from "${projectDir}/src/test/resources"
-    into "${buildDir}/classes/test"
+    from "${project.projectDir}/src/test/resources"
+    into "${project.buildDir}/classes/test"
 }
 
 processTestResources.dependsOn copyTestResources
