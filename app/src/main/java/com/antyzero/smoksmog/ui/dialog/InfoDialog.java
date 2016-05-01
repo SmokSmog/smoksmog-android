@@ -26,7 +26,17 @@ public abstract class InfoDialog extends DialogFragment {
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
             dialog.dismiss();
         });
-        return builder.create();
+        return updateBuilder(builder).create();
+    }
+
+    /**
+     * Override to change builder settings
+     *
+     * @param builder
+     * @return
+     */
+    protected AlertDialog.Builder updateBuilder(AlertDialog.Builder builder) {
+        return builder;
     }
 
     protected void initView(View view) {
