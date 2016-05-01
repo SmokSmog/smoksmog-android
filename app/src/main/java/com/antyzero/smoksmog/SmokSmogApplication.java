@@ -4,13 +4,14 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 
-import smoksmog.logger.Logger;
+import com.antyzero.smoksmog.utils.once.OnceModule;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 
 import javax.inject.Inject;
 
 import io.fabric.sdk.android.Fabric;
+import smoksmog.logger.Logger;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class SmokSmogApplication extends Application {
@@ -24,19 +25,20 @@ public class SmokSmogApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Fabric.with( this, new CrashlyticsCore.Builder()
-                .disabled( BuildConfig.DEBUG )
-                .build(), new Answers() );
+        Fabric.with(this, new CrashlyticsCore.Builder()
+                .disabled(BuildConfig.DEBUG)
+                .build(), new Answers());
 
         applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule( new ApplicationModule( this ) )
+                .onceModule(new OnceModule(this))
+                .applicationModule(new ApplicationModule(this))
                 .build();
 
-        applicationComponent.inject( this );
+        applicationComponent.inject(this);
 
-        CalligraphyConfig.initDefault( new CalligraphyConfig.Builder()
-                .setDefaultFontPath( "fonts/Lato-Light.ttf" )
-                .build() );
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Lato-Light.ttf")
+                .build());
     }
 
     public ApplicationComponent getAppComponent() {
@@ -49,7 +51,7 @@ public class SmokSmogApplication extends Application {
      * @param applicationComponent for replace
      */
     @VisibleForTesting
-    public void setAppComponent( ApplicationComponent applicationComponent ) {
+    public void setAppComponent(ApplicationComponent applicationComponent) {
         this.applicationComponent = applicationComponent;
     }
 
@@ -59,7 +61,7 @@ public class SmokSmogApplication extends Application {
      * @param context
      * @return
      */
-    public static SmokSmogApplication get( Context context ) {
-        return ( SmokSmogApplication ) context.getApplicationContext();
+    public static SmokSmogApplication get(Context context) {
+        return (SmokSmogApplication) context.getApplicationContext();
     }
 }

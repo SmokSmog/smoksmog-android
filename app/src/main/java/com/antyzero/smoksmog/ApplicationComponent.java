@@ -14,6 +14,7 @@ import com.antyzero.smoksmog.ui.screen.start.item.ParticulateViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 import com.antyzero.smoksmog.user.User;
 import com.antyzero.smoksmog.user.UserModule;
+import com.antyzero.smoksmog.utils.once.OnceModule;
 
 import javax.inject.Singleton;
 
@@ -29,7 +30,8 @@ import dagger.Component;
                 SettingsModule.class,
                 EventBusModule.class,
                 TimeModule.class,
-                UserModule.class
+                UserModule.class,
+                OnceModule.class
         }
 )
 public interface ApplicationComponent {
