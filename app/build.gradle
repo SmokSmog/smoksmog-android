@@ -117,6 +117,7 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'nl.littlerobots.rxlint:rxlint:1.0'
+    compile 'com.jonathanfinerty.once:once:1.0.3'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:1.7.1'
