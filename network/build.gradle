@@ -47,7 +47,8 @@ test {
 }
 
 /**
- * This will copy resources files so they will be accessible throught Java getResource() method
+ * This will copy resources files so they will be accessible thought Java getResource() method
+ * in Android Studio, without it test won't find *.json files
  */
 task copyTestResources(type: Copy) {
     from "${project.projectDir}/src/test/resources"
