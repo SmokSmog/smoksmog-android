@@ -1,6 +1,5 @@
 package com.antyzero.smoksmog.screen;
 
-import android.app.Activity;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -9,7 +8,6 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.rules.RxSchedulerTestRule;
 import com.antyzero.smoksmog.rules.SpoonRule;
-import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 
 import org.junit.Rule;
@@ -29,7 +27,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class StartActivityTest {
 
-    private final ActivityTestRule<StartActivity> activityTestRule = new MockedNetworkActivityTestRule<>(StartActivity.class);
+    private final ActivityTestRule<StartActivity> activityTestRule = new MockedNetworkActivityTestRule<>(StartActivity.class, false, true);
     private final SpoonRule spoonRule = new SpoonRule(activityTestRule);
     @Rule
     public final TestRule testRule = RuleChain.outerRule(activityTestRule).around(spoonRule);
