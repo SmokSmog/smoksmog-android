@@ -43,17 +43,14 @@ public class StartActivityTest {
 
     @Test
     public void addStation() {
-        Activity activity = activityTestRule.getActivity();
 
+        // Given
+        Activity activity = activityTestRule.getActivity();
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
+        // When
         openActionBarOverflowOrOptionsMenu( InstrumentationRegistry.getTargetContext() );
         onView( withText( R.string.action_manage_stations ) ).perform( click() );
         onView( withId( R.id.fab ) ).perform( click() );
-    }
-
-    private void screenshot( Activity activity, String name ) {
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-        Spoon.screenshot( activity, name );
     }
 }
