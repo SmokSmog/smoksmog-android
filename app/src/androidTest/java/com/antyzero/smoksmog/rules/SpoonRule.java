@@ -1,6 +1,6 @@
 package com.antyzero.smoksmog.rules;
 
-import android.app.Activity;
+import android.support.test.rule.ActivityTestRule;
 
 import com.squareup.spoon.Spoon;
 
@@ -11,14 +11,18 @@ import org.junit.rules.ExternalResource;
  */
 public class SpoonRule extends ExternalResource {
 
-    private final Activity activity;
+    private final ActivityTestRule activityTestRule;
 
-    public SpoonRule(Activity activity) {
-        this.activity = activity;
+    public SpoonRule(ActivityTestRule activityTestRule) {
+        this.activityTestRule = activityTestRule;
     }
 
-    public void screenshot(String tag){
-        Spoon.screenshot(activity, tag);
+    public void screenshot(String tag) {
+        try {
+            Spoon.screenshot(activityTestRule.getActivity(), tag);
+        } catch (Exception e){
+            System.err.println("Missing Spoon");
+        }
     }
 
 }

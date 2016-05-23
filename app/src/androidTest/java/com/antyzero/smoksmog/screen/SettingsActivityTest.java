@@ -1,26 +1,29 @@
 package com.antyzero.smoksmog.screen;
 
 
-import android.app.Activity;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.antyzero.smoksmog.rules.RxSchedulerTestRule;
+import com.antyzero.smoksmog.rules.SpoonRule;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
-import com.squareup.spoon.Spoon;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class SettingsActivityTest {
 
+    private final ActivityTestRule<SettingsActivity> activityTestRule = new MockedNetworkActivityTestRule<>(SettingsActivity.class);
+    private final SpoonRule spoonRule = new SpoonRule(activityTestRule);
     @Rule
-    public final ActivityTestRule<SettingsActivity> activityTestRule = new MockedNetworkActivityTestRule<>(SettingsActivity.class);
+    public final TestRule testRule = RuleChain.outerRule(activityTestRule).around(spoonRule);
     @Rule
     public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
 
@@ -28,12 +31,12 @@ public class SettingsActivityTest {
     public void checkCreation() {
 
         // Given
-        Activity activity = activityTestRule.getActivity();
+        activityTestRule.getActivity();
 
         // When
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
         // Then
-        Spoon.screenshot(activity, "Created");
+        spoonRule.screenshot("Created");
     }
 }
