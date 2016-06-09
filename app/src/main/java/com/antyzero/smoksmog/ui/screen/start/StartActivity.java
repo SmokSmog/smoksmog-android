@@ -14,8 +14,8 @@ import android.widget.ViewSwitcher;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
+import com.antyzero.smoksmog.eventbus.EventBusModule;
 import com.antyzero.smoksmog.eventbus.RxBus;
-import smoksmog.logger.Logger;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.dialog.AboutDialog;
@@ -27,17 +27,21 @@ import com.antyzero.smoksmog.ui.screen.start.fragment.StationFragment;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 import com.antyzero.smoksmog.ui.typeface.TypefaceProvider;
 import com.antyzero.smoksmog.ui.view.ViewPagerIndicator;
+import com.antyzero.smoksmog.utils.once.OnceFacebookInfo;
 import com.trello.rxlifecycle.ActivityEvent;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import pl.malopolska.smoksmog.SmokSmog;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import smoksmog.logger.Logger;
 
 /**
  * Base activity for future
@@ -59,16 +63,21 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     RxBus rxBus;
     @Inject
     TypefaceProvider typefaceProvider;
+    @Inject
+    @Named(EventBusModule.EVENT_BUS_ERROR)
+    Action1<Throwable> eventBusError;
+    @Inject
+    OnceFacebookInfo onceFacebookInfo;
 
-    @Bind( R.id.toolbar )
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind( R.id.viewPager )
+    @Bind(R.id.viewPager)
     ViewPager viewPager;
-    @Bind( R.id.viewPagerIndicator )
+    @Bind(R.id.viewPagerIndicator)
     ViewPagerIndicator viewPagerIndicator;
-    @Bind( R.id.viewSwitcher )
+    @Bind(R.id.viewSwitcher)
     ViewSwitcher viewSwitcher;
-    @Bind( R.id.buttonAddStation )
+    @Bind(R.id.buttonAddStation)
     View buttonAddStation;
 
     private List<Long> stationIds;
@@ -77,65 +86,67 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     private PageSave pageSave;
 
     @Override
-    protected void onCreate( @Nullable Bundle savedInstanceState ) {
-        super.onCreate( savedInstanceState );
-        pageSave = new PageSave( this );
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        pageSave = new PageSave(this);
 
-        SmokSmogApplication.get( this ).getAppComponent()
-                .plus( new ActivityModule( this ) )
-                .inject( this );
+        SmokSmogApplication.get(this).getAppComponent()
+                .plus(new ActivityModule(this))
+                .inject(this);
 
-        stationIds = new StationIdList( this );
+        stationIds = new StationIdList(this);
 
-        setContentView( R.layout.activity_start );
-        setSupportActionBar( toolbar );
+        setContentView(R.layout.activity_start);
+        setSupportActionBar(toolbar);
 
-        stationSlideAdapter = new StationSlideAdapter( getFragmentManager(), stationIds );
+        stationSlideAdapter = new StationSlideAdapter(getFragmentManager(), stationIds);
 
-        viewPager.setAdapter( stationSlideAdapter );
-        viewPager.setOffscreenPageLimit( PAGE_LIMIT );
-        viewPager.addOnPageChangeListener( this );
-        viewPager.addOnPageChangeListener( viewPagerIndicator );
-        viewPager.setCurrentItem( pageSave.restorePage() );
+        viewPager.setAdapter(stationSlideAdapter);
+        viewPager.setOffscreenPageLimit(PAGE_LIMIT);
+        viewPager.addOnPageChangeListener(this);
+        viewPager.addOnPageChangeListener(viewPagerIndicator);
+        viewPager.setCurrentItem(pageSave.restorePage());
 
-        viewPagerIndicator.setStationIds( stationIds );
+        viewPagerIndicator.setStationIds(stationIds);
 
         correctTitleMargin();
 
         // Listen for info dialog calls
         rxBus.toObserverable()
-                .compose( bindUntilEvent( ActivityEvent.DESTROY ) )
-                .observeOn( AndroidSchedulers.mainThread() )
-                .subscribe( event -> {
-                    if ( event instanceof InfoDialog.Event ) {
-                        InfoDialog.show( getFragmentManager(), ( InfoDialog.Event ) event );
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    if (event instanceof InfoDialog.Event) {
+                        InfoDialog.show(getFragmentManager(), (InfoDialog.Event) event);
                     }
-                } );
+                }, eventBusError);
 
         // Listen for title updates
         rxBus.toObserverable()
-                .compose( bindUntilEvent( ActivityEvent.DESTROY ) )
-                .observeOn( AndroidSchedulers.mainThread() )
-                .subscribe( event -> {
-                    if ( event instanceof TitleUpdateEvent ) {
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    if (event instanceof TitleUpdateEvent) {
                         updateTitleWithStation();
                     }
-                } );
+                }, eventBusError);
 
-        if ( savedInstanceState != null ) {
-            lastPageSelected = savedInstanceState.getInt( KEY_LAST_PAGE, 0 );
-            viewPager.setCurrentItem( lastPageSelected, true );
+        if (savedInstanceState != null) {
+            lastPageSelected = savedInstanceState.getInt(KEY_LAST_PAGE, 0);
+            viewPager.setCurrentItem(lastPageSelected, true);
         }
+
+        onceFacebookInfo.doIt();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        viewPagerIndicator.setStationIds( stationIds );
+        viewPagerIndicator.setStationIds(stationIds);
         stationSlideAdapter.notifyDataSetChanged();
         updateTitleWithStation();
 
-        if ( stationIds.isEmpty() ) {
+        if (stationIds.isEmpty()) {
             visibleNoStations();
         } else {
             visibleStations();
@@ -146,77 +157,77 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
      * Because it's not aligned with main layout margin
      */
     private void correctTitleMargin() {
-        toolbar.setContentInsetsAbsolute( 16, 0 );
+        toolbar.setContentInsetsAbsolute(16, 0);
     }
 
     @Override
-    public boolean onCreateOptionsMenu( Menu menu ) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate( R.menu.main, menu );
+        inflater.inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected( MenuItem item ) {
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch ( item.getItemId() ) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
-                SettingsActivity.start( this );
+                SettingsActivity.start(this);
                 break;
             case R.id.action_order:
-                OrderActivity.start( this );
+                OrderActivity.start(this);
                 break;
             case R.id.action_about:
-                rxBus.send( new InfoDialog.Event<>( R.layout.dialog_info_about, AboutDialog.class ) );
+                rxBus.send(new InfoDialog.Event<>(AboutDialog.class));
                 break;
         }
 
-        return super.onOptionsItemSelected( item );
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    protected void onSaveInstanceState( Bundle outState ) {
-        outState.putInt( KEY_LAST_PAGE, lastPageSelected );
-        super.onSaveInstanceState( outState );
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(KEY_LAST_PAGE, lastPageSelected);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
-    public void onPageScrollStateChanged( int state ) {
+    public void onPageScrollStateChanged(int state) {
         // do nothing
     }
 
     @Override
-    public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ) {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         // do nothing
     }
 
     @Override
-    public void onPageSelected( int position ) {
-        updateTitleWithStation( position );
+    public void onPageSelected(int position) {
+        updateTitleWithStation(position);
         lastPageSelected = position;
-        pageSave.savePage( position );
+        pageSave.savePage(position);
     }
 
-    @OnClick( R.id.buttonAddStation )
+    @OnClick(R.id.buttonAddStation)
     void buttonClickAddStation() {
-        OrderActivity.start( this, true );
+        OrderActivity.start(this, true);
     }
 
     protected void updateTitleWithStation() {
-        if ( stationSlideAdapter.getCount() > 0 ) {
-            updateTitleWithStation( viewPager.getCurrentItem() );
+        if (stationSlideAdapter.getCount() > 0) {
+            updateTitleWithStation(viewPager.getCurrentItem());
         }
     }
 
-    protected void updateTitleWithStation( int position ) {
-        WeakReference<StationFragment> reference = stationSlideAdapter.getFragmentReference( position );
-        if ( reference != null ) {
+    protected void updateTitleWithStation(int position) {
+        WeakReference<StationFragment> reference = stationSlideAdapter.getFragmentReference(position);
+        if (reference != null) {
             StationFragment stationFragment = reference.get();
-            if ( stationFragment != null ) {
+            if (stationFragment != null) {
                 String title = stationFragment.getTitle();
-                if ( title != null ) {
-                    toolbar.setTitle( title );
-                    toolbar.setSubtitle( stationFragment.getSubtitle() );
+                if (title != null) {
+                    toolbar.setTitle(title);
+                    toolbar.setSubtitle(stationFragment.getSubtitle());
                     changeSubtitleTypeface();
                 }
             }
@@ -224,15 +235,15 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     }
 
     private void visibleStations() {
-        viewSwitcher.setDisplayedChild( 0 );
+        viewSwitcher.setDisplayedChild(0);
     }
 
     private void visibleNoStations() {
-        if ( getSupportActionBar() != null ) {
-            getSupportActionBar().setTitle( R.string.app_name );
-            getSupportActionBar().setSubtitle( null );
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.app_name);
+            getSupportActionBar().setSubtitle(null);
         }
-        viewSwitcher.setDisplayedChild( 1 );
+        viewSwitcher.setDisplayedChild(1);
     }
 
     /**
@@ -242,11 +253,11 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
      * TODO fix with Calligraphy in future
      */
     private void changeSubtitleTypeface() {
-        for ( int i = 1; i < toolbar.getChildCount(); i++ ) {
-            View view = toolbar.getChildAt( i );
-            if ( view instanceof TextView ) {
-                TextView textView = ( TextView ) view;
-                textView.setTypeface( typefaceProvider.getDefault() );
+        for (int i = 1; i < toolbar.getChildCount(); i++) {
+            View view = toolbar.getChildAt(i);
+            if (view instanceof TextView) {
+                TextView textView = (TextView) view;
+                textView.setTypeface(typefaceProvider.getDefault());
             }
         }
     }

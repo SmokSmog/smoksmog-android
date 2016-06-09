@@ -45,6 +45,11 @@ public class AboutDialog extends InfoDialog {
     }
 
     @Override
+    protected int getLayoutId() {
+        return R.layout.dialog_info_about;
+    }
+
+    @Override
     protected void initView( View view ) {
         super.initView( view );
         ButterKnife.bind( this, view );
