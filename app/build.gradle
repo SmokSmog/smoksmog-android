@@ -20,8 +20,8 @@ android {
         applicationId "pl.malopolska.smoksmog"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 194000
-        versionName "1.9.4"
+        versionCode 195000
+        versionName "1.9.5"
 
         // For some reason Travis is working only with multi dex
         if (Boolean.parseBoolean(System.getenv("TRAVIS"))) {
@@ -30,6 +30,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    //noinspection GroovyAssignabilityCheck
     signingConfigs {
 
         debug {
@@ -44,6 +45,7 @@ android {
         }
     }
 
+    //noinspection GroovyAssignabilityCheck
     buildTypes {
 
         debug {

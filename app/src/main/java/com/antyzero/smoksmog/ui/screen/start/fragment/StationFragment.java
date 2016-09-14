@@ -20,10 +20,13 @@ import com.antyzero.smoksmog.eventbus.RxBus;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import smoksmog.logger.Logger;
+
+import com.antyzero.smoksmog.fabric.StationShowEvent;
 import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.antyzero.smoksmog.ui.screen.start.StationAdapter;
 import com.antyzero.smoksmog.ui.screen.start.TitleProvider;
+import com.crashlytics.android.answers.Answers;
 import com.trello.rxlifecycle.FragmentEvent;
 
 import java.util.ArrayList;
@@ -68,6 +71,8 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     Logger logger;
     @Inject
     ErrorReporter errorReporter;
+    @Inject
+    Answers answers;
     //</editor-fold>
 
     private List<Station> stationContainer = new ArrayList<>();
@@ -172,6 +177,8 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
         recyclerView.getAdapter().notifyDataSetChanged();
 
         rxBus.send( new StartActivity.TitleUpdateEvent() );
+
+        answers.logContentView(new StationShowEvent(station));
 
         showData();
     }
