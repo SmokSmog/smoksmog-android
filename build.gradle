@@ -12,14 +12,6 @@ buildscript {
     dependencies {
 
         classpath 'com.android.tools.build:gradle:2.1.3'
-
-        // This is broken when using gradle build tools 2.0.0, work around is to use
-        // SDK manager from jitpack build from commit
-        // more here: http://stackoverflow.com/questions/33881984/errorcause-com-android-sdklib-repository-fullrevision
-        // old classpath
-        // classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'com.github.JakeWharton:sdk-manager-plugin:220bf7a88a7072df3ed16dc8466fb144f2817070'
-
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
@@ -41,7 +33,7 @@ ext {
     libVersions = [
             android: [
                     appCompat: '24.2.0',
-                    wearable : '1.3.0'],
+                    wearable : '1.0.0'],
             google : [
                     dagger      : '2.7',
                     playServices: '9.4.0'],

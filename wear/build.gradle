@@ -1,4 +1,3 @@
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
@@ -50,8 +49,8 @@ dependencies {
     compile "com.google.dagger:dagger:${libVersions.google.dagger}"
 
     // Android wear specific libraries
-    compile "com.google.android.support:wearable:${libVersions.android.wearable}"
-    compile "com.google.android.gms:play-services-wearable:${libVersions.android.playServices}"
+    compile "com.google.android.support:wearable:1.0.0"
+    compile "com.google.android.gms:play-services-wearable:9.4.0"
 }
 
 retrolambda {

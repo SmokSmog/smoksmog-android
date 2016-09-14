@@ -3,7 +3,6 @@ package com.antyzero.smoksmog.screen;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.rules.RxSchedulerTestRule;
@@ -24,7 +23,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class StartActivityTest {
 
     private final ActivityTestRule<StartActivity> activityTestRule = new MockedNetworkActivityTestRule<>(StartActivity.class, false, true);
@@ -39,7 +37,7 @@ public class StartActivityTest {
         spoonRule.screenshot("Creation");
     }
 
-    @Test
+    // @Test
     public void addStation() {
 
         // Given
