@@ -4,7 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "23.0.2"
 
     compileOptions {
@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId "com.antyzero.smoksmog.wear"
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -43,15 +43,15 @@ android {
 dependencies {
     compile project(':android')
 
-    apt 'com.google.dagger:dagger-compiler:2.0.2'
+    apt "com.google.dagger:dagger-compiler:${libVersions.google.dagger}"
 
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
-    compile 'com.google.dagger:dagger:2.0.2'
+    compile "com.google.dagger:dagger:${libVersions.google.dagger}"
 
     // Android wear specific libraries
-    compile 'com.google.android.support:wearable:1.3.0'
-    compile 'com.google.android.gms:play-services-wearable:8.4.0'
+    compile "com.google.android.support:wearable:${libVersions.android.wearable}"
+    compile "com.google.android.gms:play-services-wearable:${libVersions.android.playServices}"
 }
 
 retrolambda {
