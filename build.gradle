@@ -32,7 +32,7 @@ ext {
 
     libVersions = [
             android: [
-                    appCompat: '24.2.0',
+                    appCompat: '24.2.1',
                     wearable : '1.0.0'],
             google : [
                     dagger      : '2.7',

@@ -49,9 +49,7 @@ public class FacebookDialog extends InfoDialog {
         super.initView(view);
         ButterKnife.bind(this,view);
         SmokSmogApplication.get(view.getContext()).getAppComponent().inject(this);
-        imageView.setOnClickListener(v -> {
-            takeMeToFacebook();
-        });
+        imageView.setOnClickListener(v -> takeMeToFacebook());
     }
 
     private void takeMeToFacebook() {
