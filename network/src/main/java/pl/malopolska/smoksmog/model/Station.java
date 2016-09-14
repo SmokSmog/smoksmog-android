@@ -7,7 +7,6 @@ import java.util.List;
 
 import lombok.Getter;
 
-@Getter
 public class Station {
 
     private long id;
@@ -17,6 +16,26 @@ public class Station {
     @SerializedName( "lat" )
     private float latitude;
     private final List<Particulate> particulates = new ArrayList<>();
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public List<Particulate> getParticulates() {
+        return particulates;
+    }
 
     @Override
     public String toString() {

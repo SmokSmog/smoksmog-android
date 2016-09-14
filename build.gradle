@@ -42,6 +42,10 @@ ext {
             square : [
                     spoon: '1.7.0']
     ]
+
+    toolsVersions = [
+            buildToolsVersion: '23.0.2'
+    ]
 }
 
 allprojects {
