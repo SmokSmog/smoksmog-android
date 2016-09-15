@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
@@ -84,6 +85,9 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 //noinspection GroovyAssignabilityCheck
@@ -136,6 +140,7 @@ dependencies {
     }
 
     androidTestCompile 'org.apache.directory.studio:org.apache.commons.io:2.4'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 retrolambda {
@@ -155,4 +160,7 @@ spoon {
 play {
     jsonFile = new File("" + System.getenv("PLAY_JSON"))
     track = 'beta'
+}
+repositories {
+    mavenCentral()
 }

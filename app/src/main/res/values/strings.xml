@@ -56,4 +56,6 @@
 
     <string name="cs_about_air_quality_index">What is Air Quality Index ?</string>
     <string name="cs_measurement_history_graphs">Measurement history graphs</string>
+    <string name="action_facebook">Facebook</string>
+    <string name="action_beta">Beta</string>
 </resources>
