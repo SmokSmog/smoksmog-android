@@ -16,7 +16,7 @@ public class SmokSmogTest {
         Locale locale = Locale.ENGLISH;
 
         // when
-        String result = SmokSmog.createEndpoint( endpointUrl, locale );
+        String result = SmokSmog.Companion.createEndpoint( endpointUrl, locale );
 
         // then
         assertThat( result ).isEqualTo( "http://api.smoksmog.jkostrz.name/en" );
@@ -30,7 +30,7 @@ public class SmokSmogTest {
         Locale locale = Locale.FRANCE;
 
         // when
-        SmokSmog.createEndpoint( endpointUrl, locale );
+        SmokSmog.Companion.createEndpoint( endpointUrl, locale );
 
         // then
         // exception

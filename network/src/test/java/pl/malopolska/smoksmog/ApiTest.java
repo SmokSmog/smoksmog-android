@@ -31,7 +31,7 @@ public class ApiTest {
         server = new MockWebServer();
         server.start();
 
-        final SmokSmog smokSmog = new SmokSmog.Builder( server.url( "" ).toString(), Locale.ENGLISH ).build();
+        final SmokSmog smokSmog = new SmokSmog( server.url( "" ).toString(), Locale.ENGLISH, null, false );
 
         endpoint = smokSmog.getEndpoint();
         api = smokSmog.getApi();
@@ -52,7 +52,7 @@ public class ApiTest {
         assertThat( station.getId() ).isEqualTo( 8 );
         assertThat( station.getName() ).isEqualTo( "Olkusz" );
         assertThat( station.getLatitude() ).isEqualTo( 50.27756900f );
-        assertThat( station.getParticulates() ).isEmpty();
+        assertThat( station.getParticulates() ).isNullOrEmpty();
     }
 
     @Test

@@ -1,31 +1,12 @@
 apply plugin: 'java'
-apply plugin: 'idea'
 apply plugin: 'kotlin'
 
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 
-/**
- * Makes Lombok work with AndroidStudio
- */
-
-configurations {
-    provided
-    compile.extendsFrom provided
-}
-
 //noinspection GroovyAssignabilityCheck
 sourceSets {
-    main {
-        compileClasspath += [configurations.provided]
-        java.srcDirs += 'src/main/kotlin'
-    }
-}
-
-idea {
-    module {
-        scopes.PROVIDED.plus += [configurations.provided]
-    }
+    main.java.srcDirs += 'src/main/kotlin'
 }
 
 dependencies {
@@ -36,8 +17,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.0.14'
     compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.2.0'
     compile 'joda-time:joda-time:2.8.2'
-
-    provided 'org.projectlombok:lombok:1.16.6'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:2.1.0'
