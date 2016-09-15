@@ -2,6 +2,10 @@
 <resources>
     <string name="app_name" translatable="false">SmokSmog</string>
 
+    <!-- Some non-translatable strings -->
+    <string name="action_facebook" translatable="false">Facebook</string>
+    <string name="action_beta" translatable="false">Beta</string>
+
     <string name="hours_24" translatable="false">24h</string>
     <string name="hours_1" translatable="false">1h</string>
 
