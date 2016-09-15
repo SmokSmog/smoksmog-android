@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog;
 
+import com.antyzero.smoksmog.database.DatabaseModule;
 import com.antyzero.smoksmog.eventbus.EventBusModule;
 import com.antyzero.smoksmog.fabric.FabricModule;
 import com.antyzero.smoksmog.logger.LoggerModule;
@@ -24,6 +25,7 @@ import dagger.Component;
 @Component(
         modules = {
                 ApplicationModule.class,
+                DatabaseModule.class,
                 LoggerModule.class,
                 NetworkModule.class,
                 FabricModule.class,
