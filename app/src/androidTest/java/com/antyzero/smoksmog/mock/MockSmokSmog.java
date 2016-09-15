@@ -10,7 +10,7 @@ public class MockSmokSmog extends SmokSmog {
 
     private final MockApi mockApi;
 
-ó    public MockSmokSmog() {
+    public MockSmokSmog() {
         super();
         mockApi = new MockApi(getGson());
     }
