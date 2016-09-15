@@ -15,8 +15,8 @@ import java.util.*
 open class SmokSmog(
         val endpoint: String = "http://api.smoksmog.jkostrz.name/",
         locale: Locale = Locale.getDefault(),
-        val client: Client? = OkClient(),
-        val debug: Boolean = false) {
+        client: Client? = OkClient(),
+        debug: Boolean = false) {
 
     open val api: Api
     val gson: Gson
