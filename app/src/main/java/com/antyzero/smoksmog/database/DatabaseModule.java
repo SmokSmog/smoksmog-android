@@ -18,7 +18,7 @@ import smoksmog.logger.Logger;
 @Singleton
 @Module
 public class DatabaseModule {
-    
+
     @Provides
     @Singleton
     public SQLiteOpenHelper provideSqLiteOpenHelper(Context context) {
@@ -41,4 +41,9 @@ public class DatabaseModule {
         return sqlBrite.wrapDatabaseHelper(sqLiteOpenHelper, Schedulers.io());
     }
 
+    @Provides
+    @Singleton
+    public SmokSmokDb provideSmokSmokDb(BriteDatabase briteDatabase){
+        return new SmokSmokDb(briteDatabase);
+    }
 }

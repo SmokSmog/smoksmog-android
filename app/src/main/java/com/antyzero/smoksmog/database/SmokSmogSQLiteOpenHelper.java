@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.antyzero.smoksmog.database.model.StationDbModel;
+import com.antyzero.smoksmog.database.model.ListItemDb;
 
 public class SmokSmogSQLiteOpenHelper extends SQLiteOpenHelper {
 
@@ -16,7 +16,15 @@ public class SmokSmogSQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(StationDbModel.CREATE_TABLE);
+        sqLiteDatabase.execSQL(ListItemDb.CREATE_TABLE);
+
+        // Initial data
+
+        sqLiteDatabase.insert(ListItemDb.TABLE_NAME, null, ListItemDb.FACTORY.marshal()
+                ._id(0)
+                .position(0)
+                .visible(false)
+                .asContentValues());
     }
 
     @Override

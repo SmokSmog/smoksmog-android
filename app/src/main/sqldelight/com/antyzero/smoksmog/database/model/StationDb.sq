@@ -1,4 +1,0 @@
-CREATE TABLE station (
-  _id INTEGER NOT NULL PRIMARY KEY,
-  position INTEGER NOT NULL
-);
