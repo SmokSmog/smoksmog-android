@@ -9,7 +9,7 @@ apply plugin: 'com.squareup.sqldelight'
 
 android {
 
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "24.0.3"
     compileSdkVersion 24
 
     compileOptions {

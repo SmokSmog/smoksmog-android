@@ -25,7 +25,7 @@ android:
     - tools
     - extra-google-m2repository
     - extra-android-m2repository
-    - build-tools-23.0.3
+    - build-tools-24.0.3
 
 script:
   - ./gradlew clean check assemble --stacktrace
