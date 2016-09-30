@@ -8,7 +8,7 @@ import com.antyzero.smoksmog.database.model.ListItemDb;
 
 public class SmokSmogSQLiteOpenHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "SmokSmog";
+    public static final String DB_NAME = "SmokSmog";
 
     public SmokSmogSQLiteOpenHelper(Context context) {
         super(context, DB_NAME, null, 1);

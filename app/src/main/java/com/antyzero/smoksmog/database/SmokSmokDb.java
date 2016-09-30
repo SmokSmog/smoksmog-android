@@ -21,9 +21,9 @@ public class SmokSmokDb {
     }
 
     public Observable<ListItemDb> getList() {
-        return briteDatabase.createQuery(ListItemDb.TABLE_NAME, "SELECT * FROM " + ListItemDb.TABLE_NAME)
-                .limit(1)
-                .flatMap(query -> query.asRows(ListItemDb.MAPPER::map));
+        Cursor cursor = briteDatabase.query("SELECT * FROM " + ListItemDb.TABLE_NAME);
+        return Observable.just(cursor)
+                .flatMap(cursor1 -> asRows(cursor1, ListItemDb.MAPPER::map));
     }
 
     public void addToList(Station station) {
@@ -48,19 +48,33 @@ public class SmokSmokDb {
                         transaction::end);
     }
 
+    public boolean removeFromList(long itemId) {
+        BriteDatabase.Transaction transaction = briteDatabase.newTransaction();
+        boolean result = false;
+        try {
+            result = briteDatabase.delete(ListItemDb.TABLE_NAME, ListItemDb._ID + "=" + itemId) > 0;
+            cleanUpListPositions();
+            transaction.markSuccessful();
+        } catch (Exception e) {
+            // do nothing
+        } finally {
+            transaction.end();
+        }
+        return result;
+    }
+
     /**
      * Should check if positions numbers are continuous
      */
     private void cleanUpListPositions() {
-        Cursor cursor = briteDatabase.query("SELECT * FROM " + ListItemDb.TABLE_NAME);
-        Observable.just(cursor)
-                .flatMap(cursor1 -> asRows(cursor1, ListItemDb.MAPPER::map))
+        getList()
                 .reduce((first, second) -> {
                     if (second.position() - first.position() != 1) {
                         ContentValues contentValues = ListItemDb.FACTORY.marshal(second)
                                 .position(first.position() + 1) // next position, relative to previous element
                                 .asContentValues();
                         briteDatabase.update(ListItemDb.TABLE_NAME, contentValues, ListItemDb._ID + "=" + second._id());
+                        second = ListItemDb.FACTORY.creator.create(second._id(), first.position() + 1, second.visible());
                     }
                     return second;
                 })

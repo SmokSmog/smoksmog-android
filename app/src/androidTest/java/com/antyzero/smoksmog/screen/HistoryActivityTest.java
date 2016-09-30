@@ -18,7 +18,6 @@ import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class HistoryActivityTest {
 
     private final ActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule(true, false);

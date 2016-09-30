@@ -16,8 +16,8 @@ android {
         applicationId "com.antyzero.smoksmog.wear"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode appVersionCode as Integer
+        versionName appVersionName
     }
 
     buildTypes {
