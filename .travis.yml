@@ -30,7 +30,6 @@ script:
   - ./gradlew clean check assemble --stacktrace
 
 before_script:
-  - which android
   - mkdir "$ANDROID_HOME/licenses" || true
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
@@ -39,3 +38,6 @@ after_success:
   - ./gradlew jacocoFullReport
   - pip install --user codecov
   - codecov
+
+after_failure:
+  - cat /home/travis/build/SmokSmog/smoksmog-android/android/build/outputs/lint-results-debug.xml
