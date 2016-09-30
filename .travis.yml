@@ -6,6 +6,7 @@ env:
     - JAVA7_HOME=/usr/lib/jvm/java-7-oracle
     - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
     - JAVA_HOME=$JAVA7_HOME
+    - ANDROID_HOME=/usr/local/android-sdk
   matrix:
     - ANDROID_TARGET=android-18 ANDROID_ABI=armeabi-v7a
 
@@ -30,9 +31,9 @@ script:
 
 before_script:
   - which android
-  - mkdir "$ANDROID_SDK/licenses" || true
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_SDK/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_SDK/licenses/android-sdk-preview-license"
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
 after_success:
   - ./gradlew jacocoFullReport
