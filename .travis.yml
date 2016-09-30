@@ -28,7 +28,7 @@ android:
     - build-tools-24.0.3
 
 script:
-  - ./gradlew clean check assemble --stacktrace
+  - ./gradlew check assemble --stacktrace
 
 before_script:
   - mkdir "$ANDROID_HOME/licenses" || true
