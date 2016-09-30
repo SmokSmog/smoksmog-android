@@ -20,7 +20,7 @@ jdk:
 
 android:
   components:
-    - android-23
+    - android-24
     - platform-tools
     - tools
     - extra-google-m2repository
