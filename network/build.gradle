@@ -10,10 +10,13 @@ sourceSets {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile("com.squareup.retrofit2:retrofit:${libVersions.square.retrofit}") {
+        exclude module: 'okhttp'
+    }
+    compile "com.squareup.retrofit2:converter-gson:${libVersions.square.retrofit}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${libVersions.square.retrofit}"
 
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile "com.squareup.okhttp:okhttp:${libVersions.square.okhttp}"
+    compile "com.squareup.okhttp3:okhttp:${libVersions.square.okhttp}"
     compile "io.reactivex:rxjava:${libVersions.rx.java}"
     compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.2.0'
     compile "joda-time:joda-time:${libVersions.jodaTime}"
@@ -21,7 +24,7 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:2.1.0'
-    testCompile "com.squareup.okhttp:mockwebserver:${libVersions.square.okhttp}"
+    testCompile "com.squareup.okhttp3:mockwebserver:${libVersions.square.okhttp}"
 }
 
 /**

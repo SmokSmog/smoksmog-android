@@ -2,8 +2,8 @@ package pl.malopolska.smoksmog
 
 import pl.malopolska.smoksmog.model.Description
 import pl.malopolska.smoksmog.model.Station
-import retrofit.http.GET
-import retrofit.http.Path
+import retrofit2.http.GET
+import retrofit2.http.Path
 import rx.Observable
 
 interface Api {

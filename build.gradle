@@ -43,11 +43,12 @@ ext {
             jodaTime: '2.9.4',
             junit   : '4.12',
             once    : '1.2.1',
-            rx : [
+            rx      : [
                     java: '1.2.0'],
             square  : [
-                    spoon : '1.7.0',
-                    okhttp: '2.7.5']
+                    spoon   : '1.7.0',
+                    okhttp  : '3.3.1',
+                    retrofit: '2.1.0']
     ]
 }
 

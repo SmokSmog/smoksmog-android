@@ -19,7 +19,7 @@ public class SmokSmogTest {
         String result = SmokSmog.Companion.createEndpoint(endpointUrl, locale);
 
         // then
-        assertThat(result).isEqualTo("http://api.smoksmog.jkostrz.name/" + locale.getLanguage());
+        assertThat(result).isEqualTo("http://api.smoksmog.jkostrz.name/" + locale.getLanguage() + "/");
     }
 
     @Test(expected = IllegalArgumentException.class)
