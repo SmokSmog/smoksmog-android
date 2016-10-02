@@ -36,10 +36,10 @@ ext {
     libVersions = [
             android : [
                     appCompat: '24.2.1',
-                    wearable : '1.0.0'],
+                    wearable : '1.4.0'],
             google  : [
                     dagger      : '2.7',
-                    playServices: '9.4.0'],
+                    playServices: '9.6.1'],
             jodaTime: '2.9.4',
             junit   : '4.12',
             once    : '1.2.1',

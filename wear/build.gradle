@@ -53,8 +53,8 @@ dependencies {
     compile "com.google.dagger:dagger:${libVersions.google.dagger}"
 
     // Android wear specific libraries
-    compile "com.google.android.support:wearable:1.0.0"
-    compile "com.google.android.gms:play-services-wearable:9.4.0"
+    compile "com.google.android.support:wearable:${libVersions.android.wearable}"
+    compile "com.google.android.gms:play-services-wearable:${libVersions.google.playServices}"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
