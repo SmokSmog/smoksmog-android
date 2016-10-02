@@ -34,16 +34,20 @@ ext {
     ignoreFailures = project.hasProperty('ignoreFailures') ? ignoreFailures : false
 
     libVersions = [
-            android: [
+            android : [
                     appCompat: '24.2.1',
                     wearable : '1.0.0'],
-            google : [
+            google  : [
                     dagger      : '2.7',
                     playServices: '9.4.0'],
-            junit  : '4.12',
-            once   : '1.2.1',
-            square : [
-                    spoon: '1.7.0']
+            jodaTime: '2.9.4',
+            junit   : '4.12',
+            once    : '1.2.1',
+            rx : [
+                    java: '1.2.0'],
+            square  : [
+                    spoon : '1.7.0',
+                    okhttp: '2.7.5']
     ]
 }
 
