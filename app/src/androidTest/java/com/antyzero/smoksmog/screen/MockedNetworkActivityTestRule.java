@@ -11,7 +11,6 @@ import com.antyzero.smoksmog.DaggerApplicationComponent;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.mock.MockNetworkModule;
 import com.antyzero.smoksmog.network.NetworkModule;
-import com.antyzero.smoksmog.utils.once.OnceModule;
 
 /**
  * ActivityTestRule with mocked network communication for faster and more reliable testing
@@ -56,10 +55,9 @@ public class MockedNetworkActivityTestRule<T extends Activity> extends ActivityT
         super.afterActivityFinished();
     }
 
-    private ApplicationComponent buildApplicationComponent(Application application, NetworkModule networkModule){
+    private ApplicationComponent buildApplicationComponent(Application application, NetworkModule networkModule) {
         return DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(application))
-                .onceModule(new OnceModule(application))
                 .networkModule(networkModule)
                 .build();
     }
