@@ -27,7 +27,6 @@ import com.antyzero.smoksmog.ui.screen.start.fragment.StationFragment;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 import com.antyzero.smoksmog.ui.typeface.TypefaceProvider;
 import com.antyzero.smoksmog.ui.view.ViewPagerIndicator;
-import com.antyzero.smoksmog.utils.once.OnceFacebookInfo;
 import com.trello.rxlifecycle.ActivityEvent;
 
 import java.lang.ref.WeakReference;
@@ -66,8 +65,6 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     @Inject
     @Named(EventBusModule.EVENT_BUS_ERROR)
     Action1<Throwable> eventBusError;
-    @Inject
-    OnceFacebookInfo onceFacebookInfo;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -135,8 +132,6 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
             lastPageSelected = savedInstanceState.getInt(KEY_LAST_PAGE, 0);
             viewPager.setCurrentItem(lastPageSelected, true);
         }
-
-        onceFacebookInfo.doIt();
     }
 
     @Override

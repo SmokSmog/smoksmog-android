@@ -6,7 +6,6 @@ import android.support.annotation.VisibleForTesting;
 
 import com.antyzero.smoksmog.database.SmokSmokDb;
 import com.antyzero.smoksmog.database.model.ListItemDb;
-import com.antyzero.smoksmog.utils.once.OnceModule;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 
@@ -34,7 +33,6 @@ public class SmokSmogApplication extends Application {
                 .build(), new Answers());
 
         applicationComponent = DaggerApplicationComponent.builder()
-                .onceModule(new OnceModule(this))
                 .applicationModule(new ApplicationModule(this))
                 .build();
 
@@ -52,7 +50,6 @@ public class SmokSmogApplication extends Application {
         smokSmokDb.addToList(ListItemDb.FACTORY.marshal()._id(1));
         smokSmokDb.addToList(ListItemDb.FACTORY.marshal()._id(2));
         smokSmokDb.addToList(ListItemDb.FACTORY.marshal()._id(3));
-
 
     }
 
