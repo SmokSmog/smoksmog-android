@@ -195,17 +195,15 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     }
 
     private void goToFacebookSite() {
-
         String facebookUrl = "https://fb.com/SmokSmog";
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl));
         try {
             if (getPackageManager().getPackageInfo("com.facebook.katana", 0) != null) {
-                intent.setData(Uri.parse("fb://facewebmodal/f?href=" + facebookUrl));
+                intent.setData(Uri.parse("fb://page/714218922054053"));
             }
         } catch (PackageManager.NameNotFoundException e) {
             // do nothing
         }
-
         startActivity(intent);
     }
 
