@@ -1,5 +1,8 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -172,12 +175,42 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
             case R.id.action_order:
                 OrderActivity.start(this);
                 break;
+            case R.id.action_facebook:
+                goToFacebookSite();
+                break;
+            case R.id.action_beta:
+                goToBetaLogin();
+                break;
             case R.id.action_about:
                 rxBus.send(new InfoDialog.Event<>(AboutDialog.class));
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goToBetaLogin() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/apps/testing/pl.malopolska.smoksmog")));
+    }
+
+    private void goToFacebookSite() {
+
+        String facebookUrl = "https://www.facebook.com/SmokSmog";
+        String facebookPageId = "SmokSmog";
+        String url = facebookUrl;
+
+        try {
+            int versionCode = getPackageManager().getPackageInfo("com.facebook.katana", 0).versionCode;
+            if (versionCode >= 3002850) {
+                url = "fb://facewebmodal/f?href=" + facebookUrl;
+            } else {
+                url = "fb://page/" + facebookPageId;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            // do nothing
+        }
+
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
     @Override
