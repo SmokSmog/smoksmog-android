@@ -67,10 +67,6 @@ android {
         // StringFormatInvalid - for some reason strings contain version string thats invalid
         disable 'InvalidPackage', 'StringFormatInvalid'
 
-        if (Boolean.parseBoolean(System.getenv("TRAVIS"))) {
-            disable.add('NewApi') // Strange errors on Travis
-        }
-
         abortOnError !rootProject.ext.ignoreFailures
     }
 
