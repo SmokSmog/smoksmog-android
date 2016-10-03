@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.antyzero.smoksmog"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.antyzero.smoksmog">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".SmokSmogApplication"
@@ -11,14 +11,15 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:supportsRtl="true"
         android:theme="@style/DragonTheme.NoActionBar">
 
         <activity
             android:name=".ui.screen.start.StartActivity"
             android:launchMode="singleInstance">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -27,7 +28,7 @@
             android:parentActivityName=".ui.screen.start.StartActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.screen.start.StartActivity"/>
+                android:value=".ui.screen.start.StartActivity" />
         </activity>
 
         <activity
@@ -37,7 +38,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.screen.start.StartActivity"/>
+                android:value=".ui.screen.start.StartActivity" />
         </activity>
 
         <activity
@@ -46,12 +47,12 @@
             android:parentActivityName=".ui.screen.start.StartActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.screen.start.StartActivity"/>
+                android:value=".ui.screen.start.StartActivity" />
         </activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8"/>
+            android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8" />
     </application>
 
 </manifest>

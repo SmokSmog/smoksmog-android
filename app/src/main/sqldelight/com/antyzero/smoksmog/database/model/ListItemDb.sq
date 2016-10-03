@@ -1,0 +1,15 @@
+CREATE TABLE list_item (
+  _id INTEGER NOT NULL PRIMARY KEY,
+  position INTEGER NOT NULL,
+  visible INTEGER AS Boolean DEFAULT 1 NOT NULL
+);
+
+select_by_id:
+SELECT *
+FROM list_item
+WHERE _id = ?;
+
+select_by_position:
+SELECT *
+FROM list_item
+WHERE position = ?;

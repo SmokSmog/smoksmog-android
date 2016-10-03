@@ -19,7 +19,7 @@
         android:src="@drawable/smoksmog"
         android:visibility="invisible"
         tools:visibility="visible"
-        tools:ignore="RtlHardcoded"
+        tools:ignore="RtlHardcoded,ContentDescription"
         tools:layout_marginBottom="@dimen/dragon_margin_bottom_default"/>
 
 </RelativeLayout>

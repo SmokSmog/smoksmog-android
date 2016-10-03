@@ -13,8 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import pl.malopolska.smoksmog.model.Station;
-
-import static pl.malopolska.smoksmog.utils.StationUtils.convertStationsToIdsList;
+import pl.malopolska.smoksmog.utils.StationUtils;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderItemViewHolder> implements ItemTouchHelperAdapter {
 
@@ -22,28 +21,28 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderItemViewHolder> impl
     private final OnStartDragListener onStartDragListener;
     private final SettingsHelper settingsHelper;
 
-    public OrderAdapter( List<Station> stationList, OnStartDragListener onStartDragListener, SettingsHelper settingsHelper ) {
+    public OrderAdapter(List<Station> stationList, OnStartDragListener onStartDragListener, SettingsHelper settingsHelper) {
         this.stationList = stationList;
         this.onStartDragListener = onStartDragListener;
         this.settingsHelper = settingsHelper;
     }
 
     @Override
-    public OrderItemViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
-        return new OrderItemViewHolder( LayoutInflater.from( parent.getContext() )
-                .inflate( R.layout.item_order, parent, false ) );
+    public OrderItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new OrderItemViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_order, parent, false));
     }
 
     @Override
-    public void onBindViewHolder( OrderItemViewHolder holder, int position ) {
-        holder.bind( stationList.get( position ) );
+    public void onBindViewHolder(OrderItemViewHolder holder, int position) {
+        holder.bind(stationList.get(position));
 
-        holder.getHandleView().setOnTouchListener( ( view, event ) -> {
-            if ( MotionEventCompat.getActionMasked( event ) == MotionEvent.ACTION_DOWN ) {
-                onStartDragListener.onStartDrag( holder );
+        holder.getHandleView().setOnTouchListener((view, event) -> {
+            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                onStartDragListener.onStartDrag(holder);
             }
             return false;
-        } );
+        });
     }
 
     @Override
@@ -52,24 +51,24 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderItemViewHolder> impl
     }
 
     @Override
-    public void onItemMove( int fromPosition, int toPosition ) {
-        if ( fromPosition < toPosition ) {
-            for ( int i = fromPosition; i < toPosition; i++ ) {
-                Collections.swap( stationList, i, i + 1 );
+    public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(stationList, i, i + 1);
             }
         } else {
-            for ( int i = fromPosition; i > toPosition; i-- ) {
-                Collections.swap( stationList, i, i - 1 );
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(stationList, i, i - 1);
             }
         }
-        notifyItemMoved( fromPosition, toPosition );
-        settingsHelper.setStationIdList( convertStationsToIdsList( stationList ) );
+        notifyItemMoved(fromPosition, toPosition);
+        settingsHelper.setStationIdList(StationUtils.Companion.convertStationsToIdsList(stationList));
     }
 
     @Override
-    public void onItemDismiss( int position ) {
-        stationList.remove( position );
-        notifyItemRemoved( position );
-        settingsHelper.setStationIdList( convertStationsToIdsList( stationList ) );
+    public void onItemDismiss(int position) {
+        stationList.remove(position);
+        notifyItemRemoved(position);
+        settingsHelper.setStationIdList(StationUtils.Companion.convertStationsToIdsList(stationList));
     }
 }

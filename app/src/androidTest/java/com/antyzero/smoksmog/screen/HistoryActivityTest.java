@@ -1,28 +1,29 @@
 package com.antyzero.smoksmog.screen;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.annotation.UiThreadTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.antyzero.smoksmog.rules.RxSchedulerTestRule;
+import com.antyzero.smoksmog.rules.SpoonRule;
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
-import com.squareup.spoon.Spoon;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
-@RunWith( AndroidJUnit4.class )
-@LargeTest
+@RunWith(AndroidJUnit4.class)
 public class HistoryActivityTest {
 
+    private final ActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule(true, false);
+    private final SpoonRule spoonRule = new SpoonRule(activityTestRule);
     @Rule
-    public final ActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule( true, false );
+    public final TestRule testRule = RuleChain.outerRule(activityTestRule).around(spoonRule);
     @Rule
     public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
 
@@ -30,12 +31,12 @@ public class HistoryActivityTest {
     public void checkCreation() {
 
         // given
-        Activity activity = activityTestRule.launchActivity( HistoryActivity.fillIntent( new Intent(), 13 ) );
+        activityTestRule.launchActivity(HistoryActivity.fillIntent(new Intent(), 13));
 
         // when
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
         // then
-        Spoon.screenshot( activity, "Created" );
+        spoonRule.screenshot("Created");
     }
 }

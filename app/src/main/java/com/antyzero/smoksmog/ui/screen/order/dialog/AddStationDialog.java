@@ -96,7 +96,7 @@ public class AddStationDialog extends DialogFragment implements StationDialogAda
     @Override
     public Dialog onCreateDialog( Bundle savedInstanceState ) {
         AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
-        View view = getActivity().getLayoutInflater().inflate( R.layout.view_recyclerview, null, false );
+        View view = getActivity().getLayoutInflater().inflate( R.layout.view_recyclerview, recyclerView, false );
 
         ButterKnife.bind( this, view );
         recyclerView.setLayoutManager( new LinearLayoutManager( getActivity(), LinearLayoutManager.VERTICAL, false ) );

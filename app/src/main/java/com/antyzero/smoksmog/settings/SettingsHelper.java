@@ -39,40 +39,40 @@ public class SettingsHelper implements SharedPreferences.OnSharedPreferenceChang
 
     private Percent percentMode;
 
-    public SettingsHelper( Context context, PermissionHelper permissionHelper ) {
+    public SettingsHelper(Context context, PermissionHelper permissionHelper) {
         this.context = context;
 
-        PreferenceManager.setDefaultValues( context, R.xml.settings_general, false );
-        defaultPreferences = PreferenceManager.getDefaultSharedPreferences( context );
-        defaultPreferences.registerOnSharedPreferenceChangeListener( this );
-        stationIds = getList( defaultPreferences, KEY_STATION_ID_LIST, Long.class );
+        PreferenceManager.setDefaultValues(context, R.xml.settings_general, false);
+        defaultPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        defaultPreferences.registerOnSharedPreferenceChangeListener(this);
+        stationIds = getList(defaultPreferences, KEY_STATION_ID_LIST, Long.class);
 
-        keyStationClosest = context.getString( R.string.pref_key_station_closest );
-        keyPercent = context.getString( R.string.pref_key_percent );
+        keyStationClosest = context.getString(R.string.pref_key_station_closest);
+        keyPercent = context.getString(R.string.pref_key_percent);
 
-        if ( !permissionHelper.isGrantedLocationCorsare() ) {
-            setClosesStationVisible( false );
+        if (!permissionHelper.isGrantedLocationCorsare()) {
+            setClosesStationVisible(false);
         }
 
         updatePercentMode();
     }
 
     private void updatePercentMode() {
-        updatePercentMode( defaultPreferences );
+        updatePercentMode(defaultPreferences);
     }
 
-    protected void updatePercentMode( SharedPreferences sharedPreferences ) {
-        String defValue = context.getString( R.string.pref_percent_value_default );
-        String string = sharedPreferences.getString( keyPercent, defValue );
-        percentMode = Percent.find( context, string );
+    protected void updatePercentMode(SharedPreferences sharedPreferences) {
+        String defValue = context.getString(R.string.pref_percent_value_default);
+        String string = sharedPreferences.getString(keyPercent, defValue);
+        percentMode = Percent.find(context, string);
     }
 
     public SharedPreferences getPreferences() {
         return defaultPreferences;
     }
 
-    public void setClosesStationVisible( boolean value ) {
-        defaultPreferences.edit().putBoolean( keyStationClosest, value ).apply();
+    public void setClosesStationVisible(boolean value) {
+        defaultPreferences.edit().putBoolean(keyStationClosest, value).apply();
     }
 
     /**
@@ -82,7 +82,7 @@ public class SettingsHelper implements SharedPreferences.OnSharedPreferenceChang
      */
     public boolean isClosesStationVisible() {
         return defaultPreferences.getBoolean(
-                context.getString( R.string.pref_key_station_closest ), false );
+                context.getString(R.string.pref_key_station_closest), false);
     }
 
     public Percent getPercentMode() {
@@ -103,14 +103,14 @@ public class SettingsHelper implements SharedPreferences.OnSharedPreferenceChang
      *
      * @param longList
      */
-    public void setStationIdList( List<Long> longList ) {
-        List<Long> longsTemp = new ArrayList<>( longList );
+    public void setStationIdList(List<Long> longList) {
+        List<Long> longsTemp = new ArrayList<>(longList);
         stationIds.clear();
-        if ( isClosesStationVisible() ) {
-            stationIds.add( 0L );
+        if (isClosesStationVisible()) {
+            stationIds.add(0L);
         }
-        stationIds.addAll( longsTemp );
-        defaultPreferences.edit().putString( KEY_STATION_ID_LIST, TextUtils.join( SPLIT_CHAR, longList ) ).apply();
+        stationIds.addAll(longsTemp);
+        defaultPreferences.edit().putString(KEY_STATION_ID_LIST, TextUtils.join(SPLIT_CHAR, longList)).apply();
     }
 
     public String getKeyStationClosest() {
@@ -127,22 +127,22 @@ public class SettingsHelper implements SharedPreferences.OnSharedPreferenceChang
      * @return list of requested type
      */
     @NonNull
-    private <T> List<T> getList( SharedPreferences sharedPreferences, String key, Class<T> type ) {
+    private <T> List<T> getList(SharedPreferences sharedPreferences, String key, Class<T> type) {
         List<T> result = new ArrayList<>();
-        String string = sharedPreferences.getString( key, EMPTY_STRING );
-        if ( !TextUtils.isEmpty( string ) && !string.equalsIgnoreCase( EMPTY_STRING ) ) {
-            String[] array = string.split( SPLIT_CHAR );
-            for ( String item : array ) {
-                result.add( ( T ) stringConvert.getConverterFor( type ).convert( item ) );
+        String string = sharedPreferences.getString(key, EMPTY_STRING);
+        if (!TextUtils.isEmpty(string) && !string.equalsIgnoreCase(EMPTY_STRING)) {
+            String[] array = string.split(SPLIT_CHAR);
+            for (String item : array) {
+                result.add((T) stringConvert.getConverterFor(type).convert(item));
             }
         }
         return result;
     }
 
     @Override
-    public void onSharedPreferenceChanged( SharedPreferences sharedPreferences, String key ) {
-        if ( key.equals( keyPercent ) ) {
-            updatePercentMode( sharedPreferences );
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(keyPercent)) {
+            updatePercentMode(sharedPreferences);
         }
     }
 }
