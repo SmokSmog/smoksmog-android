@@ -31,7 +31,7 @@ public class ApiTest {
         server = new MockWebServer();
         server.start();
 
-        final SmokSmog smokSmog = new SmokSmog(server.url("/").toString(), Locale.ENGLISH, false);
+        final SmokSmog smokSmog = new SmokSmog(server.url("/").toString(), Locale.ENGLISH);
 
         endpoint = smokSmog.getEndpoint();
         api = smokSmog.getApi();
