@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.ui.screen.start;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -195,22 +196,17 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
 
     private void goToFacebookSite() {
 
-        String facebookUrl = "https://www.facebook.com/SmokSmog";
-        String facebookPageId = "SmokSmog";
-        String url = facebookUrl;
-
+        String facebookUrl = "https://fb.com/SmokSmog";
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl));
         try {
-            int versionCode = getPackageManager().getPackageInfo("com.facebook.katana", 0).versionCode;
-            if (versionCode >= 3002850) {
-                url = "fb://facewebmodal/f?href=" + facebookUrl;
-            } else {
-                url = "fb://page/" + facebookPageId;
+            if (getPackageManager().getPackageInfo("com.facebook.katana", 0) != null) {
+                intent.setData(Uri.parse("fb://facewebmodal/f?href=" + facebookUrl));
             }
         } catch (PackageManager.NameNotFoundException e) {
             // do nothing
         }
 
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        startActivity(intent);
     }
 
     @Override
