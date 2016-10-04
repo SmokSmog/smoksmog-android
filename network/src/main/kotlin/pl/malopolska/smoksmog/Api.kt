@@ -8,21 +8,21 @@ import rx.Observable
 
 interface Api {
 
-    @GET("/stations")
+    @GET("stations")
     fun stations(): Observable<List<Station>>
 
-    @GET("/stations/{stationId}")
+    @GET("stations/{stationId}")
     fun station(@Path("stationId") stationId: Long): Observable<Station>
 
-    @GET("/stations/{lat}/{lon}")
+    @GET("stations/{lat}/{lon}")
     fun stationByLocation(@Path("lat") latitude: Double, @Path("lon") longitude: Double): Observable<Station>
 
-    @GET("/stations/{stationId}/history")
+    @GET("stations/{stationId}/history")
     fun stationHistory(@Path("stationId") stationId: Long): Observable<Station>
 
-    @GET("/stations/{lat}/{lon}/history")
+    @GET("stations/{lat}/{lon}/history")
     fun stationHistoryByLocation(@Path("lat") latitude: Double, @Path("lon") longitude: Double): Observable<Station>
 
-    @GET("/particulates/{id}/desc")
+    @GET("particulates/{id}/desc")
     fun particulateDescription(@Path("id") particulateId: Long): Observable<Description>
 }
