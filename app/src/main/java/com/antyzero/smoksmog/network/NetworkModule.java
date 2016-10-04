@@ -1,9 +1,7 @@
 package com.antyzero.smoksmog.network;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-
-import com.antyzero.smoksmog.BuildConfig;
+import android.os.Build;
 
 import java.util.Locale;
 
@@ -18,7 +16,16 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public SmokSmog provideSmokSmog( Context context ) {
-        return new SmokSmog();
+    public SmokSmog provideSmokSmog(Context context) {
+        return new SmokSmog(getLocale(context));
+    }
+
+    private Locale getLocale(Context context){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return context.getResources().getConfiguration().getLocales().get(0);
+        } else {
+            //noinspection deprecation
+            return context.getResources().getConfiguration().locale;
+        }
     }
 }

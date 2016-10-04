@@ -10,10 +10,9 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-open class SmokSmog(
-        val endpoint: String = "http://api.smoksmog.jkostrz.name/",
-        locale: Locale = Locale.getDefault()) {
+open class SmokSmog(locale: Locale = Locale.getDefault()) {
 
+    private val endpoint: String = "http://api.smoksmog.jkostrz.name/"
     open val api: Api
     val gson: Gson
 
