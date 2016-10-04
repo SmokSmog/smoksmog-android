@@ -13,22 +13,22 @@ open class SmokSmog(locale: Locale = Locale.getDefault(), serverUrl: String = "h
 
     constructor(locale: Locale = Locale.getDefault()) : this(locale, "http://api.smoksmog.jkostrz.name/")
 
+    val gson:Gson
     val endpoint: String = "$serverUrl${locale.language}/"
     open val api: Api
 
     init {
-        val builderRest = Retrofit.Builder()
-        builderRest.baseUrl(endpoint)
-        builderRest.addConverterFactory(GsonConverterFactory.create(createGson()))
-        builderRest.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-        val restAdapter = builderRest.build()
-        api = restAdapter.create(Api::class.java)
-    }
 
-    private fun createGson(): Gson {
         val gsonBuilder = GsonBuilder()
         gsonBuilder.registerTypeAdapter(DateTime::class.java, DateTimeDeserializer())
         Converters.registerLocalDate(gsonBuilder)
-        return gsonBuilder.create()
+        gson = gsonBuilder.create()
+
+        val builderRest = Retrofit.Builder()
+        builderRest.baseUrl(endpoint)
+        builderRest.addConverterFactory(GsonConverterFactory.create(gson))
+        builderRest.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        val restAdapter = builderRest.build()
+        api = restAdapter.create(Api::class.java)
     }
 }
