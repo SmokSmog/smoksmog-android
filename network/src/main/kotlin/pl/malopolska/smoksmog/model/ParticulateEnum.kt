@@ -2,7 +2,7 @@ package pl.malopolska.smoksmog.model
 
 enum class ParticulateEnum(val id: Long) {
 
-    SO2(1), NO2(3), CO(4), O3(5), PM10(7), C6H6(1), UNKNOWN(-1);
+    SO2(1), NO(2), NO2(3), CO(4), O3(5), NOx(6), PM10(7), PM25(8), C6H6(11), UNKNOWN(-1);
 
     override fun toString() = "$name {id=$id}"
 
