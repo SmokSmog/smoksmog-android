@@ -13,7 +13,7 @@ open class SmokSmog(locale: Locale = Locale.getDefault(), serverUrl: String = "h
 
     constructor(locale: Locale = Locale.getDefault()) : this(locale, "http://api.smoksmog.jkostrz.name/")
 
-    val gson:Gson
+    val gson: Gson
     val endpoint: String = "$serverUrl${locale.language}/"
     open val api: Api
 
