@@ -12,27 +12,13 @@ public class SmokSmogTest {
     public void testCreateServerUrlWithLocale() throws Exception {
 
         // given
-        String endpointUrl = "http://api.smoksmog.jkostrz.name/";
         Locale locale = Locale.ENGLISH;
+        SmokSmog smokSmog = new SmokSmog(locale);
 
         // when
-        String result = SmokSmog.Companion.createEndpoint(endpointUrl, locale);
+        String result = smokSmog.getEndpoint();
 
         // then
         assertThat(result).isEqualTo("http://api.smoksmog.jkostrz.name/" + locale.getLanguage() + "/");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateInvalidServerUrlWithLocale() throws Exception {
-
-        // given
-        String endpointUrl = "htkostrz.name/";
-        Locale locale = Locale.FRANCE;
-
-        // when
-        SmokSmog.Companion.createEndpoint(endpointUrl, locale);
-
-        // then
-        // exception
     }
 }
