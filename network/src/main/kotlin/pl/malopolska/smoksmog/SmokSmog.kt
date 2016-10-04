@@ -3,43 +3,32 @@ package pl.malopolska.smoksmog
 import com.fatboyindustrial.gsonjodatime.Converters
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.HttpUrl
 import org.joda.time.DateTime
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-open class SmokSmog(
-        val endpoint: String = "http://api.smoksmog.jkostrz.name/",
-        locale: Locale = Locale.getDefault(),
-        debug: Boolean = false) {
+open class SmokSmog(locale: Locale = Locale.getDefault(), serverUrl: String = "http://api.smoksmog.jkostrz.name/") {
 
-    open val api: Api
+    constructor(locale: Locale = Locale.getDefault()) : this(locale, "http://api.smoksmog.jkostrz.name/")
+
     val gson: Gson
+    val endpoint: String = "$serverUrl${locale.language}/"
+    open val api: Api
 
     init {
+
+        val gsonBuilder = GsonBuilder()
+        gsonBuilder.registerTypeAdapter(DateTime::class.java, DateTimeDeserializer())
+        Converters.registerLocalDate(gsonBuilder)
+        gson = gsonBuilder.create()
+
         val builderRest = Retrofit.Builder()
-        builderRest.baseUrl(createEndpoint(endpoint, locale))
-        gson = createGson()
+        builderRest.baseUrl(endpoint)
         builderRest.addConverterFactory(GsonConverterFactory.create(gson))
         builderRest.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         val restAdapter = builderRest.build()
         api = restAdapter.create(Api::class.java)
-    }
-
-    private fun createGson(): Gson {
-        val gsonBuilder = GsonBuilder()
-        gsonBuilder.registerTypeAdapter(DateTime::class.java, DateTimeDeserializer())
-        Converters.registerLocalDate(gsonBuilder)
-        return gsonBuilder.create()
-    }
-
-    companion object {
-
-        fun createEndpoint(endpoint: String, locale: Locale): String {
-            val parse = HttpUrl.parse(endpoint) ?: throw IllegalArgumentException("Invlid URL format")
-            return parse.newBuilder().addEncodedPathSegment(locale.language).toString() + "/"
-        }
     }
 }
