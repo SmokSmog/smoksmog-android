@@ -7,13 +7,15 @@ import org.joda.time.DateTime
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import rx.Scheduler
+import rx.schedulers.Schedulers
 import java.util.*
 
 open class SmokSmog(locale: Locale = Locale.getDefault(), serverUrl: String = "http://api.smoksmog.jkostrz.name/") {
 
     constructor(locale: Locale = Locale.getDefault()) : this(locale, "http://api.smoksmog.jkostrz.name/")
 
-    val gson:Gson
+    val gson: Gson
     val endpoint: String = "$serverUrl${locale.language}/"
     open val api: Api
 
@@ -27,7 +29,7 @@ open class SmokSmog(locale: Locale = Locale.getDefault(), serverUrl: String = "h
         val builderRest = Retrofit.Builder()
         builderRest.baseUrl(endpoint)
         builderRest.addConverterFactory(GsonConverterFactory.create(gson))
-        builderRest.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        builderRest.addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.newThread()))
         val restAdapter = builderRest.build()
         api = restAdapter.create(Api::class.java)
     }
