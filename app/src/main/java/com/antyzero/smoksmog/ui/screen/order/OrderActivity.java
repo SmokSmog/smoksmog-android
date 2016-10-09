@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
@@ -18,6 +19,7 @@ import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
+import com.antyzero.smoksmog.ui.screen.PickStation;
 import com.antyzero.smoksmog.ui.screen.order.dialog.AddStationDialog;
 import com.antyzero.smoksmog.ui.screen.order.dialog.StationDialogAdapter;
 import com.antyzero.smoksmog.ui.utils.DimenUtils;
@@ -44,6 +46,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
 
     private static final String TAG = OrderActivity.class.getSimpleName();
     private static final String EXTRA_DIALOG = "EXTRA_DIALOG";
+    private static final int PICK_STATION_REQUEST = 8925;
 
     @Inject
     SmokSmog smokSmog;
@@ -148,9 +151,23 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
 
     @OnClick(R.id.fab)
     void onClickFab() {
-        showAddDialog();
+        //showAddDialog();
+        PickStation.Companion.startForResult(this, PICK_STATION_REQUEST);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_STATION_REQUEST){
+            if(resultCode == RESULT_OK){
+                onStation(PickStation.gatherResult(data));
+            } else {
+                Toast.makeText(this, "Nie wybrano stacji", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    // TODO delete
     private void showAddDialog() {
         AddStationDialog.show(getSupportFragmentManager(), StationUtils.Companion.convertStationsToIdsArray(stationList));
     }

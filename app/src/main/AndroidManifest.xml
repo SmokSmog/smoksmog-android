@@ -50,6 +50,10 @@
                 android:value=".ui.screen.start.StartActivity" />
         </activity>
 
+        <activity
+            android:name=".ui.screen.PickStation"
+            android:label="@string/title_pick_station"/>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8" />

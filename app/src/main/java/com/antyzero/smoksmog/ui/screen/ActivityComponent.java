@@ -8,6 +8,8 @@ import com.antyzero.smoksmog.ui.screen.order.dialog.AddStationDialogComponent;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.antyzero.smoksmog.ui.screen.start.fragment.LocationStationFragmentComponent;
 
+import org.jetbrains.annotations.NotNull;
+
 import dagger.Subcomponent;
 
 @Subcomponent(
@@ -32,4 +34,6 @@ public interface ActivityComponent {
     void inject( StartActivity startActivity );
 
     void inject( OrderActivity orderActivity );
+
+    void inject(@NotNull PickStation pickStation);
 }
