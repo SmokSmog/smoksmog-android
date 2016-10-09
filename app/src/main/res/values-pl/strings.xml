@@ -36,4 +36,5 @@
     <string name="click_to_try_again">Kliknij aby spróbować ponownie</string>
     <string name="cs_about_air_quality_index">Czym jest Indeks Jakości Powietrza ?</string>
     <string name="cs_measurement_history_graphs">Wykresy pomiarów dotychczasowych</string>
+    <string name="title_pick_station">Wybierz stację</string>
 </resources>

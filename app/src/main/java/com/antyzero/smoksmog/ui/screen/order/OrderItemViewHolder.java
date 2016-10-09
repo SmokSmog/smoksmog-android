@@ -12,21 +12,21 @@ import pl.malopolska.smoksmog.model.Station;
 
 public class OrderItemViewHolder extends RecyclerView.ViewHolder {
 
-    @Bind( R.id.textView )
+    @Bind(R.id.textView)
     TextView textView;
-    @Bind( R.id.viewHandle )
+    @Bind(R.id.viewHandle)
     View viewHandle;
 
-    public OrderItemViewHolder( View itemView ) {
-        super( itemView );
-        ButterKnife.bind( this, itemView );
+    public OrderItemViewHolder(View itemView) {
+        super(itemView);
+        ButterKnife.bind(this, itemView);
     }
 
     public View getHandleView() {
         return viewHandle;
     }
 
-    public void bind( Station station ) {
-        textView.setText( station.getName() );
+    public void bind(Station station) {
+        textView.setText(station.getName());
     }
 }
