@@ -52,11 +52,21 @@
 
         <activity
             android:name=".ui.screen.PickStation"
-            android:label="@string/title_pick_station"/>
+            android:label="@string/title_pick_station" />
+
+        <receiver android:name=".ui.widget.StationWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_station" />
+        </receiver>
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c208eb302fab96d2350bc2f78bd866f5fb4627a8" />
+
     </application>
 
 </manifest>
