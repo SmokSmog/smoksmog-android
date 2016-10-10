@@ -65,12 +65,13 @@ class PickStation : BaseDragonActivity(), OnStationClick {
     }
 
     override fun click(station: Station) {
-        endWithResult(station.id)
+        endWithResult(station)
     }
 
-    private fun endWithResult(result: Long) {
+    private fun endWithResult(station: Station) {
         val returnIntent = Intent()
-        returnIntent.putExtra(EXTRA_STATION_ID, result)
+        returnIntent.putExtra(EXTRA_STATION_ID, station.id)
+        returnIntent.putExtra(EXTRA_STATION_NAME, station.name)
         setResult(RESULT_OK, returnIntent)
         finish()
     }
@@ -78,6 +79,7 @@ class PickStation : BaseDragonActivity(), OnStationClick {
     companion object {
 
         private val EXTRA_STATION_ID = "extraStationId"
+        private val EXTRA_STATION_NAME = "extraStationName"
         private val EXTRA_SKIP_IDS = "extraSkipIds"
 
         fun startForResult(activity: Activity, requestCode: Int) {
@@ -91,8 +93,10 @@ class PickStation : BaseDragonActivity(), OnStationClick {
         }
 
         @JvmStatic
-        fun gatherResult(intent: Intent): Long {
-            return intent.getLongExtra(EXTRA_STATION_ID, -1)
+        fun gatherResult(intent: Intent): Pair<Long, String> {
+            val stationId = intent.getLongExtra(EXTRA_STATION_ID, -1)
+            val stationName = intent.getStringExtra(EXTRA_STATION_NAME)
+            return stationId to stationName
         }
     }
 }

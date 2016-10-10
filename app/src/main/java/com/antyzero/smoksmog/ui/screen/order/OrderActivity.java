@@ -176,7 +176,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_STATION_REQUEST) {
             if (resultCode == RESULT_OK) {
-                onStation(PickStation.gatherResult(data));
+                onStation(PickStation.gatherResult(data).getFirst());
             } else {
                 Toast.makeText(this, "Nie wybrano stacji", Toast.LENGTH_SHORT).show();
             }
@@ -192,9 +192,9 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         start(context, false);
     }
 
-    public static void start(Context context, boolean showDialog) {
+    public static void start(Context context, boolean stationPickUp) {
         Intent intent = new Intent(context, OrderActivity.class);
-        intent.putExtra(EXTRA_DIALOG, showDialog);
+        intent.putExtra(EXTRA_DIALOG, stationPickUp);
         context.startActivity(intent);
     }
 
