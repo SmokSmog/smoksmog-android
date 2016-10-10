@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.CoordinatorLayout.LayoutParams;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -70,7 +71,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         setContentView(R.layout.activity_order);
 
         if (getIntent() != null && getIntent().getBooleanExtra(EXTRA_DIALOG, false)) {
-            PickStation.Companion.startForResult(this, PICK_STATION_REQUEST);
+            startStationPick();
         }
 
         setupFAB();
@@ -150,7 +151,24 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
 
     @OnClick(R.id.fab)
     void onClickFab() {
-        PickStation.Companion.startForResult(this, PICK_STATION_REQUEST);
+        startStationPick();
+    }
+
+    private void startStationPick() {
+        int[] ids = Observable.from(stationList)
+                .map(Station::getId)
+                .toList()
+                .map(this::convertListToArray)
+                .toBlocking().first();
+        PickStation.Companion.startForResult(this, PICK_STATION_REQUEST, ids);
+    }
+
+    private int[] convertListToArray(List<Long> list) {
+        int[] array = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i).intValue();
+        }
+        return array;
     }
 
     @Override
