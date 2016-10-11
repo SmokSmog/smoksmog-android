@@ -14,6 +14,8 @@ import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.start.item.AirQualityViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.item.ParticulateViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
+import com.antyzero.smoksmog.ui.widget.StationWidget;
+import com.antyzero.smoksmog.ui.widget.WidgetModule;
 import com.antyzero.smoksmog.user.UserModule;
 
 import javax.inject.Singleton;
@@ -31,7 +33,8 @@ import dagger.Component;
                 SettingsModule.class,
                 EventBusModule.class,
                 TimeModule.class,
-                UserModule.class
+                UserModule.class,
+                WidgetModule.class
         }
 )
 public interface ApplicationComponent {
@@ -49,4 +52,6 @@ public interface ApplicationComponent {
     void inject(ParticulateViewHolder particulateViewHolder);
 
     void inject(FacebookDialog facebookDialog);
+
+    void inject(StationWidget stationWidget);
 }

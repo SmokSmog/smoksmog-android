@@ -7,6 +7,7 @@ import com.antyzero.smoksmog.ui.screen.order.OrderActivity;
 import com.antyzero.smoksmog.ui.screen.order.dialog.AddStationDialogComponent;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.antyzero.smoksmog.ui.screen.start.fragment.LocationStationFragmentComponent;
+import com.antyzero.smoksmog.ui.widget.StationWidgetConfigureActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,4 +37,6 @@ public interface ActivityComponent {
     void inject( OrderActivity orderActivity );
 
     void inject(@NotNull PickStation pickStation);
+
+    void inject(@NotNull StationWidgetConfigureActivity stationWidgetConfigureActivity);
 }
