@@ -39,7 +39,7 @@ class StationWidget : AppWidgetProvider() {
                                 updateWidget(widgetId, context, appWidgetManager, it)
                             },
                             Action1 {
-                                logger.w(tag(), "Unable to update widget $widgetId")
+                                logger.w(tag(), "Unable to update widget $widgetId", it)
                             }
                     )
 
