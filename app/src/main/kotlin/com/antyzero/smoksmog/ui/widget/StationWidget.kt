@@ -5,15 +5,14 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.os.Bundle
 import android.widget.RemoteViews
-import com.antyzero.smoksmog.R
-import com.antyzero.smoksmog.SmokSmogApplication
-import com.antyzero.smoksmog.tag
-import com.antyzero.smoksmog.toast
+import com.antyzero.smoksmog.*
 import pl.malopolska.smoksmog.SmokSmog
 import pl.malopolska.smoksmog.model.Station
 import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Action1
 import rx.schedulers.Schedulers
+import smoksmog.air.AirQuality
+import smoksmog.air.AirQualityIndex
 import smoksmog.logger.Logger
 import javax.inject.Inject
 
@@ -54,9 +53,20 @@ class StationWidget : AppWidgetProvider() {
     companion object {
 
         fun updateWidget(widgetId: Int, context: Context, appWidgetManager: AppWidgetManager, station: Station) {
+
+            val airQualityIndex = AirQualityIndex.calculate(station)
+            val airQuality = AirQuality.findByValue(airQualityIndex)
+
             val views = RemoteViews(context.packageName, R.layout.widget_station)
             views.setTextViewText(R.id.textViewStation, station.name)
+            views.setTextViewText(R.id.textViewAirQuality, airQualityIndex.format(1))
+            views.setTextColor(R.id.textViewAirQuality,airQuality.getColor(context))
+
             appWidgetManager.updateAppWidget(widgetId, views)
         }
     }
+}
+
+private fun Double.format(digits: Int): CharSequence {
+    return java.lang.String.format("%.${digits}f", this)
 }
