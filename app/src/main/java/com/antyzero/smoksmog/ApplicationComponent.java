@@ -15,8 +15,11 @@ import com.antyzero.smoksmog.ui.screen.start.item.AirQualityViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.item.ParticulateViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
 import com.antyzero.smoksmog.ui.widget.StationWidget;
+import com.antyzero.smoksmog.ui.widget.StationWidgetService;
 import com.antyzero.smoksmog.ui.widget.WidgetModule;
 import com.antyzero.smoksmog.user.UserModule;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Singleton;
 
@@ -54,4 +57,6 @@ public interface ApplicationComponent {
     void inject(FacebookDialog facebookDialog);
 
     void inject(StationWidget stationWidget);
+
+    void inject(@NotNull StationWidgetService stationWidgetService);
 }

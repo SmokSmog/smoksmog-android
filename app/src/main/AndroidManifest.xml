@@ -65,9 +65,13 @@
 
         <activity android:name=".ui.widget.StationWidgetConfigureActivity">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".ui.widget.StationWidgetService"
+            android:exported="false" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
