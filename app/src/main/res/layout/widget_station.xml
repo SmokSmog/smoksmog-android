@@ -19,9 +19,13 @@
         tools:text="9.9"/>
 
     <TextView
+        android:layout_gravity="top"
         android:id="@+id/textViewStation"
-        android:background="@color/airQualityModerate"
+        android:maxLines="3"
+        android:gravity="top"
+        android:textColor="@color/text_light"
+        android:background="@color/text_dark"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
