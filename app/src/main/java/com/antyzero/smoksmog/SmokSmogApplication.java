@@ -52,6 +52,7 @@ public class SmokSmogApplication extends Application {
 
         new JobRequest.Builder("StationWidgetJob")
                 .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
+                .setRequiredNetworkType(JobRequest.NetworkType.NOT_ROAMING)
                 .setPersisted(true)
                 .build().schedule();
 
