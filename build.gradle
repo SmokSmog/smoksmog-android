@@ -13,7 +13,7 @@ buildscript {
     }
     dependencies {
 
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.1'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
@@ -39,7 +39,7 @@ ext {
                     wearable : '1.4.0'],
             google  : [
                     dagger      : '2.7',
-                    playServices: '9.4.0'],
+                    playServices: '9.6.1'],
             jodaTime: '2.9.4',
             junit   : '4.12',
             once    : '1.2.1',

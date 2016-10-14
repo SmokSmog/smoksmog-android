@@ -6,8 +6,13 @@ import android.support.annotation.VisibleForTesting;
 
 import com.antyzero.smoksmog.database.SmokSmokDb;
 import com.antyzero.smoksmog.database.model.ListItemDb;
+import com.antyzero.smoksmog.task.WidgetJobCreator;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.evernote.android.job.JobManager;
+import com.evernote.android.job.JobRequest;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -41,6 +46,18 @@ public class SmokSmogApplication extends Application {
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/Lato-Light.ttf")
                 .build());
+
+
+        JobManager.create(this).addJobCreator(new WidgetJobCreator(this));
+
+        new JobRequest.Builder("StationWidgetJob")
+                .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
+                .setRequiredNetworkType(JobRequest.NetworkType.NOT_ROAMING)
+                .setPersisted(true)
+                .build().schedule();
+
+
+        // TODO db testing code ignore and delete in future
 
         smokSmokDb.getList()
                 .subscribe(listItemDb -> {

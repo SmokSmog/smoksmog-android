@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout.LayoutParams;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Gravity;
 import android.view.View;
@@ -60,6 +61,8 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     RecyclerView recyclerView;
     @Bind(R.id.fab)
     FloatingActionButton floatingActionButton;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     private final List<Station> stationList = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
@@ -68,16 +71,18 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
+        setSupportActionBar(toolbar);
+        getContainer().setPadding(0, DimenUtils.getStatusBarHeight(this), 0, 0);
 
         if (getIntent() != null && getIntent().getBooleanExtra(EXTRA_DIALOG, false)) {
-            PickStation.Companion.startForResult(this, PICK_STATION_REQUEST);
+            startStationPick();
         }
 
         setupFAB();
         setupNavigationBar();
 
         recyclerView.setPadding(
-                0, DimenUtils.getStatusBarHeight(this, R.dimen.nav_bar_height),
+                0, 0,
                 0, getResources().getDimensionPixelSize(R.dimen.item_air_quality_height) * 3);
 
         SmokSmogApplication.get(this)
@@ -136,11 +141,6 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         floatingActionButton.setLayoutParams(params);
     }
 
-    @Override
-    protected boolean addExtraTopPadding() {
-        return false;
-    }
-
     private void setupNavigationBar() {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -150,7 +150,24 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
 
     @OnClick(R.id.fab)
     void onClickFab() {
-        PickStation.Companion.startForResult(this, PICK_STATION_REQUEST);
+        startStationPick();
+    }
+
+    private void startStationPick() {
+        int[] ids = Observable.from(stationList)
+                .map(Station::getId)
+                .toList()
+                .map(this::convertListToArray)
+                .toBlocking().first();
+        PickStation.Companion.startForResult(this, PICK_STATION_REQUEST, ids);
+    }
+
+    private int[] convertListToArray(List<Long> list) {
+        int[] array = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i).intValue();
+        }
+        return array;
     }
 
     @Override
@@ -158,7 +175,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_STATION_REQUEST) {
             if (resultCode == RESULT_OK) {
-                onStation(PickStation.gatherResult(data));
+                onStation(PickStation.gatherResult(data).getFirst());
             } else {
                 Toast.makeText(this, "Nie wybrano stacji", Toast.LENGTH_SHORT).show();
             }
@@ -174,9 +191,9 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         start(context, false);
     }
 
-    public static void start(Context context, boolean showDialog) {
+    public static void start(Context context, boolean stationPickUp) {
         Intent intent = new Intent(context, OrderActivity.class);
-        intent.putExtra(EXTRA_DIALOG, showDialog);
+        intent.putExtra(EXTRA_DIALOG, stationPickUp);
         context.startActivity(intent);
     }
 

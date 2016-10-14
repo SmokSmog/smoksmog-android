@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:configure="com.antyzero.smoksmog.ui.widget.StationWidgetConfigureActivity"
+    android:initialLayout="@layout/widget_station"
+    android:minHeight="40dp"
+    android:minWidth="250dp"
+    android:previewImage="@drawable/smoksmog"
+    android:resizeMode="horizontal"
+    android:updatePeriodMillis="300000"
+    android:widgetCategory="home_screen"
+    tools:ignore="UnusedAttribute" />

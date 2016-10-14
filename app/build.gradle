@@ -119,6 +119,10 @@ dependencies {
 
     compile "com.google.android.gms:play-services-location:${libVersions.google.playServices}"
 
+    // It should be firebase solution, but they didn't upload their aar to any kind of repository
+    // and I refuse to add manualy f...... aar to libs dir, it's not 2011 for Pete's sake !
+    compile 'com.evernote:android-job:1.1.0'
+
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile 'pl.charmas.android:android-reactive-location:0.9@aar'
     compile "com.google.dagger:dagger:${libVersions.google.dagger}"
