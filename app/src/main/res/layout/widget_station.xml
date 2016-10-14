@@ -1,31 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:maxHeight="40dp"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:maxHeight="40dp"
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textViewAirQuality"
+    <RelativeLayout
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="@color/item_background"
-        android:textColor="@color/text_light"
-        android:textSize="22sp"
-        android:gravity="center"
-        tools:text="9.9"/>
+        android:background="@color/text_dark">
+
+        <FrameLayout
+            android:id="@+id/airIndicator1"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_alignParentBottom="true"
+            tools:background="@color/accent" />
+
+        <FrameLayout
+            android:id="@+id/airIndicator2"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_alignParentTop="true"
+            tools:background="@color/accent" />
+
+        <TextView
+            android:id="@+id/textViewAirQuality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/text_light"
+            android:textSize="22sp"
+            tools:text="9.9" />
+
+    </RelativeLayout>
 
     <TextView
-        android:layout_gravity="top"
         android:id="@+id/textViewStation"
-        android:maxLines="3"
-        android:gravity="top"
-        android:textColor="@color/text_light"
-        android:background="@color/text_dark"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:background="@color/text_dark"
+        android:gravity="top"
+        android:maxLines="3"
+        android:textColor="@color/text_light" />
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import android.widget.RemoteViews
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
@@ -61,17 +62,14 @@ class StationWidget : AppWidgetProvider() {
             val airQualityIndex = AirQualityIndex.calculate(station)
             val airQuality = AirQuality.findByValue(airQualityIndex)
 
-            val pomiar = station.particulates?.get(0)?.date ?: DateTime.now()
-
-            val text = "Stacja: ${station.name}\n" +
-                    "Aktulizacja: ${LocalDateTime.now()}\n" +
-                    "Pomiar: ${pomiar.toLocalDateTime()}"
-
             val views = RemoteViews(context.packageName, R.layout.widget_station)
 
-            views.setTextViewText(R.id.textViewStation, text)
+            views.setTextViewText(R.id.textViewStation, station.name)
             views.setTextViewText(R.id.textViewAirQuality, airQualityIndex.format(1))
+
             views.setTextColor(R.id.textViewAirQuality, airQuality.getColor(context))
+            views.setBackgroundColor(R.id.airIndicator1, airQuality.getColor(context))
+            views.setBackgroundColor(R.id.airIndicator2, airQuality.getColor(context))
 
             appWidgetManager.updateAppWidget(widgetId, views)
         }
