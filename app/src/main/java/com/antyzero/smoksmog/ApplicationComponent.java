@@ -6,6 +6,7 @@ import com.antyzero.smoksmog.fabric.FabricModule;
 import com.antyzero.smoksmog.logger.LoggerModule;
 import com.antyzero.smoksmog.network.NetworkModule;
 import com.antyzero.smoksmog.settings.SettingsModule;
+import com.antyzero.smoksmog.task.StationWidgetJob;
 import com.antyzero.smoksmog.time.TimeModule;
 import com.antyzero.smoksmog.ui.dialog.AboutDialog;
 import com.antyzero.smoksmog.ui.dialog.FacebookDialog;
@@ -14,7 +15,12 @@ import com.antyzero.smoksmog.ui.screen.ActivityModule;
 import com.antyzero.smoksmog.ui.screen.start.item.AirQualityViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.item.ParticulateViewHolder;
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList;
+import com.antyzero.smoksmog.ui.widget.StationWidget;
+import com.antyzero.smoksmog.ui.widget.StationWidgetService;
+import com.antyzero.smoksmog.ui.widget.WidgetModule;
 import com.antyzero.smoksmog.user.UserModule;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Singleton;
 
@@ -31,7 +37,8 @@ import dagger.Component;
                 SettingsModule.class,
                 EventBusModule.class,
                 TimeModule.class,
-                UserModule.class
+                UserModule.class,
+                WidgetModule.class
         }
 )
 public interface ApplicationComponent {
@@ -49,4 +56,10 @@ public interface ApplicationComponent {
     void inject(ParticulateViewHolder particulateViewHolder);
 
     void inject(FacebookDialog facebookDialog);
+
+    void inject(StationWidget stationWidget);
+
+    void inject(StationWidgetService stationWidgetService);
+
+    void inject(StationWidgetJob stationWidgetJob);
 }

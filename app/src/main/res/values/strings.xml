@@ -57,5 +57,6 @@
     <string name="cs_about_air_quality_index">What is Air Quality Index ?</string>
     <string name="cs_measurement_history_graphs">Measurement history graphs</string>
     <string name="title_pick_station">Pick station</string>
+    <string name="title_manage_stations">Manage your stations</string>
 
 </resources>
