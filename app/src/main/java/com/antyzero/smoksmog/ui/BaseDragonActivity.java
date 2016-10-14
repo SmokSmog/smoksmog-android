@@ -63,6 +63,10 @@ public abstract class BaseDragonActivity extends RxAppCompatActivity {
         setupDragon();
     }
 
+    protected ViewGroup getContainer() {
+        return container;
+    }
+
     /**
      * Override if needed, this solve issue with 4.4 status bar
      *

@@ -26,6 +26,7 @@
 
         <activity
             android:name=".ui.screen.order.OrderActivity"
+            android:label="@string/title_manage_stations"
             android:parentActivityName=".ui.screen.start.StartActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

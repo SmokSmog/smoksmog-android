@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.design.widget.CoordinatorLayout.LayoutParams;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Gravity;
 import android.view.View;
@@ -61,6 +61,8 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     RecyclerView recyclerView;
     @Bind(R.id.fab)
     FloatingActionButton floatingActionButton;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     private final List<Station> stationList = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
@@ -69,6 +71,8 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
+        setSupportActionBar(toolbar);
+        getContainer().setPadding(0, DimenUtils.getStatusBarHeight(this), 0, 0);
 
         if (getIntent() != null && getIntent().getBooleanExtra(EXTRA_DIALOG, false)) {
             startStationPick();
@@ -78,7 +82,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         setupNavigationBar();
 
         recyclerView.setPadding(
-                0, DimenUtils.getStatusBarHeight(this, R.dimen.nav_bar_height),
+                0, 0,
                 0, getResources().getDimensionPixelSize(R.dimen.item_air_quality_height) * 3);
 
         SmokSmogApplication.get(this)
@@ -135,11 +139,6 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         params.setAnchorId(R.id.recyclerView);
 
         floatingActionButton.setLayoutParams(params);
-    }
-
-    @Override
-    protected boolean addExtraTopPadding() {
-        return false;
     }
 
     private void setupNavigationBar() {

@@ -16,32 +16,32 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class BaseActivity extends RxAppCompatActivity {
 
     @Override
-    protected void onCreate( Bundle savedInstanceState ) {
-        super.onCreate( savedInstanceState );
-        initOnCreate( this );
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initOnCreate(this);
     }
 
     @Override
-    public void setContentView( int layoutResID ) {
-        super.setContentView( layoutResID );
-        ButterKnife.bind( this );
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        ButterKnife.bind(this);
     }
 
     @Override
-    public void setContentView( View view ) {
-        super.setContentView( view );
-        ButterKnife.bind( this );
+    public void setContentView(View view) {
+        super.setContentView(view);
+        ButterKnife.bind(this);
     }
 
     @Override
-    public void setContentView( View view, ViewGroup.LayoutParams params ) {
-        super.setContentView( view, params );
-        ButterKnife.bind( this );
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
+        super.setContentView(view, params);
+        ButterKnife.bind(this);
     }
 
     @Override
-    protected void attachBaseContext( Context newBase ) {
-        super.attachBaseContext( CalligraphyContextWrapper.wrap( newBase ) );
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     /**
@@ -49,16 +49,16 @@ public abstract class BaseActivity extends RxAppCompatActivity {
      *
      * @param activity for access to various data
      */
-    public static void initOnCreate( Activity activity ) {
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
+    public static void initOnCreate(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int color;
-            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
-                color = activity.getResources().getColor( R.color.primary, activity.getTheme() );
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                color = activity.getResources().getColor(R.color.primary, activity.getTheme());
             } else {
                 //noinspection deprecation
-                color = activity.getResources().getColor( R.color.primary );
+                color = activity.getResources().getColor(R.color.primary);
             }
-            activity.getWindow().setNavigationBarColor( color );
+            activity.getWindow().setNavigationBarColor(color);
         }
     }
 }
