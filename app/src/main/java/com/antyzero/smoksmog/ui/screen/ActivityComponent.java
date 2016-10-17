@@ -9,8 +9,6 @@ import com.antyzero.smoksmog.ui.screen.start.StartActivity;
 import com.antyzero.smoksmog.ui.screen.start.fragment.LocationStationFragmentComponent;
 import com.antyzero.smoksmog.ui.widget.StationWidgetConfigureActivity;
 
-import org.jetbrains.annotations.NotNull;
-
 import dagger.Subcomponent;
 
 @Subcomponent(
@@ -20,23 +18,23 @@ import dagger.Subcomponent;
 )
 public interface ActivityComponent {
 
-    FragmentComponent plus( FragmentModule fragmentModule );
+    FragmentComponent plus(FragmentModule fragmentModule);
 
     // Support fragments
 
-    AddStationDialogComponent plus( SupportFragmentModule fragmentModule );
+    AddStationDialogComponent plus(SupportFragmentModule fragmentModule);
 
-    LocationStationFragmentComponent plus( FragmentModule fragmentModule, GoogleModule googleModule );
+    LocationStationFragmentComponent plus(FragmentModule fragmentModule, GoogleModule googleModule);
 
-    void inject( HistoryActivity activity );
+    void inject(HistoryActivity activity);
 
-    void inject( AboutActivity activity );
+    void inject(AboutActivity activity);
 
-    void inject( StartActivity startActivity );
+    void inject(StartActivity startActivity);
 
-    void inject( OrderActivity orderActivity );
+    void inject(OrderActivity orderActivity);
 
-    void inject(@NotNull PickStation pickStation);
+    void inject(PickStation pickStation);
 
-    void inject(@NotNull StationWidgetConfigureActivity stationWidgetConfigureActivity);
+    void inject(StationWidgetConfigureActivity stationWidgetConfigureActivity);
 }

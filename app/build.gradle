@@ -118,6 +118,7 @@ dependencies {
     compile "com.android.support:support-annotations:${libVersions.android.appCompat}"
 
     compile "com.google.android.gms:play-services-location:${libVersions.google.playServices}"
+    compile "com.google.firebase:firebase-core:${libVersions.google.playServices}"
 
     // It should be firebase solution, but they didn't upload their aar to any kind of repository
     // and I refuse to add manualy f...... aar to libs dir, it's not 2011 for Pete's sake !

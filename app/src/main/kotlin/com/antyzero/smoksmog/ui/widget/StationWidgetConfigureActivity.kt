@@ -6,13 +6,13 @@ import android.content.Intent
 import android.os.Bundle
 import com.antyzero.smoksmog.activityComponent
 import com.antyzero.smoksmog.appWidgetManager
+import com.antyzero.smoksmog.firebase.FirebaseEvents
 import com.antyzero.smoksmog.tag
 import com.antyzero.smoksmog.toast
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.PickStation
 import pl.malopolska.smoksmog.SmokSmog
 import rx.android.schedulers.AndroidSchedulers
-import rx.functions.Action1
 import rx.schedulers.Schedulers
 import smoksmog.logger.Logger
 import javax.inject.Inject
@@ -23,6 +23,7 @@ class StationWidgetConfigureActivity : BaseDragonActivity() {
     @Inject lateinit var logger: Logger
     @Inject lateinit var stationWidgetData: StationWidgetData
     @Inject lateinit var smokSmog: SmokSmog
+    @Inject lateinit var firebaseEvents: FirebaseEvents
 
     private val PICK_STATION_REQUEST: Int = 8976
     private var appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID
@@ -44,6 +45,7 @@ class StationWidgetConfigureActivity : BaseDragonActivity() {
             return
         }
 
+        firebaseEvents.logWidgetCreationStarted()
         PickStation.startForResult(this, PICK_STATION_REQUEST)
     }
 
@@ -68,13 +70,19 @@ class StationWidgetConfigureActivity : BaseDragonActivity() {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { StationWidget.updateWidget(appWidgetId, this, appWidgetManager(), it) },
+                        {
+                            StationWidget.updateWidget(appWidgetId, this, appWidgetManager(), it)
+                            firebaseEvents.logWidgetCreationStation(gatherResult.first, gatherResult.second)
+                        },
                         {
                             toast("Unable to get widget data") // TODO translate
                             logger.w(tag(), "Unable to get widget data")
                             finish()
                         },
-                        {finish()}
+                        {
+                            firebaseEvents.logWidgetCreationSuccessful()
+                            finish()
+                        }
                 )
     }
 }
