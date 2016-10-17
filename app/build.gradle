@@ -175,3 +175,6 @@ play {
 repositories {
     mavenCentral()
 }
+
+// Need to be @ the bottom
+apply plugin: 'com.google.gms.google-services'
