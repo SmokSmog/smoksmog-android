@@ -16,11 +16,6 @@ import android.widget.ViewAnimator;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.eventbus.RxBus;
-
-import rx.functions.Action1;
-import rx.functions.Func1;
-import smoksmog.logger.Logger;
-
 import com.antyzero.smoksmog.fabric.StationShowEvent;
 import com.antyzero.smoksmog.ui.BaseFragment;
 import com.antyzero.smoksmog.ui.screen.start.StartActivity;
@@ -40,7 +35,7 @@ import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import smoksmog.logger.Logger;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
@@ -52,13 +47,13 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     private static final int NEAREST_STATION_ID = 0;
 
     //<editor-fold desc="Views">
-    @Bind( R.id.viewAnimator )
+    @Bind(R.id.viewAnimator)
     ViewAnimator viewAnimator;
-    @Bind( R.id.recyclerView )
+    @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    @Bind( R.id.progressBar )
+    @Bind(R.id.progressBar)
     ProgressBar progressBar;
-    @Bind( R.id.textViewError )
+    @Bind(R.id.textViewError)
     TextView textViewError;
     //</editor-fold>
 
@@ -79,32 +74,32 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     private Station station;
 
     @Override
-    public void onCreate( @Nullable Bundle savedInstanceState ) {
-        super.onCreate( savedInstanceState );
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        if ( !getArguments().containsKey( ARG_STATION_ID ) ) {
-            throw new IllegalStateException( String.format(
+        if (!getArguments().containsKey(ARG_STATION_ID)) {
+            throw new IllegalStateException(String.format(
                     "%s should be created with newInstance method, missing ARG_STATION_ID",
-                    StationFragment.class.getSimpleName() ) );
+                    StationFragment.class.getSimpleName()));
         }
     }
 
     @Nullable
     @Override
-    public View onCreateView( LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState ) {
-        return inflater.inflate( R.layout.fragment_station, container, false );
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_station, container, false);
     }
 
     @Override
-    public void onViewCreated( View view, @Nullable Bundle savedInstanceState ) {
-        super.onViewCreated( view, savedInstanceState );
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        recyclerView.setLayoutManager( new LinearLayoutManager( getActivity(), VERTICAL, false ) );
-        recyclerView.setAdapter( new StationAdapter( stationContainer ) );
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), VERTICAL, false));
+        recyclerView.setAdapter(new StationAdapter(stationContainer));
 
         progressBar.getIndeterminateDrawable().setColorFilter(
-                getResources().getColor( R.color.accent ),
-                PorterDuff.Mode.SRC_IN );
+                getResources().getColor(R.color.accent),
+                PorterDuff.Mode.SRC_IN);
 
         showLoading();
     }
@@ -121,23 +116,23 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
 
     @Override
     public String getSubtitle() {
-        return getStationId() == NEAREST_STATION_ID ? getString( R.string.station_closest ) : null;
+        return getStationId() == NEAREST_STATION_ID ? getString(R.string.station_closest) : null;
     }
 
     protected final void showLoading() {
-        updateViewsOnUiThread( () -> viewAnimator.setDisplayedChild( 1 ) );
+        updateViewsOnUiThread(() -> viewAnimator.setDisplayedChild(1));
     }
 
     protected final void showData() {
-        updateViewsOnUiThread( () -> viewAnimator.setDisplayedChild( 0 ) );
+        updateViewsOnUiThread(() -> viewAnimator.setDisplayedChild(0));
     }
 
-    protected final void showTryAgain( @StringRes int errorReport ) {
-        updateViewsOnUiThread( () -> {
-            viewAnimator.setDisplayedChild( 2 );
-            textViewError.setVisibility( View.VISIBLE );
-            textViewError.setText( getString( errorReport ) );
-        } );
+    protected final void showTryAgain(@StringRes int errorReport) {
+        updateViewsOnUiThread(() -> {
+            viewAnimator.setDisplayedChild(2);
+            textViewError.setVisibility(View.VISIBLE);
+            textViewError.setText(getString(errorReport));
+        });
     }
 
     /**
@@ -146,10 +141,10 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
      *
      * @param givenRunnable for view update
      */
-    protected void updateViewsOnUiThread( Runnable givenRunnable ) {
-        Observable.just( givenRunnable )
-                .observeOn( AndroidSchedulers.mainThread() )
-                .compose( bindUntilEvent( FragmentEvent.DESTROY_VIEW ) )
+    protected void updateViewsOnUiThread(Runnable givenRunnable) {
+        Observable.just(givenRunnable)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .filter(runnable -> !isDetached())
                 .subscribe(Runnable::run,
                         throwable -> {
@@ -157,10 +152,20 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
                         });
     }
 
-    @OnClick( R.id.buttonTryAgain )
+    @OnClick(R.id.buttonTryAgain)
     void buttonReloadData() {
-        textViewError.postDelayed( () -> textViewError.setVisibility( View.GONE ), 1000L );
+        textViewError.postDelayed(() -> textViewError.setVisibility(View.GONE), 1000L);
         loadData();
+    }
+
+    /**
+     * Access fragment station
+     *
+     * @return Station instance or null if station is not yet loaded
+     */
+    @Nullable
+    public Station getStation() {
+        return station;
     }
 
     /**
@@ -168,15 +173,15 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
      *
      * @param station data
      */
-    protected void updateUI( Station station ) {
+    protected void updateUI(Station station) {
 
         this.station = station;
 
         stationContainer.clear();
-        stationContainer.add( station );
+        stationContainer.add(station);
         recyclerView.getAdapter().notifyDataSetChanged();
 
-        rxBus.send( new StartActivity.TitleUpdateEvent() );
+        rxBus.send(new StartActivity.TitleUpdateEvent());
 
         answers.logContentView(new StationShowEvent(station));
 
@@ -189,7 +194,7 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
      * @return station ID
      */
     public long getStationId() {
-        return getArguments().getLong( ARG_STATION_ID );
+        return getArguments().getLong(ARG_STATION_ID);
     }
 
     /**
@@ -198,16 +203,16 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
      * @param stationId for data download
      * @return StationFragment instance
      */
-    public static StationFragment newInstance( long stationId ) {
+    public static StationFragment newInstance(long stationId) {
 
         Bundle arguments = new Bundle();
 
-        arguments.putLong( ARG_STATION_ID, stationId );
+        arguments.putLong(ARG_STATION_ID, stationId);
 
         StationFragment stationFragment = stationId <= 0 ?
                 new LocationStationFragment() :
                 new NetworkStationFragment();
-        stationFragment.setArguments( arguments );
+        stationFragment.setArguments(arguments);
 
         return stationFragment;
     }

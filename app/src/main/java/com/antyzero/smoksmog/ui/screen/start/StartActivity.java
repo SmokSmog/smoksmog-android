@@ -19,6 +19,7 @@ import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.eventbus.EventBusModule;
 import com.antyzero.smoksmog.eventbus.RxBus;
+import com.antyzero.smoksmog.firebase.FirebaseEvents;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.dialog.AboutDialog;
@@ -65,6 +66,8 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     RxBus rxBus;
     @Inject
     TypefaceProvider typefaceProvider;
+    @Inject
+    FirebaseEvents firebaseEvents;
     @Inject
     @Named(EventBusModule.EVENT_BUS_ERROR)
     Action1<Throwable> eventBusError;
@@ -227,6 +230,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
         updateTitleWithStation(position);
         lastPageSelected = position;
         pageSave.savePage(position);
+        firebaseEvents.logStationCardInView(stationSlideAdapter.getItem(position).getStationId());
     }
 
     @OnClick(R.id.buttonAddStation)
