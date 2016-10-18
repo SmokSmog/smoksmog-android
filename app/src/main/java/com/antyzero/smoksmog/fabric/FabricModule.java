@@ -15,13 +15,13 @@ public class FabricModule {
 
     @Provides
     @Singleton
-    public Answers provideAnswers() {
+    Answers provideAnswers() {
         return Answers.getInstance();
     }
 
     @Provides
     @Singleton
-    public CrashlyticsCore provideCrashlyticsCore() {
+    CrashlyticsCore provideCrashlyticsCore() {
         return CrashlyticsCore.getInstance();
     }
 }

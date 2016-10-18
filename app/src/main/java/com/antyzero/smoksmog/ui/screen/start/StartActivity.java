@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.antyzero.smoksmog.R;
@@ -42,6 +43,7 @@ import javax.inject.Named;
 import butterknife.Bind;
 import butterknife.OnClick;
 import pl.malopolska.smoksmog.SmokSmog;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import smoksmog.logger.Logger;
