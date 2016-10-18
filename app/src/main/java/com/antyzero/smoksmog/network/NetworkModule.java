@@ -20,7 +20,7 @@ public class NetworkModule {
         return new SmokSmog(getLocale(context));
     }
 
-    private Locale getLocale(Context context){
+    private Locale getLocale(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return context.getResources().getConfiguration().getLocales().get(0);
         } else {

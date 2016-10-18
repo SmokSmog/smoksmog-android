@@ -47,60 +47,60 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
     @Inject
     Logger logger;
 
-    @Bind( R.id.textViewIndexValue )
+    @Bind(R.id.textViewIndexValue)
     TextView textViewIndexValue;
-    @Bind( R.id.textViewAirQuality )
+    @Bind(R.id.textViewAirQuality)
     TextView textViewAirQuality;
-    @Bind( R.id.textViewMeasureTime )
+    @Bind(R.id.textViewMeasureTime)
     TextView textViewMeasureTime;
-    @Bind( R.id.airIndicator )
+    @Bind(R.id.airIndicator)
     ImageView airIndicator;
-    @Bind( R.id.buttonAirQualityInfo )
+    @Bind(R.id.buttonAirQualityInfo)
     View buttonAirQualityInfo;
-    @Bind( R.id.buttonTimeline )
+    @Bind(R.id.buttonTimeline)
     View buttonTimeline;
 
     private DateTime measureDate = null;
 
-    public AirQualityViewHolder( View itemView ) {
-        super( itemView );
-        ButterKnife.bind( this, itemView );
-        SmokSmogApplication.get( itemView.getContext() ).getAppComponent().inject( this );
+    public AirQualityViewHolder(View itemView) {
+        super(itemView);
+        ButterKnife.bind(this, itemView);
+        SmokSmogApplication.get(itemView.getContext()).getAppComponent().inject(this);
     }
 
     @Override
-    public void bind( Station station ) {
-        super.bind( station );
+    public void bind(Station station) {
+        super.bind(station);
 
-        buttonTimeline.setOnClickListener( v -> HistoryActivity.start( getContext(), station.getId() ) );
-        buttonTimeline.setVisibility( VISIBLE );
+        buttonTimeline.setOnClickListener(v -> HistoryActivity.start(getContext(), station.getId()));
+        buttonTimeline.setVisibility(VISIBLE);
 
-        double indexValue = AirQualityIndex.calculate( station );
-        AirQuality airQuality = AirQuality.findByValue( indexValue );
+        double indexValue = AirQualityIndex.calculate(station);
+        AirQuality airQuality = AirQuality.findByValue(indexValue);
 
-        textViewIndexValue.setText( String.format( Locale.getDefault(), "%.1f", indexValue ) );
-        textViewAirQuality.setText( airQuality.getTitleResId() );
-        airIndicator.setVisibility( VISIBLE );
-        airIndicator.setColorFilter( airQuality.getColor( itemView.getContext() ) );
+        textViewIndexValue.setText(String.format(Locale.getDefault(), "%.1f", indexValue));
+        textViewAirQuality.setText(airQuality.getTitleResId());
+        airIndicator.setVisibility(VISIBLE);
+        airIndicator.setColorFilter(airQuality.getColor(itemView.getContext()));
 
         List<Particulate> particulates = station.getParticulates();
 
-        if ( !particulates.isEmpty() ) {
+        if (!particulates.isEmpty()) {
 
-            Particulate particulate = getNewest( particulates );
+            Particulate particulate = getNewest(particulates);
             measureDate = particulate.getDate();
             updateUiTime();
 
             // Loop update, we want up to date info
-            Observable.interval( 30, TimeUnit.SECONDS )
-                    .compose( RxLifecycle.bindView( textViewMeasureTime ) )
-                    .observeOn( AndroidSchedulers.mainThread() )
-                    .subscribe( aLong -> {
+            Observable.interval(30, TimeUnit.SECONDS)
+                    .compose(RxLifecycle.bindView(textViewMeasureTime))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> {
                                 updateUiTime();
                             },
                             throwable -> {
-                                logger.i( TAG, "Unable to refresh time", throwable );
-                            } );
+                                logger.i(TAG, "Unable to refresh time", throwable);
+                            });
         }
     }
 
@@ -108,23 +108,23 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
      * Updates info when last measurement occurred
      */
     private void updateUiTime() {
-        if ( measureDate != null ) {
-            int seconds = Seconds.secondsBetween( measureDate, DateTime.now() ).getSeconds();
-            textViewMeasureTime.setText( String.format(
-                    itemView.getResources().getText( R.string.measure_ago ).toString(),
-                    countdownProvider.get( seconds ) ) );
-            textViewMeasureTime.setBackgroundColor( itemView.getResources().getColor(
-                    seconds >= 4 * 60 * 60 ? R.color.red : android.R.color.transparent ) );
+        if (measureDate != null) {
+            int seconds = Seconds.secondsBetween(measureDate, DateTime.now()).getSeconds();
+            textViewMeasureTime.setText(String.format(
+                    itemView.getResources().getText(R.string.measure_ago).toString(),
+                    countdownProvider.get(seconds)));
+            textViewMeasureTime.setBackgroundColor(itemView.getResources().getColor(
+                    seconds >= 4 * 60 * 60 ? R.color.red : android.R.color.transparent));
         }
     }
 
-    private Particulate getNewest( List<Particulate> data ) {
-        return OperatorMinMax.max( Observable.from( data ), ( lhs, rhs ) ->
-                lhs.getDate().compareTo( rhs.getDate() ) ).toBlocking().first();
+    private Particulate getNewest(List<Particulate> data) {
+        return OperatorMinMax.max(Observable.from(data), (lhs, rhs) ->
+                lhs.getDate().compareTo(rhs.getDate())).toBlocking().first();
     }
 
-    @OnClick( R.id.buttonAirQualityInfo )
+    @OnClick(R.id.buttonAirQualityInfo)
     void clickInfo() {
-        rxBus.send( new InfoDialog.Event<>( AirQualityDialog.class ) );
+        rxBus.send(new InfoDialog.Event<>(AirQualityDialog.class));
     }
 }

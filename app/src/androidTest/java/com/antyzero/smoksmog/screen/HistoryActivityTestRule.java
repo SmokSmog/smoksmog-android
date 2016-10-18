@@ -9,24 +9,24 @@ import com.antyzero.smoksmog.ui.screen.history.HistoryActivity;
 public class HistoryActivityTestRule extends MockedNetworkActivityTestRule<HistoryActivity> {
 
     public HistoryActivityTestRule() {
-        super( HistoryActivity.class );
+        super(HistoryActivity.class);
     }
 
-    public HistoryActivityTestRule( boolean initialTouchMode ) {
-        super( HistoryActivity.class, initialTouchMode );
+    public HistoryActivityTestRule(boolean initialTouchMode) {
+        super(HistoryActivity.class, initialTouchMode);
     }
 
-    public HistoryActivityTestRule( boolean initialTouchMode, boolean launchActivity ) {
-        super( HistoryActivity.class, initialTouchMode, launchActivity );
+    public HistoryActivityTestRule(boolean initialTouchMode, boolean launchActivity) {
+        super(HistoryActivity.class, initialTouchMode, launchActivity);
     }
 
     @Override
     protected Intent getActivityIntent() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         try {
-            return HistoryActivity.intent( context, 13 );
-        } catch ( Exception e ) {
-            throw new IllegalStateException( "Unable to create Intent" );
+            return HistoryActivity.intent(context, 13);
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to create Intent");
         }
     }
 }

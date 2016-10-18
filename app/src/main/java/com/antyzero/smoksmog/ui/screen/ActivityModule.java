@@ -27,7 +27,7 @@ public class ActivityModule {
     }
 
     @Provides
-    FirebaseEvents provideFirebaseEvents(FirebaseAnalytics firebaseAnalytics){
+    FirebaseEvents provideFirebaseEvents(FirebaseAnalytics firebaseAnalytics) {
         return new FirebaseEvents(firebaseAnalytics);
     }
 

@@ -16,15 +16,15 @@ public class VersionCheckTest {
 
     @Before
     public void setUp() throws Exception {
-        InputStreamReader reader = new InputStreamReader( getClass().getResource( "/versions.json" ).openStream() );
+        InputStreamReader reader = new InputStreamReader(getClass().getResource("/versions.json").openStream());
         Gson gson = new Gson();
-        versions = gson.fromJson( reader, VersionCollection.class );
+        versions = gson.fromJson(reader, VersionCollection.class);
 
-        String.valueOf( versions );
+        String.valueOf(versions);
     }
 
     @Test
     public void testCreation() throws Exception {
-        new VersionCheck( new Locale( "pl" ), versions );
+        new VersionCheck(new Locale("pl"), versions);
     }
 }

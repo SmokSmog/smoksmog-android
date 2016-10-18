@@ -28,12 +28,10 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
     private static final String TAG = LocationStationFragment.class.getSimpleName();
 
     private static final long LOCATION_TIMEOUT_IN_SECONDS = 4;
-
-    private Location locationCurrent;
-    private Location locationStation;
-
     @Inject
     GoogleApiClient googleApiClient;
+    private Location locationCurrent;
+    private Location locationStation;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

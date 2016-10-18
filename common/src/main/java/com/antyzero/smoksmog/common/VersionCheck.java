@@ -14,7 +14,7 @@ public class VersionCheck {
     private final Locale locale;
     private final VersionCollection versions;
 
-    public VersionCheck( Locale locale, VersionCollection versions ) {
+    public VersionCheck(Locale locale, VersionCollection versions) {
         this.locale = locale;
         this.versions = versions;
     }
@@ -22,10 +22,10 @@ public class VersionCheck {
     private static class SortingTransformer implements Observable.Transformer<Change, Change> {
 
         @Override
-        public Observable<Change> call( Observable<Change> changeObservable ) {
+        public Observable<Change> call(Observable<Change> changeObservable) {
             return changeObservable
-                    .toSortedList( ( change, change2 ) -> change.getType().ordinal() - change2.getType().ordinal() )
-                    .flatMap( Observable::from );
+                    .toSortedList((change, change2) -> change.getType().ordinal() - change2.getType().ordinal())
+                    .flatMap(Observable::from);
         }
     }
 }

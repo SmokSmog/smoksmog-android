@@ -20,7 +20,7 @@ public class SpoonRule extends ExternalResource {
     public void screenshot(String tag) {
         try {
             Spoon.screenshot(activityTestRule.getActivity(), tag);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Missing Spoon");
         }
     }

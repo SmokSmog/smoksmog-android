@@ -15,6 +15,24 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends RxAppCompatActivity {
 
+    /**
+     * Shared initialization among activities, use it you cannot extend BaseActivity
+     *
+     * @param activity for access to various data
+     */
+    public static void initOnCreate(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int color;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                color = activity.getResources().getColor(R.color.primary, activity.getTheme());
+            } else {
+                //noinspection deprecation
+                color = activity.getResources().getColor(R.color.primary);
+            }
+            activity.getWindow().setNavigationBarColor(color);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,23 +60,5 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
-    /**
-     * Shared initialization among activities, use it you cannot extend BaseActivity
-     *
-     * @param activity for access to various data
-     */
-    public static void initOnCreate(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int color;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                color = activity.getResources().getColor(R.color.primary, activity.getTheme());
-            } else {
-                //noinspection deprecation
-                color = activity.getResources().getColor(R.color.primary);
-            }
-            activity.getWindow().setNavigationBarColor(color);
-        }
     }
 }

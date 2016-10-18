@@ -22,7 +22,7 @@ public class EventBusModule {
     @Provides
     @Named(EVENT_BUS_ERROR)
     @Singleton
-    public Action1<Throwable> provideEventHAndler(Logger logger){
-      return throwable -> logger.w("RxEventBus", "Unable to process event", throwable);
+    public Action1<Throwable> provideEventHAndler(Logger logger) {
+        return throwable -> logger.w("RxEventBus", "Unable to process event", throwable);
     }
 }

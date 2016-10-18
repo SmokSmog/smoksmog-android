@@ -19,20 +19,20 @@ public class StationIdList extends ForwardingList<Long> implements SharedPrefere
     @Inject
     PermissionHelper permissionHelper;
 
-    public StationIdList( Context context ) {
-        SmokSmogApplication.get( context )
+    public StationIdList(Context context) {
+        SmokSmogApplication.get(context)
                 .getAppComponent()
-                .inject( this );
+                .inject(this);
 
         SharedPreferences settingsPreferences = settingsHelper.getPreferences();
-        settingsPreferences.registerOnSharedPreferenceChangeListener( this );
-        updateWithPreferences( settingsPreferences );
+        settingsPreferences.registerOnSharedPreferenceChangeListener(this);
+        updateWithPreferences(settingsPreferences);
     }
 
     @Override
-    public void onSharedPreferenceChanged( SharedPreferences sharedPreferences, String key ) {
-        if ( key.equals( settingsHelper.getKeyStationClosest() ) ) {
-            updateWithPreferences( sharedPreferences );
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(settingsHelper.getKeyStationClosest())) {
+            updateWithPreferences(sharedPreferences);
         }
     }
 
@@ -41,17 +41,17 @@ public class StationIdList extends ForwardingList<Long> implements SharedPrefere
         return settingsHelper.getStationIdList();
     }
 
-    private void updateWithPreferences( SharedPreferences sharedPreferences ) {
-        boolean isClosestStation = sharedPreferences.getBoolean( settingsHelper.getKeyStationClosest(), false );
-        if ( isClosestStation && permissionHelper.isGrantedLocationCorsare() ) {
-            if ( size() > 0 && get( 0 ) != 0 ) {
-                add( 0, 0L );
-            } else if ( size() <= 0 ) {
-                add( 0L );
+    private void updateWithPreferences(SharedPreferences sharedPreferences) {
+        boolean isClosestStation = sharedPreferences.getBoolean(settingsHelper.getKeyStationClosest(), false);
+        if (isClosestStation && permissionHelper.isGrantedLocationCorsare()) {
+            if (size() > 0 && get(0) != 0) {
+                add(0, 0L);
+            } else if (size() <= 0) {
+                add(0L);
             }
         } else {
-            if ( size() > 0 && get( 0 ) == 0 ) {
-                remove( 0 );
+            if (size() > 0 && get(0) == 0) {
+                remove(0);
             }
         }
     }

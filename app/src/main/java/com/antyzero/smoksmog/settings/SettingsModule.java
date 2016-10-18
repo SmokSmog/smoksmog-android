@@ -16,7 +16,7 @@ public class SettingsModule {
     @Provides
     @Singleton
     @Deprecated
-    public SettingsHelper provideSettingsHelper( Context context, PermissionHelper permissionHelper ) {
-        return new SettingsHelper( context, permissionHelper );
+    public SettingsHelper provideSettingsHelper(Context context, PermissionHelper permissionHelper) {
+        return new SettingsHelper(context, permissionHelper);
     }
 }

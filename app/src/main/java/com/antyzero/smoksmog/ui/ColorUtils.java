@@ -6,7 +6,7 @@ package com.antyzero.smoksmog.ui;
 public class ColorUtils {
 
     private ColorUtils() {
-        throw new IllegalStateException( "Utils class" );
+        throw new IllegalStateException("Utils class");
     }
 /*
     public static int contrastColor( int backgroundColor ){

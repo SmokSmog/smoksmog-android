@@ -2,17 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <CheckBoxPreference
+        android:defaultValue="false"
         android:key="@string/pref_key_station_closest"
-        android:title="@string/pref_station_closest_title"
         android:summary="@string/pref_station_closest_summary"
-        android:defaultValue="false"/>
+        android:title="@string/pref_station_closest_title" />
 
     <ListPreference
-        android:key="@string/pref_key_percent"
-        android:title="@string/pref_percent_title"
-        android:summary="@string/pref_percent_summary"
         android:defaultValue="@string/pref_percent_value_default"
         android:entries="@array/pref_percent_entries"
-        android:entryValues="@array/pref_percent_values"/>
+        android:entryValues="@array/pref_percent_values"
+        android:key="@string/pref_key_percent"
+        android:summary="@string/pref_percent_summary"
+        android:title="@string/pref_percent_title" />
 
 </PreferenceScreen>

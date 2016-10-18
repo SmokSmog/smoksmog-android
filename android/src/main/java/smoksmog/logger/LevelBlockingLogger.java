@@ -8,7 +8,7 @@ public class LevelBlockingLogger implements Logger {
     private final int lowestLevelToLog;
 
     /**
-     * @param logger implementation
+     * @param logger           implementation
      * @param lowestLevelToLog use Log.* value / level, eg. Log.ERROR
      */
     public LevelBlockingLogger(Logger logger, int lowestLevelToLog) {

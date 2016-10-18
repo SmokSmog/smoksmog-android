@@ -11,15 +11,15 @@ public class PageSave {
 
     private final SharedPreferences preferences;
 
-    public PageSave( Context context ) {
-        preferences = context.getSharedPreferences( TAG, Context.MODE_PRIVATE );
+    public PageSave(Context context) {
+        preferences = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
     }
 
-    public void savePage( int pageOrder ) {
-        preferences.edit().putInt( KEY_ORDER, pageOrder ).apply();
+    public void savePage(int pageOrder) {
+        preferences.edit().putInt(KEY_ORDER, pageOrder).apply();
     }
 
     public int restorePage() {
-        return preferences.getInt( KEY_ORDER, 0 );
+        return preferences.getInt(KEY_ORDER, 0);
     }
 }

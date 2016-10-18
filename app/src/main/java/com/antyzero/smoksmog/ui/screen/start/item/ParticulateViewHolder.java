@@ -8,7 +8,6 @@ import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.settings.Percent;
 import com.antyzero.smoksmog.settings.SettingsHelper;
-import smoksmog.ui.IndicatorView;
 import com.antyzero.smoksmog.utils.TextUtils;
 
 import javax.inject.Inject;
@@ -16,6 +15,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.malopolska.smoksmog.model.Particulate;
+import smoksmog.ui.IndicatorView;
 
 public class ParticulateViewHolder extends ListViewHolder<Particulate> {
 
@@ -24,50 +24,50 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
     @Inject
     SettingsHelper settingsHelper;
 
-    @Bind( R.id.textViewName )
+    @Bind(R.id.textViewName)
     TextView textViewName;
-    @Bind( R.id.textViewMeasureDay )
+    @Bind(R.id.textViewMeasureDay)
     TextView textViewMeasureDay;
-    @Bind( R.id.textViewMeasureHour )
+    @Bind(R.id.textViewMeasureHour)
     TextView textViewMeasureHour;
-    @Bind( R.id.textViewTimeHour )
+    @Bind(R.id.textViewTimeHour)
     TextView textViewTimeHour;
-    @Bind( R.id.textViewTimeDay )
+    @Bind(R.id.textViewTimeDay)
     TextView textViewTimeDay;
-    @Bind( R.id.indicatorView )
+    @Bind(R.id.indicatorView)
     IndicatorView indicatorView;
 
-    public ParticulateViewHolder( View itemView ) {
-        super( itemView );
-        SmokSmogApplication.get( itemView.getContext() ).getAppComponent().inject( this );
-        ButterKnife.bind( this, itemView );
+    public ParticulateViewHolder(View itemView) {
+        super(itemView);
+        SmokSmogApplication.get(itemView.getContext()).getAppComponent().inject(this);
+        ButterKnife.bind(this, itemView);
         resources = itemView.getContext().getResources();
     }
 
     @Override
-    public void bind( Particulate data ) {
-        super.bind( data );
-        textViewName.setText( TextUtils.spannableSubscript( data.getShortName() ) );
+    public void bind(Particulate data) {
+        super.bind(data);
+        textViewName.setText(TextUtils.spannableSubscript(data.getShortName()));
 
-        textViewMeasureDay.setText( resources.getString( R.string.measurment, data.getAverage(), data.getUnit() ) );
-        textViewMeasureHour.setText( resources.getString( R.string.measurment, data.getValue(), data.getUnit() ) );
+        textViewMeasureDay.setText(resources.getString(R.string.measurment, data.getAverage(), data.getUnit()));
+        textViewMeasureHour.setText(resources.getString(R.string.measurment, data.getValue(), data.getUnit()));
 
-        if ( data.getValue() > data.getNorm() ) {
-            textViewTimeHour.setBackgroundResource( R.drawable.shape_oval_iron_border );
+        if (data.getValue() > data.getNorm()) {
+            textViewTimeHour.setBackgroundResource(R.drawable.shape_oval_iron_border);
         } else {
-            textViewTimeHour.setBackgroundResource( R.drawable.shape_oval_iron );
+            textViewTimeHour.setBackgroundResource(R.drawable.shape_oval_iron);
         }
 
-        if ( data.getAverage() > data.getNorm() ) {
-            textViewTimeDay.setBackgroundResource( R.drawable.shape_oval_iron_border );
+        if (data.getAverage() > data.getNorm()) {
+            textViewTimeDay.setBackgroundResource(R.drawable.shape_oval_iron_border);
         } else {
-            textViewTimeDay.setBackgroundResource( R.drawable.shape_oval_iron );
+            textViewTimeDay.setBackgroundResource(R.drawable.shape_oval_iron);
         }
 
-        if ( Percent.HOUR.equals( settingsHelper.getPercentMode() ) ) {
-            indicatorView.setValue( data.getValue() / data.getNorm() );
+        if (Percent.HOUR.equals(settingsHelper.getPercentMode())) {
+            indicatorView.setValue(data.getValue() / data.getNorm());
         } else {
-            indicatorView.setValue( data.getAverage() / data.getNorm() );
+            indicatorView.setValue(data.getAverage() / data.getNorm());
         }
     }
 }

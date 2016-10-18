@@ -25,12 +25,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class StartActivityTest {
 
+    @Rule
+    public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
     private final ActivityTestRule<StartActivity> activityTestRule = new MockedNetworkActivityTestRule<>(StartActivity.class, false, true);
     private final SpoonRule spoonRule = new SpoonRule(activityTestRule);
     @Rule
     public final TestRule testRule = RuleChain.outerRule(activityTestRule).around(spoonRule);
-    @Rule
-    public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
 
     @Test
     public void checkCreation() {

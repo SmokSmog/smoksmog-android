@@ -7,26 +7,26 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperAdapter adapter;
 
-    public SimpleItemTouchHelperCallback( ItemTouchHelperAdapter adapter ) {
+    public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
         this.adapter = adapter;
     }
 
     @Override
-    public int getMovementFlags( RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder ) {
+    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         int drawFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-        return makeMovementFlags( drawFlags, swipeFlags );
+        return makeMovementFlags(drawFlags, swipeFlags);
     }
 
     @Override
-    public boolean onMove( RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target ) {
-        adapter.onItemMove( viewHolder.getAdapterPosition(), target.getAdapterPosition() );
+    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        adapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
 
     @Override
-    public void onSwiped( RecyclerView.ViewHolder viewHolder, int direction ) {
-        adapter.onItemDismiss( viewHolder.getAdapterPosition() );
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+        adapter.onItemDismiss(viewHolder.getAdapterPosition());
     }
 
     @Override

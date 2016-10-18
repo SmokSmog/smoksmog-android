@@ -14,35 +14,35 @@ import butterknife.Bind;
 
 public class SettingsActivity extends BaseActivity {
 
-    @Bind( R.id.toolbar )
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
-
-    @Override
-    protected void onCreate( Bundle savedInstanceState ) {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_settings );
-
-        setSupportActionBar( toolbar );
-
-        if ( getSupportActionBar() != null ) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-            getSupportActionBar().setTitle( R.string.title_settings );
-        }
-
-        getFragmentManager().beginTransaction()
-                .replace( R.id.contentFragment, GeneralSettingsFragment.create() )
-                .commit();
-    }
 
     /**
      * @param context for starting
      */
-    public static void start( Context context ) {
-        context.startActivity( intent( context ) );
+    public static void start(Context context) {
+        context.startActivity(intent(context));
     }
 
     @NonNull
-    private static Intent intent( Context context ) {
-        return new Intent( context, SettingsActivity.class );
+    private static Intent intent(Context context) {
+        return new Intent(context, SettingsActivity.class);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(R.string.title_settings);
+        }
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.contentFragment, GeneralSettingsFragment.create())
+                .commit();
     }
 }

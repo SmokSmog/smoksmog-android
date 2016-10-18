@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 
 public class AirQualityDialog extends InfoDialog {
 
-    @Bind( R.id.textView )
+    @Bind(R.id.textView)
     TextView textView;
 
     @Override
@@ -22,10 +22,10 @@ public class AirQualityDialog extends InfoDialog {
     }
 
     @Override
-    protected void initView( View view ) {
-        super.initView( view );
-        ButterKnife.bind( this, view );
-        textView.setText( Html.fromHtml( getString( R.string.desc_air_quality ) ) );
-        textView.setMovementMethod( LinkMovementMethod.getInstance() );
+    protected void initView(View view) {
+        super.initView(view);
+        ButterKnife.bind(this, view);
+        textView.setText(Html.fromHtml(getString(R.string.desc_air_quality)));
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

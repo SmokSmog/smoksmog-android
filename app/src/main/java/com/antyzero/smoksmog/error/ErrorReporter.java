@@ -7,9 +7,9 @@ import android.support.annotation.StringRes;
  */
 public interface ErrorReporter {
 
-    void report( String message );
+    void report(String message);
 
-    void report( @StringRes int stringId );
+    void report(@StringRes int stringId);
 
-    void report( @StringRes int stringId, Object... objects );
+    void report(@StringRes int stringId, Object... objects);
 }

@@ -8,7 +8,7 @@ public class SchedulersHook extends RxJavaSchedulersHook {
 
     private final Scheduler scheduler;
 
-    public SchedulersHook( Scheduler scheduler ) {
+    public SchedulersHook(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
 

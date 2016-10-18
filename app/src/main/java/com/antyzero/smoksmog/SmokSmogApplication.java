@@ -22,12 +22,21 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class SmokSmogApplication extends Application {
 
-    private ApplicationComponent applicationComponent;
-
     @Inject
     Logger logger;
     @Inject
     SmokSmokDb smokSmokDb;
+    private ApplicationComponent applicationComponent;
+
+    /**
+     * Get access to application instance
+     *
+     * @param context
+     * @return
+     */
+    public static SmokSmogApplication get(Context context) {
+        return (SmokSmogApplication) context.getApplicationContext();
+    }
 
     @Override
     public void onCreate() {
@@ -85,15 +94,5 @@ public class SmokSmogApplication extends Application {
     @VisibleForTesting
     public void setAppComponent(ApplicationComponent applicationComponent) {
         this.applicationComponent = applicationComponent;
-    }
-
-    /**
-     * Get access to application instance
-     *
-     * @param context
-     * @return
-     */
-    public static SmokSmogApplication get(Context context) {
-        return (SmokSmogApplication) context.getApplicationContext();
     }
 }

@@ -8,7 +8,7 @@ import java.util.Random;
 
 /**
  * User management
- *
+ * <p>
  * TODO extend in future, for now provide simple and random user ID
  */
 public class User {

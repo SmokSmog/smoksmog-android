@@ -2,15 +2,15 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="@string/pref_key_station_selection_mode"
-        android:title="@string/pref_station_selection_mode_title"
+        android:defaultValue="@string/pref_station_default_value_last"
         android:entries="@array/pref_station_default_entries"
         android:entryValues="@array/pref_station_default_entry_values"
-        android:defaultValue="@string/pref_station_default_value_last"/>
+        android:key="@string/pref_key_station_selection_mode"
+        android:title="@string/pref_station_selection_mode_title" />
 
     <ListPreference
+        android:enabled="false"
         android:key="@string/pref_key_station_selected"
-        android:title="@string/pref_station_selected_title"
-        android:enabled="false"/>
+        android:title="@string/pref_station_selected_title" />
 
 </PreferenceScreen>

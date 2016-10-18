@@ -21,10 +21,10 @@ public class RxSchedulerTestRule implements TestRule {
     private final ThreadPoolIdlingResource idlingResource;
 
     public RxSchedulerTestRule() {
-        ThreadPoolExecutor threadPoolExecutor = ( ThreadPoolExecutor ) Executors.newScheduledThreadPool( 16 );
-        CustomExecutorScheduler scheduler = new CustomExecutorScheduler( threadPoolExecutor );
-        schedulersHook = new SchedulersHook( scheduler );
-        idlingResource = new ThreadPoolIdlingResource( threadPoolExecutor ) {
+        ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newScheduledThreadPool(16);
+        CustomExecutorScheduler scheduler = new CustomExecutorScheduler(threadPoolExecutor);
+        schedulersHook = new SchedulersHook(scheduler);
+        idlingResource = new ThreadPoolIdlingResource(threadPoolExecutor) {
             @Override
             public String getName() {
                 return getClass().getSimpleName();
@@ -33,15 +33,15 @@ public class RxSchedulerTestRule implements TestRule {
     }
 
     @Override
-    public Statement apply( Statement base, Description description ) {
-        return new RxStatement( base, this );
+    public Statement apply(Statement base, Description description) {
+        return new RxStatement(base, this);
     }
 
     private static class RxStatement extends Statement {
         private final Statement base;
         private final RxSchedulerTestRule testRule;
 
-        public RxStatement( Statement base, RxSchedulerTestRule schedulersHook ) {
+        public RxStatement(Statement base, RxSchedulerTestRule schedulersHook) {
             this.base = base;
             this.testRule = schedulersHook;
         }
@@ -50,12 +50,12 @@ public class RxSchedulerTestRule implements TestRule {
         public void evaluate() throws Throwable {
 
             RxJavaTestPlugins.resetPlugins();
-            RxJavaTestPlugins.getInstance().registerSchedulersHook( testRule.schedulersHook );
-            Espresso.registerIdlingResources( testRule.idlingResource );
+            RxJavaTestPlugins.getInstance().registerSchedulersHook(testRule.schedulersHook);
+            Espresso.registerIdlingResources(testRule.idlingResource);
 
             base.evaluate();
 
-            Espresso.unregisterIdlingResources( testRule.idlingResource );
+            Espresso.unregisterIdlingResources(testRule.idlingResource);
             RxJavaTestPlugins.resetPlugins();
         }
     }

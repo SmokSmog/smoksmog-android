@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewAnimator
-    android:id="@+id/viewAnimator"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewAnimator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
@@ -18,7 +17,7 @@
         android:clipToPadding="false"
         android:paddingBottom="100dp"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"/>
+        android:paddingRight="8dp" />
 
     <!-- Loading progress -->
 
@@ -31,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:indeterminate="true"/>
+            android:indeterminate="true" />
 
     </FrameLayout>
 
@@ -55,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_8"
-                android:src="@drawable/ic_refresh_white_48dp"/>
+                android:src="@drawable/ic_refresh_white_48dp" />
 
             <TextView
                 android:id="@+id/textViewError"
@@ -64,13 +63,13 @@
                 android:layout_marginBottom="@dimen/margin_8"
                 android:textAppearance="@style/TextAppearance"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/click_to_try_again"
-                android:textAppearance="@style/TextAppearance"/>
+                android:textAppearance="@style/TextAppearance" />
 
         </LinearLayout>
 

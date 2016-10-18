@@ -8,11 +8,13 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Module @Singleton
+@Module
+@Singleton
 public class UserModule {
 
-    @Provides @Singleton
-    public User provideUser(Context context){
+    @Provides
+    @Singleton
+    public User provideUser(Context context) {
         return new User(context);
     }
 }

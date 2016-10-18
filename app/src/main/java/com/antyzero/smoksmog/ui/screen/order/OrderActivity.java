@@ -47,7 +47,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     private static final String TAG = OrderActivity.class.getSimpleName();
     private static final String EXTRA_DIALOG = "EXTRA_DIALOG";
     private static final int PICK_STATION_REQUEST = 8925;
-
+    private final List<Station> stationList = new ArrayList<>();
     @Inject
     SmokSmog smokSmog;
     @Inject
@@ -56,16 +56,23 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     Logger logger;
     @Inject
     ErrorReporter errorReporter;
-
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.fab)
     FloatingActionButton floatingActionButton;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
-    private final List<Station> stationList = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
+
+    public static void start(Context context) {
+        start(context, false);
+    }
+
+    public static void start(Context context, boolean stationPickUp) {
+        Intent intent = new Intent(context, OrderActivity.class);
+        intent.putExtra(EXTRA_DIALOG, stationPickUp);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,16 +192,6 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         itemTouchHelper.startDrag(viewHolder);
-    }
-
-    public static void start(Context context) {
-        start(context, false);
-    }
-
-    public static void start(Context context, boolean stationPickUp) {
-        Intent intent = new Intent(context, OrderActivity.class);
-        intent.putExtra(EXTRA_DIALOG, stationPickUp);
-        context.startActivity(intent);
     }
 
     @Override

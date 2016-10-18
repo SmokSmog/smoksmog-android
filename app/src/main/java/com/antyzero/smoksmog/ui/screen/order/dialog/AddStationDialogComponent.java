@@ -12,5 +12,5 @@ import dagger.Subcomponent;
 )
 public interface AddStationDialogComponent {
 
-    void inject( AddStationDialog addStationDialog );
+    void inject(AddStationDialog addStationDialog);
 }

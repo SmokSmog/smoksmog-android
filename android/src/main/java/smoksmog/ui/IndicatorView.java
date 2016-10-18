@@ -22,11 +22,8 @@ public class IndicatorView extends View {
 
     private static final float GAP_ANGLE_DEFAULT = 0;
     private static final int STROKE_WIDTH_DEFAULT = 3;
-
+    private final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f);
     private float gapAngle = GAP_ANGLE_DEFAULT;
-
-    private final ValueAnimator valueAnimator = ValueAnimator.ofFloat( 0f );
-
     private Paint paintArcBackground;
     private Paint paintArcForeground;
     private Paint paintNameShort;
@@ -57,108 +54,108 @@ public class IndicatorView extends View {
     /**
      * Setup variables
      */ {
-        valueAnimator.setDuration( 1000L );
-        valueAnimator.setInterpolator( new AccelerateDecelerateInterpolator() );
+        valueAnimator.setDuration(1000L);
+        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
     }
 
-    public IndicatorView( Context context ) {
-        super( context );
-        init( context );
+    public IndicatorView(Context context) {
+        super(context);
+        init(context);
     }
 
-    public IndicatorView( Context context, AttributeSet attrs ) {
-        super( context, attrs );
-        init( context );
+    public IndicatorView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
     }
 
-    public IndicatorView( Context context, AttributeSet attrs, int defStyleAttr ) {
-        super( context, attrs, defStyleAttr );
-        init( context );
+    public IndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
     }
 
-    @SuppressWarnings( "unused" )
-    @TargetApi( 21 )
-    public IndicatorView( Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes ) {
-        super( context, attrs, defStyleAttr, defStyleRes );
-        init( context );
+    @SuppressWarnings("unused")
+    @TargetApi(21)
+    public IndicatorView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init(context);
     }
 
-    private void init( Context context ) {
+    private static float dipToPixels(Context context, float dipValue) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
+    }
 
-        strokeWidth = dipToPixels( context, STROKE_WIDTH_DEFAULT );
-        textNameSize = dipToPixels( context, 32 );
+    private void init(Context context) {
 
-        colorBad = context.getResources().getColor( R.color.indicator_bad );
-        colorGood = context.getResources().getColor( R.color.indicator_good );
+        strokeWidth = dipToPixels(context, STROKE_WIDTH_DEFAULT);
+        textNameSize = dipToPixels(context, 32);
+
+        colorBad = context.getResources().getColor(R.color.indicator_bad);
+        colorGood = context.getResources().getColor(R.color.indicator_good);
 
         // Init paints
 
         paintArcBackground = new Paint();
-        paintArcBackground.setAntiAlias( true );
-        paintArcBackground.setStrokeCap( Paint.Cap.ROUND );
-        paintArcBackground.setStrokeWidth( strokeWidth - 2 );
-        paintArcBackground.setStyle( Paint.Style.STROKE );
-        paintArcBackground.setColor( getResources().getColor( R.color.iron ) );
-        paintArcBackground.setAlpha( 104 );
+        paintArcBackground.setAntiAlias(true);
+        paintArcBackground.setStrokeCap(Paint.Cap.ROUND);
+        paintArcBackground.setStrokeWidth(strokeWidth - 2);
+        paintArcBackground.setStyle(Paint.Style.STROKE);
+        paintArcBackground.setColor(getResources().getColor(R.color.iron));
+        paintArcBackground.setAlpha(104);
 
-        paintArcForeground = new Paint( paintArcBackground );
-        paintArcForeground.setAntiAlias( true );
-        paintArcForeground.setStrokeCap( Paint.Cap.ROUND );
-        paintArcForeground.setStyle( Paint.Style.STROKE );
-        paintArcForeground.setColor( Color.parseColor( "#5be6dc" ) );
-        paintArcForeground.setStrokeWidth( strokeWidth );
+        paintArcForeground = new Paint(paintArcBackground);
+        paintArcForeground.setAntiAlias(true);
+        paintArcForeground.setStrokeCap(Paint.Cap.ROUND);
+        paintArcForeground.setStyle(Paint.Style.STROKE);
+        paintArcForeground.setColor(Color.parseColor("#5be6dc"));
+        paintArcForeground.setStrokeWidth(strokeWidth);
 
         paintValue = new Paint();
-        paintValue.setAntiAlias( true );
-        paintValue.setColor( context.getResources().getColor( R.color.iron ) );
-        paintValue.setStyle( Paint.Style.FILL );
-        paintValue.setTypeface( Typeface.createFromAsset( context.getAssets(), "fonts/Lato-Light.ttf" ) );
+        paintValue.setAntiAlias(true);
+        paintValue.setColor(context.getResources().getColor(R.color.iron));
+        paintValue.setStyle(Paint.Style.FILL);
+        paintValue.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf"));
 
         paintMaxValue = new Paint();
-        paintMaxValue.setAntiAlias( true );
-        paintMaxValue.setStyle( Paint.Style.FILL );
-        paintMaxValue.setTypeface( Typeface.defaultFromStyle( Typeface.BOLD ) );
+        paintMaxValue.setAntiAlias(true);
+        paintMaxValue.setStyle(Paint.Style.FILL);
+        paintMaxValue.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 
         paintNameShort = new Paint();
-        paintNameShort.setAntiAlias( true );
-        paintNameShort.setStyle( Paint.Style.FILL );
-        paintNameShort.setTextSize( textNameSize );
+        paintNameShort.setAntiAlias(true);
+        paintNameShort.setStyle(Paint.Style.FILL);
+        paintNameShort.setTextSize(textNameSize);
 
         calculateMinorDrawingVariables();
     }
 
     @Override
-    protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec ) {
-        int widthMode = MeasureSpec.getMode( widthMeasureSpec );
-        int widthSize = MeasureSpec.getSize( widthMeasureSpec );
-        int heightMode = MeasureSpec.getMode( heightMeasureSpec );
-        int heightSize = MeasureSpec.getSize( heightMeasureSpec );
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
         int size;
-        if ( widthMode == MeasureSpec.EXACTLY && widthSize > 0 ) {
+        if (widthMode == MeasureSpec.EXACTLY && widthSize > 0) {
             size = widthSize;
-        } else if ( heightMode == MeasureSpec.EXACTLY && heightSize > 0 ) {
+        } else if (heightMode == MeasureSpec.EXACTLY && heightSize > 0) {
             size = heightSize;
         } else {
             size = widthSize < heightSize ? widthSize : heightSize;
         }
 
-        int widthNewSpec = MeasureSpec.makeMeasureSpec( size, MeasureSpec.EXACTLY );
-        int heightNewSpec = MeasureSpec.makeMeasureSpec( size, MeasureSpec.EXACTLY );
-        super.onMeasure( widthNewSpec, heightNewSpec );
+        int widthNewSpec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY);
+        int heightNewSpec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY);
+        super.onMeasure(widthNewSpec, heightNewSpec);
     }
 
     @Override
-    protected void onSizeChanged( int w, int h, int oldw, int oldh ) {
-        super.onSizeChanged( w, h, oldw, oldh );
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
         currentWidth = w;
         currentHeight = h;
         calculateDrawingVariables();
-    }
-
-    private static float dipToPixels( Context context, float dipValue ) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics );
     }
 
     /**
@@ -166,41 +163,41 @@ public class IndicatorView extends View {
      *
      * @param newValue
      */
-    public void setValue( float newValue ) {
+    public void setValue(float newValue) {
 
-        if ( valueAnimator.isRunning() ) {
+        if (valueAnimator.isRunning()) {
             valueAnimator.cancel();
         }
 
-        valueAnimator.setFloatValues( this.value, newValue );
-        valueAnimator.addUpdateListener( animation -> {
-            this.value = ( float ) animation.getAnimatedValue();
+        valueAnimator.setFloatValues(this.value, newValue);
+        valueAnimator.addUpdateListener(animation -> {
+            this.value = (float) animation.getAnimatedValue();
             recalculateDuringAnimation();
-        } );
-        valueAnimator.addListener( new Animator.AnimatorListener() {
+        });
+        valueAnimator.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart( Animator animation ) {
+            public void onAnimationStart(Animator animation) {
                 // Do nothing
             }
 
             @Override
-            public void onAnimationEnd( Animator animation ) {
+            public void onAnimationEnd(Animator animation) {
                 // Do nothing
             }
 
             @Override
-            public void onAnimationCancel( Animator animation ) {
-                if ( animation instanceof ValueAnimator ) {
-                    ValueAnimator valueAnimator = ( ValueAnimator ) animation;
-                    IndicatorView.this.value = ( float ) valueAnimator.getAnimatedValue();
+            public void onAnimationCancel(Animator animation) {
+                if (animation instanceof ValueAnimator) {
+                    ValueAnimator valueAnimator = (ValueAnimator) animation;
+                    IndicatorView.this.value = (float) valueAnimator.getAnimatedValue();
                 }
             }
 
             @Override
-            public void onAnimationRepeat( Animator animation ) {
+            public void onAnimationRepeat(Animator animation) {
                 // Do nothing
             }
-        } );
+        });
         valueAnimator.start();
     }
 
@@ -209,13 +206,13 @@ public class IndicatorView extends View {
      */
     private void recalculateDuringAnimation() {
 
-        this.arcValue = ( value * sweepAngle );
-        this.valueText = String.format( "%.0f%%", value * 100 );
-        this.overLap = ( int ) Math.floor( value );
+        this.arcValue = (value * sweepAngle);
+        this.valueText = String.format("%.0f%%", value * 100);
+        this.overLap = (int) Math.floor(value);
 
-        paintArcForeground.setColor( arcValue <= 360f ?
+        paintArcForeground.setColor(arcValue <= 360f ?
                 colorGood :
-                Color.rgb( 242, 162, 60 ) );
+                Color.rgb(242, 162, 60));
 
         postInvalidateOnAnimation();
     }
@@ -241,38 +238,38 @@ public class IndicatorView extends View {
                 halfStrokeWidth,
                 halfStrokeWidth,
                 currentWidth - halfStrokeWidth,
-                currentWidth - halfStrokeWidth );
+                currentWidth - halfStrokeWidth);
 
         canvasHorizontalMiddle = currentWidth / 2;
         canvasVerticalMiddle = currentWidth / 2;
 
-        paintValue.setTextSize( ( arcRect.bottom - arcRect.top ) / 4f );
+        paintValue.setTextSize((arcRect.bottom - arcRect.top) / 4f);
 
         postInvalidateOnAnimation();
     }
 
     @Override
-    protected void onDraw( Canvas canvas ) {
-        super.onDraw( canvas );
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
 
-        canvas.drawArc( arcRect, startAngle, sweepAngle, false, paintArcBackground );
+        canvas.drawArc(arcRect, startAngle, sweepAngle, false, paintArcBackground);
 
         // TODO if overlap is > 0 draw pre background ?
 
-        canvas.drawArc( arcRect, startAngle, arcValue, false, paintArcForeground );
-        drawTextCentred( canvas, paintValue, valueText, arcRect );
+        canvas.drawArc(arcRect, startAngle, arcValue, false, paintArcForeground);
+        drawTextCentred(canvas, paintValue, valueText, arcRect);
     }
 
-    private void drawTextCentred( Canvas canvas, Paint paint, String text, RectF bounds ) {
-        drawTextCentred( canvas, paint, text, bounds.centerX(), bounds.centerY(), new Rect() );
+    private void drawTextCentred(Canvas canvas, Paint paint, String text, RectF bounds) {
+        drawTextCentred(canvas, paint, text, bounds.centerX(), bounds.centerY(), new Rect());
     }
 
-    private void drawTextCentred( Canvas canvas, Paint paint, String text, float cx, float cy ) {
-        drawTextCentred( canvas, paint, text, cx, cy, new Rect() );
+    private void drawTextCentred(Canvas canvas, Paint paint, String text, float cx, float cy) {
+        drawTextCentred(canvas, paint, text, cx, cy, new Rect());
     }
 
-    private void drawTextCentred( Canvas canvas, Paint paint, String text, float cx, float cy, Rect textBounds ) {
-        paint.getTextBounds( text, 0, text.length(), textBounds );
-        canvas.drawText( text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(), paint );
+    private void drawTextCentred(Canvas canvas, Paint paint, String text, float cx, float cy, Rect textBounds) {
+        paint.getTextBounds(text, 0, text.length(), textBounds);
+        canvas.drawText(text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(), paint);
     }
 }
