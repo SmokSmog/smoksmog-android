@@ -48,13 +48,16 @@ public class SmokSmogApplication extends Application {
                 .build());
 
 
-        JobManager.create(this).addJobCreator(new WidgetJobCreator(this));
+        JobManager manager = JobManager.create(this);
+        manager.addJobCreator(new WidgetJobCreator(this));
 
-        new JobRequest.Builder("StationWidgetJob")
-                .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
-                .setRequiredNetworkType(JobRequest.NetworkType.NOT_ROAMING)
-                .setPersisted(true)
-                .build().schedule();
+        if (manager.getAllJobRequestsForTag("StationWidgetJob").isEmpty()) {
+            new JobRequest.Builder("StationWidgetJob")
+                    .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(5))
+                    .setRequiredNetworkType(JobRequest.NetworkType.NOT_ROAMING)
+                    .setPersisted(true)
+                    .build().schedule();
+        }
 
 
         // TODO db testing code ignore and delete in future
