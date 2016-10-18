@@ -10,21 +10,21 @@ import com.antyzero.smoksmog.R;
  */
 public enum Percent {
 
-    HOUR( R.string.pref_percent_value_hour ), DAY( R.string.pref_percent_value_day );
+    HOUR(R.string.pref_percent_value_hour), DAY(R.string.pref_percent_value_day);
 
     private final int value;
 
-    Percent( @StringRes int value ) {
+    Percent(@StringRes int value) {
         this.value = value;
     }
 
-    public static Percent find( Context context, String value ) {
+    public static Percent find(Context context, String value) {
 
-        for ( Percent percent : values() ) {
-            if ( context.getString( percent.value ).equals( value ) ) {
+        for (Percent percent : values()) {
+            if (context.getString(percent.value).equals(value)) {
                 return percent;
             }
         }
-        throw new IllegalArgumentException( "Unable to find proper enum value for \"" + value + "\"" );
+        throw new IllegalArgumentException("Unable to find proper enum value for \"" + value + "\"");
     }
 }

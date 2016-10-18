@@ -21,6 +21,6 @@ public class RxJava {
     };
 
     private RxJava() {
-        throw new IllegalAccessError( "Utils class" );
+        throw new IllegalAccessError("Utils class");
     }
 }

@@ -8,8 +8,8 @@ public abstract class ListViewHolder<T> extends RecyclerView.ViewHolder {
 
     private Context context;
 
-    public ListViewHolder( View itemView ) {
-        super( itemView );
+    public ListViewHolder(View itemView) {
+        super(itemView);
         this.context = itemView.getContext();
     }
 
@@ -17,6 +17,6 @@ public abstract class ListViewHolder<T> extends RecyclerView.ViewHolder {
         return context;
     }
 
-    public void bind( T data ) {
+    public void bind(T data) {
     }
 }

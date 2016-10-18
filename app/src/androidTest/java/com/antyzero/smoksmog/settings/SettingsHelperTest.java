@@ -16,22 +16,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SettingsHelperTest extends ApplicationTestCase<SmokSmogApplication> {
 
     public SettingsHelperTest() {
-        super( SmokSmogApplication.class );
+        super(SmokSmogApplication.class);
     }
 
     public void testGetStationIdList() throws Exception {
 
         // Given
         createApplication();
-        PermissionHelper permissionHelper = new PermissionHelper( getApplication() );
-        SettingsHelper settingsHelper = new SettingsHelper( getApplication(), permissionHelper );
-        List<Long> longList = new ArrayList<>( Arrays.asList( 4L, 3L, 2L ) );
-        settingsHelper.setStationIdList( longList );
+        PermissionHelper permissionHelper = new PermissionHelper(getApplication());
+        SettingsHelper settingsHelper = new SettingsHelper(getApplication(), permissionHelper);
+        List<Long> longList = new ArrayList<>(Arrays.asList(4L, 3L, 2L));
+        settingsHelper.setStationIdList(longList);
 
         // When
         List<Long> result = settingsHelper.getStationIdList();
 
         // Then
-        assertThat( result ).containsSequence( 4L, 3L, 2L );
+        assertThat(result).containsSequence(4L, 3L, 2L);
     }
 }

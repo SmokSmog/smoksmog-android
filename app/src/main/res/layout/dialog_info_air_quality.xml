@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,7 +14,7 @@
         android:elevation="@dimen/toolbar_elevation_default"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/airQualityIndex"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -34,7 +33,7 @@
                 android:maxLength="30000"
                 android:maxLines="3000"
                 android:padding="@dimen/margin_8"
-                android:text="@string/desc_air_quality"/>
+                android:text="@string/desc_air_quality" />
 
         </LinearLayout>
 

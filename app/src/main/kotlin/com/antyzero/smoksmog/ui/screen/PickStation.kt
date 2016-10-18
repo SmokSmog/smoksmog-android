@@ -12,7 +12,6 @@ import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.fullscreen
 import com.antyzero.smoksmog.ui.statusBarHeight
-import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.activity_pick_station.*
 import pl.malopolska.smoksmog.SmokSmog
 import pl.malopolska.smoksmog.model.Station

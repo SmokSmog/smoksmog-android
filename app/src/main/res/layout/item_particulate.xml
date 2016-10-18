@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,12 +20,12 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="8dp"
         android:gravity="left|center_vertical"
-        android:minWidth="90dp"
         android:minHeight="@dimen/indicator_width_small"
+        android:minWidth="90dp"
         android:textAppearance="@style/TextAppearance"
         android:textSize="22sp"
         tools:ignore="RtlHardcoded"
-        tools:text="PM10"/>
+        tools:text="PM10" />
 
     <!-- Percent indicator -->
 
@@ -37,7 +36,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/textViewName"
         tools:layout_height="@dimen/indicator_width_small"
-        tools:layout_width="60dp"/>
+        tools:layout_width="60dp" />
 
     <!-- Values 24 and 1 hour -->
 
@@ -57,7 +56,7 @@
             android:background="@drawable/shape_oval_iron"
             android:gravity="center"
             android:text="@string/hours_24"
-            android:textAppearance="@style/TextAppearance.Invert"/>
+            android:textAppearance="@style/TextAppearance.Invert" />
 
         <TextView
             android:id="@+id/textViewMeasureDay"
@@ -68,7 +67,7 @@
             android:textAppearance="@style/TextAppearance"
             android:textSize="18sp"
             tools:ignore="RtlHardcoded"
-            tools:text="1 mg/m3"/>
+            tools:text="1 mg/m3" />
 
         <TextView
             android:id="@+id/textViewTimeHour"
@@ -77,7 +76,7 @@
             android:background="@drawable/shape_oval_iron"
             android:gravity="center"
             android:text="@string/hours_1"
-            android:textAppearance="@style/TextAppearance.Invert"/>
+            android:textAppearance="@style/TextAppearance.Invert" />
 
         <TextView
             android:id="@+id/textViewMeasureHour"
@@ -88,7 +87,7 @@
             android:textAppearance="@style/TextAppearance"
             android:textSize="18sp"
             tools:ignore="RtlHardcoded"
-            tools:text="289 mg/m3"/>
+            tools:text="289 mg/m3" />
 
     </GridLayout>
 

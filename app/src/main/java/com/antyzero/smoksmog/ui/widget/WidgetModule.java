@@ -14,7 +14,7 @@ public class WidgetModule {
 
     @Provides
     @Singleton
-    public StationWidgetData provideStationWidgetData(Context context){
+    public StationWidgetData provideStationWidgetData(Context context) {
         return new StationWidgetData(context);
     }
 }

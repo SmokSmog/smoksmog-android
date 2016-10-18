@@ -4,13 +4,10 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import android.widget.RemoteViews
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.toast
-import org.joda.time.DateTime
-import org.joda.time.LocalDateTime
 import pl.malopolska.smoksmog.SmokSmog
 import pl.malopolska.smoksmog.model.Station
 import smoksmog.air.AirQuality

@@ -10,5 +10,5 @@ import dagger.Subcomponent;
         }
 )
 public interface AboutActivityComponent {
-    void inject( AboutActivity activity );
+    void inject(AboutActivity activity);
 }

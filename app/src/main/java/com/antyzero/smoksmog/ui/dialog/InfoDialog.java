@@ -17,6 +17,19 @@ public abstract class InfoDialog extends DialogFragment {
 
     private static final String TAG = InfoDialog.class.getSimpleName();
 
+    public static void show(FragmentManager fragmentManager, Event event) {
+        InfoDialog infoDialog;
+
+        try {
+            infoDialog = (InfoDialog) event.dialogFragment.newInstance();
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                    "Problem with creating fragment dialog " + event.dialogFragment.getSimpleName(), e);
+        }
+
+        infoDialog.show(fragmentManager, TAG);
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -45,19 +58,6 @@ public abstract class InfoDialog extends DialogFragment {
 
     @LayoutRes
     protected abstract int getLayoutId();
-
-    public static void show(FragmentManager fragmentManager, Event event) {
-        InfoDialog infoDialog;
-
-        try {
-            infoDialog = (InfoDialog) event.dialogFragment.newInstance();
-        } catch (Exception e) {
-            throw new IllegalStateException(
-                    "Problem with creating fragment dialog " + event.dialogFragment.getSimpleName(), e);
-        }
-
-        infoDialog.show(fragmentManager, TAG);
-    }
 
     public static class Event<T extends InfoDialog> {
 

@@ -12,7 +12,7 @@ import dagger.Subcomponent;
 )
 public interface FragmentComponent {
 
-    void inject( GeneralSettingsFragment generalSettingsFragment );
+    void inject(GeneralSettingsFragment generalSettingsFragment);
 
-    void inject( NetworkStationFragment networkStationFragment );
+    void inject(NetworkStationFragment networkStationFragment);
 }

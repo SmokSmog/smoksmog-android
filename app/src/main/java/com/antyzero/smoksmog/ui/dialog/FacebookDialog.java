@@ -1,7 +1,6 @@
 package com.antyzero.smoksmog.ui.dialog;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -47,7 +46,7 @@ public class FacebookDialog extends InfoDialog {
     @Override
     protected void initView(View view) {
         super.initView(view);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         SmokSmogApplication.get(view.getContext()).getAppComponent().inject(this);
         imageView.setOnClickListener(v -> takeMeToFacebook());
     }

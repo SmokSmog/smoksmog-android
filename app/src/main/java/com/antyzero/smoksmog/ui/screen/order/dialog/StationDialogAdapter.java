@@ -19,23 +19,23 @@ public class StationDialogAdapter extends RecyclerView.Adapter<StationViewHolder
     private final List<Station> stationList;
     private final StationListener stationListener;
 
-    public StationDialogAdapter( List<Station> stationList, StationListener stationListener ) {
+    public StationDialogAdapter(List<Station> stationList, StationListener stationListener) {
         this.stationList = stationList;
         this.stationListener = stationListener;
     }
 
     @Override
-    public StationViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
-        TextView textView = new TextView( parent.getContext() );
-        textView.setLayoutParams( new ViewGroup.LayoutParams( MATCH_PARENT, WRAP_CONTENT ) );
-        int padding = parent.getResources().getDimensionPixelSize( R.dimen.margin_16 );
-        textView.setPadding( padding, padding, padding, padding );
-        return new StationViewHolder( textView, stationListener::onStation );
+    public StationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        TextView textView = new TextView(parent.getContext());
+        textView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+        int padding = parent.getResources().getDimensionPixelSize(R.dimen.margin_16);
+        textView.setPadding(padding, padding, padding, padding);
+        return new StationViewHolder(textView, stationListener::onStation);
     }
 
     @Override
-    public void onBindViewHolder( StationViewHolder holder, int position ) {
-        holder.bind( stationList.get( position ) );
+    public void onBindViewHolder(StationViewHolder holder, int position) {
+        holder.bind(stationList.get(position));
     }
 
     @Override
@@ -45,6 +45,6 @@ public class StationDialogAdapter extends RecyclerView.Adapter<StationViewHolder
 
     public interface StationListener {
 
-        void onStation( long stationId );
+        void onStation(long stationId);
     }
 }

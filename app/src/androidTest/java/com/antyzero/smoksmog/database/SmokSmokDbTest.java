@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.Random;
 
 import rx.Observable;
-import rx.functions.Func2;
 import rx.observers.TestSubscriber;
 import rx.schedulers.Schedulers;
 

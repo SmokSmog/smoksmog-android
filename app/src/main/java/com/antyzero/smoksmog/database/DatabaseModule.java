@@ -43,7 +43,7 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    public SmokSmokDb provideSmokSmokDb(BriteDatabase briteDatabase){
+    public SmokSmokDb provideSmokSmokDb(BriteDatabase briteDatabase) {
         return new SmokSmokDb(briteDatabase);
     }
 }

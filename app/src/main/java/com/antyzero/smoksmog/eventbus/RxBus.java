@@ -7,10 +7,10 @@ import rx.subjects.Subject;
 
 public class RxBus {
 
-    private final Subject<Object, Object> _bus = new SerializedSubject<>( PublishSubject.create() );
+    private final Subject<Object, Object> _bus = new SerializedSubject<>(PublishSubject.create());
 
-    public void send( Object o ) {
-        _bus.onNext( o );
+    public void send(Object o) {
+        _bus.onNext(o);
     }
 
     public Observable<Object> toObserverable() {

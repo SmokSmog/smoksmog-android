@@ -13,23 +13,23 @@ public abstract class ForwardingList<T> implements List<T> {
     protected abstract List<T> delegate();
 
     @Override
-    public void add( int location, T object ) {
-        delegate().add( location, object );
+    public void add(int location, T object) {
+        delegate().add(location, object);
     }
 
     @Override
-    public boolean add( T object ) {
-        return delegate().add( object );
+    public boolean add(T object) {
+        return delegate().add(object);
     }
 
     @Override
-    public boolean addAll( int location, @NonNull Collection<? extends T> collection ) {
-        return delegate().addAll( location, collection );
+    public boolean addAll(int location, @NonNull Collection<? extends T> collection) {
+        return delegate().addAll(location, collection);
     }
 
     @Override
-    public boolean addAll( @NonNull Collection<? extends T> collection ) {
-        return delegate().addAll( collection );
+    public boolean addAll(@NonNull Collection<? extends T> collection) {
+        return delegate().addAll(collection);
     }
 
     @Override
@@ -38,23 +38,23 @@ public abstract class ForwardingList<T> implements List<T> {
     }
 
     @Override
-    public boolean contains( Object object ) {
-        return delegate().contains( object );
+    public boolean contains(Object object) {
+        return delegate().contains(object);
     }
 
     @Override
-    public boolean containsAll( @NonNull Collection<?> collection ) {
-        return delegate().containsAll( collection );
+    public boolean containsAll(@NonNull Collection<?> collection) {
+        return delegate().containsAll(collection);
     }
 
     @Override
-    public boolean equals( Object object ) {
-        return delegate().equals( object );
+    public boolean equals(Object object) {
+        return delegate().equals(object);
     }
 
     @Override
-    public T get( int location ) {
-        return delegate().get( location );
+    public T get(int location) {
+        return delegate().get(location);
     }
 
     @Override
@@ -63,8 +63,8 @@ public abstract class ForwardingList<T> implements List<T> {
     }
 
     @Override
-    public int indexOf( Object object ) {
-        return delegate().indexOf( object );
+    public int indexOf(Object object) {
+        return delegate().indexOf(object);
     }
 
     @Override
@@ -79,8 +79,8 @@ public abstract class ForwardingList<T> implements List<T> {
     }
 
     @Override
-    public int lastIndexOf( Object object ) {
-        return delegate().lastIndexOf( object );
+    public int lastIndexOf(Object object) {
+        return delegate().lastIndexOf(object);
     }
 
     @Override
@@ -90,33 +90,33 @@ public abstract class ForwardingList<T> implements List<T> {
 
     @NonNull
     @Override
-    public ListIterator<T> listIterator( int location ) {
-        return delegate().listIterator( location );
+    public ListIterator<T> listIterator(int location) {
+        return delegate().listIterator(location);
     }
 
     @Override
-    public T remove( int location ) {
-        return delegate().remove( location );
+    public T remove(int location) {
+        return delegate().remove(location);
     }
 
     @Override
-    public boolean remove( Object object ) {
-        return delegate().remove( object );
+    public boolean remove(Object object) {
+        return delegate().remove(object);
     }
 
     @Override
-    public boolean removeAll( @NonNull Collection<?> collection ) {
-        return delegate().removeAll( collection );
+    public boolean removeAll(@NonNull Collection<?> collection) {
+        return delegate().removeAll(collection);
     }
 
     @Override
-    public boolean retainAll( @NonNull Collection<?> collection ) {
-        return delegate().retainAll( collection );
+    public boolean retainAll(@NonNull Collection<?> collection) {
+        return delegate().retainAll(collection);
     }
 
     @Override
-    public T set( int location, T object ) {
-        return delegate().set( location, object );
+    public T set(int location, T object) {
+        return delegate().set(location, object);
     }
 
     @Override
@@ -126,8 +126,8 @@ public abstract class ForwardingList<T> implements List<T> {
 
     @NonNull
     @Override
-    public List<T> subList( int start, int end ) {
-        return delegate().subList( start, end );
+    public List<T> subList(int start, int end) {
+        return delegate().subList(start, end);
     }
 
     @NonNull
@@ -138,7 +138,7 @@ public abstract class ForwardingList<T> implements List<T> {
 
     @NonNull
     @Override
-    public <T1> T1[] toArray( T1[] array ) {
-        return delegate().toArray( array );
+    public <T1> T1[] toArray(T1[] array) {
+        return delegate().toArray(array);
     }
 }

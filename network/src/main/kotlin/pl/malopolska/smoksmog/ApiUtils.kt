@@ -3,8 +3,6 @@ package pl.malopolska.smoksmog
 
 import pl.malopolska.smoksmog.model.Particulate
 import rx.Observable
-import rx.functions.Func1
-import rx.functions.Func2
 
 class ApiUtils private constructor() {
 

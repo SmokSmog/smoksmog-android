@@ -9,7 +9,7 @@ public class SupportFragmentModule {
 
     private final Fragment fragment;
 
-    public SupportFragmentModule( Fragment fragment ) {
+    public SupportFragmentModule(Fragment fragment) {
         this.fragment = fragment;
     }
 }

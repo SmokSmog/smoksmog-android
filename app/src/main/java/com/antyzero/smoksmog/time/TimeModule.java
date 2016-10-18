@@ -13,7 +13,7 @@ public class TimeModule {
 
     @Provides
     @Singleton
-    public CountdownProvider provideCountdownProvider( Context context ) {
-        return new CountdownProvider( context );
+    public CountdownProvider provideCountdownProvider(Context context) {
+        return new CountdownProvider(context);
     }
 }

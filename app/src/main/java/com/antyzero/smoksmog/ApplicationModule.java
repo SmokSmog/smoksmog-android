@@ -17,7 +17,7 @@ public class ApplicationModule {
 
     private final Application application;
 
-    public ApplicationModule( Application application ) {
+    public ApplicationModule(Application application) {
         this.application = application;
     }
 
@@ -35,13 +35,13 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public TypefaceProvider provideTypefaceProvider( Context context ) {
-        return new TypefaceProvider( context );
+    public TypefaceProvider provideTypefaceProvider(Context context) {
+        return new TypefaceProvider(context);
     }
 
     @Provides
     @Singleton
-    public PermissionHelper providePermissionHelper( Context context ){
-        return new PermissionHelper( context );
+    public PermissionHelper providePermissionHelper(Context context) {
+        return new PermissionHelper(context);
     }
 }

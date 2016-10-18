@@ -15,8 +15,8 @@ public abstract class BaseFragment extends RxFragment {
 
     @Override
     @CallSuper
-    public void onViewCreated( View view, Bundle savedInstanceState ) {
-        super.onViewCreated( view, savedInstanceState );
-        ButterKnife.bind( this, view );
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
     }
 }

@@ -8,8 +8,8 @@ public class TypefaceProvider {
 
     private final Typeface defaultTypeface;
 
-    public TypefaceProvider( Context context ) {
-        defaultTypeface = Typeface.createFromAsset( context.getAssets(), "fonts/Lato-Light.ttf" );
+    public TypefaceProvider(Context context) {
+        defaultTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf");
     }
 
     public Typeface getDefault() {

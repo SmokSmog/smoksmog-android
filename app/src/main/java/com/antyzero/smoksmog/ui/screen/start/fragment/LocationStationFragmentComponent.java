@@ -3,7 +3,6 @@ package com.antyzero.smoksmog.ui.screen.start.fragment;
 
 import com.antyzero.smoksmog.google.GoogleModule;
 import com.antyzero.smoksmog.ui.screen.FragmentModule;
-import com.antyzero.smoksmog.ui.screen.start.fragment.StationFragment;
 
 import dagger.Subcomponent;
 
@@ -15,5 +14,5 @@ import dagger.Subcomponent;
 )
 public interface LocationStationFragmentComponent {
 
-    void inject( LocationStationFragment fragment );
+    void inject(LocationStationFragment fragment);
 }

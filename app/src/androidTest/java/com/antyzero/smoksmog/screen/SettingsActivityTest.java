@@ -20,12 +20,12 @@ import org.junit.runner.RunWith;
 @LargeTest
 public class SettingsActivityTest {
 
+    @Rule
+    public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
     private final ActivityTestRule<SettingsActivity> activityTestRule = new MockedNetworkActivityTestRule<>(SettingsActivity.class);
     private final SpoonRule spoonRule = new SpoonRule(activityTestRule);
     @Rule
     public final TestRule testRule = RuleChain.outerRule(activityTestRule).around(spoonRule);
-    @Rule
-    public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
 
     @Test
     public void checkCreation() {

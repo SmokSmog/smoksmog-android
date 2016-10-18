@@ -10,8 +10,8 @@ import pl.malopolska.smoksmog.model.Station;
  */
 public class AirQualityIndex {
 
-    public static double calculate( Station station ) {
-        return calculate( station.getParticulates() );
+    public static double calculate(Station station) {
+        return calculate(station.getParticulates());
     }
 
     /**
@@ -21,15 +21,15 @@ public class AirQualityIndex {
      * @param particulates collection
      * @return index value
      */
-    public static double calculate( Collection<Particulate> particulates ) {
+    public static double calculate(Collection<Particulate> particulates) {
 
         double index = 0;
 
-        for ( Particulate particulate : particulates ) {
+        for (Particulate particulate : particulates) {
 
             double particulateValue = 0;
 
-            switch ( particulate.getEnum() ) {
+            switch (particulate.getEnum()) {
                 case SO2:
                     particulateValue = particulate.getValue() / 350;
                     break;
@@ -52,7 +52,7 @@ public class AirQualityIndex {
                     // do nothing
             }
 
-            index = Math.max( index, particulateValue );
+            index = Math.max(index, particulateValue);
         }
 
         return index * 5;

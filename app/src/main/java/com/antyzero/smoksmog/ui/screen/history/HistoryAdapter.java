@@ -15,14 +15,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<ParticulateHistoryViewH
 
     private List<Particulate> particulates;
 
-    public HistoryAdapter( List<Particulate> particulates ) {
+    public HistoryAdapter(List<Particulate> particulates) {
         this.particulates = particulates;
     }
 
     @Override
-    public ParticulateHistoryViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
-        LayoutInflater inflater = LayoutInflater.from( parent.getContext() );
-        return new ParticulateHistoryViewHolder( inflater.inflate( R.layout.item_chart, parent, false ) );
+    public ParticulateHistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return new ParticulateHistoryViewHolder(inflater.inflate(R.layout.item_chart, parent, false));
     }
 
     @Override
@@ -31,8 +31,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<ParticulateHistoryViewH
     }
 
     @Override
-    public void onBindViewHolder( ParticulateHistoryViewHolder holder, int position ) {
-        holder.bind( particulates.get( position ) );
+    public void onBindViewHolder(ParticulateHistoryViewHolder holder, int position) {
+        holder.bind(particulates.get(position));
     }
 
 }

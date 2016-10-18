@@ -26,48 +26,48 @@ public class StationAdapter extends RecyclerView.Adapter {
     private final AirQualityViewDelegate airQualityViewDelegate;
     private final ParticulateViewDelegate particulateViewDelegate;
 
-    public StationAdapter( List<Station> stationContainer ) {
+    public StationAdapter(List<Station> stationContainer) {
         this.stationContainer = stationContainer;
-        setHasStableIds( true );
+        setHasStableIds(true);
 
-        airQualityViewDelegate = new AirQualityViewDelegate( TYPE_AIR_QUALITY );
-        particulateViewDelegate = new ParticulateViewDelegate( TYPE_PARTICULATE );
+        airQualityViewDelegate = new AirQualityViewDelegate(TYPE_AIR_QUALITY);
+        particulateViewDelegate = new ParticulateViewDelegate(TYPE_PARTICULATE);
     }
 
     @Override
-    public int getItemViewType( int position ) {
+    public int getItemViewType(int position) {
         return position == 0 ? TYPE_AIR_QUALITY : TYPE_PARTICULATE;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        switch ( viewType ) {
+        switch (viewType) {
 
             case TYPE_AIR_QUALITY:
-                return airQualityViewDelegate.onCreateViewHolder( parent );
+                return airQualityViewDelegate.onCreateViewHolder(parent);
             case TYPE_PARTICULATE:
-                return particulateViewDelegate.onCreateViewHolder( parent );
+                return particulateViewDelegate.onCreateViewHolder(parent);
 
             default:
-                throw new IllegalStateException( "Unsupported view type" );
+                throw new IllegalStateException("Unsupported view type");
         }
     }
 
     @Override
-    public void onBindViewHolder( RecyclerView.ViewHolder holder, int position ) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if ( stationContainer.isEmpty() ) {
+        if (stationContainer.isEmpty()) {
             return;
         }
 
-        Station station = stationContainer.get( 0 );
+        Station station = stationContainer.get(0);
 
-        if ( position == 0 ) {
-            airQualityViewDelegate.onBindViewHolder( ( AirQualityViewHolder ) holder, station );
-        } else if ( position > 0 ) {
-            Particulate particulate = station.getParticulates().get( position - 1 );
-            particulateViewDelegate.onBindViewHolder( ( ParticulateViewHolder ) holder, particulate );
+        if (position == 0) {
+            airQualityViewDelegate.onBindViewHolder((AirQualityViewHolder) holder, station);
+        } else if (position > 0) {
+            Particulate particulate = station.getParticulates().get(position - 1);
+            particulateViewDelegate.onBindViewHolder((ParticulateViewHolder) holder, particulate);
         }
 
     }
@@ -76,9 +76,9 @@ public class StationAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         int particulates = 0;
 
-        if ( !stationContainer.isEmpty() ) {
-            Station station = this.stationContainer.get( 0 );
-            if ( station != null ) {
+        if (!stationContainer.isEmpty()) {
+            Station station = this.stationContainer.get(0);
+            if (station != null) {
                 particulates = station.getParticulates().size();
             }
         }

@@ -73,6 +73,26 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     private List<Station> stationContainer = new ArrayList<>();
     private Station station;
 
+    /**
+     * Proper way to create fragment
+     *
+     * @param stationId for data download
+     * @return StationFragment instance
+     */
+    public static StationFragment newInstance(long stationId) {
+
+        Bundle arguments = new Bundle();
+
+        arguments.putLong(ARG_STATION_ID, stationId);
+
+        StationFragment stationFragment = stationId <= 0 ?
+                new LocationStationFragment() :
+                new NetworkStationFragment();
+        stationFragment.setArguments(arguments);
+
+        return stationFragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,25 +215,5 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
      */
     public long getStationId() {
         return getArguments().getLong(ARG_STATION_ID);
-    }
-
-    /**
-     * Proper way to create fragment
-     *
-     * @param stationId for data download
-     * @return StationFragment instance
-     */
-    public static StationFragment newInstance(long stationId) {
-
-        Bundle arguments = new Bundle();
-
-        arguments.putLong(ARG_STATION_ID, stationId);
-
-        StationFragment stationFragment = stationId <= 0 ?
-                new LocationStationFragment() :
-                new NetworkStationFragment();
-        stationFragment.setArguments(arguments);
-
-        return stationFragment;
     }
 }

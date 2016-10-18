@@ -9,13 +9,13 @@ import pl.malopolska.smoksmog.model.Station;
 
 public class AirQualityViewDelegate extends ViewDelegate<AirQualityViewHolder, Station> {
 
-    public AirQualityViewDelegate( int viewType ) {
-        super( viewType );
+    public AirQualityViewDelegate(int viewType) {
+        super(viewType);
     }
 
     @Override
-    public AirQualityViewHolder onCreateViewHolder( ViewGroup parent ) {
-        LayoutInflater layoutInflater = LayoutInflater.from( parent.getContext() );
-        return new AirQualityViewHolder( layoutInflater.inflate( R.layout.item_air_quility, parent, false ) );
+    public AirQualityViewHolder onCreateViewHolder(ViewGroup parent) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        return new AirQualityViewHolder(layoutInflater.inflate(R.layout.item_air_quility, parent, false));
     }
 }

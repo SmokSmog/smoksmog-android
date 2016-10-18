@@ -6,7 +6,7 @@ public abstract class ViewDelegate<T extends ListViewHolder<R>, R> {
 
     private final int viewType;
 
-    public ViewDelegate( int viewType ) {
+    public ViewDelegate(int viewType) {
         this.viewType = viewType;
     }
 
@@ -14,9 +14,9 @@ public abstract class ViewDelegate<T extends ListViewHolder<R>, R> {
         return viewType;
     }
 
-    public abstract T onCreateViewHolder( ViewGroup parent );
+    public abstract T onCreateViewHolder(ViewGroup parent);
 
-    public void onBindViewHolder( T holder, R data ) {
-        holder.bind( data );
+    public void onBindViewHolder(T holder, R data) {
+        holder.bind(data);
     }
 }

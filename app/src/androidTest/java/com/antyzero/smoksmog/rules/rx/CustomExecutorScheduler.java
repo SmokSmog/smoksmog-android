@@ -25,7 +25,7 @@ public class CustomExecutorScheduler extends Scheduler {
 
     final Executor executor;
 
-    public CustomExecutorScheduler( Executor executor ) {
+    public CustomExecutorScheduler(Executor executor) {
         this.executor = executor;
     }
 
@@ -35,7 +35,7 @@ public class CustomExecutorScheduler extends Scheduler {
      */
     @Override
     public Worker createWorker() {
-        return new ExecutorSchedulerWorker( executor );
+        return new ExecutorSchedulerWorker(executor);
     }
 
     /**
@@ -49,7 +49,7 @@ public class CustomExecutorScheduler extends Scheduler {
         final ConcurrentLinkedQueue<ScheduledAction> queue;
         final AtomicInteger wip;
 
-        public ExecutorSchedulerWorker( Executor executor ) {
+        public ExecutorSchedulerWorker(Executor executor) {
             this.executor = executor;
             this.queue = new ConcurrentLinkedQueue<>();
             this.wip = new AtomicInteger();
@@ -57,26 +57,26 @@ public class CustomExecutorScheduler extends Scheduler {
         }
 
         @Override
-        public Subscription schedule( Action0 action ) {
-            if ( isUnsubscribed() ) {
+        public Subscription schedule(Action0 action) {
+            if (isUnsubscribed()) {
                 return Subscriptions.unsubscribed();
             }
-            ScheduledAction ea = new ScheduledAction( action, tasks );
-            tasks.add( ea );
-            queue.offer( ea );
-            if ( wip.getAndIncrement() == 0 ) {
+            ScheduledAction ea = new ScheduledAction(action, tasks);
+            tasks.add(ea);
+            queue.offer(ea);
+            if (wip.getAndIncrement() == 0) {
                 try {
                     // note that since we schedule the emission of potentially multiple tasks
                     // there is no clear way to cancel this schedule from individual tasks
                     // so even if executor is an ExecutorService, we can't associate the future
                     // returned by submit() with any particular ScheduledAction
-                    executor.execute( this );
-                } catch ( RejectedExecutionException t ) {
+                    executor.execute(this);
+                } catch (RejectedExecutionException t) {
                     // cleanup if rejected
-                    tasks.remove( ea );
+                    tasks.remove(ea);
                     wip.decrementAndGet();
                     // report the error to the plugin
-                    RxJavaPlugins.getInstance().getErrorHandler().handleError( t );
+                    RxJavaPlugins.getInstance().getErrorHandler().handleError(t);
                     // throw it to the caller
                     throw t;
                 }
@@ -89,67 +89,67 @@ public class CustomExecutorScheduler extends Scheduler {
         public void run() {
             do {
                 ScheduledAction sa = queue.poll();
-                if ( !sa.isUnsubscribed() ) {
+                if (!sa.isUnsubscribed()) {
                     sa.run();
                 }
-            } while ( wip.decrementAndGet() > 0 );
+            } while (wip.decrementAndGet() > 0);
         }
 
         @Override
-        public Subscription schedule( final Action0 action, long delayTime, TimeUnit unit ) {
-            if ( delayTime <= 0 ) {
-                return schedule( action );
+        public Subscription schedule(final Action0 action, long delayTime, TimeUnit unit) {
+            if (delayTime <= 0) {
+                return schedule(action);
             }
-            if ( isUnsubscribed() ) {
+            if (isUnsubscribed()) {
                 return Subscriptions.unsubscribed();
             }
             ScheduledExecutorService service;
-            if ( executor instanceof ScheduledExecutorService ) {
-                service = ( ScheduledExecutorService ) executor;
+            if (executor instanceof ScheduledExecutorService) {
+                service = (ScheduledExecutorService) executor;
             } else {
                 service = GenericScheduledExecutorService.getInstance();
             }
 
             final MultipleAssignmentSubscription first = new MultipleAssignmentSubscription();
             final MultipleAssignmentSubscription mas = new MultipleAssignmentSubscription();
-            mas.set( first );
-            tasks.add( mas );
-            final Subscription removeMas = Subscriptions.create( new Action0() {
+            mas.set(first);
+            tasks.add(mas);
+            final Subscription removeMas = Subscriptions.create(new Action0() {
                 @Override
                 public void call() {
-                    tasks.remove( mas );
+                    tasks.remove(mas);
                 }
-            } );
+            });
 
-            ScheduledAction ea = new ScheduledAction( new Action0() {
+            ScheduledAction ea = new ScheduledAction(new Action0() {
                 @Override
                 public void call() {
-                    if ( mas.isUnsubscribed() ) {
+                    if (mas.isUnsubscribed()) {
                         return;
                     }
                     // schedule the real action untimed
-                    Subscription s2 = schedule( action );
-                    mas.set( s2 );
+                    Subscription s2 = schedule(action);
+                    mas.set(s2);
                     // unless the worker is unsubscribed, we should get a new ScheduledAction
-                    if ( s2.getClass() == ScheduledAction.class ) {
+                    if (s2.getClass() == ScheduledAction.class) {
                         // when this ScheduledAction completes, we need to remove the
                         // MAS referencing the whole setup to avoid leaks
-                        ( ( ScheduledAction ) s2 ).add( removeMas );
+                        ((ScheduledAction) s2).add(removeMas);
                     }
                 }
-            } );
+            });
             // This will make sure if ea.call() gets executed before this line
             // we don't override the current task in mas.
-            first.set( ea );
+            first.set(ea);
             // we don't need to add ea to tasks because it will be tracked through mas/first
 
 
             try {
-                Future<?> f = service.schedule( ea, delayTime, unit );
-                ea.add( f );
-            } catch ( RejectedExecutionException t ) {
+                Future<?> f = service.schedule(ea, delayTime, unit);
+                ea.add(f);
+            } catch (RejectedExecutionException t) {
                 // report the rejection to plugins
-                RxJavaPlugins.getInstance().getErrorHandler().handleError( t );
+                RxJavaPlugins.getInstance().getErrorHandler().handleError(t);
                 throw t;
             }
 

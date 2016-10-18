@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import com.antyzero.smoksmog.rules.RxSchedulerTestRule;
 import com.antyzero.smoksmog.rules.SpoonRule;
@@ -20,12 +19,12 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class HistoryActivityTest {
 
+    @Rule
+    public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
     private final ActivityTestRule<HistoryActivity> activityTestRule = new HistoryActivityTestRule(true, false);
     private final SpoonRule spoonRule = new SpoonRule(activityTestRule);
     @Rule
     public final TestRule testRule = RuleChain.outerRule(activityTestRule).around(spoonRule);
-    @Rule
-    public final RxSchedulerTestRule rxSchedulerTestRule = new RxSchedulerTestRule();
 
     @Test
     public void checkCreation() {

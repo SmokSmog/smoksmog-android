@@ -10,15 +10,12 @@ import android.widget.TextView;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.user.User;
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
-
-import smoksmog.logger.Logger;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import smoksmog.logger.Logger;
 
 public class AboutDialog extends InfoDialog {
 
@@ -29,19 +26,19 @@ public class AboutDialog extends InfoDialog {
     @Inject
     User user;
 
-    @Bind( R.id.textView )
+    @Bind(R.id.textView)
     TextView textView;
-    @Bind( R.id.textViewVersionName )
+    @Bind(R.id.textViewVersionName)
     TextView textViewVersionName;
-    @Bind( R.id.textViewUserId)
+    @Bind(R.id.textViewUserId)
     TextView textViewUserId;
 
     @Override
-    public void onCreate( Bundle savedInstanceState ) {
-        super.onCreate( savedInstanceState );
-        SmokSmogApplication.get( getActivity() )
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SmokSmogApplication.get(getActivity())
                 .getAppComponent()
-                .inject( this );
+                .inject(this);
     }
 
     @Override
@@ -50,20 +47,20 @@ public class AboutDialog extends InfoDialog {
     }
 
     @Override
-    protected void initView( View view ) {
-        super.initView( view );
-        ButterKnife.bind( this, view );
+    protected void initView(View view) {
+        super.initView(view);
+        ButterKnife.bind(this, view);
 
-        textView.setText( Html.fromHtml( getString( R.string.about ) ) );
-        textView.setMovementMethod( LinkMovementMethod.getInstance() );
+        textView.setText(Html.fromHtml(getString(R.string.about)));
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         try {
-            PackageInfo packageInfo = getActivity().getPackageManager().getPackageInfo( getActivity().getPackageName(), 0 );
-            textViewVersionName.setText( getString( R.string.version_name_and_code,
+            PackageInfo packageInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+            textViewVersionName.setText(getString(R.string.version_name_and_code,
                     packageInfo.versionName,
-                    packageInfo.versionCode ) );
-        } catch ( Exception e ) {
-            logger.i( TAG, "Problem with obtaining version", e );
+                    packageInfo.versionCode));
+        } catch (Exception e) {
+            logger.i(TAG, "Problem with obtaining version", e);
         }
 
         textViewUserId.setText(user.getIdentifier());

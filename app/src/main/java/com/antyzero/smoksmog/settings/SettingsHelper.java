@@ -71,10 +71,6 @@ public class SettingsHelper implements SharedPreferences.OnSharedPreferenceChang
         return defaultPreferences;
     }
 
-    public void setClosesStationVisible(boolean value) {
-        defaultPreferences.edit().putBoolean(keyStationClosest, value).apply();
-    }
-
     /**
      * Get info is closes station should be visible on main screen
      *
@@ -83,6 +79,10 @@ public class SettingsHelper implements SharedPreferences.OnSharedPreferenceChang
     public boolean isClosesStationVisible() {
         return defaultPreferences.getBoolean(
                 context.getString(R.string.pref_key_station_closest), false);
+    }
+
+    public void setClosesStationVisible(boolean value) {
+        defaultPreferences.edit().putBoolean(keyStationClosest, value).apply();
     }
 
     public Percent getPercentMode() {

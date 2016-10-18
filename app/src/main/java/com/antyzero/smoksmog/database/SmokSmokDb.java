@@ -20,6 +20,26 @@ public class SmokSmokDb {
         this.briteDatabase = briteDatabase;
     }
 
+    private static <T> Observable<T> asRows(final Cursor cursor, final Func1<Cursor, T> mapper) {
+        return Observable.create(new Observable.OnSubscribe<T>() {
+            @Override
+            public void call(Subscriber<? super T> subscriber) {
+                if (cursor != null) {
+                    try {
+                        while (cursor.moveToNext() && !subscriber.isUnsubscribed()) {
+                            subscriber.onNext(mapper.call(cursor));
+                        }
+                    } finally {
+                        cursor.close();
+                    }
+                }
+                if (!subscriber.isUnsubscribed()) {
+                    subscriber.onCompleted();
+                }
+            }
+        });
+    }
+
     public Observable<ListItemDb> getList() {
         Cursor cursor = briteDatabase.query("SELECT * FROM " + ListItemDb.TABLE_NAME);
         return Observable.just(cursor)
@@ -79,25 +99,5 @@ public class SmokSmokDb {
                     return second;
                 })
                 .map(listItemDb -> true).subscribe();
-    }
-
-    private static <T> Observable<T> asRows(final Cursor cursor, final Func1<Cursor, T> mapper) {
-        return Observable.create(new Observable.OnSubscribe<T>() {
-            @Override
-            public void call(Subscriber<? super T> subscriber) {
-                if (cursor != null) {
-                    try {
-                        while (cursor.moveToNext() && !subscriber.isUnsubscribed()) {
-                            subscriber.onNext(mapper.call(cursor));
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-                }
-                if (!subscriber.isUnsubscribed()) {
-                    subscriber.onCompleted();
-                }
-            }
-        });
     }
 }

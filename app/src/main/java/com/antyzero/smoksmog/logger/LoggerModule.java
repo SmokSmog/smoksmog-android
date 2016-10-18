@@ -18,13 +18,15 @@ public class LoggerModule {
 
     @Provides
     @Singleton
-    public Logger provideLogger(CrashlyticsLogger.ConfigurationCallback callback) {
+    Logger provideLogger(CrashlyticsLogger.ConfigurationCallback callback) {
         return BuildConfig.DEBUG ? new AndroidLogger() : new CrashlyticsLogger(ERROR, callback);
     }
 
     @Provides
     @Singleton
-    public CrashlyticsLogger.ConfigurationCallback provideConfigurationCallback(User user) {
-        return instance -> instance.setUserIdentifier(user.getIdentifier());
+    CrashlyticsLogger.ConfigurationCallback provideConfigurationCallback(User user) {
+        return instance -> {
+            instance.setUserIdentifier(user.getIdentifier());
+        };
     }
 }
