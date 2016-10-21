@@ -7,7 +7,6 @@ import com.antyzero.smoksmog.firebase.SmokSmogFirebaseInstanceIdService;
 import com.antyzero.smoksmog.logger.LoggerModule;
 import com.antyzero.smoksmog.network.NetworkModule;
 import com.antyzero.smoksmog.settings.SettingsModule;
-import com.antyzero.smoksmog.task.StationWidgetJob;
 import com.antyzero.smoksmog.time.TimeModule;
 import com.antyzero.smoksmog.ui.dialog.AboutDialog;
 import com.antyzero.smoksmog.ui.dialog.FacebookDialog;
@@ -59,8 +58,6 @@ public interface ApplicationComponent {
     void inject(StationWidget stationWidget);
 
     void inject(StationWidgetService stationWidgetService);
-
-    void inject(StationWidgetJob stationWidgetJob);
 
     void inject(SmokSmogFirebaseInstanceIdService smokSmogFirebaseInstanceIdService);
 }
