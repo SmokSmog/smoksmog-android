@@ -45,7 +45,7 @@
         android:layout_gravity="top"
         android:background="@color/text_dark"
         android:gravity="top"
-        android:maxLines="3"
+        android:maxLines="5"
         android:textColor="@color/text_light" />
 
 </LinearLayout>

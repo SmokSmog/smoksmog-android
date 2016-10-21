@@ -4,6 +4,8 @@ import com.antyzero.smoksmog.database.DatabaseModule;
 import com.antyzero.smoksmog.eventbus.EventBusModule;
 import com.antyzero.smoksmog.fabric.FabricModule;
 import com.antyzero.smoksmog.firebase.SmokSmogFirebaseInstanceIdService;
+import com.antyzero.smoksmog.job.JobModule;
+import com.antyzero.smoksmog.job.SmokSmogJobService;
 import com.antyzero.smoksmog.logger.LoggerModule;
 import com.antyzero.smoksmog.network.NetworkModule;
 import com.antyzero.smoksmog.settings.SettingsModule;
@@ -19,6 +21,8 @@ import com.antyzero.smoksmog.ui.widget.StationWidget;
 import com.antyzero.smoksmog.ui.widget.StationWidgetService;
 import com.antyzero.smoksmog.ui.widget.WidgetModule;
 import com.antyzero.smoksmog.user.UserModule;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Singleton;
 
@@ -36,7 +40,8 @@ import dagger.Component;
                 EventBusModule.class,
                 TimeModule.class,
                 UserModule.class,
-                WidgetModule.class
+                WidgetModule.class,
+                JobModule.class
         }
 )
 public interface ApplicationComponent {
@@ -60,4 +65,6 @@ public interface ApplicationComponent {
     void inject(StationWidgetService stationWidgetService);
 
     void inject(SmokSmogFirebaseInstanceIdService smokSmogFirebaseInstanceIdService);
+
+    void inject(SmokSmogJobService smokSmogJobService);
 }

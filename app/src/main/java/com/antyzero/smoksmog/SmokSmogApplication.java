@@ -6,8 +6,15 @@ import android.support.annotation.VisibleForTesting;
 
 import com.antyzero.smoksmog.database.SmokSmokDb;
 import com.antyzero.smoksmog.database.model.ListItemDb;
+import com.antyzero.smoksmog.job.SmokSmogJobService;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 
 import javax.inject.Inject;
 
@@ -17,17 +24,22 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class SmokSmogApplication extends Application {
 
+    private static final String TAG = SmokSmogApplication.class.getSimpleName();
+
     @Inject
     Logger logger;
     @Inject
     SmokSmokDb smokSmokDb;
+    @Inject
+    FirebaseJobDispatcher dispatcher;
+
     private ApplicationComponent applicationComponent;
 
     /**
      * Get access to application instance
      *
-     * @param context
-     * @return
+     * @param context for accessing application object
+     * @return SmokSmogApplication object
      */
     public static SmokSmogApplication get(Context context) {
         return (SmokSmogApplication) context.getApplicationContext();
@@ -47,12 +59,30 @@ public class SmokSmogApplication extends Application {
 
         applicationComponent.inject(this);
 
+        //noinspection SpellCheckingInspection
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/Lato-Light.ttf")
                 .build());
 
 
-        //TODO widget job / updater
+        // Periodical jobs
+
+        Job job = dispatcher.newJobBuilder()
+                .setConstraints(Constraint.ON_ANY_NETWORK)
+                .setLifetime(Lifetime.FOREVER)
+                .setRecurring(true)
+                .setReplaceCurrent(true)
+                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                .setService(SmokSmogJobService.class)
+                .setTag("station-widget-refresh")
+                .setTrigger(Trigger.executionWindow(5 * 60, 5 * 60 + 60))
+                .build();
+
+        int result = dispatcher.schedule(job);
+
+        if (result != FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS) {
+            logger.w(TAG, "Unable to schedule widget update job");
+        }
 
         // TODO db testing code ignore and delete in future
 
