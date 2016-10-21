@@ -2,6 +2,7 @@ package com.antyzero.smoksmog.ui.widget
 
 import android.app.IntentService
 import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import com.antyzero.smoksmog.appComponent
@@ -47,6 +48,12 @@ class StationWidgetService : IntentService(StationWidgetService::class.java.simp
             val intent = Intent(context, StationWidgetService::class.java)
             intent.putExtra(EXTRA_WIDGET_ID, widgetId)
             context.startService(intent)
+        }
+
+        fun updateAll(context: Context) {
+            context.appWidgetManager().getAppWidgetIds(ComponentName(context, StationWidget::class.java)).forEach {
+                StationWidgetService.update(context, it)
+            }
         }
     }
 }

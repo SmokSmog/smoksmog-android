@@ -3,11 +3,11 @@ package com.antyzero.smoksmog.ui.widget
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import android.os.Bundle
 import android.widget.RemoteViews
+import com.antyzero.smoksmog.BuildConfig
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
-import com.antyzero.smoksmog.toast
+import org.joda.time.DateTime
 import pl.malopolska.smoksmog.SmokSmog
 import pl.malopolska.smoksmog.model.Station
 import smoksmog.air.AirQuality
@@ -27,29 +27,7 @@ class StationWidget : AppWidgetProvider() {
 
         appWidgetIds.forEach {
             StationWidgetService.update(context, it)
-            // TODO seems like doing network calls here is not working
-            /*
-            val widgetId = it
-            val stationId = widgetData.widgetStationId(it)
-
-            smokSmog.api.station(stationId)
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            Action1 {
-                                updateWidget(widgetId, context, appWidgetManager, it)
-                            },
-                            Action1 {
-                                logger.w(tag(), "Unable to update widget $widgetId", it)
-                            }
-                    )
-                    */
         }
-    }
-
-    override fun onAppWidgetOptionsChanged(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetId: Int, newOptions: Bundle?) {
-        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
-        context!!.toast(appWidgetId.toString())
     }
 
     companion object {
@@ -61,7 +39,13 @@ class StationWidget : AppWidgetProvider() {
 
             val views = RemoteViews(context.packageName, R.layout.widget_station)
 
-            views.setTextViewText(R.id.textViewStation, station.name)
+            var name = station.name
+
+            if (BuildConfig.DEBUG) {
+                name = "Stacja: ${station.name}\nPomiar: ${station.particulates?.get(0)?.date}\nAktulizacja: ${DateTime.now()}"
+            }
+
+            views.setTextViewText(R.id.textViewStation, name)
             views.setTextViewText(R.id.textViewAirQuality, airQualityIndex.format(1))
 
             views.setTextColor(R.id.textViewAirQuality, airQuality.getColor(context))
