@@ -8,6 +8,7 @@ import com.antyzero.smoksmog.database.SmokSmokDb;
 import com.antyzero.smoksmog.database.model.ListItemDb;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 
 import javax.inject.Inject;
 
@@ -21,6 +22,9 @@ public class SmokSmogApplication extends Application {
     Logger logger;
     @Inject
     SmokSmokDb smokSmokDb;
+    @Inject
+    FirebaseJobDispatcher dispatcher;
+
     private ApplicationComponent applicationComponent;
 
     /**
@@ -50,7 +54,6 @@ public class SmokSmogApplication extends Application {
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/Lato-Light.ttf")
                 .build());
-
 
         //TODO widget job / updater
 
