@@ -4,6 +4,10 @@ package pl.malopolska.smoksmog;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,12 +51,46 @@ public class ApiTest {
         List<Station> result = api.stations().toBlocking().first();
 
         // then
-        assertThat(result).hasSize(49);
-        final Station station = result.get(4);
+        assertThat(result).hasSize(50);
+        final Station station = findById(result, 8);
         assertThat(station.getId()).isEqualTo(8);
         assertThat(station.getName()).isEqualTo("Olkusz");
         assertThat(station.getLatitude()).isEqualTo(50.27756900f);
         assertThat(station.getParticulates()).isNullOrEmpty();
+    }
+
+    private Station findById(Collection<Station> collection, long id) {
+        for (Station station : collection) {
+            if (station.getId() == id) {
+                return station;
+            }
+        }
+        throw new IllegalStateException("Station " + id + "not found");
+    }
+
+    @Test
+    public void testStationsList() throws Exception {
+
+        // given
+        server.enqueue(new MockResponse().setBody(TestUtils.readFromResources("/responseStations.json")));
+
+        // when
+        List<Station> result = api.stations().toBlocking().first();
+        List<String> stations = new ArrayList<>();
+
+        for (Station station : result) {
+            stations.add(station.getName());
+        }
+
+        Collections.sort(stations, Collator.getInstance());
+
+        // then
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (String station : stations) {
+            stringBuilder.append("* ").append(station).append("\n");
+        }
+        System.out.print(stringBuilder.toString());
     }
 
     @Test
