@@ -7,6 +7,7 @@ import android.support.annotation.VisibleForTesting;
 import com.antyzero.smoksmog.database.SmokSmokDb;
 import com.antyzero.smoksmog.database.model.ListItemDb;
 import com.antyzero.smoksmog.job.SmokSmogJobService;
+import com.antyzero.smoksmog.tracking.Tracking;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.firebase.jobdispatcher.Constraint;
@@ -32,6 +33,8 @@ public class SmokSmogApplication extends Application {
     SmokSmokDb smokSmokDb;
     @Inject
     FirebaseJobDispatcher dispatcher;
+    @Inject
+    Tracking tracking;
 
     private ApplicationComponent applicationComponent;
 
@@ -58,6 +61,7 @@ public class SmokSmogApplication extends Application {
                 .build();
 
         applicationComponent.inject(this);
+        logger.i(TAG, "First run: " + tracking.getFirstRunDateTime());
 
         //noinspection SpellCheckingInspection
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
@@ -86,6 +90,7 @@ public class SmokSmogApplication extends Application {
 
         // TODO db testing code ignore and delete in future
 
+        /*
         smokSmokDb.getList()
                 .subscribe(listItemDb -> {
                     System.out.println(String.format(">>> id:%s | p:%s", listItemDb._id(), listItemDb.position()));
@@ -94,6 +99,7 @@ public class SmokSmogApplication extends Application {
         smokSmokDb.addToList(ListItemDb.FACTORY.marshal()._id(1));
         smokSmokDb.addToList(ListItemDb.FACTORY.marshal()._id(2));
         smokSmokDb.addToList(ListItemDb.FACTORY.marshal()._id(3));
+        */
 
     }
 

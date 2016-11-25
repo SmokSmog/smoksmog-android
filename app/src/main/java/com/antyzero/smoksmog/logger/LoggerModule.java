@@ -25,8 +25,6 @@ public class LoggerModule {
     @Provides
     @Singleton
     CrashlyticsLogger.ConfigurationCallback provideConfigurationCallback(User user) {
-        return instance -> {
-            instance.setUserIdentifier(user.getIdentifier());
-        };
+        return instance -> instance.setUserIdentifier(user.getIdentifier());
     }
 }
