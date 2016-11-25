@@ -11,7 +11,7 @@ import com.antyzero.smoksmog.dsl.setNegativeButton
 import com.antyzero.smoksmog.dsl.setPositiveButton
 import com.antyzero.smoksmog.dsl.setToolbar
 
-abstract class InfoDialog : DialogFragment() {
+abstract class BaseDialog : DialogFragment() {
 
     lateinit protected var toolbar: Toolbar
 
