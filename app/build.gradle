@@ -172,6 +172,7 @@ play {
     jsonFile = new File("" + System.getenv("PLAY_JSON"))
     track = 'beta'
 }
+
 repositories {
     mavenCentral()
 }
