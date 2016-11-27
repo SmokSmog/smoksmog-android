@@ -10,7 +10,7 @@ import com.antyzero.smoksmog.firebase.FirebaseEvents
 import com.antyzero.smoksmog.tag
 import com.antyzero.smoksmog.toast
 import com.antyzero.smoksmog.ui.BaseDragonActivity
-import com.antyzero.smoksmog.ui.screen.PickStation
+import com.antyzero.smoksmog.ui.screen.PickStationActivity
 import pl.malopolska.smoksmog.SmokSmog
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -46,13 +46,13 @@ class StationWidgetConfigureActivity : BaseDragonActivity() {
         }
 
         firebaseEvents.logWidgetCreationStarted()
-        PickStation.startForResult(this, PICK_STATION_REQUEST)
+        PickStationActivity.startForResult(this, PICK_STATION_REQUEST)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (PICK_STATION_REQUEST == requestCode && resultCode == Activity.RESULT_OK && data != null) {
-            addStationWidget(PickStation.gatherResult(data))
+            addStationWidget(PickStationActivity.gatherResult(data))
         } else {
             toast("Błąd w wyborze stacji") // TODO translate
             logger.i(tag(), "Station not picked up")

@@ -34,7 +34,7 @@ public interface ActivityComponent {
 
     void inject(OrderActivity orderActivity);
 
-    void inject(PickStation pickStation);
+    void inject(PickStationActivity pickStationActivity);
 
     void inject(StationWidgetConfigureActivity stationWidgetConfigureActivity);
 }

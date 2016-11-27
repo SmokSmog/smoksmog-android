@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.antyzero.smoksmog.BuildConfig;
 import com.antyzero.smoksmog.R;
 import com.antyzero.smoksmog.SmokSmogApplication;
 import com.antyzero.smoksmog.error.ErrorReporter;
@@ -25,6 +26,7 @@ import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.dialog.AboutDialog;
 import com.antyzero.smoksmog.ui.dialog.InfoDialog;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
+import com.antyzero.smoksmog.ui.screen.PickStationActivity;
 import com.antyzero.smoksmog.ui.screen.order.OrderActivity;
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity;
 import com.antyzero.smoksmog.ui.screen.start.fragment.StationFragment;

@@ -38,4 +38,5 @@
     <string name="cs_measurement_history_graphs">Wykresy pomiarów dotychczasowych</string>
     <string name="title_pick_station">Wybierz stację</string>
     <string name="title_manage_stations">Zarządzaj stacjami</string>
+    <string name="find_station">Znajdź stację</string>
 </resources>

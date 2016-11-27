@@ -4,9 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearLayoutManager.VERTICAL
+import android.support.v7.widget.SearchView
+import android.view.Menu
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.ui.BaseDragonActivity
@@ -18,12 +21,13 @@ import pl.malopolska.smoksmog.model.Station
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class PickStation : BaseDragonActivity(), OnStationClick {
+class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQueryTextListener {
 
     @Inject
     lateinit var smokSmog: SmokSmog
 
     private val listStation: MutableList<Station> = mutableListOf()
+    private val allStations: MutableList<Station> = mutableListOf()
 
     private lateinit var adapter: SimpleStationAdapter
     private lateinit var skipIds: IntArray
@@ -57,10 +61,28 @@ class PickStation : BaseDragonActivity(), OnStationClick {
                 .map { it.filter { skipIds.contains(it.id.toInt()).not() } }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    listStation.clear()
-                    listStation.addAll(it)
+                    allStations.addAll(it.sortedBy { it.name })
+                    listStation.addAll(allStations)
                     adapter.notifyDataSetChanged()
                 }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.pick_station, menu)
+        val searchView = MenuItemCompat.getActionView(menu.findItem(R.id.search)) as SearchView
+        searchView.setOnQueryTextListener(this)
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String): Boolean {
+        listStation.clear()
+        listStation.addAll(allStations.filter { it.name.contains(newText, true) })
+        adapter.notifyDataSetChanged()
+        return false
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
     }
 
     override fun click(station: Station) {
@@ -86,7 +108,7 @@ class PickStation : BaseDragonActivity(), OnStationClick {
         }
 
         fun startForResult(activity: Activity, requestCode: Int, skipIds: IntArray = IntArray(0)) {
-            val intent = Intent(activity, PickStation::class.java)
+            val intent = Intent(activity, PickStationActivity::class.java)
             intent.putExtra(EXTRA_SKIP_IDS, skipIds)
             activity.startActivityForResult(intent, requestCode)
         }
