@@ -93,6 +93,7 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pageSave = new PageSave(this);
 
         SmokSmogApplication.get(this).getAppComponent()
                 .plus(new ActivityModule(this))
