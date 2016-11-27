@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/search"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/find_station"
-        android:icon="@drawable/ic_search"
-        android:showAsAction="collapseActionView|ifRoom"
-        android:actionViewClass="android.widget.SearchView" />
+        app:showAsAction="always" />
 </menu>

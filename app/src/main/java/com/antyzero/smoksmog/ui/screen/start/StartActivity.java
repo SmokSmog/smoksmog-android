@@ -93,11 +93,6 @@ public class StartActivity extends BaseDragonActivity implements ViewPager.OnPag
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageSave = new PageSave(this);
-
-        if(BuildConfig.DEBUG){ // TODO delete
-            PickStationActivity.Companion.startForResult(this,123);
-        }
 
         SmokSmogApplication.get(this).getAppComponent()
                 .plus(new ActivityModule(this))
