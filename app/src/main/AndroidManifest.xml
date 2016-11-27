@@ -53,7 +53,7 @@
         </activity>
 
         <activity
-            android:name=".ui.screen.PickStation"
+            android:name=".ui.screen.PickStationActivity"
             android:label="@string/title_pick_station" />
 
         <receiver android:name=".ui.widget.StationWidget">

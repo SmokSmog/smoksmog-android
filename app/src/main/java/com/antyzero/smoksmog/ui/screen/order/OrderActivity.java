@@ -20,7 +20,7 @@ import com.antyzero.smoksmog.error.ErrorReporter;
 import com.antyzero.smoksmog.settings.SettingsHelper;
 import com.antyzero.smoksmog.ui.BaseDragonActivity;
 import com.antyzero.smoksmog.ui.screen.ActivityModule;
-import com.antyzero.smoksmog.ui.screen.PickStation;
+import com.antyzero.smoksmog.ui.screen.PickStationActivity;
 import com.antyzero.smoksmog.ui.screen.order.dialog.StationDialogAdapter;
 import com.antyzero.smoksmog.ui.utils.DimenUtils;
 
@@ -166,7 +166,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
                 .toList()
                 .map(this::convertListToArray)
                 .toBlocking().first();
-        PickStation.Companion.startForResult(this, PICK_STATION_REQUEST, ids);
+        PickStationActivity.Companion.startForResult(this, PICK_STATION_REQUEST, ids);
     }
 
     private int[] convertListToArray(List<Long> list) {
@@ -182,7 +182,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_STATION_REQUEST) {
             if (resultCode == RESULT_OK) {
-                onStation(PickStation.gatherResult(data).getFirst());
+                onStation(PickStationActivity.gatherResult(data).getFirst());
             } else {
                 Toast.makeText(this, "Nie wybrano stacji", Toast.LENGTH_SHORT).show();
             }

@@ -16,9 +16,11 @@ import kotlinx.android.synthetic.main.activity_pick_station.*
 import pl.malopolska.smoksmog.SmokSmog
 import pl.malopolska.smoksmog.model.Station
 import rx.android.schedulers.AndroidSchedulers
+import java.text.Collator
+import java.util.*
 import javax.inject.Inject
 
-class PickStation : BaseDragonActivity(), OnStationClick {
+class PickStationActivity : BaseDragonActivity(), OnStationClick {
 
     @Inject
     lateinit var smokSmog: SmokSmog
@@ -58,7 +60,7 @@ class PickStation : BaseDragonActivity(), OnStationClick {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     listStation.clear()
-                    listStation.addAll(it)
+                    listStation.addAll(it.sortedBy { it.name })
                     adapter.notifyDataSetChanged()
                 }
     }
@@ -86,7 +88,7 @@ class PickStation : BaseDragonActivity(), OnStationClick {
         }
 
         fun startForResult(activity: Activity, requestCode: Int, skipIds: IntArray = IntArray(0)) {
-            val intent = Intent(activity, PickStation::class.java)
+            val intent = Intent(activity, PickStationActivity::class.java)
             intent.putExtra(EXTRA_SKIP_IDS, skipIds)
             activity.startActivityForResult(intent, requestCode)
         }
