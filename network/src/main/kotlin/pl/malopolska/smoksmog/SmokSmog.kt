@@ -1,6 +1,7 @@
 package pl.malopolska.smoksmog
 
 import com.fatboyindustrial.gsonjodatime.Converters
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import org.joda.time.DateTime
@@ -22,14 +23,9 @@ open class SmokSmog(locale: Locale = Locale.getDefault(), serverUrl: String = EN
 
     init {
 
-        val gsonBuilder = GsonBuilder().apply {
-            registerTypeAdapter(DateTime::class.java, DateTimeDeserializer())
-            Converters.registerLocalDate(this)
-        }
-
         api = Retrofit.Builder().apply {
             baseUrl(endpoint)
-            addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
+            addConverterFactory(GsonConverterFactory.create(createGson()))
             addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.newThread()))
             client(OkHttpClient.Builder().apply {
                 addInterceptor { chain ->
@@ -46,6 +42,11 @@ open class SmokSmog(locale: Locale = Locale.getDefault(), serverUrl: String = EN
 
     companion object {
         val ENDPOINT = "http://api.smoksmog.jkostrz.name/"
+
+        fun createGson(): Gson = GsonBuilder().apply {
+            registerTypeAdapter(DateTime::class.java, DateTimeDeserializer())
+            Converters.registerLocalDate(this)
+        }.create()
     }
 
 }
