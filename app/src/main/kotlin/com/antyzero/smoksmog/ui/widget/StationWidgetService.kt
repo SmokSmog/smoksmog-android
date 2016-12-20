@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import com.antyzero.smoksmog.appComponent
 import com.antyzero.smoksmog.appWidgetManager
-import com.antyzero.smoksmog.tag
+import com.antyzero.smoksmog.dsl.tag
 import pl.malopolska.smoksmog.SmokSmog
 import smoksmog.logger.Logger
 import javax.inject.Inject

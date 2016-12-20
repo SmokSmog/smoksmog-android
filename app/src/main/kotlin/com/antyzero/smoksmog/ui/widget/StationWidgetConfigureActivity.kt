@@ -7,7 +7,7 @@ import android.os.Bundle
 import com.antyzero.smoksmog.activityComponent
 import com.antyzero.smoksmog.appWidgetManager
 import com.antyzero.smoksmog.firebase.FirebaseEvents
-import com.antyzero.smoksmog.tag
+import com.antyzero.smoksmog.dsl.tag
 import com.antyzero.smoksmog.toast
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.PickStationActivity

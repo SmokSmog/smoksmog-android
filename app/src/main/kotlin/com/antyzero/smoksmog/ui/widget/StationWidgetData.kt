@@ -3,7 +3,7 @@ package com.antyzero.smoksmog.ui.widget
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.antyzero.smoksmog.tag
+import com.antyzero.smoksmog.dsl.tag
 
 
 class StationWidgetData(context: Context) {
