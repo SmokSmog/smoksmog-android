@@ -1,5 +1,9 @@
 node {
 
+    stage('Prepare'){
+        checkout scm
+    }
+
     stage('Build'){
         sh '''
         ./gradlew uninstallAll || true
