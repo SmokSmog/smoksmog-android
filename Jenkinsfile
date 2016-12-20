@@ -1,6 +1,12 @@
 node {
 
     stage('Build'){
-        sh 'echo 123'
+        sh '''
+        ./gradlew uninstallAll || true
+        ./gradlew assemble -PignoreFailures=true
+        wake-devices
+        ./gradlew check connectedCheck -PignoreFailures=true
+
+        '''
     }
 }
