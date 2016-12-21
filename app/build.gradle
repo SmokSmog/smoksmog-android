@@ -103,6 +103,7 @@ dependencies {
     compile project(':android')
 
     apt "com.google.dagger:dagger-compiler:${libVersions.google.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${libVersions.google.dagger}"
 
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
@@ -132,6 +133,7 @@ dependencies {
 
     provided 'com.google.auto.value:auto-value:1.2'
     apt 'com.google.auto.value:auto-value:1.2'
+    kapt 'com.google.auto.value:auto-value:1.2'
 
     testCompile "junit:junit:${libVersions.junit}"
     testCompile 'org.assertj:assertj-core:1.7.1'
@@ -175,6 +177,10 @@ play {
 
 repositories {
     mavenCentral()
+}
+
+kapt {
+    generateStubs = true
 }
 
 // Need to be @ the bottom
