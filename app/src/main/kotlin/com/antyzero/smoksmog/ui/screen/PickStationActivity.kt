@@ -44,7 +44,7 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
         setSupportActionBar(toolbar)
 
         skipIds = intent?.extras?.getIntArray(EXTRA_SKIP_IDS) ?: IntArray(0)
-        container.setPadding(0, statusBarHeight(), 0, 0)
+        container?.setPadding(0, statusBarHeight(), 0, 0)
 
         adapter = SimpleStationAdapter(listStation, this)
 

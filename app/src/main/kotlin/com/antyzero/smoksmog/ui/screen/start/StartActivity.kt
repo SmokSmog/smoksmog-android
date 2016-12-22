@@ -14,6 +14,7 @@ import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.eventbus.RxBus
 import com.antyzero.smoksmog.firebase.FirebaseEvents
+import com.antyzero.smoksmog.permission.PermissionHelper
 import com.antyzero.smoksmog.settings.SettingsHelper
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.dialog.AboutDialog
@@ -61,10 +62,11 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
         pageSave = PageSave(this)
 
         SmokSmogApplication.get(this).appComponent
-                .plus(ActivityModule(this))
-                .inject(this)
-
-        stationIds = StationIdList(this)
+                .plus(ActivityModule(this)).let {
+            it.inject(this@StartActivity)
+            val permisionHelper = PermissionHelper(this@StartActivity)
+            stationIds = StationIdList(SettingsHelper(this@StartActivity, permisionHelper), permisionHelper)
+        }
 
         setContentView(R.layout.activity_start)
         setSupportActionBar(toolbar)

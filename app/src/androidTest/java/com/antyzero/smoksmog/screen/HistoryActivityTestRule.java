@@ -24,7 +24,7 @@ public class HistoryActivityTestRule extends MockedNetworkActivityTestRule<Histo
     protected Intent getActivityIntent() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         try {
-            return HistoryActivity.intent(context, 13);
+            return HistoryActivity.Companion.intent(context, 13);
         } catch (Exception e) {
             throw new IllegalStateException("Unable to create Intent");
         }

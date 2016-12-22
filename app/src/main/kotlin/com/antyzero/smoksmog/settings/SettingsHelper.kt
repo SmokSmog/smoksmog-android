@@ -54,7 +54,7 @@ class SettingsHelper(private val context: Context, permissionHelper: PermissionH
         percentMode = Percent.find(context, string!!)
     }
 
-    var stationIdList: List<Long>
+    var stationIdList: MutableList<Long>
         get() = stationIds
         set(longList) {
             val longsTemp = ArrayList(longList)
