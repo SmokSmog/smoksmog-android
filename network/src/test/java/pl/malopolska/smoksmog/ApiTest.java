@@ -114,7 +114,7 @@ public class ApiTest {
         final List<Particulate> particulates = result.getParticulates();
 
         assertThat(result.getId()).isEqualTo(4);
-        assertThat(particulates.size()).isEqualTo(3);
+        assertThat(particulates.size()).isEqualTo(4);
     }
 
     @Test
@@ -139,7 +139,7 @@ public class ApiTest {
         final List<Particulate> particulates = result.getParticulates();
 
         assertThat(result.getId()).isEqualTo(4);
-        assertThat(particulates.size()).isEqualTo(3);
+        assertThat(particulates.size()).isEqualTo(4);
     }
 
     @Test
