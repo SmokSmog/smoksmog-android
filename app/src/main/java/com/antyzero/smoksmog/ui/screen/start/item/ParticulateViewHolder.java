@@ -39,7 +39,7 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
 
     public ParticulateViewHolder(View itemView) {
         super(itemView);
-        SmokSmogApplication.get(itemView.getContext()).getAppComponent().inject(this);
+        SmokSmogApplication.Companion.get(itemView.getContext()).getAppComponent().inject(this);
         ButterKnife.bind(this, itemView);
         resources = itemView.getContext().getResources();
     }
@@ -47,7 +47,7 @@ public class ParticulateViewHolder extends ListViewHolder<Particulate> {
     @Override
     public void bind(Particulate data) {
         super.bind(data);
-        textViewName.setText(TextUtils.spannableSubscript(data.getShortName()));
+        textViewName.setText(TextUtils.Companion.spannableSubscript(data.getShortName()));
 
         textViewMeasureDay.setText(resources.getString(R.string.measurment, data.getAverage(), data.getUnit()));
         textViewMeasureHour.setText(resources.getString(R.string.measurment, data.getValue(), data.getUnit()));

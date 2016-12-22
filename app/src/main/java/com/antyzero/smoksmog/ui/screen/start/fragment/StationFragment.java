@@ -35,6 +35,8 @@ import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import smoksmog.logger.Logger;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
@@ -140,18 +142,31 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
     }
 
     protected final void showLoading() {
-        updateViewsOnUiThread(() -> viewAnimator.setDisplayedChild(1));
+        updateViewsOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                viewAnimator.setDisplayedChild(1);
+            }
+        });
     }
 
     protected final void showData() {
-        updateViewsOnUiThread(() -> viewAnimator.setDisplayedChild(0));
+        updateViewsOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                viewAnimator.setDisplayedChild(0);
+            }
+        });
     }
 
-    protected final void showTryAgain(@StringRes int errorReport) {
-        updateViewsOnUiThread(() -> {
-            viewAnimator.setDisplayedChild(2);
-            textViewError.setVisibility(View.VISIBLE);
-            textViewError.setText(getString(errorReport));
+    protected final void showTryAgain(@StringRes final int errorReport) {
+        updateViewsOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                viewAnimator.setDisplayedChild(2);
+                textViewError.setVisibility(View.VISIBLE);
+                textViewError.setText(getString(errorReport));
+            }
         });
     }
 
@@ -165,16 +180,35 @@ public abstract class StationFragment extends BaseFragment implements TitleProvi
         Observable.just(givenRunnable)
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .filter(runnable -> !isDetached())
-                .subscribe(Runnable::run,
-                        throwable -> {
-                            logger.e(TAG, "Unable to update views");
+                .cast(Runnable.class)
+                .filter(new Func1<Runnable, Boolean>() {
+                    @Override
+                    public Boolean call(Runnable runnable) {
+                        return !isDetached();
+                    }
+                })
+                .subscribe(new Action1<Runnable>() {
+                               @Override
+                               public void call(Runnable runnable) {
+                                   runnable.run();
+                               }
+                           },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                logger.e(TAG, "Unable to update views");
+                            }
                         });
     }
 
     @OnClick(R.id.buttonTryAgain)
     void buttonReloadData() {
-        textViewError.postDelayed(() -> textViewError.setVisibility(View.GONE), 1000L);
+        textViewError.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textViewError.setVisibility(View.GONE);
+            }
+        }, 1000L);
         loadData();
     }
 

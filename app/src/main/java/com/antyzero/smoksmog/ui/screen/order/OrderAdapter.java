@@ -4,6 +4,7 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.antyzero.smoksmog.R;
@@ -34,14 +35,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderItemViewHolder> impl
     }
 
     @Override
-    public void onBindViewHolder(OrderItemViewHolder holder, int position) {
+    public void onBindViewHolder(final OrderItemViewHolder holder, int position) {
         holder.bind(stationList.get(position));
-
-        holder.getHandleView().setOnTouchListener((view, event) -> {
-            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                onStartDragListener.onStartDrag(holder);
+        holder.getHandleView().setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                    onStartDragListener.onStartDrag(holder);
+                }
+                return false;
             }
-            return false;
         });
     }
 

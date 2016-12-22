@@ -1,5 +1,4 @@
 apply plugin: 'java'
-apply plugin: 'me.tatarka.retrolambda'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -9,15 +8,6 @@ dependencies {
 
     testCompile 'com.google.code.gson:gson:2.6.2'
     testCompile 'junit:junit:4.12'
-}
-
-retrolambda {
-    jdk System.getenv("JAVA8_HOME")
-    oldJdk System.getenv("JAVA7_HOME")
-    //noinspection GroovyAssignabilityCheck
-    javaVersion JavaVersion.VERSION_1_7
-    jvmArgs '-noverify'
-    incremental true
 }
 
 /**

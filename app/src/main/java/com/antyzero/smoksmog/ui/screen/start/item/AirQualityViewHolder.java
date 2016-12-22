@@ -16,6 +16,7 @@ import com.trello.rxlifecycle.RxLifecycle;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -29,6 +30,7 @@ import pl.malopolska.smoksmog.model.Particulate;
 import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.math.operators.OperatorMinMax;
 import smoksmog.air.AirQuality;
 import smoksmog.air.AirQualityIndex;
@@ -65,14 +67,19 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
     public AirQualityViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        SmokSmogApplication.get(itemView.getContext()).getAppComponent().inject(this);
+        SmokSmogApplication.Companion.get(itemView.getContext()).getAppComponent().inject(this);
     }
 
     @Override
-    public void bind(Station station) {
+    public void bind(final Station station) {
         super.bind(station);
 
-        buttonTimeline.setOnClickListener(v -> HistoryActivity.start(getContext(), station.getId()));
+        buttonTimeline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HistoryActivity.start(getContext(), station.getId());
+            }
+        });
         buttonTimeline.setVisibility(VISIBLE);
 
         double indexValue = AirQualityIndex.calculate(station);
@@ -95,11 +102,17 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
             Observable.interval(30, TimeUnit.SECONDS)
                     .compose(RxLifecycle.bindView(textViewMeasureTime))
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(aLong -> {
-                                updateUiTime();
-                            },
-                            throwable -> {
-                                logger.i(TAG, "Unable to refresh time", throwable);
+                    .subscribe(new Action1<Object>() {
+                                   @Override
+                                   public void call(Object o) {
+                                       updateUiTime();
+                                   }
+                               },
+                            new Action1<Throwable>() {
+                                @Override
+                                public void call(Throwable throwable) {
+                                    logger.i(TAG, "Unable to refresh time", throwable);
+                                }
                             });
         }
     }
@@ -119,8 +132,12 @@ public class AirQualityViewHolder extends ListViewHolder<Station> {
     }
 
     private Particulate getNewest(List<Particulate> data) {
-        return OperatorMinMax.max(Observable.from(data), (lhs, rhs) ->
-                lhs.getDate().compareTo(rhs.getDate())).toBlocking().first();
+        return OperatorMinMax.max(Observable.from(data), new Comparator<Particulate>() {
+            @Override
+            public int compare(Particulate lhs, Particulate rhs) {
+                return lhs.getDate().compareTo(rhs.getDate());
+            }
+        }).toBlocking().first();
     }
 
     @OnClick(R.id.buttonAirQualityInfo)

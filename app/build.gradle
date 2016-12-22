@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'spoon'
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.squareup.sqldelight'
@@ -14,8 +13,8 @@ android {
     compileSdkVersion 24
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     defaultConfig {
@@ -145,7 +144,7 @@ dependencies {
     }
     androidTestCompile "com.squareup.spoon:spoon-client:${libVersions.square.spoon}"
     androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
@@ -154,15 +153,6 @@ dependencies {
 
     androidTestCompile 'org.apache.directory.studio:org.apache.commons.io:2.4'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-}
-
-retrolambda {
-    jdk System.getenv("JAVA8_HOME")
-    oldJdk System.getenv("JAVA7_HOME")
-    //noinspection GroovyAssignabilityCheck
-    javaVersion JavaVersion.VERSION_1_7
-    jvmArgs '-noverify'
-    incremental true
 }
 
 spoon {

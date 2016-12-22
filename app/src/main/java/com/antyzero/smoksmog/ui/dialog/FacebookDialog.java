@@ -1,6 +1,7 @@
 package com.antyzero.smoksmog.ui.dialog;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -35,10 +36,16 @@ public class FacebookDialog extends InfoDialog {
 
     @Override
     protected AlertDialog.Builder updateBuilder(AlertDialog.Builder builder) {
-        builder.setPositiveButton("OK, pokaż", (dialog, which) -> {
-            takeMeToFacebook();
-        }).setNegativeButton("Nie, podziękuję", (dialog, which) -> {
-            dismiss();
+        builder.setPositiveButton("OK, pokaż", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                takeMeToFacebook();
+            }
+        }).setNegativeButton("Nie, podziękuję", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dismiss();
+            }
         });
         return builder;
     }
@@ -47,8 +54,13 @@ public class FacebookDialog extends InfoDialog {
     protected void initView(View view) {
         super.initView(view);
         ButterKnife.bind(this, view);
-        SmokSmogApplication.get(view.getContext()).getAppComponent().inject(this);
-        imageView.setOnClickListener(v -> takeMeToFacebook());
+        SmokSmogApplication.Companion.get(view.getContext()).getAppComponent().inject(this);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takeMeToFacebook();
+            }
+        });
     }
 
     private void takeMeToFacebook() {

@@ -25,6 +25,7 @@ import butterknife.Bind;
 import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import smoksmog.logger.Logger;
 
 /**
@@ -85,7 +86,7 @@ public class HistoryActivity extends BaseDragonActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SmokSmogApplication.get(this).getAppComponent().plus(new ActivityModule(this)).inject(this);
+        SmokSmogApplication.Companion.get(this).getAppComponent().plus(new ActivityModule(this)).inject(this);
 
         final long stationId = getStationIdExtra(getIntent());
 
@@ -98,12 +99,21 @@ public class HistoryActivity extends BaseDragonActivity {
         smokSmog.getApi().stationHistory(stationId)
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
+                .cast(Station.class)
                 .subscribe(
-                        this::showHistory,
-                        throwable -> {
-                            String message = getString(R.string.error_unable_to_load_station_history);
-                            errorReporter.report(message);
-                            logger.i(TAG, message, throwable);
+                        new Action1<Station>() {
+                            @Override
+                            public void call(Station station) {
+                                showHistory(station);
+                            }
+                        },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                String message = getString(R.string.error_unable_to_load_station_history);
+                                errorReporter.report(message);
+                                logger.i(TAG, message, throwable);
+                            }
                         });
     }
 

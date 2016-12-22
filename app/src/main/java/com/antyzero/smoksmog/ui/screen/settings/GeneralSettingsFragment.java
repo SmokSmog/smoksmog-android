@@ -66,7 +66,7 @@ public class GeneralSettingsFragment extends BasePreferenceFragment implements S
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        SmokSmogApplication.get(activity).getAppComponent()
+        SmokSmogApplication.Companion.get(activity).getAppComponent()
                 .plus(new ActivityModule(activity))
                 .plus(new FragmentModule(this))
                 .inject(this);

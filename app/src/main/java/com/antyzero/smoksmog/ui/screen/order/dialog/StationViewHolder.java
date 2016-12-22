@@ -1,6 +1,7 @@
 package com.antyzero.smoksmog.ui.screen.order.dialog;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import pl.malopolska.smoksmog.model.Station;
@@ -16,9 +17,14 @@ public class StationViewHolder extends RecyclerView.ViewHolder {
         this.stationClickListener = stationClickListener;
     }
 
-    public void bind(Station station) {
+    public void bind(final Station station) {
         textView.setText(station.getName());
-        itemView.setOnClickListener(v -> stationClickListener.onClick(station.getId()));
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stationClickListener.onClick(station.getId());
+            }
+        });
     }
 
     public interface StationClickListener {

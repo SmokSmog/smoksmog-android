@@ -36,7 +36,7 @@ public class AboutDialog extends InfoDialog {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SmokSmogApplication.get(getActivity())
+        SmokSmogApplication.Companion.get(getActivity())
                 .getAppComponent()
                 .inject(this);
     }

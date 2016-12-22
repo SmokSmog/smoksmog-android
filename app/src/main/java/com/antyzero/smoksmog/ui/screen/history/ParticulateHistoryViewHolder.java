@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -40,7 +41,12 @@ class ParticulateHistoryViewHolder extends RecyclerView.ViewHolder {
 
     void bind(Particulate particulate) {
         final List<History> historyList = particulate.getValues();
-        Collections.sort(historyList, (history1, history2) -> history1.getDate().isAfter(history2.getDate()) ? 1 : -1);
+        Collections.sort(historyList, new Comparator<History>() {
+            @Override
+            public int compare(History history1, History history2) {
+                return history1.getDate().isAfter(history2.getDate()) ? 1 : -1;
+            }
+        });
 
         final int lineColor = itemView.getContext().getResources().getColor(R.color.primary);
         final int fillColor = itemView.getContext().getResources().getColor(R.color.accent);

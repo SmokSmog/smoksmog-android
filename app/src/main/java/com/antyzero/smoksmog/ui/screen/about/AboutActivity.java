@@ -45,7 +45,7 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SmokSmogApplication.get(this).getAppComponent().plus(new ActivityModule(this)).inject(this);
+        SmokSmogApplication.Companion.get(this).getAppComponent().plus(new ActivityModule(this)).inject(this);
         setContentView(R.layout.dialog_info_about);
         ButterKnife.bind(this);
 

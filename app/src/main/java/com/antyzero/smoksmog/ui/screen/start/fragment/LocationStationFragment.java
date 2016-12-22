@@ -14,13 +14,18 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.trello.rxlifecycle.FragmentEvent;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
+import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class LocationStationFragment extends StationFragment implements GoogleApiClient.ConnectionCallbacks {
@@ -38,7 +43,7 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
         super.onActivityCreated(savedInstanceState);
 
         Activity activity = getActivity();
-        SmokSmogApplication.get(activity).getAppComponent()
+        SmokSmogApplication.Companion.get(activity).getAppComponent()
                 .plus(new ActivityModule(activity))
                 .plus(new FragmentModule(this), new GoogleModule(this))
                 .inject(this);
@@ -64,34 +69,83 @@ public class LocationStationFragment extends StationFragment implements GoogleAp
                 .compose(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .timeout(LOCATION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
                 .first()
-                .doOnNext(location -> LocationStationFragment.this.locationCurrent = location)
-                .flatMap(location -> smokSmog.getApi().stationByLocation(location.getLatitude(), location.getLongitude()))
-                .doOnNext(givenStation -> smokSmog.getApi().stations()
-                        .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                        .concatMap(Observable::from)
-                        .filter(station -> station.getId() == givenStation.getId())
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(station1 -> {
-                            locationStation = new Location(locationCurrent);
-                            locationStation.setLongitude(station1.getLongitude());
-                            locationStation.setLatitude(station1.getLatitude());
-                        }))
+                .cast(Location.class)
+                .doOnNext(new Action1<Location>() {
+                    @Override
+                    public void call(Location location) {
+                        LocationStationFragment.this.locationCurrent = location;
+                    }
+                })
+                .flatMap(new Func1<Location, Observable<Station>>() {
+                    @Override
+                    public Observable<Station> call(Location location) {
+                        return smokSmog.getApi().stationByLocation(location.getLatitude(), location.getLongitude());
+                    }
+                })
+                .doOnNext(new Action1<Station>() {
+                    @Override
+                    public void call(final Station givenStation) {
+
+                        smokSmog.getApi().stations()
+                                .concatMap(new Func1<List<Station>, Observable<Station>>() {
+                                    @Override
+                                    public Observable<Station> call(List<Station> stations) {
+                                        return Observable.from(stations);
+                                    }
+                                })
+                                .filter(new Func1<Station, Boolean>() {
+                                    @Override
+                                    public Boolean call(Station station) {
+                                        return station.getId() == givenStation.getId();
+                                    }
+                                })
+                                .subscribeOn(Schedulers.newThread())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .compose(bindUntilEvent(FragmentEvent.DESTROY))
+                                .cast(Station.class)
+                                .subscribe(new Action1<Station>() {
+                                    @Override
+                                    public void call(Station station1) {
+                                        locationStation = new Location(locationCurrent);
+                                        locationStation.setLongitude(station1.getLongitude());
+                                        locationStation.setLatitude(station1.getLatitude());
+                                    }
+                                });
+                    }
+                })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(() -> {
-                    LocationStationFragment.this.locationCurrent = null;
-                    showLoading();
-                })
+                .doOnSubscribe(new Action0() {
+                                   @Override
+                                   public void call() {
+                                       LocationStationFragment.this.locationCurrent = null;
+                                       showLoading();
+                                   }
+                               }
+                )
+                .cast(Station.class)
                 .subscribe(
-                        station -> updateViewsOnUiThread(() -> updateUI(station)),
-                        throwable -> {
-                            try {
-                                showTryAgain(R.string.error_no_near_Station);
-                            } catch (Exception e) {
-                                logger.e(TAG, "Problem with error handling code", e);
-                            } finally {
-                                logger.i(TAG, "Unable to find closes station", throwable);
+                        new Action1<Station>() {
+                            @Override
+                            public void call(final Station station) {
+                                updateViewsOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        updateUI(station);
+                                    }
+                                });
+                            }
+                        },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                try {
+                                    showTryAgain(R.string.error_no_near_Station);
+                                } catch (Exception e) {
+                                    logger.e(TAG, "Problem with error handling code", e);
+                                } finally {
+                                    logger.i(TAG, "Unable to find closes station", throwable);
+                                }
                             }
                         });
     }

@@ -36,6 +36,9 @@ import pl.malopolska.smoksmog.model.Station;
 import pl.malopolska.smoksmog.utils.StationUtils;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import smoksmog.logger.Logger;
 
@@ -92,7 +95,7 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
                 0, 0,
                 0, getResources().getDimensionPixelSize(R.dimen.item_air_quality_height) * 3);
 
-        SmokSmogApplication.get(this)
+        SmokSmogApplication.Companion.get(this)
                 .getAppComponent()
                 .plus(new ActivityModule(this))
                 .inject(this);
@@ -107,22 +110,43 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        List<Long> stationIds = settingsHelper.getStationIdList();
+        final List<Long> stationIds = settingsHelper.getStationIdList();
 
         smokSmog.getApi().stations()
                 .subscribeOn(Schedulers.newThread())
-                .flatMap(Observable::from)
-                .filter(station -> stationIds.contains(station.getId()))
-                .toSortedList((station, station2) -> stationIds.indexOf(station.getId()) - stationIds.indexOf(station2.getId()))
+                .flatMap(new Func1<List<Station>, Observable<Station>>() {
+                    @Override
+                    public Observable<Station> call(List<Station> stations) {
+                        return Observable.from(stations);
+                    }
+                })
+                .filter(new Func1<Station, Boolean>() {
+                    @Override
+                    public Boolean call(Station station) {
+                        return stationIds.contains(station.getId());
+                    }
+                })
+                .toSortedList(new Func2<Station, Station, Integer>() {
+                    @Override
+                    public Integer call(Station station, Station station2) {
+                        return stationIds.indexOf(station.getId()) - stationIds.indexOf(station2.getId());
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        stations -> {
-                            stationList.clear();
-                            stationList.addAll(stations);
-                            recyclerView.getAdapter().notifyDataSetChanged();
+                        new Action1<List<Station>>() {
+                            @Override
+                            public void call(List<Station> stations) {
+                                stationList.clear();
+                                stationList.addAll(stations);
+                                recyclerView.getAdapter().notifyDataSetChanged();
+                            }
                         },
-                        throwable -> {
-                            logger.w(TAG, "Unable to build list", throwable);
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                logger.w(TAG, "Unable to build list", throwable);
+                            }
                         });
 
     }
@@ -161,11 +185,16 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
     }
 
     private void startStationPick() {
-        int[] ids = Observable.from(stationList)
-                .map(Station::getId)
+        List<Long> list = Observable.from(stationList)
+                .map(new Func1<Station, Long>() {
+                    @Override
+                    public Long call(Station station) {
+                        return station.getId();
+                    }
+                })
                 .toList()
-                .map(this::convertListToArray)
                 .toBlocking().first();
+        int[] ids = convertListToArray(list);
         PickStationActivity.Companion.startForResult(this, PICK_STATION_REQUEST, ids);
     }
 
@@ -200,14 +229,20 @@ public class OrderActivity extends BaseDragonActivity implements OnStartDragList
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        station -> {
-                            stationList.add(station);
-                            recyclerView.getAdapter().notifyDataSetChanged();
-                            settingsHelper.setStationIdList(StationUtils.Companion.convertStationsToIdsList(stationList));
+                        new Action1<Station>() {
+                            @Override
+                            public void call(Station station) {
+                                stationList.add(station);
+                                recyclerView.getAdapter().notifyDataSetChanged();
+                                settingsHelper.setStationIdList(StationUtils.Companion.convertStationsToIdsList(stationList));
+                            }
                         },
-                        throwable -> {
-                            logger.e(TAG, "Unable to add station to station list", throwable);
-                            errorReporter.report(R.string.error_unable_to_add_station);
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                logger.e(TAG, "Unable to add station to station list", throwable);
+                                errorReporter.report(R.string.error_unable_to_add_station);
+                            }
                         }
                 );
     }

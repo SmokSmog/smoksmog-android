@@ -27,6 +27,9 @@ import pl.malopolska.smoksmog.SmokSmog;
 import pl.malopolska.smoksmog.model.Station;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import smoksmog.logger.Logger;
 
@@ -74,7 +77,7 @@ public class AddStationDialog extends DialogFragment implements StationDialogAda
 
         stationListener = (StationDialogAdapter.StationListener) activity;
 
-        SmokSmogApplication.get(activity)
+        SmokSmogApplication.Companion.get(activity)
                 .getAppComponent()
                 .plus(new ActivityModule(activity))
                 .plus(new SupportFragmentModule(AddStationDialog.this))
@@ -87,14 +90,39 @@ public class AddStationDialog extends DialogFragment implements StationDialogAda
         super.onStart();
         stationList.clear();
         smokSmog.getApi().stations()
+                .flatMap(new Func1<List<Station>, Observable<Station>>() {
+                    @Override
+                    public Observable<Station> call(List<Station> station) {
+                        return null;
+                    }
+                })
+                .filter(new Func1<Station, Boolean>() {
+                    @Override
+                    public Boolean call(Station station) {
+                        return !stationIdsNotToShow.contains(station.getId());
+                    }
+                })
                 .subscribeOn(Schedulers.newThread())
-                .flatMap(Observable::from)
-                .filter(station -> !stationIdsNotToShow.contains(station.getId()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        stationList::add,
-                        throwable -> logger.e(TAG, "Unable to load stations", throwable),
-                        () -> recyclerView.getAdapter().notifyDataSetChanged());
+                        new Action1<Station>() {
+                            @Override
+                            public void call(Station station) {
+                                stationList.add(station);
+                            }
+                        },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                logger.e(TAG, "Unable to load stations", throwable);
+                            }
+                        },
+                        new Action0() {
+                            @Override
+                            public void call() {
+                                recyclerView.getAdapter().notifyDataSetChanged();
+                            }
+                        });
     }
 
     @NonNull

@@ -30,7 +30,12 @@ public class StationDialogAdapter extends RecyclerView.Adapter<StationViewHolder
         textView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
         int padding = parent.getResources().getDimensionPixelSize(R.dimen.margin_16);
         textView.setPadding(padding, padding, padding, padding);
-        return new StationViewHolder(textView, stationListener::onStation);
+        return new StationViewHolder(textView, new StationViewHolder.StationClickListener() {
+            @Override
+            public void onClick(long stationId) {
+                stationListener.onStation(stationId);
+            }
+        });
     }
 
     @Override

@@ -170,9 +170,12 @@ public class IndicatorView extends View {
         }
 
         valueAnimator.setFloatValues(this.value, newValue);
-        valueAnimator.addUpdateListener(animation -> {
-            this.value = (float) animation.getAnimatedValue();
-            recalculateDuringAnimation();
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                IndicatorView.this.value = (float) animation.getAnimatedValue();
+                recalculateDuringAnimation();
+            }
         });
         valueAnimator.addListener(new Animator.AnimatorListener() {
             @Override

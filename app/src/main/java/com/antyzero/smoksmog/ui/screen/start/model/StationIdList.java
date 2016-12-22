@@ -20,7 +20,7 @@ public class StationIdList extends ForwardingList<Long> implements SharedPrefere
     PermissionHelper permissionHelper;
 
     public StationIdList(Context context) {
-        SmokSmogApplication.get(context)
+        SmokSmogApplication.Companion.get(context)
                 .getAppComponent()
                 .inject(this);
 
