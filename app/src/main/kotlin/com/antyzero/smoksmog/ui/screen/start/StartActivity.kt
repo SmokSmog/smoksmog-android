@@ -197,7 +197,7 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
         OrderActivity.start(this, true)
     }
 
-    protected fun updateTitleWithStation() {
+    private fun updateTitleWithStation() {
         if (stationSlideAdapter.count > 0) {
             updateTitleWithStation(viewPager.currentItem)
         }
@@ -206,7 +206,7 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
     protected fun updateTitleWithStation(position: Int) {
         stationSlideAdapter.getFragmentReference(position)?.get()?.let {
             val stationFragment = it
-            it.title?.let {
+            it.title.let {
                 toolbar.title = it
                 toolbar.subtitle = stationFragment.subtitle
                 changeSubtitleTypeface()

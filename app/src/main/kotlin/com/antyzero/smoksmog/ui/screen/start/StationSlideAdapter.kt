@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference
  */
 class StationSlideAdapter(fragmentManager: FragmentManager, private val stationIds: List<Long>) : FragmentStatePagerAdapter(fragmentManager) {
 
-    private val fragmentRegister = SparseArray<WeakReference<StationFragment>>()
+    private val fragmentRegister = SparseArray<WeakReference<StationFragment>?>()
 
     override fun getItemPosition(`object`: Any?): Int {
         return PagerAdapter.POSITION_NONE
@@ -36,7 +36,7 @@ class StationSlideAdapter(fragmentManager: FragmentManager, private val stationI
         return StationFragment.newInstance(stationIds[position])
     }
 
-    fun getFragmentReference(position: Int): WeakReference<StationFragment> {
+    fun getFragmentReference(position: Int): WeakReference<StationFragment>? {
         return fragmentRegister.get(position)
     }
 

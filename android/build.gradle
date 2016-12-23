@@ -50,11 +50,13 @@ dependencies {
 
     // UI oriented
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile "com.android.support:recyclerview-v7:${libVersions.android.appCompat}"
 
     // General
-    compile 'io.reactivex:rxjava:1.1.2'
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'io.reactivex:rxjava-math:1.0.0'
+    compile "io.reactivex:rxjava:${libVersions.rx.java}"
+    compile "io.reactivex:rxjava-math:${libVersions.rx.javaMath}"
+    compile "io.reactivex:rxandroid:${libVersions.rx.android}"
+    compile "io.reactivex:rxkotlin:${libVersions.rx.kotlin}"
     compile 'com.trello:rxlifecycle:0.5.0'
     compile 'com.trello:rxlifecycle-components:0.5.0'
 

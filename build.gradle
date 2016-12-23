@@ -40,7 +40,10 @@ ext {
             junit   : '4.12',
             once    : '1.2.1',
             rx      : [
-                    java: '1.2.0'],
+                    android : '1.1.0',
+                    java    : '1.2.0',
+                    javaMath: '1.0.0',
+                    kotlin  : '0.60.0'],
             square  : [
                     spoon   : '1.7.0',
                     okhttp  : '3.3.1',

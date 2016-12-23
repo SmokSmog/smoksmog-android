@@ -35,14 +35,14 @@ class StationWidget : AppWidgetProvider() {
         fun updateWidget(widgetId: Int, context: Context, appWidgetManager: AppWidgetManager, station: Station) {
 
             val airQualityIndex = AirQualityIndex.calculate(station)
-            val airQuality = AirQuality.findByValue(airQualityIndex)
+            val airQuality = AirQuality.Companion.findByValue(airQualityIndex)
 
             val views = RemoteViews(context.packageName, R.layout.widget_station)
 
             var name = station.name
 
             if (BuildConfig.DEBUG) {
-                name = "Stacja: ${station.name}\nPomiar: ${station.particulates?.get(0)?.date}\nAktulizacja: ${DateTime.now()}"
+                name = "Stacja: ${station.name}\nPomiar: ${station.particulates[0].date}\nAktulizacja: ${DateTime.now()}"
             }
 
             views.setTextViewText(R.id.textViewStation, name)
