@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import butterknife.OnClick
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.error.ErrorReporter
@@ -36,20 +35,13 @@ import javax.inject.Inject
  */
 class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
 
-    @Inject
-    lateinit var smokSmog: SmokSmog
-    @Inject
-    lateinit var logger: Logger
-    @Inject
-    lateinit var errorReporter: ErrorReporter
-    @Inject
-    lateinit var settingsHelper: SettingsHelper
-    @Inject
-    lateinit var rxBus: RxBus
-    @Inject
-    lateinit var typefaceProvider: TypefaceProvider
-    @Inject
-    lateinit var firebaseEvents: FirebaseEvents
+    @Inject lateinit var smokSmog: SmokSmog
+    @Inject lateinit var logger: Logger
+    @Inject lateinit var errorReporter: ErrorReporter
+    @Inject lateinit var settingsHelper: SettingsHelper
+    @Inject lateinit var rxBus: RxBus
+    @Inject lateinit var typefaceProvider: TypefaceProvider
+    @Inject lateinit var firebaseEvents: FirebaseEvents
 
     private lateinit var pageSave: PageSave
     private lateinit var stationIds: List<Long>
@@ -61,15 +53,17 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
         super.onCreate(savedInstanceState)
         pageSave = PageSave(this)
 
-        SmokSmogApplication.get(this).appComponent
+        SmokSmogApplication[this].appComponent
                 .plus(ActivityModule(this)).let {
             it.inject(this@StartActivity)
-            val permisionHelper = PermissionHelper(this@StartActivity)
-            stationIds = StationIdList(SettingsHelper(this@StartActivity, permisionHelper), permisionHelper)
+            val permissionHelper = PermissionHelper(this@StartActivity)
+            stationIds = StationIdList(SettingsHelper(this@StartActivity, permissionHelper), permissionHelper)
         }
 
         setContentView(R.layout.activity_start)
         setSupportActionBar(toolbar)
+
+        buttonAddStation.setOnClickListener { OrderActivity.start(this, true) }
 
         stationSlideAdapter = StationSlideAdapter(fragmentManager, stationIds)
 
@@ -192,18 +186,13 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
         firebaseEvents.logStationCardInView(stationSlideAdapter.getItem(position).stationId)
     }
 
-    @OnClick(R.id.buttonAddStation)
-    internal fun buttonClickAddStation() {
-        OrderActivity.start(this, true)
-    }
-
     private fun updateTitleWithStation() {
         if (stationSlideAdapter.count > 0) {
             updateTitleWithStation(viewPager.currentItem)
         }
     }
 
-    protected fun updateTitleWithStation(position: Int) {
+    fun updateTitleWithStation(position: Int) {
         stationSlideAdapter.getFragmentReference(position)?.get()?.let {
             val stationFragment = it
             it.title.let {
@@ -234,12 +223,10 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
      * TODO fix with Calligraphy in future
      */
     private fun changeSubtitleTypeface() {
-        for (i in 1..toolbar!!.childCount - 1) {
-            val view = toolbar!!.getChildAt(i)
-            if (view is TextView) {
-                view.typeface = typefaceProvider!!.default
-            }
-        }
+        (1..toolbar.childCount - 1)
+                .map { toolbar!!.getChildAt(it) }
+                .filterIsInstance<TextView>()
+                .forEach { it.typeface = typefaceProvider.default }
     }
 
     /**

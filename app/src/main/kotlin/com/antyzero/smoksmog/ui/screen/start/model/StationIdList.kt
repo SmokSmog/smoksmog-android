@@ -7,7 +7,6 @@ import com.antyzero.smoksmog.settings.SettingsHelper
 class StationIdList(val settingsHelper: SettingsHelper, val permissionHelper: PermissionHelper) : MutableList<Long> by settingsHelper.stationIdList, SharedPreferences.OnSharedPreferenceChangeListener {
 
     init {
-
         val settingsPreferences = settingsHelper.preferences
         settingsPreferences.registerOnSharedPreferenceChangeListener(this)
         updateWithPreferences(settingsPreferences)

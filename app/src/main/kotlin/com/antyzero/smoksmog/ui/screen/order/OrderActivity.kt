@@ -6,70 +6,49 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout.LayoutParams
-import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.LinearLayoutManager.VERTICAL
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Toast
-
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
+import com.antyzero.smoksmog.dsl.navBarHeight
 import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.settings.SettingsHelper
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.PickStationActivity
 import com.antyzero.smoksmog.ui.screen.order.dialog.StationDialogAdapter
-import com.antyzero.smoksmog.ui.utils.DimenUtils
-
-import java.util.ArrayList
-
-import javax.inject.Inject
-
-import butterknife.Bind
-import butterknife.OnClick
+import com.antyzero.smoksmog.ui.statusBarHeight
+import kotlinx.android.synthetic.main.activity_order.*
 import pl.malopolska.smoksmog.SmokSmog
 import pl.malopolska.smoksmog.model.Station
 import pl.malopolska.smoksmog.utils.StationUtils
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
-import rx.functions.Action1
-import rx.functions.Func1
-import rx.functions.Func2
 import rx.schedulers.Schedulers
 import smoksmog.logger.Logger
-
-import android.support.v7.widget.LinearLayoutManager.VERTICAL
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import javax.inject.Inject
 
 class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAdapter.StationListener {
-    private val stationList = ArrayList<Station>()
 
-    @Inject
-    lateinit var smokSmog: SmokSmog
-    @Inject
-    lateinit var settingsHelper: SettingsHelper
-    @Inject
-    lateinit var logger: Logger
-    @Inject
-    lateinit var errorReporter: ErrorReporter
+    @Inject lateinit var smokSmog: SmokSmog
+    @Inject lateinit var settingsHelper: SettingsHelper
+    @Inject lateinit var logger: Logger
+    @Inject lateinit var errorReporter: ErrorReporter
 
-    @Bind(R.id.recyclerView)
-    internal var recyclerView: RecyclerView? = null
-    @Bind(R.id.fab)
-    internal var floatingActionButton: FloatingActionButton? = null
-    @Bind(R.id.toolbar)
-    internal var toolbar: Toolbar? = null
-    private var itemTouchHelper: ItemTouchHelper? = null
+    lateinit private var itemTouchHelper: ItemTouchHelper
+    private val stationList: MutableList<Station> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
         setSupportActionBar(toolbar)
-        container!!.setPadding(0, DimenUtils.getStatusBarHeight(this), 0, 0)
+        container.setPadding(0, statusBarHeight(), 0, 0)
 
         if (intent != null && intent.getBooleanExtra(EXTRA_DIALOG, false)) {
             startStationPick()
@@ -78,7 +57,7 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
         setupFAB()
         setupNavigationBar()
 
-        recyclerView!!.setPadding(
+        recyclerView.setPadding(
                 0, 0,
                 0, resources.getDimensionPixelSize(R.dimen.item_air_quality_height) * 3)
 
@@ -89,17 +68,17 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
 
         val adapter = OrderAdapter(stationList, this, settingsHelper)
 
-        recyclerView!!.setHasFixedSize(true)
-        recyclerView!!.adapter = adapter
-        recyclerView!!.layoutManager = LinearLayoutManager(this, VERTICAL, false)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this, VERTICAL, false)
 
         val callback = SimpleItemTouchHelperCallback(adapter)
         itemTouchHelper = ItemTouchHelper(callback)
-        itemTouchHelper!!.attachToRecyclerView(recyclerView)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
 
-        val stationIds = settingsHelper!!.stationIdList
+        val stationIds = settingsHelper.stationIdList
 
-        smokSmog!!.api.stations()
+        smokSmog.api.stations()
                 .subscribeOn(Schedulers.newThread())
                 .flatMap { stations -> Observable.from(stations) }
                 .filter { station -> stationIds.contains(station.id) }
@@ -109,21 +88,19 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
                         { stations ->
                             stationList.clear()
                             stationList.addAll(stations)
-                            recyclerView!!.adapter.notifyDataSetChanged()
+                            recyclerView.adapter.notifyDataSetChanged()
                         }
-                ) { throwable -> logger!!.w(TAG, "Unable to build list", throwable) }
+                ) { throwable -> logger.w(TAG, "Unable to build list", throwable) }
 
     }
 
     private fun setupFAB() {
         val margin = resources.getDimensionPixelSize(R.dimen.margin_16)
-
         val params = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-
         var bottomMargin = margin
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            bottomMargin += DimenUtils.getNavBarHeight(this)
+            bottomMargin += navBarHeight()
         }
 
         params.bottomMargin = bottomMargin
@@ -133,7 +110,8 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
         params.anchorGravity = Gravity.BOTTOM or Gravity.END
         params.anchorId = R.id.recyclerView
 
-        floatingActionButton!!.layoutParams = params
+        fab.layoutParams = params
+        fab.setOnClickListener { startStationPick() }
     }
 
     private fun setupNavigationBar() {
@@ -143,14 +121,9 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
         }
     }
 
-    @OnClick(R.id.fab)
-    internal fun onClickFab() {
-        startStationPick()
-    }
-
     private fun startStationPick() {
         val list = Observable.from(stationList)
-                .map { station -> station.id }
+                .map(Station::id)
                 .toList()
                 .toBlocking().first()
         val ids = convertListToArray(list)
@@ -177,25 +150,25 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
     }
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
-        itemTouchHelper!!.startDrag(viewHolder)
+        itemTouchHelper.startDrag(viewHolder)
     }
 
     override fun onStation(stationId: Long) {
-        smokSmog!!.api.station(stationId)
+        smokSmog.api.station(stationId)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { station ->
                             stationList.add(station)
-                            recyclerView!!.adapter.notifyDataSetChanged()
-                            settingsHelper!!.stationIdList.let {
+                            recyclerView.adapter.notifyDataSetChanged()
+                            settingsHelper.stationIdList.let {
                                 it.clear()
                                 it.addAll(StationUtils.Companion.convertStationsToIdsList(stationList))
                             }
                         }
                 ) { throwable ->
-                    logger!!.e(TAG, "Unable to add station to station list", throwable)
-                    errorReporter!!.report(R.string.error_unable_to_add_station)
+                    logger.e(TAG, "Unable to add station to station list", throwable)
+                    errorReporter.report(R.string.error_unable_to_add_station)
                 }
     }
 

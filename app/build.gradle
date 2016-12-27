@@ -4,25 +4,21 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 apply plugin: 'spoon'
 apply plugin: 'com.github.triplet.play'
-apply plugin: 'com.squareup.sqldelight'
-
-targetCompatibility = '1.7'
-sourceCompatibility = '1.7'
 
 android {
 
-    buildToolsVersion "24.0.3"
-    compileSdkVersion 24
+    buildToolsVersion androidVars.buildToolsVersion
+    compileSdkVersion androidVars.compileSdkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility commonVars.javaVersion
+        targetCompatibility commonVars.javaVersion
     }
 
     defaultConfig {
         applicationId "pl.malopolska.smoksmog"
-        minSdkVersion 16
-        targetSdkVersion 24
+        minSdkVersion androidVars.minSdkVersion
+        targetSdkVersion androidVars.targetSdkVersion
         versionCode appVersionCode as Integer
         versionName appVersionName
 
