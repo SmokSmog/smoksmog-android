@@ -121,7 +121,7 @@ dependencies {
     compile "com.google.android.gms:play-services-location:${libVersions.google.playServices}"
     compile "com.google.firebase:firebase-core:${libVersions.google.playServices}"
     compile "com.google.firebase:firebase-messaging:${libVersions.google.playServices}"
-    compile 'com.firebase:firebase-jobdispatcher:0.5.0' // this might be sort of unstable
+    compile 'com.firebase:firebase-jobdispatcher:0.5.2' // this might be sort of unstable
 
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile 'pl.charmas.android:android-reactive-location:0.9@aar'
