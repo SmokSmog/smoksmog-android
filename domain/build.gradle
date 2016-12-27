@@ -1,0 +1,10 @@
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+//noinspection GroovyAssignabilityCheck
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
