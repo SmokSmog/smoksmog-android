@@ -21,10 +21,9 @@ import com.antyzero.smoksmog.ui.screen.ActivityModule
 import javax.inject.Inject
 
 import butterknife.Bind
-import pl.malopolska.smoksmog.SmokSmog
+import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
 import rx.android.schedulers.AndroidSchedulers
-import rx.functions.Action1
 import smoksmog.logger.Logger
 
 /**
@@ -33,7 +32,7 @@ import smoksmog.logger.Logger
 class HistoryActivity : BaseDragonActivity() {
 
     @Inject
-    lateinit var smokSmog: SmokSmog
+    lateinit var restClient: RestClient
     @Inject
     lateinit var errorReporter: ErrorReporter
     @Inject
@@ -56,7 +55,7 @@ class HistoryActivity : BaseDragonActivity() {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         }
 
-        smokSmog!!.api.stationHistory(stationId)
+        restClient.stationHistory(stationId)
                 .compose(bindToLifecycle<Any>())
                 .observeOn(AndroidSchedulers.mainThread())
                 .cast(Station::class.java)
@@ -64,14 +63,13 @@ class HistoryActivity : BaseDragonActivity() {
                         { station -> showHistory(station) }
                 ) { throwable ->
                     val message = getString(R.string.error_unable_to_load_station_history)
-                    errorReporter!!.report(message)
-                    logger!!.i(TAG, message, throwable)
+                    errorReporter.report(message)
+                    logger.i(TAG, message, throwable)
                 }
     }
 
     private fun showHistory(station: Station?) {
-        if (station == null || station.particulates == null) {
-            //no valid data
+        if (station == null) {
             return
         }
         val spanCount = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
@@ -87,7 +85,7 @@ class HistoryActivity : BaseDragonActivity() {
         if (intent == null || !intent.hasExtra(STATION_ID_KEY)) {
             // TODO toast text should be in resources and tranlsted
             Toast.makeText(this, "Pokazanie historii było niemożliwe", Toast.LENGTH_SHORT).show()
-            logger!!.e(TAG, "Unable to display History screen, missing start data")
+            logger.e(TAG, "Unable to display History screen, missing start data")
             finish()
             return -1
         }

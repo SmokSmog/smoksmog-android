@@ -25,7 +25,7 @@ import com.antyzero.smoksmog.ui.screen.PickStationActivity
 import com.antyzero.smoksmog.ui.screen.order.dialog.StationDialogAdapter
 import com.antyzero.smoksmog.ui.statusBarHeight
 import kotlinx.android.synthetic.main.activity_order.*
-import pl.malopolska.smoksmog.SmokSmog
+import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
 import pl.malopolska.smoksmog.utils.StationUtils
 import rx.Observable
@@ -36,7 +36,7 @@ import javax.inject.Inject
 
 class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAdapter.StationListener {
 
-    @Inject lateinit var smokSmog: SmokSmog
+    @Inject lateinit var restClient: RestClient
     @Inject lateinit var settingsHelper: SettingsHelper
     @Inject lateinit var logger: Logger
     @Inject lateinit var errorReporter: ErrorReporter
@@ -78,7 +78,7 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
 
         val stationIds = settingsHelper.stationIdList
 
-        smokSmog.api.stations()
+        restClient.stations()
                 .subscribeOn(Schedulers.newThread())
                 .flatMap { stations -> Observable.from(stations) }
                 .filter { station -> stationIds.contains(station.id) }
@@ -154,7 +154,7 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
     }
 
     override fun onStation(stationId: Long) {
-        smokSmog.api.station(stationId)
+        restClient.station(stationId)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

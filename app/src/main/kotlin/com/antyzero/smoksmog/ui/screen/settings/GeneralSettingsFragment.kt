@@ -21,7 +21,7 @@ import com.crashlytics.android.answers.Answers
 
 import javax.inject.Inject
 
-import pl.malopolska.smoksmog.SmokSmog
+import pl.malopolska.smoksmog.RestClient
 import smoksmog.logger.Logger
 
 /**
@@ -31,7 +31,7 @@ class GeneralSettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSh
 
     //<editor-fold desc="Dagger">
     @Inject
-    lateinit var smokSmog: SmokSmog
+    lateinit var restClient: RestClient
     @Inject
     lateinit var errorReporter: ErrorReporter
     @Inject

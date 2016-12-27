@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 import butterknife.Bind
 import butterknife.ButterKnife
-import pl.malopolska.smoksmog.SmokSmog
+import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -36,7 +36,7 @@ class AddStationDialog : DialogFragment(), StationDialogAdapter.StationListener 
     private val stationList = ArrayList<Station>()
     private val stationIdsNotToShow = ArrayList<Long>()
     @Inject
-    lateinit var smokSmog: SmokSmog
+    lateinit var restClient: RestClient
     @Inject
     lateinit var logger: Logger
     @Bind(R.id.recyclerView)
@@ -74,14 +74,14 @@ class AddStationDialog : DialogFragment(), StationDialogAdapter.StationListener 
     override fun onStart() {
         super.onStart()
         stationList.clear()
-        smokSmog!!.api.stations()
+        restClient.stations()
                 .flatMap(Func1<List<Station>, Observable<Station>> { null })
                 .filter { station -> !stationIdsNotToShow.contains(station.id) }
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { station -> stationList.add(station) },
-                        { throwable -> logger!!.e(TAG, "Unable to load stations", throwable) }
+                        { throwable -> logger.e(TAG, "Unable to load stations", throwable) }
                 ) { recyclerView!!.adapter.notifyDataSetChanged() }
     }
 

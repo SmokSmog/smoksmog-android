@@ -61,9 +61,9 @@ class LocationStationFragment : StationFragment(), GoogleApiClient.ConnectionCal
                 .first()
                 .cast(Location::class.java)
                 .doOnNext { location -> this@LocationStationFragment.locationCurrent = location }
-                .flatMap { location -> smokSmog.api.stationByLocation(location.latitude, location.longitude) }
+                .flatMap { location -> restClient.stationByLocation(location.latitude, location.longitude) }
                 .doOnNext { givenStation ->
-                    smokSmog.api.stations()
+                    restClient.stations()
                             .concatMap { stations -> Observable.from(stations) }
                             .filter { station -> station.id == givenStation.id }
                             .subscribeOn(Schedulers.newThread())

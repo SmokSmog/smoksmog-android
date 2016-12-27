@@ -25,7 +25,7 @@ import com.antyzero.smoksmog.ui.screen.start.model.StationIdList
 import com.antyzero.smoksmog.ui.typeface.TypefaceProvider
 import com.trello.rxlifecycle.ActivityEvent
 import kotlinx.android.synthetic.main.activity_start.*
-import pl.malopolska.smoksmog.SmokSmog
+import pl.malopolska.smoksmog.RestClient
 import rx.android.schedulers.AndroidSchedulers
 import smoksmog.logger.Logger
 import javax.inject.Inject
@@ -35,7 +35,7 @@ import javax.inject.Inject
  */
 class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
 
-    @Inject lateinit var smokSmog: SmokSmog
+    @Inject lateinit var restClient: RestClient
     @Inject lateinit var logger: Logger
     @Inject lateinit var errorReporter: ErrorReporter
     @Inject lateinit var settingsHelper: SettingsHelper

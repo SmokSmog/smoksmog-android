@@ -20,7 +20,7 @@ import com.antyzero.smoksmog.ui.screen.start.TitleProvider
 import com.crashlytics.android.answers.Answers
 import com.trello.rxlifecycle.FragmentEvent
 import kotlinx.android.synthetic.main.fragment_station.*
-import pl.malopolska.smoksmog.SmokSmog
+import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -34,7 +34,7 @@ abstract class StationFragment : BaseFragment(), TitleProvider {
     @Inject
     lateinit var rxBus: RxBus
     @Inject
-    lateinit protected var smokSmog: SmokSmog
+    lateinit protected var restClient: RestClient
     @Inject
     lateinit protected var logger: Logger
     @Inject

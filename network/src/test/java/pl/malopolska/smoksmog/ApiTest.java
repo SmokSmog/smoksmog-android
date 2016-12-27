@@ -35,10 +35,10 @@ public class ApiTest {
         server = new MockWebServer();
         server.start();
 
-        final SmokSmog smokSmog = new SmokSmog(Locale.ENGLISH, server.url("/").toString());
+        final RestClient restClient = new RestClient.Builder(Locale.ENGLISH, server.url("/").toString()).build();
 
-        endpoint = smokSmog.getEndpoint();
-        api = smokSmog.getApi();
+        endpoint = restClient.getEndpoint();
+        api = restClient;
     }
 
     @Test

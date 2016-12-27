@@ -25,7 +25,7 @@ class NetworkStationFragment : StationFragment() {
     }
 
     override fun loadData() {
-        smokSmog.api.station(stationId)
+        restClient.station(stationId)
                 .doOnSubscribe { showLoading() }
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

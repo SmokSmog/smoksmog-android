@@ -3,18 +3,18 @@ package com.antyzero.smoksmog.mock;
 import android.support.annotation.NonNull;
 
 import pl.malopolska.smoksmog.Api;
-import pl.malopolska.smoksmog.SmokSmog;
+import pl.malopolska.smoksmog.RestClient;
 
 /**
  *
  */
-class MockSmokSmog extends SmokSmog {
+class MockRestClient extends RestClient {
 
     private final MockApi mockApi;
 
-    MockSmokSmog() {
+    MockRestClient() {
         super();
-        mockApi = new MockApi(SmokSmog.Companion.createGson());
+        mockApi = new MockApi(RestClient.Companion.createGson());
     }
 
     @NonNull
