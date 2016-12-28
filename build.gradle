@@ -1,7 +1,7 @@
 apply from: 'jacoco.gradle'
 
 buildscript {
-    ext.kotlin_version = '1.0.5-3'
+    ext.kotlin_version = '1.0.6'
 
     repositories {
         jcenter()
@@ -33,7 +33,7 @@ ext {
     ]
 
     androidVars = [
-            compileSdkVersion: 24,
+            compileSdkVersion: 25,
             buildToolsVersion: '24.0.3',
             targetSdkVersion: 25,
             minSdkVersion: 16
@@ -41,8 +41,9 @@ ext {
 
     libVersions = [
             android : [
-                    appCompat: '24.2.1',
+                    appCompat: '25.0.1',
                     wearable : '1.4.0'],
+            assertj : '2.1.0',
             google  : [
                     dagger      : '2.7',
                     playServices: '9.6.1'],
