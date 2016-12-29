@@ -55,19 +55,6 @@ class SmokSmogTest {
         testSubscriber.assertCompleted()
         testSubscriber.assertValueCount(0)
     }
-
-    @Test
-    fun dataCollection() {
-        val testSubscriber = TestSubscriber<Pair<Item,Station>>()
-        val smokSmog = SmokSmog(RestClient.Builder().build(), JsonFileStorage(), mock <LocationProvider> { })
-        smokSmog.storage.addStation(17)
-
-        smokSmog.collectData().subscribe(testSubscriber)
-
-        testSubscriber.assertNoErrors()
-        testSubscriber.assertCompleted()
-        testSubscriber.assertValueCount(1)
-    }
 }
 
 private fun <T> T.observable() = Observable.just(this)
