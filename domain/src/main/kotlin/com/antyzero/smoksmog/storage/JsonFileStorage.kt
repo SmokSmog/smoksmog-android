@@ -53,9 +53,13 @@ class JsonFileStorage(val file: File = File.createTempFile("jfs", "json")) : Per
         return if (containsItem(item)) {
             false
         } else {
-            items.add(item).apply {
-                saveItems()
-            }
+            return when (item) {
+                is Item.Nearest -> {
+                    items.add(0, item)
+                    true
+                }
+                else -> items.add(item)
+            }.apply { saveItems() }
         }
     }
 

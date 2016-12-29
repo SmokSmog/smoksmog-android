@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.storage
 
+import com.antyzero.smoksmog.storage.model.Item
 import com.antyzero.smoksmog.storage.model.Item.Station
 import com.antyzero.smoksmog.storage.model.Module.AirQualityIndex
 import com.antyzero.smoksmog.storage.model.Module.AirQualityIndex.Type.POLISH
@@ -9,7 +10,7 @@ import org.junit.Before
 import org.junit.Test
 import java.io.File
 
-class JsonFileStorageTest {
+class StorageTest {
 
     private lateinit var storage: Storage
 
@@ -65,6 +66,26 @@ class JsonFileStorageTest {
         storage.update(1, Station())
 
         assertThat(list).hasSize(2)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun invalidStationIdValues() {
+        storage.addStation(0)
+    }
+
+    @Test
+    fun addNearestAtTheBeginning() {
+        with(storage){
+            addStation(1)
+            addStation(2)
+            addStation(3)
+        }
+        val nearest = Item.Nearest()
+
+        storage.add(nearest)
+
+        assertThat(storage.fetchAll()[0].id).isEqualTo(nearest.id)
+        assertThat(storage.fetchAll()).hasSize(4)
     }
 
     @Test

@@ -13,7 +13,11 @@ dependencies {
 
     compile project(':network')
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "io.reactivex:rxjava:${libVersions.rx.java}"
+    compile "io.reactivex:rxkotlin:${libVersions.rx.kotlin}"
 
     testCompile "junit:junit:${libVersions.junit}"
     testCompile "org.assertj:assertj-core:${libVersions.assertj}"
+    testCompile "com.nhaarman:mockito-kotlin:1.1.0"
+    testCompile "com.squareup.okhttp3:mockwebserver:${libVersions.square.okhttp}"
 }
