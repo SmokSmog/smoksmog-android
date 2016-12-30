@@ -3,15 +3,12 @@ package com.antyzero.smoksmog
 import com.antyzero.smoksmog.location.Location
 import com.antyzero.smoksmog.location.Location.Position
 import com.antyzero.smoksmog.location.LocationProvider
-import com.antyzero.smoksmog.storage.JsonFileStorage
 import com.antyzero.smoksmog.storage.PersistentStorage
-import com.antyzero.smoksmog.storage.model.Item
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import pl.malopolska.smoksmog.Api
-import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
 import rx.Observable
 import rx.observers.TestSubscriber

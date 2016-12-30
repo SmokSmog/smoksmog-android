@@ -12,6 +12,7 @@ sourceSets {
 dependencies {
 
     compile project(':network')
+
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "io.reactivex:rxjava:${libVersions.rx.java}"
     compile "io.reactivex:rxkotlin:${libVersions.rx.kotlin}"

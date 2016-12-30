@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.preference.CheckBoxPreference
 import android.preference.Preference
 import android.support.annotation.StringRes
-
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.error.ErrorReporter
@@ -18,11 +17,9 @@ import com.antyzero.smoksmog.ui.BasePreferenceFragment
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.FragmentModule
 import com.crashlytics.android.answers.Answers
-
-import javax.inject.Inject
-
 import pl.malopolska.smoksmog.RestClient
 import smoksmog.logger.Logger
+import javax.inject.Inject
 
 /**
 

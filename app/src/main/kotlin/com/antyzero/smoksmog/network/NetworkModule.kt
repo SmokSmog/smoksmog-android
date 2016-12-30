@@ -2,14 +2,11 @@ package com.antyzero.smoksmog.network
 
 import android.content.Context
 import android.os.Build
-
-import java.util.Locale
-
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
 import pl.malopolska.smoksmog.RestClient
+import java.util.*
+import javax.inject.Singleton
 
 @Module
 open class NetworkModule {

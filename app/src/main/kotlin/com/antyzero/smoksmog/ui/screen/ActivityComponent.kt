@@ -7,9 +7,7 @@ import com.antyzero.smoksmog.ui.screen.order.OrderActivity
 import com.antyzero.smoksmog.ui.screen.order.dialog.AddStationDialogComponent
 import com.antyzero.smoksmog.ui.screen.start.StartActivity
 import com.antyzero.smoksmog.ui.screen.start.fragment.LocationStationFragmentComponent
-import com.antyzero.smoksmog.ui.screen.start.model.StationIdList
 import com.antyzero.smoksmog.ui.widget.StationWidgetConfigureActivity
-
 import dagger.Subcomponent
 
 @Subcomponent(modules = arrayOf(ActivityModule::class))

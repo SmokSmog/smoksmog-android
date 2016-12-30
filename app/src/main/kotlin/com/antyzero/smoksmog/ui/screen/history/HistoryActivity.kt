@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.ui.screen.history
 
+
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -8,40 +9,27 @@ import android.support.annotation.IntRange
 import android.support.annotation.VisibleForTesting
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.widget.Toast
-
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.ActivityModule
-
-import javax.inject.Inject
-
-import butterknife.Bind
+import kotlinx.android.synthetic.main.activity_history.*
 import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
 import rx.android.schedulers.AndroidSchedulers
 import smoksmog.logger.Logger
+import javax.inject.Inject
 
 /**
  * Shows history chart
  */
 class HistoryActivity : BaseDragonActivity() {
 
-    @Inject
-    lateinit var restClient: RestClient
-    @Inject
-    lateinit var errorReporter: ErrorReporter
-    @Inject
-    lateinit var logger: Logger
-
-    @Bind(R.id.toolbar)
-    internal var toolbar: Toolbar? = null
-    @Bind(R.id.recyclerViewCharts)
-    internal var chartsRecyclerView: RecyclerView? = null
+    @Inject lateinit var restClient: RestClient
+    @Inject lateinit var errorReporter: ErrorReporter
+    @Inject lateinit var logger: Logger
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +62,8 @@ class HistoryActivity : BaseDragonActivity() {
         }
         val spanCount = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
         val adapter = HistoryAdapter(station.particulates)
-        chartsRecyclerView!!.layoutManager = GridLayoutManager(this, spanCount, LinearLayoutManager.VERTICAL, false)
-        chartsRecyclerView!!.adapter = adapter
+        recyclerViewCharts!!.layoutManager = GridLayoutManager(this, spanCount, LinearLayoutManager.VERTICAL, false)
+        recyclerViewCharts!!.adapter = adapter
     }
 
     /**
@@ -83,7 +71,7 @@ class HistoryActivity : BaseDragonActivity() {
      */
     private fun getStationIdExtra(intent: Intent?): Long {
         if (intent == null || !intent.hasExtra(STATION_ID_KEY)) {
-            // TODO toast text should be in resources and tranlsted
+            // TODO com.antyzero.smoksmog.dsl.toast text should be in resources and tranlsted
             Toast.makeText(this, "Pokazanie historii było niemożliwe", Toast.LENGTH_SHORT).show()
             logger.e(TAG, "Unable to display History screen, missing start data")
             finish()
@@ -96,35 +84,15 @@ class HistoryActivity : BaseDragonActivity() {
         private val STATION_ID_KEY = "station_id_key"
         private val TAG = "HistoryActivity"
 
-        /**
-         * Simple way to start HistoryActivity
 
-         * @param context   for start
-         * *
-         * @param stationId to show
-         */
         fun start(context: Context, @IntRange(from = 1) stationId: Long) {
             context.startActivity(intent(context, stationId))
         }
 
-        /**
-         * @param context for start
-         * *
-         * @param station to show
-         * *
-         * @return valid Intent to start HistoryActivity
-         */
         fun intent(context: Context, station: Station): Intent {
             return intent(context, station.id)
         }
 
-        /**
-         * @param context   for start
-         * *
-         * @param stationId to show
-         * *
-         * @return valid Intent to start HistoryActivity
-         */
         fun intent(context: Context, @IntRange(from = 1) stationId: Long): Intent {
             val intent = Intent(context, HistoryActivity::class.java)
             fillIntent(intent, stationId)

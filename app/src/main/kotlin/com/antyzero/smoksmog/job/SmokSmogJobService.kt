@@ -1,6 +1,6 @@
 package com.antyzero.smoksmog.job
 
-import com.antyzero.smoksmog.appComponent
+import com.antyzero.smoksmog.dsl.appComponent
 import com.antyzero.smoksmog.ui.widget.StationWidgetService
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService

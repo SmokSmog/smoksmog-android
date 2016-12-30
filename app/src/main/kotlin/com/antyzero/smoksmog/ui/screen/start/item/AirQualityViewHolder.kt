@@ -1,13 +1,12 @@
 package com.antyzero.smoksmog.ui.screen.start.item
 
-import android.support.annotation.IdRes
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
+import com.antyzero.smoksmog.dsl.findViewById
 import com.antyzero.smoksmog.dsl.tag
 import com.antyzero.smoksmog.eventbus.RxBus
 import com.antyzero.smoksmog.time.CountdownProvider
@@ -24,7 +23,6 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.math.operators.OperatorMinMax
 import smoksmog.air.AirQuality
 import smoksmog.air.AirQualityIndex
-import com.antyzero.smoksmog.dsl.findViewById
 import smoksmog.logger.Logger
 import java.util.*
 import java.util.concurrent.TimeUnit

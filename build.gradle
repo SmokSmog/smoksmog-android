@@ -12,14 +12,12 @@ buildscript {
     dependencies {
 
         classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.squareup.spoon:spoon-runner:1.2.1'
         classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.0.4'
         classpath 'io.fabric.tools:gradle:1.20.1'
         classpath 'com.github.triplet.gradle:play-publisher:1.1.5'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.squareup.sqldelight:gradle-plugin:0.5.1'
         classpath 'com.google.gms:google-services:3.0.0'
     }
 }
@@ -28,37 +26,44 @@ ext {
     ignoreFailures = project.hasProperty('ignoreFailures') ? ignoreFailures : false
 
     commonVars = [
-            javaVersion: JavaVersion.VERSION_1_7,
+            javaVersion    : JavaVersion.VERSION_1_7,
             javaVersionName: 1.7
     ]
 
     androidVars = [
             compileSdkVersion: 25,
-            buildToolsVersion: '24.0.3',
-            targetSdkVersion: 25,
-            minSdkVersion: 16
+            buildToolsVersion: '25.0.2',
+            targetSdkVersion : 25,
+            minSdkVersion    : 16
     ]
 
     libVersions = [
-            android : [
-                    appCompat: '25.0.1',
+            android    : [
+                    appCompat: '25.1.0',
                     wearable : '1.4.0'],
-            assertj : '2.1.0',
-            google  : [
-                    dagger      : '2.7',
-                    playServices: '9.6.1'],
-            jodaTime: '2.9.4',
-            junit   : '4.12',
-            once    : '1.2.1',
-            rx      : [
-                    android : '1.1.0',
-                    java    : '1.2.0',
-                    javaMath: '1.0.0',
-                    kotlin  : '0.60.0'],
-            square  : [
-                    spoon   : '1.7.0',
-                    okhttp  : '3.3.1',
-                    retrofit: '2.1.0']
+            assertj    : '2.1.0',
+            calligraphy: '2.2.0',
+            firebase   : [
+                    jobdispatcher: '0.5.2'
+            ],
+            google     : [
+                    dagger      : '2.8',
+                    gson        : '2.8.0',
+                    playServices: '10.0.1'],
+            jodaTime   : '2.9.7',
+            junit      : '4.12',
+            once       : '1.2.1',
+            rx         : [
+                    android  : '1.2.1',
+                    java     : '1.2.4',
+                    javaMath : '1.0.0',
+                    kotlin   : '0.60.0',
+                    lifecycle: '1.0'],
+            square     : [
+                    assertjAndroid: '1.1.1',
+                    spoon         : '1.7.0',
+                    okhttp        : '3.5.0',
+                    retrofit      : '2.1.0']
     ]
 }
 

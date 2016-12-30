@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager.VERTICAL
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.OnClick
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.eventbus.RxBus
@@ -75,6 +74,11 @@ abstract class StationFragment : BaseFragment(), TitleProvider {
                 resources.getColor(R.color.accent),
                 PorterDuff.Mode.SRC_IN)
 
+        buttonTryAgain.setOnClickListener {
+            textViewError.postDelayed({ textViewError.visibility = View.GONE }, 1000L)
+            loadData()
+        }
+
         showLoading()
     }
 
@@ -112,12 +116,6 @@ abstract class StationFragment : BaseFragment(), TitleProvider {
                 .cast(Runnable::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Runnable::run) { logger.e(TAG, "Unable to update views") }
-    }
-
-    @OnClick(R.id.buttonTryAgain)
-    internal fun buttonReloadData() {
-        textViewError.postDelayed({ textViewError.visibility = View.GONE }, 1000L)
-        loadData()
     }
 
     /**

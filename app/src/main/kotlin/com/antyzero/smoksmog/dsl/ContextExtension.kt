@@ -1,5 +1,4 @@
-package com.antyzero.smoksmog
-
+package com.antyzero.smoksmog.dsl
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.support.annotation.ColorRes

@@ -1,17 +1,14 @@
 package com.antyzero.smoksmog.logger
 
 import com.antyzero.smoksmog.BuildConfig
+import com.antyzero.smoksmog.logger.CrashlyticsLogger.ExceptionLevel.ERROR
 import com.antyzero.smoksmog.user.User
 import com.crashlytics.android.core.CrashlyticsCore
-
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
 import smoksmog.logger.AndroidLogger
 import smoksmog.logger.Logger
-
-import com.antyzero.smoksmog.logger.CrashlyticsLogger.ExceptionLevel.ERROR
+import javax.inject.Singleton
 
 @Singleton
 @Module

@@ -4,13 +4,10 @@ import android.content.Context
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.LayoutRes
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import butterknife.ButterKnife
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.dsl.navBarHeight
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
@@ -65,21 +62,6 @@ abstract class BaseDragonActivity : RxAppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
-    }
-
-    override fun setContentView(@LayoutRes layoutResID: Int) {
-        LayoutInflater.from(this).inflate(layoutResID, container, true)
-        ButterKnife.bind(this)
-    }
-
-    override fun setContentView(view: View) {
-        container.addView(view)
-        ButterKnife.bind(this)
-    }
-
-    override fun setContentView(view: View, params: ViewGroup.LayoutParams) {
-        container.addView(view, params)
-        ButterKnife.bind(this)
     }
 
     /**

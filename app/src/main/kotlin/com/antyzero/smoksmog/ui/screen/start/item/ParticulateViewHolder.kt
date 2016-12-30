@@ -6,11 +6,11 @@ import android.view.View
 import android.widget.TextView
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
+import com.antyzero.smoksmog.dsl.findViewById
 import com.antyzero.smoksmog.settings.Percent
 import com.antyzero.smoksmog.settings.SettingsHelper
 import com.antyzero.smoksmog.utils.TextUtils
 import pl.malopolska.smoksmog.model.Particulate
-import com.antyzero.smoksmog.dsl.findViewById
 import smoksmog.ui.IndicatorView
 import javax.inject.Inject
 

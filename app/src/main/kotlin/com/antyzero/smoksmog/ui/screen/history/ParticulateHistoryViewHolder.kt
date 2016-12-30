@@ -3,9 +3,8 @@ package com.antyzero.smoksmog.ui.screen.history
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import butterknife.Bind
-import butterknife.ButterKnife
 import com.antyzero.smoksmog.R
+import com.antyzero.smoksmog.dsl.findView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.YAxis
@@ -16,17 +15,15 @@ import pl.malopolska.smoksmog.model.History
 import pl.malopolska.smoksmog.model.Particulate
 import java.util.*
 
-public class ParticulateHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ParticulateHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    @Bind(R.id.lineChart)
-    var chart: LineChart? = null
+    val chart: LineChart = findView(R.id.lineChart)
 
     init {
-        ButterKnife.bind(this, itemView)
         val resources = itemView.resources
-        chart!!.setBackgroundColor(resources.getColor(android.R.color.transparent))
-        chart!!.setGridBackgroundColor(resources.getColor(android.R.color.transparent))
-        chart!!.setDescriptionColor(resources.getColor(R.color.text_light))
+        chart.setBackgroundColor(resources.getColor(android.R.color.transparent))
+        chart.setGridBackgroundColor(resources.getColor(android.R.color.transparent))
+        chart.setDescriptionColor(resources.getColor(R.color.text_light))
 
     }
 
@@ -38,20 +35,20 @@ public class ParticulateHistoryViewHolder(itemView: View) : RecyclerView.ViewHol
         val fillColor = itemView.context.resources.getColor(R.color.accent)
         val lineData = getLineData(historyList, lineColor, fillColor)
 
-        chart!!.data = lineData
-        chart!!.setDescription(particulate.name + " (" + particulate.shortName + ")")
-        chart!!.setDescriptionTextSize(12f)
+        chart.data = lineData
+        chart.setDescription(particulate.name + " (" + particulate.shortName + ")")
+        chart.setDescriptionTextSize(12f)
 
         val normLimitLine = createLimitLine(particulate)
-        chart!!.axisRight.isEnabled = false
-        chart!!.axisLeft.removeAllLimitLines()
-        chart!!.axisLeft.addLimitLine(normLimitLine)
-        chart!!.axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-        chart!!.axisLeft.axisMaxValue = getYAxisMac(particulate, lineData)
+        chart.axisRight.isEnabled = false
+        chart.axisLeft.removeAllLimitLines()
+        chart.axisLeft.addLimitLine(normLimitLine)
+        chart.axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+        chart.axisLeft.axisMaxValue = getYAxisMac(particulate, lineData)
 
-        chart!!.legend.isEnabled = false
+        chart.legend.isEnabled = false
 
-        chart!!.invalidate()
+        chart.invalidate()
     }
 
     private fun getYAxisMac(particulate: Particulate, lineData: LineData): Float {

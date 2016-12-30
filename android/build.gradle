@@ -36,9 +36,10 @@ android {
         disable 'InvalidPackage', 'GoogleAppIndexingWarning'
 
         if (Boolean.parseBoolean(System.getenv("TRAVIS"))) {
-            disable.add('NewApi') // Strange errors on Travis
+            // disable.add('NewApi') // Strange errors on Travis
         }
     }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -49,19 +50,18 @@ dependencies {
     compile project(':network')
 
     // UI oriented
-    compile 'com.jakewharton:butterknife:7.0.1'
     compile "com.android.support:recyclerview-v7:${libVersions.android.appCompat}"
 
     // General
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "io.reactivex:rxjava:${libVersions.rx.java}"
     compile "io.reactivex:rxjava-math:${libVersions.rx.javaMath}"
     compile "io.reactivex:rxandroid:${libVersions.rx.android}"
     compile "io.reactivex:rxkotlin:${libVersions.rx.kotlin}"
-    compile 'com.trello:rxlifecycle:0.5.0'
-    compile 'com.trello:rxlifecycle-components:0.5.0'
+    compile "com.trello:rxlifecycle:${libVersions.rx.lifecycle}"
+    compile "com.trello:rxlifecycle-components:${libVersions.rx.lifecycle}"
 
-    testCompile 'junit:junit:4.12'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile "junit:junit:${libVersions.junit}"
 }
 
 repositories {
