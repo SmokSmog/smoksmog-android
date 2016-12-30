@@ -7,6 +7,7 @@ import android.widget.RemoteViews
 import com.antyzero.smoksmog.BuildConfig
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
+import com.antyzero.smoksmog.dsl.setBackgroundColor
 import org.joda.time.DateTime
 import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
@@ -19,7 +20,6 @@ class StationWidget : AppWidgetProvider() {
 
     @Inject lateinit var restClient: RestClient
     @Inject lateinit var logger: Logger
-    @Inject lateinit var widgetData: StationWidgetData
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
 

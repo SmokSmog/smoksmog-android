@@ -8,7 +8,7 @@ import pl.malopolska.smoksmog.RestClient
 import smoksmog.logger.Logger
 import javax.inject.Inject
 
-class SmokSmogJobService() : JobService() {
+class SmokSmogJobService : JobService() {
 
     @Inject lateinit var logger: Logger
     @Inject lateinit var restClient: RestClient

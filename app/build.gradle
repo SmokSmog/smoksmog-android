@@ -5,6 +5,8 @@ apply plugin: 'io.fabric'
 apply plugin: 'spoon'
 apply plugin: 'com.github.triplet.play'
 
+kapt { generateStubs = true }
+
 android {
 
     buildToolsVersion androidVars.buildToolsVersion
@@ -101,8 +103,8 @@ dependencies {
 
     compile project(':android')
 
+    compile "com.google.dagger:dagger:${libVersions.google.dagger}"
     kapt "com.google.dagger:dagger-compiler:${libVersions.google.dagger}"
-
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -121,7 +123,6 @@ dependencies {
 
     compile "uk.co.chrisjenx:calligraphy:${libVersions.calligraphy}"
     compile 'pl.charmas.android:android-reactive-location:0.10@aar'
-    compile "com.google.dagger:dagger:${libVersions.google.dagger}"
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile "com.jonathanfinerty.once:once:${libVersions.once}" // TODO remove ?
 
@@ -151,7 +152,7 @@ dependencies {
 
 spoon {
     debug = true
-    ignoreFailures = true
+    ignoreFailures = rootProject.ext.ignoreFailures
 }
 
 play {
@@ -161,10 +162,6 @@ play {
 
 repositories {
     mavenCentral()
-}
-
-kapt {
-    generateStubs = true
 }
 
 // Need to be @ the bottom

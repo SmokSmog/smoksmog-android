@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.ui.widget
+package com.antyzero.smoksmog.dsl
 
 import android.support.annotation.IdRes
 import android.widget.RemoteViews

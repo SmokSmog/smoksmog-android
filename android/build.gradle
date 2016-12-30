@@ -34,10 +34,6 @@ android {
 
     lintOptions {
         disable 'InvalidPackage', 'GoogleAppIndexingWarning'
-
-        if (Boolean.parseBoolean(System.getenv("TRAVIS"))) {
-            // disable.add('NewApi') // Strange errors on Travis
-        }
     }
 
     sourceSets {
