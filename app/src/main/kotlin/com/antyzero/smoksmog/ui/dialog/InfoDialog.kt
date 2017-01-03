@@ -7,6 +7,7 @@ import android.app.DialogFragment
 import android.app.FragmentManager
 import android.os.Bundle
 import android.view.View
+import com.antyzero.smoksmog.dsl.show
 
 /**
  * For info dialog
@@ -22,13 +23,6 @@ abstract class InfoDialog : DialogFragment() {
         return updateBuilder(builder).create()
     }
 
-    /**
-     * Override to change builder settings
-
-     * @param builder
-     * *
-     * @return
-     */
     protected open fun updateBuilder(builder: AlertDialog.Builder): AlertDialog.Builder {
         return builder
     }
@@ -43,8 +37,6 @@ abstract class InfoDialog : DialogFragment() {
 
     companion object {
 
-        private val TAG = InfoDialog::class.java.simpleName
-
         fun show(fragmentManager: FragmentManager, event: Event<*>) {
             val infoDialog: InfoDialog
 
@@ -55,7 +47,7 @@ abstract class InfoDialog : DialogFragment() {
                         "Problem with creating fragment dialog " + event.dialogFragment.simpleName, e)
             }
 
-            infoDialog.show(fragmentManager, TAG)
+            infoDialog.show(fragmentManager)
         }
     }
 }

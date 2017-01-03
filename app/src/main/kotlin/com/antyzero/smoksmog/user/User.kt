@@ -1,9 +1,7 @@
 package com.antyzero.smoksmog.user
 
 import android.content.Context
-import android.content.SharedPreferences
-
-import java.util.Random
+import java.util.*
 
 /**
  * User management

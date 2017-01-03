@@ -1,9 +1,7 @@
 package com.antyzero.smoksmog.ui.screen.order.dialog
 
 import android.support.v7.widget.RecyclerView
-import android.view.View
 import android.widget.TextView
-
 import pl.malopolska.smoksmog.model.Station
 
 class StationViewHolder(private val textView: TextView, private val stationClickListener: StationViewHolder.StationClickListener) : RecyclerView.ViewHolder(textView) {

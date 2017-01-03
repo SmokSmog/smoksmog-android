@@ -1,9 +1,7 @@
 package com.antyzero.smoksmog.ui.screen.start.fragment
 
-import android.app.Activity
 import android.location.Location
 import android.os.Bundle
-
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.google.GoogleModule
@@ -11,19 +9,14 @@ import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.FragmentModule
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
-import com.trello.rxlifecycle.FragmentEvent
-import java.util.concurrent.TimeUnit
-
-import javax.inject.Inject
-
+import com.trello.rxlifecycle.android.FragmentEvent
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider
 import pl.malopolska.smoksmog.model.Station
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
-import rx.functions.Action0
-import rx.functions.Action1
-import rx.functions.Func1
 import rx.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 class LocationStationFragment : StationFragment(), GoogleApiClient.ConnectionCallbacks {
     @Inject
@@ -61,9 +54,9 @@ class LocationStationFragment : StationFragment(), GoogleApiClient.ConnectionCal
                 .first()
                 .cast(Location::class.java)
                 .doOnNext { location -> this@LocationStationFragment.locationCurrent = location }
-                .flatMap { location -> smokSmog.api.stationByLocation(location.latitude, location.longitude) }
+                .flatMap { location -> restClient.stationByLocation(location.latitude, location.longitude) }
                 .doOnNext { givenStation ->
-                    smokSmog.api.stations()
+                    restClient.stations()
                             .concatMap { stations -> Observable.from(stations) }
                             .filter { station -> station.id == givenStation.id }
                             .subscribeOn(Schedulers.newThread())

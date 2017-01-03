@@ -49,7 +49,7 @@ class StationAdapter(private val stationContainer: List<Station>) : RecyclerView
         if (position == 0) {
             airQualityViewDelegate.onBindViewHolder(holder as AirQualityViewHolder, station)
         } else if (position > 0) {
-            val particulate = station.particulates!![position - 1]
+            val particulate = station.particulates[position - 1]
             particulateViewDelegate.onBindViewHolder(holder as ParticulateViewHolder, particulate)
         }
 

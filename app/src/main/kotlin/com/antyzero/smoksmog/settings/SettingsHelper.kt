@@ -36,7 +36,7 @@ class SettingsHelper(private val context: Context, permissionHelper: PermissionH
         PreferenceManager.setDefaultValues(context, R.xml.settings_general, false)
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
         preferences.registerOnSharedPreferenceChangeListener(this)
-        stationIds = getList(preferences, KEY_STATION_ID_LIST, Long::class.java)
+        stationIds = getList(preferences, KEY_STATION_ID_LIST)
 
         keyStationClosest = context.getString(R.string.pref_key_station_closest)
         keyPercent = context.getString(R.string.pref_key_percent)
@@ -66,17 +66,11 @@ class SettingsHelper(private val context: Context, permissionHelper: PermissionH
             preferences.edit().putString(KEY_STATION_ID_LIST, TextUtils.join(SPLIT_CHAR, longList)).apply()
         }
 
-    private fun <T> getList(sharedPreferences: SharedPreferences, key: String, type: Class<T>): MutableList<T> {
-        val result = ArrayList<T>()
+    private fun getList(sharedPreferences: SharedPreferences, key: String): MutableList<Long> {
+        val result: MutableList<Long> = mutableListOf()
         val string = sharedPreferences.getString(key, EMPTY_STRING)
-        if (!TextUtils.isEmpty(string) && !string!!.equals(EMPTY_STRING, ignoreCase = true)) {
-
-            val array = string.split(SPLIT_CHAR.toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
-
-            for (item in array) {
-                TODO("Converter work in progress, we should cat item type to type ?")
-                // result.add(stringConvert.getConverterFor(type).convert(item) as T)
-            }
+        if (!TextUtils.isEmpty(string) && !string.equals(EMPTY_STRING, ignoreCase = true)) {
+            string.split(SPLIT_CHAR.toRegex()).dropLastWhile(String::isEmpty).toTypedArray().mapTo(result, String::toLong)
         }
         return result
     }

@@ -7,40 +7,30 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.view.View
-
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.SupportFragmentModule
-
-import java.util.ArrayList
-
-import javax.inject.Inject
-
-import butterknife.Bind
-import butterknife.ButterKnife
-import pl.malopolska.smoksmog.SmokSmog
+import kotlinx.android.synthetic.main.view_recyclerview.*
+import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
-import rx.functions.Action0
-import rx.functions.Action1
 import rx.functions.Func1
 import rx.schedulers.Schedulers
 import smoksmog.logger.Logger
+import java.util.*
+import javax.inject.Inject
 
 
 class AddStationDialog : DialogFragment(), StationDialogAdapter.StationListener {
+
     private val stationList = ArrayList<Station>()
     private val stationIdsNotToShow = ArrayList<Long>()
-    @Inject
-    lateinit var smokSmog: SmokSmog
-    @Inject
-    lateinit var logger: Logger
-    @Bind(R.id.recyclerView)
-    internal var recyclerView: RecyclerView? = null
+
+    @Inject lateinit var restClient: RestClient
+    @Inject lateinit var logger: Logger
+
     private var stationListener: StationDialogAdapter.StationListener? = null
 
     override fun onAttach(activity: Activity?) {
@@ -74,14 +64,14 @@ class AddStationDialog : DialogFragment(), StationDialogAdapter.StationListener 
     override fun onStart() {
         super.onStart()
         stationList.clear()
-        smokSmog!!.api.stations()
+        restClient.stations()
                 .flatMap(Func1<List<Station>, Observable<Station>> { null })
                 .filter { station -> !stationIdsNotToShow.contains(station.id) }
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { station -> stationList.add(station) },
-                        { throwable -> logger!!.e(TAG, "Unable to load stations", throwable) }
+                        { throwable -> logger.e(TAG, "Unable to load stations", throwable) }
                 ) { recyclerView!!.adapter.notifyDataSetChanged() }
     }
 
@@ -89,9 +79,8 @@ class AddStationDialog : DialogFragment(), StationDialogAdapter.StationListener 
         val builder = AlertDialog.Builder(activity)
         val view = activity.layoutInflater.inflate(R.layout.view_recyclerview, recyclerView, false)
 
-        ButterKnife.bind(this, view)
-        recyclerView!!.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        recyclerView!!.adapter = StationDialogAdapter(stationList, this)
+        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = StationDialogAdapter(stationList, this)
 
         builder.setView(view)
         return builder.create()

@@ -2,17 +2,17 @@
 
     <!-- Errors displayed for user -->
     <string name="error_unable_to_load_station_data">Unable to load data for %s</string>
-    <string name="error_unable_to_load_stations">Unable to load stations list</string>
+    <string name="error_unable_to_load_stations">Unable to load items list</string>
     <string name="error_unable_to_load_station_history">Unable to load station history</string>
-    <string name="error_no_near_Station">Unable to find station for your location</string>
+    <string name="error_no_near_Station">Unable to find station for your initialLocation</string>
     <string name="error_unable_to_show_history">Unable to show history</string>
     <string name="error_unable_to_enable_station_preference">Unable to enable \'default station\' preference</string>
     <string name="error_unable_to_add_station">Unable to add station</string>
 
-    <string name="action_my_location">My location</string>
+    <string name="action_my_location">My initialLocation</string>
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
-    <string name="action_manage_stations">Manage stations</string>
+    <string name="action_manage_stations">Manage items</string>
 
     <string name="info_average">Average of the last day</string>
     <string name="info_concentration">Current concentration</string>
@@ -33,14 +33,14 @@
     <!-- Preferences -->
     <string name="pref_station_selection_mode_title">On app start pick station</string>
     <string name="pref_station_selection_mode_entries_last">Last picked</string>
-    <string name="pref_station_selection_mode_entries_closest">Closest location</string>
+    <string name="pref_station_selection_mode_entries_closest">Closest initialLocation</string>
     <string name="pref_station_selection_mode_entries_defined">From settings (default)</string>
 
     <string name="pref_station_selected_title">Default station</string>
     <string name="pref_station_selected_summary_default">Pick station</string>
 
     <string name="pref_station_closest_title" translatable="false">@string/station_closest</string>
-    <string name="pref_station_closest_summary">Show tab with station closest to your location</string>
+    <string name="pref_station_closest_summary">Show tab with station closest to your initialLocation</string>
 
     <string name="pref_percent_title">Percent value</string>
     <string name="pref_percent_summary">Which period should be referred</string>
@@ -58,6 +58,6 @@
     <string name="cs_about_air_quality_index">What is Air Quality Index ?</string>
     <string name="cs_measurement_history_graphs">Measurement history graphs</string>
     <string name="title_pick_station">Pick station</string>
-    <string name="title_manage_stations">Manage your stations</string>
+    <string name="title_manage_stations">Manage your items</string>
 
 </resources>

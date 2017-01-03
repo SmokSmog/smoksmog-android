@@ -2,17 +2,17 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '24.0.3'
+    compileSdkVersion androidVars.compileSdkVersion
+    buildToolsVersion androidVars.buildToolsVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility commonVars.javaVersion
+        targetCompatibility commonVars.javaVersion
     }
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 24
+        minSdkVersion androidVars.minSdkVersion
+        targetSdkVersion androidVars.targetSdkVersion
         versionCode 1
         versionName "0.0.1"
     }
@@ -34,11 +34,8 @@ android {
 
     lintOptions {
         disable 'InvalidPackage', 'GoogleAppIndexingWarning'
-
-        if (Boolean.parseBoolean(System.getenv("TRAVIS"))) {
-            disable.add('NewApi') // Strange errors on Travis
-        }
     }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -49,17 +46,18 @@ dependencies {
     compile project(':network')
 
     // UI oriented
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile "com.android.support:recyclerview-v7:${libVersions.android.appCompat}"
 
     // General
-    compile 'io.reactivex:rxjava:1.1.2'
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'io.reactivex:rxjava-math:1.0.0'
-    compile 'com.trello:rxlifecycle:0.5.0'
-    compile 'com.trello:rxlifecycle-components:0.5.0'
-
-    testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "io.reactivex:rxjava:${libVersions.rx.java}"
+    compile "io.reactivex:rxjava-math:${libVersions.rx.javaMath}"
+    compile "io.reactivex:rxandroid:${libVersions.rx.android}"
+    compile "io.reactivex:rxkotlin:${libVersions.rx.kotlin}"
+    compile "com.trello:rxlifecycle:${libVersions.rx.lifecycle}"
+    compile "com.trello:rxlifecycle-components:${libVersions.rx.lifecycle}"
+
+    testCompile "junit:junit:${libVersions.junit}"
 }
 
 repositories {

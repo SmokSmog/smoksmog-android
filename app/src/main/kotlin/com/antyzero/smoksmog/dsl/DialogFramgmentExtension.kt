@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.dsl
 
+import android.app.FragmentManager
 import android.content.DialogInterface
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
@@ -31,3 +32,5 @@ fun AlertDialog.Builder.setNegativeButton(pair: Pair<String, DialogInterface.OnC
 fun Fragment.layoutInflater() = activity.layoutInflater
 
 fun DialogFragment.show(appCompatActivity: AppCompatActivity, tag: String) = this.show(appCompatActivity.supportFragmentManager, tag)
+
+fun android.app.DialogFragment.show(fragmentManager: FragmentManager) = this.show(fragmentManager, this.tag())

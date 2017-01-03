@@ -3,11 +3,9 @@ package com.antyzero.smoksmog.fabric
 
 import com.crashlytics.android.answers.Answers
 import com.crashlytics.android.core.CrashlyticsCore
-
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Singleton
 @Module
