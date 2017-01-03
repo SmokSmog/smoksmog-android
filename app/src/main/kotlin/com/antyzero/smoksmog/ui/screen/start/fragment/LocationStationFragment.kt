@@ -9,7 +9,7 @@ import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.FragmentModule
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
-import com.trello.rxlifecycle.FragmentEvent
+import com.trello.rxlifecycle.android.FragmentEvent
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider
 import pl.malopolska.smoksmog.model.Station
 import rx.Observable

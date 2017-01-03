@@ -15,6 +15,7 @@ android {
     compileOptions {
         sourceCompatibility commonVars.javaVersion
         targetCompatibility commonVars.javaVersion
+        incremental = true
     }
 
     defaultConfig {
@@ -126,7 +127,7 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile "com.jonathanfinerty.once:once:${libVersions.once}" // TODO remove ?
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
+    compile("com.crashlytics.sdk.android:crashlytics:${libVersions.crashlytics}@aar") {
         transitive = true;
     }
 
@@ -162,6 +163,7 @@ play {
 
 repositories {
     mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 // Need to be @ the bottom

@@ -23,7 +23,7 @@ import com.antyzero.smoksmog.ui.screen.order.OrderActivity
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity
 import com.antyzero.smoksmog.ui.screen.start.model.StationIdList
 import com.antyzero.smoksmog.ui.typeface.TypefaceProvider
-import com.trello.rxlifecycle.ActivityEvent
+import com.trello.rxlifecycle.android.ActivityEvent
 import kotlinx.android.synthetic.main.activity_start.*
 import pl.malopolska.smoksmog.RestClient
 import rx.android.schedulers.AndroidSchedulers

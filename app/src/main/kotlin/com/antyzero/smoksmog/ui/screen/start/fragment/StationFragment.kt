@@ -11,13 +11,11 @@ import android.view.ViewGroup
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.eventbus.RxBus
-import com.antyzero.smoksmog.fabric.StationShowEvent
 import com.antyzero.smoksmog.ui.BaseFragment
 import com.antyzero.smoksmog.ui.screen.start.StartActivity
 import com.antyzero.smoksmog.ui.screen.start.StationAdapter
 import com.antyzero.smoksmog.ui.screen.start.TitleProvider
-import com.crashlytics.android.answers.Answers
-import com.trello.rxlifecycle.FragmentEvent
+import com.trello.rxlifecycle.android.FragmentEvent
 import kotlinx.android.synthetic.main.fragment_station.*
 import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
@@ -30,16 +28,11 @@ import javax.inject.Inject
 
 abstract class StationFragment : BaseFragment(), TitleProvider {
 
-    @Inject
-    lateinit var rxBus: RxBus
-    @Inject
-    lateinit protected var restClient: RestClient
-    @Inject
-    lateinit protected var logger: Logger
-    @Inject
-    lateinit protected var errorReporter: ErrorReporter
-    @Inject
-    lateinit var answers: Answers
+    @Inject lateinit var rxBus: RxBus
+    @Inject lateinit protected var restClient: RestClient
+    @Inject lateinit protected var logger: Logger
+    @Inject lateinit protected var errorReporter: ErrorReporter
+    //@Inject lateinit var answers: Answers
 
     private val stationContainer = ArrayList<Station>()
     /**
@@ -132,7 +125,7 @@ abstract class StationFragment : BaseFragment(), TitleProvider {
 
         rxBus.send(StartActivity.TitleUpdateEvent())
 
-        answers.logContentView(StationShowEvent(station))
+        // answers.logContentView(StationShowEvent(station))
 
         showData()
     }

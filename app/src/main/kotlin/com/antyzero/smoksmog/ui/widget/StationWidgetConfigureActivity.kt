@@ -5,10 +5,10 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import com.antyzero.smoksmog.dsl.activityComponent
-import com.antyzero.smoksmog.appWidgetManager
+import com.antyzero.smoksmog.dsl.appWidgetManager
 import com.antyzero.smoksmog.dsl.tag
+import com.antyzero.smoksmog.dsl.toast
 import com.antyzero.smoksmog.firebase.FirebaseEvents
-import com.antyzero.smoksmog.toast
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.PickStationActivity
 import pl.malopolska.smoksmog.RestClient

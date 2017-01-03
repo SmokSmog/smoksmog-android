@@ -5,7 +5,7 @@ import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.FragmentModule
-import com.trello.rxlifecycle.FragmentEvent
+import com.trello.rxlifecycle.android.FragmentEvent
 import pl.malopolska.smoksmog.model.Station
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -16,6 +16,7 @@ class NetworkStationFragment : StationFragment() {
         super.onActivityCreated(savedInstanceState)
 
         val activity = activity
+
         SmokSmogApplication[activity].appComponent
                 .plus(ActivityModule(activity))
                 .plus(FragmentModule(this))

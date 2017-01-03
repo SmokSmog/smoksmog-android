@@ -13,7 +13,7 @@ import com.antyzero.smoksmog.time.CountdownProvider
 import com.antyzero.smoksmog.ui.dialog.AirQualityDialog
 import com.antyzero.smoksmog.ui.dialog.InfoDialog
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity
-import com.trello.rxlifecycle.RxLifecycle
+import com.trello.rxlifecycle.android.RxLifecycleAndroid
 import org.joda.time.DateTime
 import org.joda.time.Seconds
 import pl.malopolska.smoksmog.model.Particulate
@@ -77,7 +77,7 @@ class AirQualityViewHolder(itemView: View) : ListViewHolder<Station>(itemView) {
 
             // Loop update, we want up to date info
             Observable.interval(30, TimeUnit.SECONDS)
-                    .compose(RxLifecycle.bindView<Any>(textViewMeasureTime))
+                    .compose(RxLifecycleAndroid.bindView<Any>(textViewMeasureTime))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ updateUiTime() }
                     ) { throwable -> logger.i(tag(), "Unable to refresh time", throwable) }

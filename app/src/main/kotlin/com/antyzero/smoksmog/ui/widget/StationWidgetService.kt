@@ -6,7 +6,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import com.antyzero.smoksmog.dsl.appComponent
-import com.antyzero.smoksmog.appWidgetManager
+import com.antyzero.smoksmog.dsl.appWidgetManager
 import com.antyzero.smoksmog.dsl.tag
 import pl.malopolska.smoksmog.RestClient
 import smoksmog.logger.Logger
