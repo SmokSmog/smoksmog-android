@@ -7,7 +7,7 @@ sealed class Module {
     /**
      * Show AQI and it's type
      */
-    class AirQualityIndex(val type: Type) : Module() {
+    class AirQualityIndex(val type: Type = AirQualityIndex.Type.POLISH) : Module() {
 
         enum class Type {
             POLISH

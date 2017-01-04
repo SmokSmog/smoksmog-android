@@ -13,7 +13,7 @@ interface Storage {
 
     fun removeById(id: Long)
 
-    fun update(id: Long, item: Item)
+    fun update(id: Long, itemUpdate: Item)
 
     fun fetchAll(): List<Item>
 }

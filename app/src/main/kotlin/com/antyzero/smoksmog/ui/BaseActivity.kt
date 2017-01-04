@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Build
 import com.antyzero.smoksmog.R
+import com.antyzero.smoksmog.dsl.getCompatColor
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
@@ -22,14 +23,7 @@ abstract class BaseActivity : RxAppCompatActivity() {
          */
         fun initOnCreate(activity: Activity) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val color: Int
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    color = activity.resources.getColor(R.color.primary, activity.theme)
-                } else {
-
-                    color = activity.resources.getColor(R.color.primary)
-                }
-                activity.window.navigationBarColor = color
+                activity.window.navigationBarColor = activity.getCompatColor(R.color.primary)
             }
         }
     }

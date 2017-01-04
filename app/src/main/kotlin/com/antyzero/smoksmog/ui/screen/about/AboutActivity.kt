@@ -3,10 +3,10 @@ package com.antyzero.smoksmog.ui.screen.about
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
+import com.antyzero.smoksmog.dsl.compatFromHtml
 import com.antyzero.smoksmog.ui.BaseActivity
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import kotlinx.android.synthetic.main.dialog_info_about.*
@@ -22,7 +22,7 @@ class AboutActivity : BaseActivity() {
         SmokSmogApplication[this].appComponent.plus(ActivityModule(this)).inject(this)
         setContentView(R.layout.dialog_info_about)
 
-        textView.text = Html.fromHtml(getString(R.string.about))
+        textView.compatFromHtml(R.string.about)
         textView.movementMethod = LinkMovementMethod.getInstance()
 
         try {

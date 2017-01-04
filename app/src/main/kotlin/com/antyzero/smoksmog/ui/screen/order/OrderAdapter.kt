@@ -20,7 +20,7 @@ class OrderAdapter(private val stationList: MutableList<Station>, private val on
 
     override fun onBindViewHolder(holder: OrderItemViewHolder, position: Int) {
         holder.bind(stationList[position])
-        holder.viewHandle?.setOnTouchListener { view, event ->
+        holder.viewHandle.setOnTouchListener { view, event ->
             if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
                 onStartDragListener.onStartDrag(holder)
             }

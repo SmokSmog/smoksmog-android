@@ -58,7 +58,11 @@ class JsonFileStorage(val file: File = File.createTempFile("jfs", "json")) : Per
                     items.add(0, item)
                     true
                 }
-                else -> items.add(item)
+                is Item.Station -> {
+                    require(item.id > 0, { "Invalid give $item id=${item.id}, only values greater than 0 are acceptable" })
+                    items.add(item)
+                    true
+                }
             }.apply { saveItems() }
         }
     }
@@ -68,16 +72,16 @@ class JsonFileStorage(val file: File = File.createTempFile("jfs", "json")) : Per
         saveItems()
     }
 
-    override fun update(id: Long, item: Item) {
+    override fun update(id: Long, itemUpdate: Item) {
 
         val (index, foundItem) = items.mapIndexed { i, item -> i to item }
                 .filter { it.second.id == id }
                 .first()
 
-        items[index] = when (item) {
-            is Item.Station -> item.copy(id = foundItem.id, modules = item.modules)
-            is Item.Nearest -> item.copy(modules = item.modules)
-            else -> throw IllegalStateException("This item type (${item.javaClass} is not supported)")
+        items[index] = when (itemUpdate) {
+            is Item.Nearest -> itemUpdate.copy(modules = itemUpdate.modules)
+            is Item.Station -> itemUpdate.copy(id = id, modules = itemUpdate.modules)
+            else -> throw IllegalStateException("This itemUpdate type (${itemUpdate.javaClass} is not supported)")
         }
         saveItems()
     }

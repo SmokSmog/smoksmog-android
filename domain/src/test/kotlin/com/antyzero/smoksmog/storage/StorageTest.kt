@@ -2,6 +2,7 @@ package com.antyzero.smoksmog.storage
 
 import com.antyzero.smoksmog.storage.model.Item
 import com.antyzero.smoksmog.storage.model.Item.Station
+import com.antyzero.smoksmog.storage.model.Module
 import com.antyzero.smoksmog.storage.model.Module.AirQualityIndex
 import com.antyzero.smoksmog.storage.model.Module.AirQualityIndex.Type.POLISH
 import com.antyzero.smoksmog.storage.model.Module.Measurements
@@ -9,6 +10,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import java.io.File
+import java.util.*
 
 class StorageTest {
 
@@ -44,17 +46,29 @@ class StorageTest {
 
     @Test
     fun update() {
-        storage.add(Station(3))
+        with(storage) {
+            add(Station(3))
+        }
 
-        storage.update(3, Station(4).apply {
+        storage.update(3, Station().apply {
             modules.add(Measurements())
+            modules.add(AirQualityIndex())
         })
 
         val stations = storage.fetchAll()
         assertThat(stations).hasSize(1)
         assertThat(stations[0].id).isEqualTo(3)
-        assertThat(stations[0].modules).hasSize(1)
+        assertThat(stations[0].modules).hasSize(2)
         assertThat(stations[0].modules.first()).isInstanceOf(Measurements::class.java)
+    }
+
+    @Test(expected = NoSuchElementException::class)
+    fun updateNonExisting() {
+        with(storage){
+            addStation(1)
+        }
+
+        storage.update(9, Station())
     }
 
     @Test
@@ -63,7 +77,6 @@ class StorageTest {
 
         storage.addStation(1)
         storage.addStation(2)
-        storage.update(1, Station())
 
         assertThat(list).hasSize(2)
     }
@@ -75,7 +88,7 @@ class StorageTest {
 
     @Test
     fun addNearestAtTheBeginning() {
-        with(storage){
+        with(storage) {
             addStation(1)
             addStation(2)
             addStation(3)
@@ -94,45 +107,5 @@ class StorageTest {
         storage.addStation(1)
 
         assertThat(storage.fetchAll()).hasSize(1)
-    }
-
-    @Test
-    fun persistenceNotCleaned() {
-        val file = File.createTempFile("pref", "json")
-        val storageOne: PersistentStorage = JsonFileStorage(file)
-        storageOne.add(Station(1, mutableSetOf(
-                AirQualityIndex(POLISH),
-                Measurements()
-        )))
-        storageOne.addStation(2)
-        storageOne.update(2, Station(modules = mutableSetOf(
-                Measurements()
-        )))
-
-        val storageTwo = JsonFileStorage(file)
-
-        assertThat(storageTwo.fetchAll()).hasSize(2)
-        assertThat(storageTwo.fetchAll()[0].id).isEqualTo(1)
-        assertThat(storageTwo.fetchAll()[0].modules).hasSize(2)
-        assertThat(storageTwo.fetchAll()[0].modules.toList()[0]).isInstanceOf(AirQualityIndex::class.java)
-        assertThat(storageTwo.fetchAll()[0].modules.toList()[1]).isInstanceOf(Measurements::class.java)
-        assertThat(storageTwo.fetchAll()[1].id).isEqualTo(2)
-        assertThat(storageTwo.fetchAll()[1].modules).hasSize(1)
-        assertThat(storageTwo.fetchAll()[1].modules.toList()[0]).isInstanceOf(Measurements::class.java)
-    }
-
-    @Test
-    fun persistenceCleaned() {
-        val file = File.createTempFile("pref", "json")
-        val storageOne: PersistentStorage = JsonFileStorage(file)
-        storageOne.add(Station(1, mutableSetOf(
-                AirQualityIndex(POLISH),
-                Measurements()
-        )))
-        storageOne.clear()
-
-        val storageTwo = JsonFileStorage(file)
-
-        assertThat(storageTwo.fetchAll()).hasSize(0)
     }
 }

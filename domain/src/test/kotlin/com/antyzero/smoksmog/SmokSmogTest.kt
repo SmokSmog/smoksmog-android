@@ -13,7 +13,6 @@ import pl.malopolska.smoksmog.model.Station
 import rx.Observable
 import rx.observers.TestSubscriber
 
-@Suppress("UNCHECKED_CAST")
 class SmokSmogTest {
 
     @Test
@@ -22,7 +21,7 @@ class SmokSmogTest {
         val longitude = 20.715333
         val testSubscriber = TestSubscriber<Station>()
         val locationProvider = mock<LocationProvider> {
-            on { location() } doReturn Position(latitude to longitude).observable() as Observable<Location>
+            on { location() } doReturn Position(latitude to longitude).observable<Location>()
         }
         val api = mock<Api> {
             on { stationByLocation(latitude, longitude) } doReturn Station(
@@ -42,9 +41,9 @@ class SmokSmogTest {
     fun locationUnknown() {
         val testSubscriber = TestSubscriber<Station>()
         val locationProvider = mock<LocationProvider> {
-            on { location() } doReturn Location.Unknown().observable() as Observable<Location>
+            on { location() } doReturn Location.Unknown().observable<Location>()
         }
-        val smokSmog = SmokSmog(mock <Api> { }, mock<PersistentStorage> { }, locationProvider)
+        val smokSmog = SmokSmog(mock<Api> { }, mock<PersistentStorage> { }, locationProvider)
 
         smokSmog.nearestStation().subscribe(testSubscriber)
 

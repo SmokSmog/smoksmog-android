@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.antyzero.smoksmog.R
+import com.antyzero.smoksmog.dsl.getCompatColor
 import com.antyzero.smoksmog.dsl.navBarHeight
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
@@ -36,15 +37,8 @@ abstract class BaseDragonActivity : RxAppCompatActivity() {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val color: Int
-            val colorResourceId = android.R.color.transparent
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                color = resources.getColor(colorResourceId, theme)
-            } else {
-                color = resources.getColor(colorResourceId)
-            }
             if (resources.configuration.orientation == ORIENTATION_PORTRAIT) {
-                window.navigationBarColor = color
+                window.navigationBarColor = getCompatColor(android.R.color.transparent)
             }
         }
 

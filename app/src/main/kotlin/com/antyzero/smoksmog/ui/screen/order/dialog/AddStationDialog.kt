@@ -19,19 +19,18 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Func1
 import rx.schedulers.Schedulers
 import smoksmog.logger.Logger
-import java.util.*
 import javax.inject.Inject
 
 
 class AddStationDialog : DialogFragment(), StationDialogAdapter.StationListener {
 
-    private val stationList = ArrayList<Station>()
-    private val stationIdsNotToShow = ArrayList<Long>()
+    private val stationList: MutableList<Station> = mutableListOf()
+    private val stationIdsNotToShow: MutableList<Long> = mutableListOf()
 
     @Inject lateinit var restClient: RestClient
     @Inject lateinit var logger: Logger
 
-    private var stationListener: StationDialogAdapter.StationListener? = null
+    lateinit private var stationListener: StationDialogAdapter.StationListener
 
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
@@ -44,14 +43,12 @@ class AddStationDialog : DialogFragment(), StationDialogAdapter.StationListener 
             throw IllegalStateException("Missing station id values")
         }
 
-        val stationIdsArray = arguments.getLongArray(KEY_STATION_IDS)
+        val stationIdsArray = arguments.getLongArray(KEY_STATION_IDS)?.toList()
         if (stationIdsArray != null) {
-            for (aStationIdsArray in stationIdsArray) {
-                stationIdsNotToShow.add(aStationIdsArray)
-            }
+            stationIdsNotToShow += stationIdsArray
         }
 
-        stationListener = activity as StationDialogAdapter.StationListener?
+        stationListener = activity
 
         SmokSmogApplication[activity]
                 .appComponent

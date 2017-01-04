@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException
 
 sealed class Item(val id: Long, val modules: MutableSet<in Module>) {
 
+    @Suppress("unused")
     private val _class: String = javaClass.canonicalName
 
     /**
@@ -19,18 +20,9 @@ sealed class Item(val id: Long, val modules: MutableSet<in Module>) {
     /**
      * Multiple, this represent station item
      */
-    class Station(id: Long = 1, modules: MutableSet<in Module> = mutableSetOf()) : Item(id, modules) {
-
-        init {
-            require(isIdAllowed(id), { "For station {id} only values greater than 0 are acceptable" })
-        }
+    class Station(id: Long = Long.MIN_VALUE, modules: MutableSet<in Module> = mutableSetOf()) : Item(id, modules) {
 
         fun copy(id: Long = this.id, modules: MutableSet<in Module> = this.modules): Station = Station(id, modules)
-
-        companion object {
-
-            fun isIdAllowed(id: Long): Boolean = id > 0
-        }
     }
 
     override fun equals(other: Any?): Boolean {

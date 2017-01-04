@@ -12,8 +12,8 @@ import com.antyzero.smoksmog.R
 
 fun AlertDialog.Builder.setToolbar(toolbarText: String): Toolbar {
     val toolbar = LayoutInflater.from(context).inflate(R.layout.dialog_toolbar, null) as Toolbar
-    toolbar.setTitleTextColor(context.resources.getColor(smoksmog.R.color.text_light))
-    toolbar.setBackgroundColor(context.resources.getColor(smoksmog.R.color.primaryDark))
+    toolbar.setTitleTextColor(context.getCompatColor(smoksmog.R.color.text_light))
+    toolbar.setBackgroundColor(context.getCompatColor(smoksmog.R.color.primaryDark))
     toolbar.title = toolbarText
     this.setCustomTitle(toolbar)
     return toolbar

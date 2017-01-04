@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.antyzero.smoksmog.R
+import com.antyzero.smoksmog.dsl.getCompatColor
 import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.eventbus.RxBus
 import com.antyzero.smoksmog.ui.BaseFragment
@@ -64,7 +65,7 @@ abstract class StationFragment : BaseFragment(), TitleProvider {
         recyclerView.adapter = StationAdapter(stationContainer)
 
         progressBar.indeterminateDrawable.setColorFilter(
-                resources.getColor(R.color.accent),
+                activity.getCompatColor(R.color.accent),
                 PorterDuff.Mode.SRC_IN)
 
         buttonTryAgain.setOnClickListener {

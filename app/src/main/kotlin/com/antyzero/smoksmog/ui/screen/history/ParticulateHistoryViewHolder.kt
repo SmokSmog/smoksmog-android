@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.dsl.findView
+import com.antyzero.smoksmog.dsl.getCompatColor
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.YAxis
@@ -20,10 +21,10 @@ class ParticulateHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
     val chart: LineChart = findView(R.id.lineChart)
 
     init {
-        val resources = itemView.resources
-        chart.setBackgroundColor(resources.getColor(android.R.color.transparent))
-        chart.setGridBackgroundColor(resources.getColor(android.R.color.transparent))
-        chart.setDescriptionColor(resources.getColor(R.color.text_light))
+        val context = itemView.context
+        chart.setBackgroundColor(context.getCompatColor(android.R.color.transparent))
+        chart.setGridBackgroundColor(context.getCompatColor(android.R.color.transparent))
+        chart.setDescriptionColor(context.getCompatColor(R.color.text_light))
 
     }
 
@@ -31,8 +32,8 @@ class ParticulateHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
         val historyList = particulate.values
         Collections.sort(historyList) { history1, history2 -> if (history1.date.isAfter(history2.date)) 1 else -1 }
 
-        val lineColor = itemView.context.resources.getColor(R.color.primary)
-        val fillColor = itemView.context.resources.getColor(R.color.accent)
+        val lineColor = itemView.context.getCompatColor(R.color.primary)
+        val fillColor = itemView.context.getCompatColor(R.color.accent)
         val lineData = getLineData(historyList, lineColor, fillColor)
 
         chart.data = lineData
