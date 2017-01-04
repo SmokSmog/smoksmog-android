@@ -8,10 +8,11 @@ import org.joda.time.DateTime
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import rx.Scheduler
 import rx.schedulers.Schedulers
 import java.util.*
 
-open class RestClient(val endpoint: String, api: Api) : Api by api {
+class RestClient(val endpoint: String, api: Api) : Api by api {
 
     companion object {
         val ENDPOINT = "http://api.smoksmog.jkostrz.name/"
@@ -28,12 +29,20 @@ open class RestClient(val endpoint: String, api: Api) : Api by api {
 
         val endpoint: String = "$serverUrl${locale.language}/"
 
+        var scheduler: Scheduler? = null
+
         fun build(): RestClient {
 
             val api = Retrofit.Builder().apply {
                 baseUrl(endpoint)
                 addConverterFactory(GsonConverterFactory.create(createGson()))
-                addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.newThread()))
+
+                addCallAdapterFactory(if (scheduler == null) {
+                    RxJavaCallAdapterFactory.create()
+                } else {
+                    RxJavaCallAdapterFactory.createWithScheduler(scheduler)
+                })
+
                 client(OkHttpClient.Builder().apply {
                     addInterceptor { chain ->
                         val original = chain.request()
