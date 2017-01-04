@@ -16,7 +16,7 @@ import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.fullscreen
 import com.antyzero.smoksmog.ui.statusBarHeight
 import kotlinx.android.synthetic.main.activity_pick_station.*
-import pl.malopolska.smoksmog.SmokSmog
+import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -24,7 +24,7 @@ import javax.inject.Inject
 class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQueryTextListener {
 
     @Inject
-    lateinit var smokSmog: SmokSmog
+    lateinit var restClient: RestClient
 
     private val listStation: MutableList<Station> = mutableListOf()
     private val allStations: MutableList<Station> = mutableListOf()
@@ -57,7 +57,7 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
             recyclerView.layoutManager = LinearLayoutManager(this, VERTICAL, false)
         }
 
-        smokSmog.api.stations()
+        restClient.stations()
                 .map { it.filter { skipIds.contains(it.id.toInt()).not() } }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {

@@ -4,14 +4,14 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import com.antyzero.smoksmog.activityComponent
-import com.antyzero.smoksmog.appWidgetManager
-import com.antyzero.smoksmog.firebase.FirebaseEvents
+import com.antyzero.smoksmog.dsl.activityComponent
+import com.antyzero.smoksmog.dsl.appWidgetManager
 import com.antyzero.smoksmog.dsl.tag
-import com.antyzero.smoksmog.toast
+import com.antyzero.smoksmog.dsl.toast
+import com.antyzero.smoksmog.firebase.FirebaseEvents
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.PickStationActivity
-import pl.malopolska.smoksmog.SmokSmog
+import pl.malopolska.smoksmog.RestClient
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import smoksmog.logger.Logger
@@ -22,7 +22,7 @@ class StationWidgetConfigureActivity : BaseDragonActivity() {
 
     @Inject lateinit var logger: Logger
     @Inject lateinit var stationWidgetData: StationWidgetData
-    @Inject lateinit var smokSmog: SmokSmog
+    @Inject lateinit var restClient: RestClient
     @Inject lateinit var firebaseEvents: FirebaseEvents
 
     private val PICK_STATION_REQUEST: Int = 8976
@@ -66,7 +66,7 @@ class StationWidgetConfigureActivity : BaseDragonActivity() {
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         setResult(Activity.RESULT_OK, resultValue)
 
-        smokSmog.api.station(gatherResult.first)
+        restClient.station(gatherResult.first)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

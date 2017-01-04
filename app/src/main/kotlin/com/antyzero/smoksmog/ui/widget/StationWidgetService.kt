@@ -5,17 +5,17 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import com.antyzero.smoksmog.appComponent
-import com.antyzero.smoksmog.appWidgetManager
+import com.antyzero.smoksmog.dsl.appComponent
+import com.antyzero.smoksmog.dsl.appWidgetManager
 import com.antyzero.smoksmog.dsl.tag
-import pl.malopolska.smoksmog.SmokSmog
+import pl.malopolska.smoksmog.RestClient
 import smoksmog.logger.Logger
 import javax.inject.Inject
 
 
 class StationWidgetService : IntentService(StationWidgetService::class.java.simpleName) {
 
-    @Inject lateinit var smokSmog: SmokSmog
+    @Inject lateinit var restClient: RestClient
     @Inject lateinit var widgetData: StationWidgetData
     @Inject lateinit var logger: Logger
 
@@ -32,7 +32,7 @@ class StationWidgetService : IntentService(StationWidgetService::class.java.simp
             val widgetId = intent.getIntExtra(EXTRA_WIDGET_ID, Int.MIN_VALUE)
             try {
                 val stationId = widgetData.widgetStationId(widgetId)
-                val station = smokSmog.api.station(stationId).toBlocking().first()
+                val station = restClient.station(stationId).toBlocking().first()
                 StationWidget.updateWidget(widgetId, this, appWidgetManager, station)
             } catch (e: Exception) {
                 logger.w(tag(), "Unable to update widget $widgetId", e)

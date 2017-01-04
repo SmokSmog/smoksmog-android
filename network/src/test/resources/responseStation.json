@@ -14,6 +14,17 @@
       "position": "1"
     },
     {
+      "id": "8",
+      "name": "Py\u0142 zawieszony 2,5",
+      "short_name": "PM\u2081\u2080",
+      "value": "33.4571",
+      "unit": "\u00b5g\/m\u00b3",
+      "norm": "50",
+      "date": "2015-08-25 12:11:03",
+      "avg": "26.46",
+      "position": "1"
+    },
+    {
       "id": "3",
       "name": "Dwutlenek azotu",
       "short_name": "NO\u2082",

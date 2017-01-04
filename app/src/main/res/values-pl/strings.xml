@@ -14,7 +14,7 @@
     <string name="action_about">O aplikacji</string>
     <string name="action_settings">Ustawienia</string>
     <string name="error_unable_to_show_history">Nie udało się wyświetlić historii</string>
-    <string name="version_name_and_code" formatted="false">Wersja %s (%s)</string>
+    <string name="version_name_and_code" formatted="false">Wersja %s (%d)</string>
     <string name="pref_station_selection_mode_entries_closest">Najbliższą</string>
     <string name="pref_station_selection_mode_entries_last">Ostatio wybraną</string>
     <string name="pref_station_selection_mode_entries_defined">Zdefiniowaną w ustawieniach (domyślna)</string>

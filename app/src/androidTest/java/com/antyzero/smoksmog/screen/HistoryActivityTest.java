@@ -30,7 +30,7 @@ public class HistoryActivityTest {
     public void checkCreation() {
 
         // given
-        activityTestRule.launchActivity(HistoryActivity.fillIntent(new Intent(), 13));
+        activityTestRule.launchActivity(HistoryActivity.Companion.fillIntent(new Intent(), 13));
 
         // when
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();

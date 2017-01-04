@@ -22,8 +22,8 @@ dependencies {
     compile "joda-time:joda-time:${libVersions.jodaTime}"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:2.1.0'
+    testCompile "junit:junit:${libVersions.junit}"
+    testCompile "org.assertj:assertj-core:${libVersions.assertj}"
     testCompile "com.squareup.okhttp3:mockwebserver:${libVersions.square.okhttp}"
 }
 
