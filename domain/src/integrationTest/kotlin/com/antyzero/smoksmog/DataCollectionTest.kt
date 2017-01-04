@@ -50,12 +50,13 @@ class DataCollectionTest {
     @Test
     fun fetchAll() {
         val testSubscriber = TestSubscriber<Pair<Item, Station>>()
+        smokSmog.storage.addStation(13)
         smokSmog.storage.addStation(17)
 
         smokSmog.collectData().subscribe(testSubscriber)
 
         testSubscriber.assertNoErrors()
         testSubscriber.assertCompleted()
-        testSubscriber.assertValueCount(1)
+        testSubscriber.assertValueCount(2)
     }
 }

@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.dsl.findViewById
+import com.antyzero.smoksmog.dsl.getCompatColor
 import com.antyzero.smoksmog.dsl.tag
 import com.antyzero.smoksmog.eventbus.RxBus
 import com.antyzero.smoksmog.time.CountdownProvider
@@ -97,7 +98,7 @@ class AirQualityViewHolder(itemView: View) : ListViewHolder<Station>(itemView) {
             textViewMeasureTime.text = String.format(
                     itemView.resources.getText(R.string.measure_ago).toString(),
                     countdownProvider[seconds])
-            textViewMeasureTime.setBackgroundColor(itemView.resources.getColor(
+            textViewMeasureTime.setBackgroundColor(itemView.context.getCompatColor(
                     if (seconds >= 4 * 60 * 60) R.color.red else android.R.color.transparent))
         }
     }

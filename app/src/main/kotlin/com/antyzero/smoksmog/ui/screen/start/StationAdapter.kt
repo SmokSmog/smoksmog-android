@@ -60,7 +60,7 @@ class StationAdapter(private val stationContainer: List<Station>) : RecyclerView
 
         if (!stationContainer.isEmpty()) {
             val station = this.stationContainer[0]
-            particulates = station.particulates!!.size
+            particulates = station.particulates.size
         }
 
         return 1 + particulates

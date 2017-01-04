@@ -25,7 +25,11 @@ configurations {
 
 test {
     testLogging {
-        events "passed", "skipped", "failed"
+        events "passed", "skipped", "failed", "standardOut"
+        showExceptions true
+        exceptionFormat "full"
+        showCauses true
+        showStackTraces true
     }
 }
 

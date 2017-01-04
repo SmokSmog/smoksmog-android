@@ -6,6 +6,7 @@ import android.text.method.LinkMovementMethod
 import android.view.View
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
+import com.antyzero.smoksmog.dsl.compatFromHtml
 import com.antyzero.smoksmog.user.User
 import kotlinx.android.synthetic.main.dialog_info_about.*
 import smoksmog.logger.Logger
@@ -28,8 +29,8 @@ class AboutDialog : InfoDialog() {
     override fun initView(view: View) {
         super.initView(view)
 
-        textView!!.text = Html.fromHtml(getString(R.string.about))
-        textView!!.movementMethod = LinkMovementMethod.getInstance()
+        textView.compatFromHtml(R.string.about)
+        textView.movementMethod = LinkMovementMethod.getInstance()
 
         try {
             val packageInfo = activity.packageManager.getPackageInfo(activity.packageName, 0)

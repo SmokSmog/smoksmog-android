@@ -63,7 +63,7 @@ class GeneralSettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSh
         super.onDestroy()
     }
 
-    protected fun findPreference(@StringRes stringResId: Int): Preference {
+    private fun findPreference(@StringRes stringResId: Int): Preference {
         return findPreference(getString(stringResId))
     }
 
@@ -90,15 +90,13 @@ class GeneralSettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSh
                     preferenceStationCloset!!.isChecked = false
                     sharedPreferences.registerOnSharedPreferenceChangeListener(this)
                     // TODO localize
-                    errorReporter!!.report("Location permission not granted")
+                    errorReporter.report("Location permission not granted")
                 }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
 
     companion object {
-
-        private val TAG = GeneralSettingsFragment::class.java.simpleName
 
         private val REQUEST_CODE_ASK_PERMISSION = 123
 

@@ -8,13 +8,15 @@ import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
 import com.antyzero.smoksmog.R
+import com.antyzero.smoksmog.dsl.getCompatColor
 import java.util.*
 
 
 /**
 
  */
-class ViewPagerIndicator : View, ViewPager.OnPageChangeListener {
+class ViewPagerIndicator @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr), ViewPager.OnPageChangeListener {
 
     private var stationIds: List<Long> = ArrayList()
 
@@ -27,22 +29,9 @@ class ViewPagerIndicator : View, ViewPager.OnPageChangeListener {
 
     private lateinit var paintActiveIndicator: Paint
     private lateinit var paintIndicator: Paint
-
-    private var arrow: Path? = null
+    private lateinit var arrow: Path
 
     private var activePosition = 0
-
-    constructor(context: Context) : super(context) {
-        init(context)
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init(context)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        init(context)
-    }
 
     private fun init(context: Context) {
         itemSpacing = context.resources.getDimensionPixelSize(R.dimen.indicator_item_spacing)
@@ -50,7 +39,7 @@ class ViewPagerIndicator : View, ViewPager.OnPageChangeListener {
         itemSideHalfSize = itemSideSize / 2
 
         paintActiveIndicator = Paint()
-        paintActiveIndicator.color = resources.getColor(R.color.iron)
+        paintActiveIndicator.color = context.getCompatColor(R.color.iron)
         paintActiveIndicator.style = Paint.Style.FILL
         paintActiveIndicator.strokeWidth = 0f
         paintActiveIndicator.isAntiAlias = true
@@ -59,12 +48,12 @@ class ViewPagerIndicator : View, ViewPager.OnPageChangeListener {
         paintIndicator.alpha = 127
 
         arrow = Path()
-        arrow!!.reset()
-        arrow!!.moveTo(itemSideHalfSize.toFloat(), itemSideHalfSize.toFloat())
-        arrow!!.lineTo(itemSideHalfSize.toFloat(), itemSideSize.toFloat())
-        arrow!!.lineTo(itemSideSize.toFloat(), 0f)
-        arrow!!.lineTo(0f, itemSideHalfSize.toFloat())
-        arrow!!.close()
+        arrow.reset()
+        arrow.moveTo(itemSideHalfSize.toFloat(), itemSideHalfSize.toFloat())
+        arrow.lineTo(itemSideHalfSize.toFloat(), itemSideSize.toFloat())
+        arrow.lineTo(itemSideSize.toFloat(), 0f)
+        arrow.lineTo(0f, itemSideHalfSize.toFloat())
+        arrow.close()
     }
 
     fun setStationIds(stationIds: List<Long>) {

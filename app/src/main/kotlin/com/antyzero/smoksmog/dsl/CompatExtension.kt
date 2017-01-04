@@ -31,6 +31,7 @@ fun Configuration.getCompatLocale(): Locale = when (Build.VERSION.SDK_INT) {
     else -> locales[0] // API24
 }
 
+@Suppress("DEPRECATION")
 @SuppressLint("NewApi")
 fun TextView.compatFromHtml(@StringRes id: Int) {
     text = when (Build.VERSION.SDK_INT) {

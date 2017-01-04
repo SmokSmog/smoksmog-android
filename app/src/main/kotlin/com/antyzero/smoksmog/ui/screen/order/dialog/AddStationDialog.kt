@@ -84,7 +84,7 @@ class AddStationDialog : DialogFragment(), StationDialogAdapter.StationListener 
     }
 
     override fun onStation(stationId: Long) {
-        stationListener!!.onStation(stationId)
+        stationListener.onStation(stationId)
         dismiss()
     }
 

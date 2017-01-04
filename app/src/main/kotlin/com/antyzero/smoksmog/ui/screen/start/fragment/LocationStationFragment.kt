@@ -33,7 +33,7 @@ class LocationStationFragment : StationFragment(), GoogleApiClient.ConnectionCal
                 .plus(FragmentModule(this), GoogleModule(this))
                 .inject(this)
 
-        googleApiClient!!.connect()
+        googleApiClient.connect()
     }
 
     override fun onConnected(bundle: Bundle?) {
