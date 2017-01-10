@@ -27,7 +27,8 @@ class DataCollectionTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        storage = JsonFileStorage(File.createTempFile(StringRandom.random(8), "json"))
+        val file = File.createTempFile(StringRandom().random(8), "json").apply { delete() }
+        storage = JsonFileStorage(file)
         smokSmog = SmokSmog(api, storage, locationProvider)
     }
 

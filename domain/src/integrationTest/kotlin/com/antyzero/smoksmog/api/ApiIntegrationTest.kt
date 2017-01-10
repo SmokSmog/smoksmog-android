@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog.api
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import pl.malopolska.smoksmog.RestClient
@@ -26,6 +27,6 @@ class ApiIntegrationTest {
 
         testSubscriber.assertNoErrors()
         testSubscriber.assertCompleted()
-        testSubscriber.assertValueCount(50) // May change
+        assertThat(testSubscriber.onNextEvents.size).isGreaterThanOrEqualTo(50) // we should have that much
     }
 }
