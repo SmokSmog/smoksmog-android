@@ -17,10 +17,7 @@ class SmokSmog(val api: Api, val storage: PersistentStorage, val locationProvide
         is Item.Station -> api.station(item.id)
         is Item.Nearest -> nearestStation()
         else -> throw IllegalStateException("Unsupported item type $item")
-    }.zipWith(Observable.just(item)) {
-        station, item ->
-        item to station
-    }.limit(1)
+    }.zipWith(Observable.just(item)) { station, item -> item to station }.limit(1)
 
     fun nearestStation(): Observable<Station> = locationProvider.location()
             .filter { it is Location.Position }
