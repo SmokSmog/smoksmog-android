@@ -81,9 +81,7 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
         return false
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
+    override fun onQueryTextSubmit(query: String?) = false
 
     override fun click(station: Station) {
         endWithResult(station)

@@ -1,6 +1,7 @@
 package com.antyzero.smoksmog
 
 import com.antyzero.smoksmog.location.LocationProvider
+import com.antyzero.smoksmog.model.Page
 import com.antyzero.smoksmog.storage.JsonFileStorage
 import com.antyzero.smoksmog.storage.PersistentStorage
 import com.antyzero.smoksmog.storage.model.Item
@@ -11,7 +12,6 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import pl.malopolska.smoksmog.Api
 import pl.malopolska.smoksmog.RestClient
-import pl.malopolska.smoksmog.model.Station
 import rx.observers.TestSubscriber
 import java.io.File
 
@@ -39,7 +39,7 @@ class DataCollectionTest {
 
     @Test
     fun collectForSingle() {
-        val testSubscriber = TestSubscriber<Pair<Item, Station>>()
+        val testSubscriber = TestSubscriber<Page>()
 
         smokSmog.collectDataForItem(Item.Station(13)).subscribe(testSubscriber)
 
@@ -50,7 +50,7 @@ class DataCollectionTest {
 
     @Test
     fun fetchAll() {
-        val testSubscriber = TestSubscriber<Pair<Item, Station>>()
+        val testSubscriber = TestSubscriber<Page>()
         smokSmog.storage.addStation(13)
         smokSmog.storage.addStation(17)
 

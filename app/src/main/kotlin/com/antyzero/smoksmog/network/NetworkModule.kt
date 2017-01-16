@@ -5,6 +5,7 @@ import android.os.Build
 import dagger.Module
 import dagger.Provides
 import pl.malopolska.smoksmog.RestClient
+import rx.schedulers.Schedulers
 import java.util.*
 import javax.inject.Singleton
 
@@ -14,7 +15,9 @@ open class NetworkModule {
     @Provides
     @Singleton
     internal fun provideSmokSmog(context: Context): RestClient {
-        return RestClient.Builder(getLocale(context)).build()
+        return RestClient.Builder(getLocale(context)).apply {
+            scheduler = Schedulers.io()
+        }.build()
     }
 
     private fun getLocale(context: Context): Locale {

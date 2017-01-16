@@ -59,7 +59,7 @@ class JsonFileStorage(val file: File = File.createTempFile("jfs", "json")) : Per
                     true
                 }
                 is Item.Station -> {
-                    require(item.id > 0, { "Invalid give $item id=${item.id}, only values greater than 0 are acceptable" })
+                    require(item.id > 0, { "Invalid $item id=${item.id}, only values greater than 0 are acceptable" })
                     items.add(item)
                     true
                 }

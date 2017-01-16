@@ -17,12 +17,12 @@ import java.util.*
  */
 class SettingsHelper(private val context: Context, permissionHelper: PermissionHelper) : SharedPreferences.OnSharedPreferenceChangeListener {
 
-    val preferences: SharedPreferences
+    val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     private val stationIds: MutableList<Long>
 
-    val keyStationClosest: String
-    private val keyPercent: String
+    val keyStationClosest: String = context.getString(R.string.pref_key_station_closest)
+    private val keyPercent: String = context.getString(R.string.pref_key_percent)
 
     var percentMode: Percent? = null
         private set
@@ -32,14 +32,9 @@ class SettingsHelper(private val context: Context, permissionHelper: PermissionH
         set(value) = preferences.edit().putBoolean(keyStationClosest, value).apply()
 
     init {
-
         PreferenceManager.setDefaultValues(context, R.xml.settings_general, false)
-        preferences = PreferenceManager.getDefaultSharedPreferences(context)
         preferences.registerOnSharedPreferenceChangeListener(this)
         stationIds = getList(preferences, KEY_STATION_ID_LIST)
-
-        keyStationClosest = context.getString(R.string.pref_key_station_closest)
-        keyPercent = context.getString(R.string.pref_key_percent)
 
         if (!permissionHelper.isGrantedLocationCorsare) {
             isClosesStationVisible = false

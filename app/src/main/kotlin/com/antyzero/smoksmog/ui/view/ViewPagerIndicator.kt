@@ -27,18 +27,18 @@ class ViewPagerIndicator @JvmOverloads constructor(
     private var desiredWidth = 0
     private var desiredHeight = 0
 
-    private lateinit var paintActiveIndicator: Paint
-    private lateinit var paintIndicator: Paint
-    private lateinit var arrow: Path
+    private var arrow: Path = Path()
+    private var paintActiveIndicator: Paint = Paint()
+    private var paintIndicator: Paint
 
     private var activePosition = 0
 
-    private fun init(context: Context) {
+    init {
+
         itemSpacing = context.resources.getDimensionPixelSize(R.dimen.indicator_item_spacing)
         itemSideSize = context.resources.getDimensionPixelSize(R.dimen.indicator_item_size)
         itemSideHalfSize = itemSideSize / 2
 
-        paintActiveIndicator = Paint()
         paintActiveIndicator.color = context.getCompatColor(R.color.iron)
         paintActiveIndicator.style = Paint.Style.FILL
         paintActiveIndicator.strokeWidth = 0f
@@ -47,7 +47,6 @@ class ViewPagerIndicator @JvmOverloads constructor(
         paintIndicator = Paint(paintActiveIndicator)
         paintIndicator.alpha = 127
 
-        arrow = Path()
         arrow.reset()
         arrow.moveTo(itemSideHalfSize.toFloat(), itemSideHalfSize.toFloat())
         arrow.lineTo(itemSideHalfSize.toFloat(), itemSideSize.toFloat())
