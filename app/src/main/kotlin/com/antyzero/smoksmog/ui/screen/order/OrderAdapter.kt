@@ -43,6 +43,7 @@ class OrderAdapter(private val stationList: MutableList<Station>, private val on
             }
         }
         notifyItemMoved(fromPosition, toPosition)
+
         settingsHelper.stationIdList.let {
             it.clear()
             it.addAll(StationUtils.convertStationsToIdsList(stationList))

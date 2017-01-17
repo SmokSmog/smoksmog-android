@@ -13,7 +13,6 @@ import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.eventbus.RxBus
 import com.antyzero.smoksmog.firebase.FirebaseEvents
-import com.antyzero.smoksmog.permission.PermissionHelper
 import com.antyzero.smoksmog.settings.SettingsHelper
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.dialog.AboutDialog
@@ -21,7 +20,6 @@ import com.antyzero.smoksmog.ui.dialog.InfoDialog
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.order.OrderActivity
 import com.antyzero.smoksmog.ui.screen.settings.SettingsActivity
-import com.antyzero.smoksmog.ui.screen.start.model.StationIdList
 import com.antyzero.smoksmog.ui.typeface.TypefaceProvider
 import com.trello.rxlifecycle.android.ActivityEvent
 import kotlinx.android.synthetic.main.activity_start.*
@@ -54,11 +52,8 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
         pageSave = PageSave(this)
 
         SmokSmogApplication[this].appComponent
-                .plus(ActivityModule(this)).let {
-            it.inject(this@StartActivity)
-            val permissionHelper = PermissionHelper(this@StartActivity)
-            stationIds = StationIdList(SettingsHelper(this@StartActivity, permissionHelper), permissionHelper)
-        }
+                .plus(ActivityModule(this))
+                .inject(this)
 
         setContentView(R.layout.activity_start)
         setSupportActionBar(toolbar)
