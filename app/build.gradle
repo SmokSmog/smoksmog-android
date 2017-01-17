@@ -103,6 +103,7 @@ configurations.all {
 dependencies {
 
     compile project(':android')
+    compile project(':domain') // future
 
     compile "com.google.dagger:dagger:${libVersions.google.dagger}"
     kapt "com.google.dagger:dagger-compiler:${libVersions.google.dagger}"
