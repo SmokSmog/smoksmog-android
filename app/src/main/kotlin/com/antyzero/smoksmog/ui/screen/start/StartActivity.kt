@@ -9,11 +9,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.antyzero.smoksmog.R
+import com.antyzero.smoksmog.SmokSmog
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.eventbus.RxBus
 import com.antyzero.smoksmog.firebase.FirebaseEvents
 import com.antyzero.smoksmog.settings.SettingsHelper
+import com.antyzero.smoksmog.storage.model.Item
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.dialog.AboutDialog
 import com.antyzero.smoksmog.ui.dialog.InfoDialog
@@ -40,9 +42,9 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
     @Inject lateinit var rxBus: RxBus
     @Inject lateinit var typefaceProvider: TypefaceProvider
     @Inject lateinit var firebaseEvents: FirebaseEvents
+    @Inject lateinit var smokSmog: SmokSmog
 
     private lateinit var pageSave: PageSave
-    private lateinit var stationIds: List<Long>
     private lateinit var stationSlideAdapter: StationSlideAdapter
 
     private var lastPageSelected = 0
@@ -60,7 +62,7 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
 
         buttonAddStation.setOnClickListener { OrderActivity.start(this, true) }
 
-        stationSlideAdapter = StationSlideAdapter(fragmentManager, stationIds)
+        stationSlideAdapter = StationSlideAdapter(fragmentManager, smokSmog.storage.fetchAll().map(Item::id))
 
         viewPager.adapter = stationSlideAdapter
         viewPager.offscreenPageLimit = PAGE_LIMIT
@@ -68,7 +70,7 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
         viewPager.addOnPageChangeListener(viewPagerIndicator)
         viewPager.currentItem = pageSave.restorePage()
 
-        viewPagerIndicator!!.setStationIds(stationIds)
+        viewPagerIndicator!!.setStationIds(smokSmog.storage.fetchAll())
 
         correctTitleMargin()
 
@@ -102,11 +104,11 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
 
     override fun onResume() {
         super.onResume()
-        viewPagerIndicator.setStationIds(stationIds)
+        viewPagerIndicator.setStationIds(smokSmog.storage.fetchAll())
         stationSlideAdapter.notifyDataSetChanged()
         updateTitleWithStation()
 
-        if (stationIds.isEmpty()) {
+        if (smokSmog.storage.fetchAll().isEmpty()) {
             visibleNoStations()
         } else {
             visibleStations()

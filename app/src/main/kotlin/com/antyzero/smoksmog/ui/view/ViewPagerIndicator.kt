@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.dsl.getCompatColor
+import com.antyzero.smoksmog.storage.model.Item
 import java.util.*
 
 
@@ -55,8 +56,8 @@ class ViewPagerIndicator @JvmOverloads constructor(
         arrow.close()
     }
 
-    fun setStationIds(stationIds: List<Long>) {
-        this.stationIds = stationIds
+    fun setStationIds(stationIds: List<Item>) {
+        this.stationIds = stationIds.map(Item::id)
         requestLayout()
         invalidate()
     }
