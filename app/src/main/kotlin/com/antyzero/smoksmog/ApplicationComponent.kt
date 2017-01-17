@@ -1,5 +1,6 @@
 package com.antyzero.smoksmog
 
+import com.antyzero.smoksmog.domain.DomainModule
 import com.antyzero.smoksmog.eventbus.EventBusModule
 import com.antyzero.smoksmog.fabric.FabricModule
 import com.antyzero.smoksmog.firebase.SmokSmogFirebaseInstanceIdService
@@ -26,6 +27,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = arrayOf(
         ApplicationModule::class,
+        DomainModule::class,
         LoggerModule::class,
         NetworkModule::class,
         FabricModule::class,
