@@ -14,7 +14,7 @@ class OrderItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val textView: TextView = findView(R.id.textView)
     val viewHandle: View = findViewById(R.id.viewHandle)
 
-    fun bind(station: Item) {
-        textView.text = station.name
+    fun bind(stationName: String?) {
+        textView.text = stationName
     }
 }

@@ -37,7 +37,6 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
     @Inject lateinit var restClient: RestClient
     @Inject lateinit var logger: Logger
     @Inject lateinit var errorReporter: ErrorReporter
-    @Inject lateinit var settingsHelper: SettingsHelper
     @Inject lateinit var rxBus: RxBus
     @Inject lateinit var typefaceProvider: TypefaceProvider
     @Inject lateinit var firebaseEvents: FirebaseEvents
@@ -114,15 +113,11 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
         }
     }
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-    }
-
     /**
      * Because it's not aligned with main layout margin
      */
     private fun correctTitleMargin() {
-        toolbar!!.setContentInsetsAbsolute(16, 0)
+        toolbar.setContentInsetsAbsolute(16, 0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -200,7 +195,7 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun visibleStations() {
-        viewSwitcher!!.displayedChild = 0
+        viewSwitcher.displayedChild = 0
     }
 
     private fun visibleNoStations() {
@@ -208,13 +203,12 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
             supportActionBar!!.setTitle(R.string.app_name)
             supportActionBar!!.subtitle = null
         }
-        viewSwitcher!!.displayedChild = 1
+        viewSwitcher.displayedChild = 1
     }
 
     /**
      * This is messy, Calligraphy should handle this but for some reason it's the only TextView
      * not updated with default font.
-     *
      *
      * TODO fix with Calligraphy in future
      */

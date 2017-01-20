@@ -3,6 +3,7 @@ package com.antyzero.smoksmog.ui
 import android.app.Activity
 import android.content.Context
 import android.os.Build
+import android.view.ViewGroup
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.dsl.getCompatColor
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity

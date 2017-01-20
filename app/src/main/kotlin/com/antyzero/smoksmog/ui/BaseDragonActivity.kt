@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -20,7 +21,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 abstract class BaseDragonActivity : RxAppCompatActivity() {
 
     lateinit private var imageViewDragon: ImageView
-
     lateinit protected var container: ViewGroup
         private set
 
@@ -31,8 +31,7 @@ abstract class BaseDragonActivity : RxAppCompatActivity() {
         imageViewDragon = findViewById(R.id.imageViewDragon) as ImageView
         container = findViewById(R.id.container) as ViewGroup
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT &&
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && addExtraTopPadding()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && addExtraTopPadding()) {
             container.setPadding(0, statusBarHeight(), 0, 0)
         }
 
@@ -45,14 +44,11 @@ abstract class BaseDragonActivity : RxAppCompatActivity() {
         setupDragon()
     }
 
-    /**
-     * Override if needed, this solve issue with 4.4 status bar
-
-     * @return
-     */
-    protected fun addExtraTopPadding(): Boolean {
-        return true
+    override fun setContentView(layoutResID: Int) {
+        LayoutInflater.from(this).inflate(layoutResID,container,true)
     }
+
+    protected fun addExtraTopPadding(): Boolean = true
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))

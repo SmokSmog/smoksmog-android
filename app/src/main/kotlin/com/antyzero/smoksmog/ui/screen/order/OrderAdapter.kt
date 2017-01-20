@@ -11,7 +11,7 @@ import com.antyzero.smoksmog.storage.model.Item
 import pl.malopolska.smoksmog.utils.StationUtils
 import java.util.*
 
-class OrderAdapter(smokSmog: SmokSmog, private val onStartDragListener: OnStartDragListener) : RecyclerView.Adapter<OrderItemViewHolder>(), ItemTouchHelperAdapter {
+class OrderAdapter(smokSmog: SmokSmog, private val idNameMap: Map<Long,String>, private val onStartDragListener: OnStartDragListener) : RecyclerView.Adapter<OrderItemViewHolder>(), ItemTouchHelperAdapter {
 
     val stationList = smokSmog.storage
 
@@ -21,7 +21,7 @@ class OrderAdapter(smokSmog: SmokSmog, private val onStartDragListener: OnStartD
     }
 
     override fun onBindViewHolder(holder: OrderItemViewHolder, position: Int) {
-        holder.bind(stationList.fetchAll()[position])
+        holder.bind(idNameMap[stationList.fetchAll()[position].id])
         holder.viewHandle.setOnTouchListener { view, event ->
             if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
                 onStartDragListener.onStartDrag(holder)
@@ -31,7 +31,7 @@ class OrderAdapter(smokSmog: SmokSmog, private val onStartDragListener: OnStartD
     }
 
     override fun getItemCount(): Int {
-        return stationList.fetchAll().size
+        return arrayListOf(stationList.fetchAll().size, idNameMap.size).min() ?: 0
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {

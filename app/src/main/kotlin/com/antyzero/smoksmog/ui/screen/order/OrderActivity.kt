@@ -19,17 +19,13 @@ import com.antyzero.smoksmog.SmokSmog
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.dsl.navBarHeight
 import com.antyzero.smoksmog.error.ErrorReporter
-import com.antyzero.smoksmog.settings.SettingsHelper
 import com.antyzero.smoksmog.storage.model.Item
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.PickStationActivity
 import com.antyzero.smoksmog.ui.screen.order.dialog.StationDialogAdapter
-import com.antyzero.smoksmog.ui.statusBarHeight
 import kotlinx.android.synthetic.main.activity_order.*
 import pl.malopolska.smoksmog.RestClient
-import pl.malopolska.smoksmog.model.Station
-import pl.malopolska.smoksmog.utils.StationUtils
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -45,15 +41,12 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
 
     lateinit private var itemTouchHelper: ItemTouchHelper
 
+    private val idNameMap: MutableMap<Long, String> = mutableMapOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
         setSupportActionBar(toolbar)
-        container.setPadding(0, statusBarHeight(), 0, 0)
-
-        if (intent != null && intent.getBooleanExtra(EXTRA_DIALOG, false)) {
-            startStationPick()
-        }
 
         setupFAB()
         setupNavigationBar()
@@ -62,12 +55,11 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
                 0, 0,
                 0, resources.getDimensionPixelSize(R.dimen.item_air_quality_height) * 3)
 
-        SmokSmogApplication[this]
-                .appComponent
+        SmokSmogApplication[this].appComponent
                 .plus(ActivityModule(this))
                 .inject(this)
 
-        val adapter = OrderAdapter(smokSmog, this)
+        val adapter = OrderAdapter(smokSmog, idNameMap, this)
 
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
@@ -77,7 +69,19 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
         itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
+        restClient.stations()
+                .flatMap { Observable.from(it) }
+                .toMap({it.id},{it.name})
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{
+                    idNameMap.clear()
+                    idNameMap.putAll(it)
+                    recyclerView.adapter.notifyDataSetChanged()
+                }
 
+        if (intent != null && intent.getBooleanExtra(EXTRA_DIALOG, false)) {
+            startStationPick()
+        }
     }
 
     private fun setupFAB() {
@@ -112,10 +116,10 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
         PickStationActivity.startForResult(this, PICK_STATION_REQUEST, ids)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_STATION_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
                 onStation(PickStationActivity.gatherResult(data).first)
             } else {
                 Toast.makeText(this, "Nie wybrano stacji", Toast.LENGTH_SHORT).show()

@@ -14,7 +14,6 @@ import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.fullscreen
-import com.antyzero.smoksmog.ui.statusBarHeight
 import kotlinx.android.synthetic.main.activity_pick_station.*
 import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
@@ -37,15 +36,13 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
         setContentView(R.layout.activity_pick_station)
         fullscreen()
 
-        SmokSmogApplication.get(this).appComponent
+        SmokSmogApplication[this].appComponent
                 .plus(ActivityModule(this))
                 .inject(this)
 
         setSupportActionBar(toolbar)
 
         skipIds = intent?.extras?.getIntArray(EXTRA_SKIP_IDS) ?: IntArray(0)
-        container.setPadding(0, statusBarHeight(), 0, 0)
-
         adapter = SimpleStationAdapter(listStation, this)
 
         recyclerView.setHasFixedSize(true)

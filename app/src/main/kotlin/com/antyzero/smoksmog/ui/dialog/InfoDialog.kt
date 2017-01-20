@@ -14,7 +14,7 @@ import com.antyzero.smoksmog.dsl.show
  */
 abstract class InfoDialog : DialogFragment() {
 
-    override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity)
         val view = activity.layoutInflater.inflate(getLayoutId(), null, false)
         initView(view)
