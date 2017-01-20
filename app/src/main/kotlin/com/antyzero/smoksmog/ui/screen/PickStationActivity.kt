@@ -102,10 +102,10 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
         private val EXTRA_SKIP_IDS = "extraSkipIds"
 
         fun startForResult(activity: Activity, requestCode: Int) {
-            this.startForResult(activity, requestCode, IntArray(0))
+            this.startForResult(activity, requestCode, LongArray(0))
         }
 
-        fun startForResult(activity: Activity, requestCode: Int, skipIds: IntArray = IntArray(0)) {
+        fun startForResult(activity: Activity, requestCode: Int, skipIds: LongArray = LongArray(0)) {
             val intent = Intent(activity, PickStationActivity::class.java)
             intent.putExtra(EXTRA_SKIP_IDS, skipIds)
             activity.startActivityForResult(intent, requestCode)

@@ -2,14 +2,11 @@ package com.antyzero.smoksmog.storage
 
 import com.antyzero.smoksmog.storage.model.Item
 import com.antyzero.smoksmog.storage.model.Item.Station
-import com.antyzero.smoksmog.storage.model.Module
 import com.antyzero.smoksmog.storage.model.Module.AirQualityIndex
-import com.antyzero.smoksmog.storage.model.Module.AirQualityIndex.Type.POLISH
 import com.antyzero.smoksmog.storage.model.Module.Measurements
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
-import java.io.File
 import java.util.*
 
 class StorageTest {
@@ -32,7 +29,7 @@ class StorageTest {
     }
 
     @Test
-    fun remove() {
+    fun removeById() {
         with(storage) {
             addStation(1)
             addStation(2)
@@ -42,6 +39,38 @@ class StorageTest {
 
         assertThat(storage.fetchAll()).hasSize(1)
         assertThat(storage.fetchAll()[0].id).isEqualTo(2)
+    }
+
+    @Test
+    fun removeAtPosition() {
+        with(storage) {
+            addStation(1)
+            addStation(2)
+            addStation(3)
+        }
+
+        storage.removeAt(1)
+
+        assertThat(storage.fetchAll()).hasSize(2)
+        assertThat(storage.fetchAll().map(Item::id)).containsExactly(1L,3L)
+    }
+
+    @Test
+    fun replaceWithNewCollection() {
+        with(storage){
+            addStation(34)
+            addStation(2)
+        }
+
+        storage.set(listOf(
+                Item.Station(1),
+                Item.Station(3),
+                Item.Station(5),
+                Item.Station(7)
+        ))
+
+        assertThat(storage.fetchAll()).hasSize(4)
+        assertThat(storage.fetchAll().map(Item::id)).containsExactly(1L,3L,5L,7L)
     }
 
     @Test

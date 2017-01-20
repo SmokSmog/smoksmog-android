@@ -67,8 +67,19 @@ class JsonFileStorage(val file: File = File.createTempFile("jfs", "json")) : Per
         }
     }
 
+    override fun set(itemCollection: Collection<Item>) {
+        items.clear()
+        items.addAll(itemCollection)
+        saveItems()
+    }
+
     override fun removeById(id: Long) {
         items.filter { it.id == id }.forEach { items.remove(it) }
+        saveItems()
+    }
+
+    override fun removeAt(i: Int) {
+        items.removeAt(i)
         saveItems()
     }
 

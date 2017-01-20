@@ -20,6 +20,7 @@ import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.dsl.navBarHeight
 import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.settings.SettingsHelper
+import com.antyzero.smoksmog.storage.model.Item
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.PickStationActivity
@@ -38,7 +39,6 @@ import javax.inject.Inject
 class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAdapter.StationListener {
 
     @Inject lateinit var restClient: RestClient
-    @Inject lateinit var settingsHelper: SettingsHelper
     @Inject lateinit var logger: Logger
     @Inject lateinit var errorReporter: ErrorReporter
     @Inject lateinit var smokSmog: SmokSmog
@@ -77,21 +77,6 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
         itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
-        val stationIds = settingsHelper.stationIdList
-
-        restClient.stations()
-                .subscribeOn(Schedulers.newThread())
-                .flatMap { stations -> Observable.from(stations) }
-                .filter { station -> stationIds.contains(station.id) }
-                .toSortedList { station, station2 -> stationIds.indexOf(station.id) - stationIds.indexOf(station2.id) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { stations ->
-                            stationList.clear()
-                            stationList.addAll(stations)
-                            recyclerView.adapter.notifyDataSetChanged()
-                        }
-                ) { throwable -> logger.w(TAG, "Unable to build list", throwable) }
 
     }
 
@@ -123,20 +108,8 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
     }
 
     private fun startStationPick() {
-        val list = Observable.from(stationList)
-                .map(Station::id)
-                .toList()
-                .toBlocking().first()
-        val ids = convertListToArray(list)
+        val ids = smokSmog.storage.fetchAll().map(Item::id).toLongArray()
         PickStationActivity.startForResult(this, PICK_STATION_REQUEST, ids)
-    }
-
-    private fun convertListToArray(list: List<Long>): IntArray {
-        val array = IntArray(list.size)
-        for (i in list.indices) {
-            array[i] = list[i].toInt()
-        }
-        return array
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -160,12 +133,8 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { station ->
-                            stationList.add(station)
+                            smokSmog.storage.addStation(station.id)
                             recyclerView.adapter.notifyDataSetChanged()
-                            settingsHelper.stationIdList.let {
-                                it.clear()
-                                it.addAll(StationUtils.Companion.convertStationsToIdsList(stationList))
-                            }
                         }
                 ) { throwable ->
                     logger.e(TAG, "Unable to add station to station list", throwable)
