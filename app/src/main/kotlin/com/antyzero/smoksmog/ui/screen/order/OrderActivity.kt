@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Toast
 import com.antyzero.smoksmog.R
+import com.antyzero.smoksmog.SmokSmog
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.dsl.navBarHeight
 import com.antyzero.smoksmog.error.ErrorReporter
@@ -40,9 +41,9 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
     @Inject lateinit var settingsHelper: SettingsHelper
     @Inject lateinit var logger: Logger
     @Inject lateinit var errorReporter: ErrorReporter
+    @Inject lateinit var smokSmog: SmokSmog
 
     lateinit private var itemTouchHelper: ItemTouchHelper
-    private val stationList: MutableList<Station> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +67,7 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
                 .plus(ActivityModule(this))
                 .inject(this)
 
-        val adapter = OrderAdapter(stationList, this, settingsHelper)
+        val adapter = OrderAdapter(smokSmog, this)
 
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter

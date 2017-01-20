@@ -5,6 +5,7 @@ import android.support.v13.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
+import com.antyzero.smoksmog.storage.model.Item
 
 import com.antyzero.smoksmog.ui.screen.start.fragment.StationFragment
 
@@ -13,7 +14,7 @@ import java.lang.ref.WeakReference
 /**
  * Adapter for sliding pages left-right
  */
-class StationSlideAdapter(fragmentManager: FragmentManager, private val stationIds: List<Long>) : FragmentStatePagerAdapter(fragmentManager) {
+class StationSlideAdapter(fragmentManager: FragmentManager, private val stationIds: List<Item>) : FragmentStatePagerAdapter(fragmentManager) {
 
     private val fragmentRegister = SparseArray<WeakReference<StationFragment>?>()
 
@@ -33,7 +34,7 @@ class StationSlideAdapter(fragmentManager: FragmentManager, private val stationI
     }
 
     override fun getItem(position: Int): StationFragment {
-        return StationFragment.newInstance(stationIds[position])
+        return StationFragment.newInstance(stationIds[position].id)
     }
 
     fun getFragmentReference(position: Int): WeakReference<StationFragment>? {

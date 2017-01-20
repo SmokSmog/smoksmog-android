@@ -15,7 +15,6 @@ import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.eventbus.RxBus
 import com.antyzero.smoksmog.firebase.FirebaseEvents
 import com.antyzero.smoksmog.settings.SettingsHelper
-import com.antyzero.smoksmog.storage.model.Item
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.dialog.AboutDialog
 import com.antyzero.smoksmog.ui.dialog.InfoDialog
@@ -62,7 +61,7 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
 
         buttonAddStation.setOnClickListener { OrderActivity.start(this, true) }
 
-        stationSlideAdapter = StationSlideAdapter(fragmentManager, smokSmog.storage.fetchAll().map(Item::id))
+        stationSlideAdapter = StationSlideAdapter(fragmentManager, smokSmog.storage.fetchAll())
 
         viewPager.adapter = stationSlideAdapter
         viewPager.offscreenPageLimit = PAGE_LIMIT
@@ -70,7 +69,7 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
         viewPager.addOnPageChangeListener(viewPagerIndicator)
         viewPager.currentItem = pageSave.restorePage()
 
-        viewPagerIndicator!!.setStationIds(smokSmog.storage.fetchAll())
+        viewPagerIndicator.setStationIds(smokSmog.storage.fetchAll())
 
         correctTitleMargin()
 

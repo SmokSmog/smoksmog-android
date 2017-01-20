@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import com.antyzero.smoksmog.R
-import com.antyzero.smoksmog.settings.SettingsHelper
-import pl.malopolska.smoksmog.model.Station
+import com.antyzero.smoksmog.SmokSmog
 import pl.malopolska.smoksmog.utils.StationUtils
 import java.util.*
 
-class OrderAdapter(private val stationList: MutableList<Station>, private val onStartDragListener: OnStartDragListener, private val settingsHelper: SettingsHelper) : RecyclerView.Adapter<OrderItemViewHolder>(), ItemTouchHelperAdapter {
+class OrderAdapter(private val smokSmog: SmokSmog, private val onStartDragListener: OnStartDragListener) : RecyclerView.Adapter<OrderItemViewHolder>(), ItemTouchHelperAdapter {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderItemViewHolder {
         return OrderItemViewHolder(LayoutInflater.from(parent.context)
