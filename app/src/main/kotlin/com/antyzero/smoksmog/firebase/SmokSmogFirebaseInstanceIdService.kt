@@ -2,8 +2,8 @@ package com.antyzero.smoksmog.firebase
 
 import android.util.Log
 import com.antyzero.smoksmog.BuildConfig
-import com.antyzero.smoksmog.appComponent
-import com.antyzero.smoksmog.tag
+import com.antyzero.smoksmog.dsl.appComponent
+import com.antyzero.smoksmog.dsl.tag
 import com.crashlytics.android.core.CrashlyticsCore
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.FirebaseInstanceIdService

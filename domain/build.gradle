@@ -1,0 +1,72 @@
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+//noinspection GroovyAssignabilityCheck
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integrationTest/kotlin')
+        }
+        resources.srcDir file('src/integrationTest/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut"
+        showExceptions true
+        exceptionFormat "full"
+        showCauses true
+        showStackTraces true
+    }
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut"
+        showExceptions true
+        exceptionFormat "full"
+        showCauses true
+        showStackTraces true
+    }
+}
+
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
+
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
+}
+
+dependencies {
+
+    compile project(':network')
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "io.reactivex:rxjava:${libVersions.rx.java}"
+    compile "io.reactivex:rxkotlin:${libVersions.rx.kotlin}"
+
+    testCompile "junit:junit:${libVersions.junit}"
+    testCompile "org.assertj:assertj-core:${libVersions.assertj}"
+    testCompile "com.nhaarman:mockito-kotlin:1.1.0"
+    testCompile "com.squareup.okhttp3:mockwebserver:${libVersions.square.okhttp}"
+
+    integrationTestCompile "junit:junit:${libVersions.junit}"
+    integrationTestCompile "org.assertj:assertj-core:${libVersions.assertj}"
+}

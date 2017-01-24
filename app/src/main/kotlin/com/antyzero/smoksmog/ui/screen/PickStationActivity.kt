@@ -14,9 +14,8 @@ import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.fullscreen
-import com.antyzero.smoksmog.ui.statusBarHeight
 import kotlinx.android.synthetic.main.activity_pick_station.*
-import pl.malopolska.smoksmog.SmokSmog
+import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -24,7 +23,7 @@ import javax.inject.Inject
 class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQueryTextListener {
 
     @Inject
-    lateinit var smokSmog: SmokSmog
+    lateinit var restClient: RestClient
 
     private val listStation: MutableList<Station> = mutableListOf()
     private val allStations: MutableList<Station> = mutableListOf()
@@ -37,15 +36,13 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
         setContentView(R.layout.activity_pick_station)
         fullscreen()
 
-        SmokSmogApplication.get(this).appComponent
+        SmokSmogApplication[this].appComponent
                 .plus(ActivityModule(this))
                 .inject(this)
 
         setSupportActionBar(toolbar)
 
-        skipIds = intent.extras.getIntArray(EXTRA_SKIP_IDS)
-        container.setPadding(0, statusBarHeight(), 0, 0)
-
+        skipIds = intent?.extras?.getIntArray(EXTRA_SKIP_IDS) ?: IntArray(0)
         adapter = SimpleStationAdapter(listStation, this)
 
         recyclerView.setHasFixedSize(true)
@@ -57,7 +54,7 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
             recyclerView.layoutManager = LinearLayoutManager(this, VERTICAL, false)
         }
 
-        smokSmog.api.stations()
+        restClient.stations()
                 .map { it.filter { skipIds.contains(it.id.toInt()).not() } }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -81,9 +78,7 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
         return false
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
+    override fun onQueryTextSubmit(query: String?) = false
 
     override fun click(station: Station) {
         endWithResult(station)
@@ -104,10 +99,10 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
         private val EXTRA_SKIP_IDS = "extraSkipIds"
 
         fun startForResult(activity: Activity, requestCode: Int) {
-            this.startForResult(activity, requestCode, IntArray(0))
+            this.startForResult(activity, requestCode, LongArray(0))
         }
 
-        fun startForResult(activity: Activity, requestCode: Int, skipIds: IntArray = IntArray(0)) {
+        fun startForResult(activity: Activity, requestCode: Int, skipIds: LongArray = LongArray(0)) {
             val intent = Intent(activity, PickStationActivity::class.java)
             intent.putExtra(EXTRA_SKIP_IDS, skipIds)
             activity.startActivityForResult(intent, requestCode)

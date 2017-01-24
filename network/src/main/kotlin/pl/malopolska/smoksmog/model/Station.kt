@@ -10,8 +10,7 @@ data class Station(
         @SerializedName("lon") val longitude: Float = 0f,
         @SerializedName("lat") val latitude: Float = 0f) {
 
-    val particulates: List<Particulate>? = ArrayList()
-
+    val particulates: List<Particulate> = ArrayList()
 
     override fun toString() = name
 }

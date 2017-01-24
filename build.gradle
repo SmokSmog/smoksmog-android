@@ -1,9 +1,58 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 apply from: 'jacoco.gradle'
 
 buildscript {
-    ext.kotlin_version = '1.0.4'
+
+    ext {
+        ignoreFailures = project.hasProperty('ignoreFailures') ? ignoreFailures : false
+
+        kotlin_version = '1.0.6'
+
+        commonVars = [ // TODO not sure if we need that
+                       javaVersion    : JavaVersion.VERSION_1_7,
+                       javaVersionName: 1.7
+        ]
+
+        androidVars = [
+                compileSdkVersion: 25,
+                buildToolsVersion: '25.0.2',
+                targetSdkVersion : 25,
+                minSdkVersion    : 16
+        ]
+
+        libVersions = [
+                android      : [
+                        appCompat: '25.1.0',
+                        gradle   : '2.2.3',
+                        wearable : '1.4.0'],
+                assertj      : '2.1.0',
+                calligraphy  : '2.2.0',
+                crashlytics  : '2.6.5',
+                fabric       : '1.22.0',
+                firebase     : [
+                        jobdispatcher: '0.5.2'
+                ],
+                google       : [
+                        dagger      : '2.8',
+                        gson        : '2.8.0',
+                        playServices: '10.0.1'],
+                jodaTime     : '2.9.7',
+                junit        : '4.12',
+                once         : '1.2.1',
+                playPublisher: '1.1.5',
+                rx           : [
+                        android  : '1.2.1',
+                        java     : '1.2.4',
+                        javaMath : '1.0.0',
+                        kotlin   : '0.60.0',
+                        lifecycle: '1.0'],
+                square       : [
+                        assertjAndroid: '1.1.1',
+                        spoon         : '1.7.0',
+                        okhttp        : '3.5.0',
+                        retrofit      : '2.1.0'],
+                versions     : '0.13.0'
+        ]
+    }
 
     repositories {
         jcenter()
@@ -11,52 +60,23 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
         maven { url 'https://jitpack.io' }
     }
+
     dependencies {
 
-        classpath 'com.android.tools.build:gradle:2.2.1'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
-        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
-        classpath 'com.squareup.spoon:spoon-runner:1.2.1'
-        classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.0.4'
-        classpath 'io.fabric.tools:gradle:1.20.1'
-        classpath 'com.github.triplet.gradle:play-publisher:1.1.5'
+        classpath "com.android.tools.build:gradle:${libVersions.android.gradle}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.squareup.sqldelight:gradle-plugin:0.4.4'
+        classpath "com.github.ben-manes:gradle-versions-plugin:${libVersions.versions}"
+        classpath "com.squareup.spoon:spoon-runner:${libVersions.square.spoon}"
+        classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
+        classpath "io.fabric.tools:gradle:${libVersions.fabric}"
+        classpath "com.github.triplet.gradle:play-publisher:${libVersions.playPublisher}"
         classpath 'com.google.gms:google-services:3.0.0'
     }
-
-    // Exclude the version that the android plugin depends on.
-    configurations.classpath.exclude group: 'com.android.tools.external.lombok'
-}
-
-ext {
-    ignoreFailures = project.hasProperty('ignoreFailures') ? ignoreFailures : false
-
-    libVersions = [
-            android : [
-                    appCompat: '25.0.1',
-                    wearable : '1.4.0'],
-            google  : [
-                    dagger      : '2.7',
-                    playServices: '9.6.1'],
-            jodaTime: '2.9.4',
-            junit   : '4.12',
-            once    : '1.2.1',
-            rx      : [
-                    java: '1.2.0'],
-            square  : [
-                    spoon   : '1.7.0',
-                    okhttp  : '3.3.1',
-                    retrofit: '2.1.0']
-    ]
 }
 
 allprojects {
     repositories {
         jcenter()
-        maven { url 'https://maven.fabric.io/public' }
         maven { url 'https://jitpack.io' }
     }
     apply plugin: 'com.github.ben-manes.versions'

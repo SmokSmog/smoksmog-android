@@ -1,23 +1,13 @@
 apply plugin: 'java'
-apply plugin: 'me.tatarka.retrolambda'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
-    compile 'io.reactivex:rxjava:1.1.1'
+    compile "io.reactivex:rxjava:${libVersions.rx.java}"
 
-    testCompile 'com.google.code.gson:gson:2.6.2'
-    testCompile 'junit:junit:4.12'
-}
-
-retrolambda {
-    jdk System.getenv("JAVA8_HOME")
-    oldJdk System.getenv("JAVA7_HOME")
-    //noinspection GroovyAssignabilityCheck
-    javaVersion JavaVersion.VERSION_1_7
-    jvmArgs '-noverify'
-    incremental true
+    testCompile "com.google.code.gson:gson:${libVersions.google.gson}"
+    testCompile "junit:junit:${libVersions.junit}"
 }
 
 /**

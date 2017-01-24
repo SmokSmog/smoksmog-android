@@ -54,7 +54,8 @@
 
         <activity
             android:name=".ui.screen.PickStationActivity"
-            android:label="@string/title_pick_station" />
+            android:label="@string/title_pick_station"
+            android:windowSoftInputMode="adjustResize"/>
 
         <receiver android:name=".ui.widget.StationWidget">
             <intent-filter>

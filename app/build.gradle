@@ -2,26 +2,26 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
-apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'spoon'
 apply plugin: 'com.github.triplet.play'
-apply plugin: 'com.squareup.sqldelight'
+
+kapt { generateStubs = true }
 
 android {
 
-    buildToolsVersion "24.0.3"
-    compileSdkVersion 24
+    buildToolsVersion androidVars.buildToolsVersion
+    compileSdkVersion androidVars.compileSdkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility commonVars.javaVersion
+        targetCompatibility commonVars.javaVersion
+        incremental = true
     }
 
     defaultConfig {
         applicationId "pl.malopolska.smoksmog"
-        minSdkVersion 16
-        targetSdkVersion 24
+        minSdkVersion androidVars.minSdkVersion
+        targetSdkVersion androidVars.targetSdkVersion
         versionCode appVersionCode as Integer
         versionName appVersionName
 
@@ -86,6 +86,7 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -94,25 +95,24 @@ android {
 //noinspection GroovyAssignabilityCheck
 configurations.all {
     resolutionStrategy {
-        force 'com.android.support:support-annotations:23.0.0'
+        force "com.android.support:support-annotations:${libVersions.android.appCompat}"
+        force 'com.google.code.findbugs:jsr305:3.0.1'
     }
 }
 
 dependencies {
 
     compile project(':android')
+    compile project(':domain') // future
 
-    apt "com.google.dagger:dagger-compiler:${libVersions.google.dagger}"
-
+    compile "com.google.dagger:dagger:${libVersions.google.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${libVersions.google.dagger}"
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
-        transitive = true;
-    }
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     compile "com.android.support:support-v4:${libVersions.android.appCompat}"
     compile "com.android.support:appcompat-v7:${libVersions.android.appCompat}"
-    compile "com.android.support:recyclerview-v7:${libVersions.android.appCompat}"
     compile "com.android.support:support-v13:${libVersions.android.appCompat}"
     compile "com.android.support:design:${libVersions.android.appCompat}"
     compile "com.android.support:support-annotations:${libVersions.android.appCompat}"
@@ -121,20 +121,19 @@ dependencies {
     compile "com.google.android.gms:play-services-location:${libVersions.google.playServices}"
     compile "com.google.firebase:firebase-core:${libVersions.google.playServices}"
     compile "com.google.firebase:firebase-messaging:${libVersions.google.playServices}"
-    compile 'com.firebase:firebase-jobdispatcher:0.5.2' // this might be sort of unstable
+    compile "com.firebase:firebase-jobdispatcher:${libVersions.firebase.jobdispatcher}"
 
-    compile 'uk.co.chrisjenx:calligraphy:2.1.0'
-    compile 'pl.charmas.android:android-reactive-location:0.9@aar'
-    compile "com.google.dagger:dagger:${libVersions.google.dagger}"
+    compile "uk.co.chrisjenx:calligraphy:${libVersions.calligraphy}"
+    compile 'pl.charmas.android:android-reactive-location:0.10@aar'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
-    compile "com.jonathanfinerty.once:once:${libVersions.once}"
-    compile 'com.squareup.sqlbrite:sqlbrite:0.7.0'
+    compile "com.jonathanfinerty.once:once:${libVersions.once}" // TODO remove ?
 
-    provided 'com.google.auto.value:auto-value:1.2'
-    apt 'com.google.auto.value:auto-value:1.2'
+    compile("com.crashlytics.sdk.android:crashlytics:${libVersions.crashlytics}@aar") {
+        transitive = true;
+    }
 
     testCompile "junit:junit:${libVersions.junit}"
-    testCompile 'org.assertj:assertj-core:1.7.1'
+    testCompile "org.assertj:assertj-core:${libVersions.assertj}"
 
     androidTestCompile "junit:junit:${libVersions.junit}"
     androidTestCompile 'org.mockito:mockito-core:2.0.31-beta'
@@ -142,8 +141,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     androidTestCompile "com.squareup.spoon:spoon-client:${libVersions.square.spoon}"
-    androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile "com.squareup.assertj:assertj-android:${libVersions.square.assertjAndroid}"
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
@@ -151,21 +150,11 @@ dependencies {
     }
 
     androidTestCompile 'org.apache.directory.studio:org.apache.commons.io:2.4'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-}
-
-retrolambda {
-    jdk System.getenv("JAVA8_HOME")
-    oldJdk System.getenv("JAVA7_HOME")
-    //noinspection GroovyAssignabilityCheck
-    javaVersion JavaVersion.VERSION_1_7
-    jvmArgs '-noverify'
-    incremental true
 }
 
 spoon {
     debug = true
-    ignoreFailures = true
+    ignoreFailures = rootProject.ext.ignoreFailures
 }
 
 play {
@@ -175,6 +164,7 @@ play {
 
 repositories {
     mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 // Need to be @ the bottom

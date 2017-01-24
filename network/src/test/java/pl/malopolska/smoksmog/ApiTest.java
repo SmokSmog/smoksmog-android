@@ -35,10 +35,10 @@ public class ApiTest {
         server = new MockWebServer();
         server.start();
 
-        final SmokSmog smokSmog = new SmokSmog(Locale.ENGLISH, server.url("/").toString());
+        final RestClient restClient = new RestClient.Builder(Locale.ENGLISH, server.url("/").toString()).build();
 
-        endpoint = smokSmog.getEndpoint();
-        api = smokSmog.getApi();
+        endpoint = restClient.getEndpoint();
+        api = restClient;
     }
 
     @Test
@@ -114,7 +114,7 @@ public class ApiTest {
         final List<Particulate> particulates = result.getParticulates();
 
         assertThat(result.getId()).isEqualTo(4);
-        assertThat(particulates.size()).isEqualTo(3);
+        assertThat(particulates.size()).isEqualTo(4);
     }
 
     @Test
@@ -139,7 +139,7 @@ public class ApiTest {
         final List<Particulate> particulates = result.getParticulates();
 
         assertThat(result.getId()).isEqualTo(4);
-        assertThat(particulates.size()).isEqualTo(3);
+        assertThat(particulates.size()).isEqualTo(4);
     }
 
     @Test
