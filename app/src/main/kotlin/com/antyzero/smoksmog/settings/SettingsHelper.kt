@@ -49,6 +49,10 @@ class SettingsHelper(private val context: Context, permissionHelper: PermissionH
         percentMode = Percent.find(context, string!!)
     }
 
+    // This should be removed as soon as most of our users will update >= 197000
+    @Deprecated(
+            message = "This is old station list container, new one comes from domain module as part of SmokSmog class",
+            level = DeprecationLevel.WARNING)
     var stationIdList: MutableList<Long>
         get() = stationIds
         set(longList) {

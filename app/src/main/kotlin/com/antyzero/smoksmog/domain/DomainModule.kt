@@ -20,6 +20,7 @@ import javax.inject.Singleton
 @Module
 class DomainModule {
 
+    @Suppress("DEPRECATION")
     @Provides
     @Singleton
     internal fun provideSmokSmog(storage: PersistentStorage, locationProvider: LocationProvider, api: Api, settingsHelper: SettingsHelper): SmokSmog {

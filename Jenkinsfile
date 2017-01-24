@@ -1,5 +1,7 @@
 node {
 
+    slackSend channel: 'quality', color: '#0080FF', message: 'Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)', teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
+
     stage('Prepare'){
         checkout scm
     }
