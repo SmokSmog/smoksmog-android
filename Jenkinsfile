@@ -6,13 +6,19 @@ node {
         checkout scm
     }
 
-    stage('Build'){
-        sh '''
-        ./gradlew uninstallAll || true
-        ./gradlew assemble -PignoreFailures=true
-        wake-devices
-        ./gradlew check connectedCheck -PignoreFailures=true
-        '''
+    try {
+        stage('Build'){
+            sh '''
+            ./gradlew uninstallAll || true
+            ./gradlew assemble -PignoreFailures=true
+            wake-devices
+            ./gradlew check connectedCheck -PignoreFailures=true
+            '''
+
+            slackSend channel: 'quality', color: '#80FF00', message: "Success Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
+        }
+    } catch (error) {
+        slackSend channel: 'quality', color: '#FF0000', message: "Failed Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
     }
 
     stage('Artifacts'){
