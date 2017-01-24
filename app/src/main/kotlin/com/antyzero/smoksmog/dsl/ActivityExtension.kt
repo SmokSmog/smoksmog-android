@@ -1,4 +1,4 @@
-package com.antyzero.smoksmog.ui
+package com.antyzero.smoksmog.dsl
 
 import android.app.Activity
 import android.content.res.Configuration

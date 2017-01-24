@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.antyzero.smoksmog.R
+import com.antyzero.smoksmog.dsl.fullscreen
 import com.antyzero.smoksmog.dsl.getCompatColor
 import com.antyzero.smoksmog.dsl.navBarHeight
+import com.antyzero.smoksmog.dsl.statusBarHeight
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
@@ -32,6 +34,7 @@ abstract class BaseDragonActivity : RxAppCompatActivity() {
         container = findViewById(R.id.container) as ViewGroup
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && addExtraTopPadding()) {
+            fullscreen()
             container.setPadding(0, statusBarHeight(), 0, 0)
         }
 

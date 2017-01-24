@@ -13,10 +13,11 @@ import android.view.Menu
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.ui.BaseDragonActivity
-import com.antyzero.smoksmog.ui.fullscreen
+import com.antyzero.smoksmog.dsl.fullscreen
 import kotlinx.android.synthetic.main.activity_pick_station.*
 import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
+import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -29,7 +30,7 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
     private val allStations: MutableList<Station> = mutableListOf()
 
     private lateinit var adapter: SimpleStationAdapter
-    private lateinit var skipIds: IntArray
+    private lateinit var skipIds: LongArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,7 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
 
         setSupportActionBar(toolbar)
 
-        skipIds = intent?.extras?.getIntArray(EXTRA_SKIP_IDS) ?: IntArray(0)
+        skipIds = intent?.extras?.getLongArray(EXTRA_SKIP_IDS) ?: LongArray(0)
         adapter = SimpleStationAdapter(listStation, this)
 
         recyclerView.setHasFixedSize(true)
@@ -55,7 +56,9 @@ class PickStationActivity : BaseDragonActivity(), OnStationClick, SearchView.OnQ
         }
 
         restClient.stations()
-                .map { it.filter { skipIds.contains(it.id.toInt()).not() } }
+                .flatMap { Observable.from(it) }
+                .filter { skipIds.contains(it.id).not() }
+                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     allStations.addAll(it.sortedBy { it.name })
