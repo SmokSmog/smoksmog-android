@@ -1,5 +1,9 @@
+#!groovy​
 node {
 
+    def ignoreFailures = (env.BRANCH_NAME != 'master')
+
+    // Build start
     slackSend channel: 'quality', color: '#0080FF', message: "Started Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
 
     stage('Prepare'){
@@ -8,16 +12,17 @@ node {
 
     try {
         stage('Build'){
-            sh '''
-            ./gradlew uninstallAll || true
-            ./gradlew assemble -PignoreFailures=true
-            wake-devices
-            ./gradlew check connectedCheck -PignoreFailures=true
-            '''
 
+            sh "./gradlew uninstallAll || true"
+            sh "./gradlew assemble -PignoreFailures=" + ignoreFailures
+            sh "wake-devices"
+            sh "./gradlew check connectedCheck -PignoreFailures=" + ignoreFailures
+
+            // Build successful
             slackSend channel: 'quality', color: '#80FF00', message: "Success Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
         }
-    } catch (error) {
+    } catch (ignored) {
+        // Build failed
         slackSend channel: 'quality', color: '#FF0000', message: "Failed Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
     }
 
