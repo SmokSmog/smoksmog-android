@@ -1,3 +1,4 @@
+#!groovy​
 node {
 
     def ignoreFailures = (env.BRANCH_NAME != 'master')
