@@ -5,29 +5,28 @@ import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 
 /**
- * Error reporting via Snackbar
+ * Error reporting via SnackBar
  */
 class SnackBarErrorReporter(private val activity: Activity) : ErrorReporter {
 
     override fun report(message: String) {
-        processSnackbar(Snackbar.make(activity.findViewById(android.R.id.content), message, DURATION))
+        processSnackBar(Snackbar.make(activity.findViewById(android.R.id.content), message, DURATION))
     }
 
     override fun report(@StringRes stringId: Int) {
-        processSnackbar(Snackbar.make(activity.findViewById(android.R.id.content), stringId, DURATION))
+        processSnackBar(Snackbar.make(activity.findViewById(android.R.id.content), stringId, DURATION))
     }
 
     override fun report(@StringRes stringId: Int, vararg objects: Any) {
         val message = activity.resources.getString(stringId, *objects)
-        processSnackbar(Snackbar.make(activity.findViewById(android.R.id.content), message, DURATION))
+        processSnackBar(Snackbar.make(activity.findViewById(android.R.id.content), message, DURATION))
     }
 
-    private fun processSnackbar(snackbar: Snackbar) {
-        snackbar.show()
+    private fun processSnackBar(snackBar: Snackbar) {
+        snackBar.show()
     }
 
     companion object {
-
         private val DURATION = Snackbar.LENGTH_LONG
     }
 }

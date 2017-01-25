@@ -2,6 +2,7 @@ package com.antyzero.smoksmog.dsl
 
 import android.app.Activity
 import android.content.res.Configuration
+import android.support.annotation.IdRes
 import android.view.View
 
 
@@ -19,3 +20,6 @@ fun Activity.statusBarHeight(): Int {
     }
     return 0
 }
+
+@Suppress("UNCHECKED_CAST")
+fun <T> Activity.findView(@IdRes id: Int): T = this.findViewById(id) as T
