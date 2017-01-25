@@ -1,59 +1,45 @@
 package com.antyzero.smoksmog.ui.screen.settings
 
-import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.app.Activity
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.preference.CheckBoxPreference
-import android.preference.Preference
-import android.support.annotation.StringRes
 import com.antyzero.smoksmog.R
-import com.antyzero.smoksmog.SmokSmogApplication
+import com.antyzero.smoksmog.SmokSmog
+import com.antyzero.smoksmog.dsl.activityComponent
+import com.antyzero.smoksmog.dsl.findPreference
 import com.antyzero.smoksmog.error.ErrorReporter
-import com.antyzero.smoksmog.settings.SettingsHelper
+import com.antyzero.smoksmog.permission.PermissionHelper
+import com.antyzero.smoksmog.storage.model.Item
 import com.antyzero.smoksmog.ui.BasePreferenceFragment
-import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.FragmentModule
-import com.crashlytics.android.answers.Answers
-import pl.malopolska.smoksmog.RestClient
 import smoksmog.logger.Logger
 import javax.inject.Inject
 
-/**
-
- */
 class GeneralSettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    //<editor-fold desc="Dagger">
-    @Inject
-    lateinit var restClient: RestClient
-    @Inject
-    lateinit var errorReporter: ErrorReporter
-    @Inject
-    lateinit var logger: Logger
-    @Inject
-    lateinit var answers: Answers
-    @Inject
-    lateinit var settingsHelper: SettingsHelper
-    //</editor-fold>
+    @Inject lateinit var smokSmog: SmokSmog
+    @Inject lateinit var errorReporter: ErrorReporter
+    @Inject lateinit var logger: Logger
+    @Inject lateinit var permissionHelper: PermissionHelper
 
-    private var keyStationClosest: String? = null
-    private var preferenceStationCloset: CheckBoxPreference? = null
+    lateinit private var keyStationClosest: String
+    lateinit private var preferenceStationCloset: CheckBoxPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addPreferencesFromResource(R.xml.settings_general)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
         keyStationClosest = getString(R.string.pref_key_station_closest)
-        preferenceStationCloset = findPreference(keyStationClosest) as CheckBoxPreference
+        preferenceStationCloset = findPreference<CheckBoxPreference>(keyStationClosest) as CheckBoxPreference
     }
 
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
-        SmokSmogApplication[activity].appComponent
-                .plus(ActivityModule(activity))
+        activityComponent(activity)
                 .plus(FragmentModule(this))
                 .inject(this)
     }
@@ -63,45 +49,46 @@ class GeneralSettingsFragment : BasePreferenceFragment(), SharedPreferences.OnSh
         super.onDestroy()
     }
 
-    private fun findPreference(@StringRes stringResId: Int): Preference {
-        return findPreference(getString(stringResId))
-    }
-
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
 
-        // Check permission - preference if changed
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val accessCoarseLocation = Manifest.permission.ACCESS_COARSE_LOCATION
             val isClosestStationKey = keyStationClosest == key
-            val hasLocationPermission = activity.checkSelfPermission(accessCoarseLocation) != PackageManager.PERMISSION_GRANTED
-            if (isClosestStationKey && hasLocationPermission) {
-                requestPermissions(arrayOf(accessCoarseLocation), REQUEST_CODE_ASK_PERMISSION)
+            val hasLocationPermission = permissionHelper.isGrantedAccessCoarseLocation
+            if (isClosestStationKey && !hasLocationPermission) {
+                requestPermissions(arrayOf(ACCESS_COARSE_LOCATION), REQUEST_CODE_ASK_PERMISSION)
+            }
+        }
+
+        // We assume that uses will grant permission, in case not we should revert settings
+        when (key) {
+            keyStationClosest -> {
+                if (sharedPreferences.getBoolean(key, false)) {
+                    smokSmog.storage.add(Item.Nearest())
+                } else {
+                    smokSmog.storage.removeById(Item.Nearest().id)
+                }
             }
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
         when (requestCode) {
             REQUEST_CODE_ASK_PERMISSION ->
+
                 // if not granted keep closest station not visible
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    val sharedPreferences = preferenceManager.sharedPreferences
-                    sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-                    preferenceStationCloset!!.isChecked = false
-                    sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-                    // TODO localize
+                    preferenceStationCloset.isChecked = false
+                    smokSmog.storage.removeById(Item.Nearest().id)
                     errorReporter.report("Location permission not granted")
                 }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
+        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     companion object {
 
         private val REQUEST_CODE_ASK_PERMISSION = 123
-
-        fun create(): GeneralSettingsFragment {
-            return GeneralSettingsFragment()
-        }
     }
 }

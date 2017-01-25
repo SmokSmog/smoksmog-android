@@ -4,6 +4,7 @@
     <string name="pref_key_station_selection_mode" translatable="false">stationDefault</string>
     <string name="pref_key_station_selected" translatable="false">stationSelected</string>
     <string name="pref_key_station_closest" translatable="false">stationClosest</string>
+    <string name="pref_key_dragon_visible" translatable="false">dragonShow</string>
 
     <!-- Values -->
     <string name="pref_station_default_value_last" translatable="false">last</string>

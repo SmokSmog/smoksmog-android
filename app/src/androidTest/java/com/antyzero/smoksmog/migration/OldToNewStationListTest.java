@@ -30,8 +30,7 @@ public class OldToNewStationListTest {
         // Given
         List<Long> longList = new ArrayList<>(Arrays.asList(4L, 3L, 2L));
         Context context = InstrumentationRegistry.getTargetContext();
-        PermissionHelper permissionHelper = new PermissionHelper(context);
-        SettingsHelper settingsHelper = new SettingsHelper(context, permissionHelper);
+        SettingsHelper settingsHelper = new SettingsHelper(context);
         settingsHelper.getPreferences().edit().clear().commit();
         settingsHelper.setStationIdList(longList);
         JsonFileStorage jsonFileStorage = new JsonFileStorage();

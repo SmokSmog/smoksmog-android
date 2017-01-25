@@ -3,6 +3,7 @@
 
     <!-- Color palette -->
 
+    <color name="black">#000</color>
     <color name="brightGray">#414152</color>
     <color name="scarpaFlow">#515965</color>
     <color name="comet">#5A6273</color>

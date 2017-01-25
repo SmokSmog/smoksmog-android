@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import com.antyzero.smoksmog.R
-import com.antyzero.smoksmog.permission.PermissionHelper
 import java.util.*
 
 
@@ -15,38 +14,31 @@ import java.util.*
  *
  * This class should be responsible for data manipulation of every user-changeable data
  */
-class SettingsHelper(private val context: Context, permissionHelper: PermissionHelper) : SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
 
     val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
     private val stationIds: MutableList<Long>
-
-    val keyStationClosest: String = context.getString(R.string.pref_key_station_closest)
     private val keyPercent: String = context.getString(R.string.pref_key_percent)
+    private val keyDragonHead: String = context.getString(R.string.pref_key_dragon_visible)
 
     var percentMode: Percent? = null
         private set
-
-    private var isClosesStationVisible: Boolean
-        get() = preferences.getBoolean(context.getString(R.string.pref_key_station_closest), false)
-        set(value) = preferences.edit().putBoolean(keyStationClosest, value).apply()
 
     init {
         PreferenceManager.setDefaultValues(context, R.xml.settings_general, false)
         preferences.registerOnSharedPreferenceChangeListener(this)
         stationIds = getList(preferences, KEY_STATION_ID_LIST)
 
-        if (!permissionHelper.isGrantedLocationCorsare) {
-            isClosesStationVisible = false
-        }
-
         updatePercentMode()
     }
+
+    val dragonVisible: Boolean
+        get() = preferences.getBoolean(keyDragonHead, true)
 
     private fun updatePercentMode(sharedPreferences: SharedPreferences = preferences) {
         val defValue = context.getString(R.string.pref_percent_value_default)
         val string = sharedPreferences.getString(keyPercent, defValue)
-        percentMode = Percent.find(context, string!!)
+        percentMode = Percent.find(context, string)
     }
 
     // This should be removed as soon as most of our users will update >= 197000
@@ -58,9 +50,6 @@ class SettingsHelper(private val context: Context, permissionHelper: PermissionH
         set(longList) {
             val longsTemp = ArrayList(longList)
             stationIds.clear()
-            if (isClosesStationVisible) {
-                stationIds.add(0L)
-            }
             stationIds.addAll(longsTemp)
             preferences.edit().putString(KEY_STATION_ID_LIST, TextUtils.join(SPLIT_CHAR, longList)).apply()
         }
@@ -75,8 +64,8 @@ class SettingsHelper(private val context: Context, permissionHelper: PermissionH
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == keyPercent) {
-            updatePercentMode(sharedPreferences)
+        when (key) {
+            keyPercent -> updatePercentMode(sharedPreferences)
         }
     }
 

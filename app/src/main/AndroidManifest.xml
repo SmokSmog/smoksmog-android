@@ -37,7 +37,7 @@
             android:name=".ui.screen.settings.SettingsActivity"
             android:label="@string/title_settings"
             android:parentActivityName=".ui.screen.start.StartActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.screen.start.StartActivity" />

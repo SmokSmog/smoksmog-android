@@ -13,7 +13,6 @@ class SettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-
         setSupportActionBar(toolbar)
 
         if (supportActionBar != null) {
@@ -22,15 +21,14 @@ class SettingsActivity : BaseActivity() {
         }
 
         fragmentManager.beginTransaction()
-                .replace(R.id.contentFragment, GeneralSettingsFragment.create())
+                .replace(R.id.contentFragment, GeneralSettingsFragment())
                 .commit()
     }
 
+    override fun addCalligraphy() = false
+
     companion object {
 
-        /**
-         * @param context for starting
-         */
         fun start(context: Context) {
             context.startActivity(intent(context))
         }

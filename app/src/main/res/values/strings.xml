@@ -42,6 +42,9 @@
     <string name="pref_station_closest_title" translatable="false">@string/station_closest</string>
     <string name="pref_station_closest_summary">Show tab with station closest to your initialLocation</string>
 
+    <string name="pref_dragon_visible_title">Dragon head visible</string>
+    <string name="pref_dragon_visible_summary">Hide dragon head visible on some screens</string>
+
     <string name="pref_percent_title">Percent value</string>
     <string name="pref_percent_summary">Which period should be referred</string>
     <string name="pref_percent_entry_hour">1 hour</string>

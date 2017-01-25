@@ -15,4 +15,10 @@
         android:summary="@string/pref_percent_summary"
         android:title="@string/pref_percent_title" />
 
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/pref_key_dragon_visible"
+        android:summary="@string/pref_dragon_visible_summary"
+        android:title="@string/pref_dragon_visible_title" />
+
 </PreferenceScreen>
