@@ -1,6 +1,6 @@
 node {
 
-    def isMaster = ${env.BRANCH_NAME}.asBoolean() == 'master'
+    def ignoreFailures = (${env.BRANCH_NAME} != 'master')
 
     // Build start
     slackSend channel: 'quality', color: '#0080FF', message: "Started Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
@@ -13,9 +13,9 @@ node {
         stage('Build'){
 
             sh "./gradlew uninstallAll || true"
-            sh "./gradlew assemble -PignoreFailures=${!isMaster}"
+            sh "./gradlew assemble -PignoreFailures=" + ignoreFailures
             sh "wake-devices"
-            sh "./gradlew check connectedCheck -PignoreFailures=${!isMaster}"
+            sh "./gradlew check connectedCheck -PignoreFailures=" + ignoreFailures
 
             // Build successful
             slackSend channel: 'quality', color: '#80FF00', message: "Success Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
