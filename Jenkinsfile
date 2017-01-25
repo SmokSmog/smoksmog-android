@@ -11,12 +11,11 @@ node {
 
     try {
         stage('Build'){
-            sh '''
-            ./gradlew uninstallAll || true
-            ./gradlew assemble -PignoreFailures=${!isMaster}
-            wake-devices
-            ./gradlew check connectedCheck -PignoreFailures=${!isMaster}
-            '''
+
+            sh "./gradlew uninstallAll || true"
+            sh "./gradlew assemble -PignoreFailures=${!isMaster}"
+            sh "wake-devices"
+            sh "./gradlew check connectedCheck -PignoreFailures=${!isMaster}"
 
             // Build successful
             slackSend channel: 'quality', color: '#80FF00', message: "Success Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
