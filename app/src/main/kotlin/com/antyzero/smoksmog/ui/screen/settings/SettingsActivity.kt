@@ -22,7 +22,7 @@ class SettingsActivity : BaseActivity() {
         }
 
         fragmentManager.beginTransaction()
-                .replace(R.id.contentFragment, GeneralSettingsFragment.create())
+                .replace(R.id.contentFragment, GeneralSettingsFragment())
                 .commit()
     }
 

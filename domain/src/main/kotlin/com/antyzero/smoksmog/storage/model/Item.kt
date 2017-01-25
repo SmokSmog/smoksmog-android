@@ -12,7 +12,7 @@ sealed class Item(val id: Long, val modules: MutableSet<in Module>) {
     /**
      * Single, if present this represent nearest station
      */
-    class Nearest(modules: MutableSet<in Module> = mutableSetOf()) : Item(0, modules) {
+    class Nearest(modules: MutableSet<in Module> = mutableSetOf()) : Item(ID_NEAREST, modules) {
 
         fun copy(modules: MutableSet<in Module> = this.modules): Nearest = Nearest(modules)
     }
@@ -37,6 +37,8 @@ sealed class Item(val id: Long, val modules: MutableSet<in Module>) {
     override fun hashCode(): Int = id.hashCode()
 
     companion object {
+
+        private val ID_NEAREST = 0L
 
         fun deserializer(): JsonDeserializer<Item> = JsonDeserializer { json, typeOfT, context ->
 
