@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import com.antyzero.smoksmog.R
-import com.antyzero.smoksmog.permission.PermissionHelper
 import java.util.*
 
 
@@ -20,6 +19,7 @@ class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedP
     val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val stationIds: MutableList<Long>
     private val keyPercent: String = context.getString(R.string.pref_key_percent)
+    private val keyDragonHead: String = context.getString(R.string.pref_key_dragon_visible)
 
     var percentMode: Percent? = null
         private set
@@ -31,6 +31,9 @@ class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedP
 
         updatePercentMode()
     }
+
+    val dragonVisible: Boolean
+        get() = preferences.getBoolean(keyDragonHead, true)
 
     private fun updatePercentMode(sharedPreferences: SharedPreferences = preferences) {
         val defValue = context.getString(R.string.pref_percent_value_default)
@@ -61,8 +64,8 @@ class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedP
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == keyPercent) {
-            updatePercentMode(sharedPreferences)
+        when (key) {
+            keyPercent -> updatePercentMode(sharedPreferences)
         }
     }
 

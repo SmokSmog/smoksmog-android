@@ -7,6 +7,11 @@ import android.os.Build
 import android.support.v4.content.ContextCompat
 
 
+/**
+ * Makes permission checks easier
+ *
+ * Provides scenarios for post and pre Marshmallow OS versions
+ */
 class PermissionHelper(private val context: Context) {
 
     val isGrantedAccessCoarseLocation: Boolean

@@ -5,7 +5,8 @@ import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -14,6 +15,7 @@ import com.antyzero.smoksmog.dsl.fullscreen
 import com.antyzero.smoksmog.dsl.getCompatColor
 import com.antyzero.smoksmog.dsl.navBarHeight
 import com.antyzero.smoksmog.dsl.statusBarHeight
+import com.antyzero.smoksmog.settings.SettingsHelper
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
@@ -44,11 +46,22 @@ abstract class BaseDragonActivity : RxAppCompatActivity() {
             }
         }
 
-        setupDragon()
+        if (SettingsHelper(this).dragonVisible) {
+            setupDragon()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        imageViewDragon.visibility = if (SettingsHelper(this).dragonVisible) {
+            VISIBLE
+        } else {
+            GONE
+        }
     }
 
     override fun setContentView(layoutResID: Int) {
-        LayoutInflater.from(this).inflate(layoutResID,container,true)
+        LayoutInflater.from(this).inflate(layoutResID, container, true)
     }
 
     protected fun addExtraTopPadding(): Boolean = true
@@ -66,6 +79,6 @@ abstract class BaseDragonActivity : RxAppCompatActivity() {
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
         imageViewDragon.layoutParams = layoutParams
-        imageViewDragon.visibility = View.VISIBLE
+        imageViewDragon.visibility = VISIBLE
     }
 }
