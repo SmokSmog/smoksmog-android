@@ -1,14 +1,14 @@
 package com.antyzero.smoksmog.ui.dialog
 
 import android.os.Bundle
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.View
+import android.widget.TextView
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.dsl.compatFromHtml
+import com.antyzero.smoksmog.dsl.tag
 import com.antyzero.smoksmog.user.User
-import kotlinx.android.synthetic.main.dialog_info_about.*
 import smoksmog.logger.Logger
 import javax.inject.Inject
 
@@ -16,6 +16,9 @@ class AboutDialog : InfoDialog() {
 
     @Inject lateinit var logger: Logger
     @Inject lateinit var user: User
+    @Inject lateinit var textView: TextView
+    @Inject lateinit var textViewVersionName: TextView
+    @Inject lateinit var textViewUserId: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,25 +32,24 @@ class AboutDialog : InfoDialog() {
     override fun initView(view: View) {
         super.initView(view)
 
+        with(view) {
+            textView = findViewById(R.id.textView) as TextView
+            textViewUserId = findViewById(R.id.textViewUserId) as TextView
+            textViewVersionName = findViewById(R.id.textViewVersionName) as TextView
+        }
+
         textView.compatFromHtml(R.string.about)
         textView.movementMethod = LinkMovementMethod.getInstance()
 
         try {
             val packageInfo = activity.packageManager.getPackageInfo(activity.packageName, 0)
-            textViewVersionName!!.text = getString(R.string.version_name_and_code,
+            textViewVersionName.text = getString(R.string.version_name_and_code,
                     packageInfo.versionName,
                     packageInfo.versionCode)
         } catch (e: Exception) {
-            logger.i(TAG, "Problem with obtaining version", e)
+            logger.i(tag(), "Problem with obtaining version", e)
         }
 
         textViewUserId.text = user.identifier
     }
-
-    companion object {
-
-        private val TAG = AboutDialog::class.java.simpleName
-    }
-
-
 }
