@@ -3,7 +3,6 @@ package com.antyzero.smoksmog.ui
 import android.app.Activity
 import android.content.Context
 import android.os.Build
-import android.view.ViewGroup
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.dsl.getCompatColor
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
@@ -12,8 +11,14 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 abstract class BaseActivity : RxAppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
+        super.attachBaseContext(if (addCalligraphy()) {
+            CalligraphyContextWrapper.wrap(newBase)
+        } else {
+            newBase
+        })
     }
+
+    open protected fun addCalligraphy() = true
 
     companion object {
 
