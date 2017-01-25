@@ -1,37 +1,20 @@
 package com.antyzero.smoksmog.settings;
 
-import android.test.ApplicationTestCase;
-import android.test.suitebuilder.annotation.SmallTest;
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 
-import com.antyzero.smoksmog.SmokSmogApplication;
-import com.antyzero.smoksmog.permission.PermissionHelper;
+import org.junit.Before;
+import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+@RunWith(AndroidJUnit4.class)
+public class SettingsHelperTest {
 
-import static org.assertj.core.api.Assertions.assertThat;
+    private SettingsHelper settingsHelper;
 
-@SmallTest
-public class SettingsHelperTest extends ApplicationTestCase<SmokSmogApplication> {
-
-    public SettingsHelperTest() {
-        super(SmokSmogApplication.class);
-    }
-
-    public void testGetStationIdList() throws Exception {
-
-        // Given
-        createApplication();
-        PermissionHelper permissionHelper = new PermissionHelper(getApplication());
-        SettingsHelper settingsHelper = new SettingsHelper(getApplication(), permissionHelper);
-        List<Long> longList = new ArrayList<>(Arrays.asList(4L, 3L, 2L));
-        settingsHelper.setStationIdList(longList);
-
-        // When
-        List<Long> result = settingsHelper.getStationIdList();
-
-        // Then
-        assertThat(result).containsSequence(4L, 3L, 2L);
+    @Before
+    public void setUp() throws Exception {
+        Context context = InstrumentationRegistry.getTargetContext();
+        settingsHelper = new SettingsHelper(context);
     }
 }
