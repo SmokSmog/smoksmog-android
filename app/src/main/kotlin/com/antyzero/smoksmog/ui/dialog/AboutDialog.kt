@@ -16,9 +16,10 @@ class AboutDialog : InfoDialog() {
 
     @Inject lateinit var logger: Logger
     @Inject lateinit var user: User
-    @Inject lateinit var textView: TextView
-    @Inject lateinit var textViewVersionName: TextView
-    @Inject lateinit var textViewUserId: TextView
+    
+    lateinit var textView: TextView
+    lateinit var textViewVersionName: TextView
+    lateinit var textViewUserId: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
