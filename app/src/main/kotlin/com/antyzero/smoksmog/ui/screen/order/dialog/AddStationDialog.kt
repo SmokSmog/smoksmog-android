@@ -12,7 +12,7 @@ import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.SupportFragmentModule
 import kotlinx.android.synthetic.main.view_recyclerview.*
-import pl.malopolska.smoksmog.RestClient
+import pl.malopolska.smoksmog.Api
 import pl.malopolska.smoksmog.model.Station
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -27,7 +27,7 @@ class AddStationDialog : DialogFragment(), StationDialogAdapter.StationListener 
     private val stationList: MutableList<Station> = mutableListOf()
     private val stationIdsNotToShow: MutableList<Long> = mutableListOf()
 
-    @Inject lateinit var restClient: RestClient
+    @Inject lateinit var api: Api
     @Inject lateinit var logger: Logger
 
     lateinit private var stationListener: StationDialogAdapter.StationListener
@@ -61,7 +61,7 @@ class AddStationDialog : DialogFragment(), StationDialogAdapter.StationListener 
     override fun onStart() {
         super.onStart()
         stationList.clear()
-        restClient.stations()
+        api.stations()
                 .flatMap(Func1<List<Station>, Observable<Station>> { null })
                 .filter { station -> !stationIdsNotToShow.contains(station.id) }
                 .subscribeOn(Schedulers.newThread())

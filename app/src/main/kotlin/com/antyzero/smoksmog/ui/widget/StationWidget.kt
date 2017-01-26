@@ -6,25 +6,15 @@ import android.content.Context
 import android.widget.RemoteViews
 import com.antyzero.smoksmog.BuildConfig
 import com.antyzero.smoksmog.R
-import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.dsl.setBackgroundColor
 import org.joda.time.DateTime
-import pl.malopolska.smoksmog.RestClient
 import pl.malopolska.smoksmog.model.Station
 import smoksmog.air.AirQuality
 import smoksmog.air.AirQualityIndex
-import smoksmog.logger.Logger
-import javax.inject.Inject
 
 class StationWidget : AppWidgetProvider() {
 
-    @Inject lateinit var restClient: RestClient
-    @Inject lateinit var logger: Logger
-
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-
-        SmokSmogApplication.get(context).appComponent.inject(this)
-
         appWidgetIds.forEach {
             StationWidgetService.update(context, it)
         }

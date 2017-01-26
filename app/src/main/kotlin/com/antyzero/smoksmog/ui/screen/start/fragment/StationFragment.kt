@@ -18,7 +18,7 @@ import com.antyzero.smoksmog.ui.screen.start.StationAdapter
 import com.antyzero.smoksmog.ui.screen.start.TitleProvider
 import com.trello.rxlifecycle.android.FragmentEvent
 import kotlinx.android.synthetic.main.fragment_station.*
-import pl.malopolska.smoksmog.RestClient
+import pl.malopolska.smoksmog.Api
 import pl.malopolska.smoksmog.model.Station
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -30,17 +30,12 @@ import javax.inject.Inject
 abstract class StationFragment : BaseFragment(), TitleProvider {
 
     @Inject lateinit var rxBus: RxBus
-    @Inject lateinit protected var restClient: RestClient
+    @Inject lateinit protected var api: Api
     @Inject lateinit protected var logger: Logger
     @Inject lateinit protected var errorReporter: ErrorReporter
-    //@Inject lateinit var answers: Answers
 
     private val stationContainer = ArrayList<Station>()
-    /**
-     * Access fragment station
 
-     * @return Station instance or null if station is not yet loaded
-     */
     var station: Station? = null
         private set
 
@@ -76,13 +71,10 @@ abstract class StationFragment : BaseFragment(), TitleProvider {
         showLoading()
     }
 
-    /**
-     * Implement for data load
-     */
     protected abstract fun loadData()
 
     override val title: String
-        get() = if (station == null) "" else station!!.name
+        get() = station?.name ?: ""
 
     override val subtitle: String
         get() = if (stationId == NEAREST_STATION_ID.toLong()) getString(R.string.station_closest) else ""

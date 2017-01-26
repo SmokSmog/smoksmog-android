@@ -16,7 +16,7 @@ import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import kotlinx.android.synthetic.main.activity_history.*
-import pl.malopolska.smoksmog.RestClient
+import pl.malopolska.smoksmog.Api
 import pl.malopolska.smoksmog.model.Station
 import rx.android.schedulers.AndroidSchedulers
 import smoksmog.logger.Logger
@@ -27,7 +27,7 @@ import javax.inject.Inject
  */
 class HistoryActivity : BaseDragonActivity() {
 
-    @Inject lateinit var restClient: RestClient
+    @Inject lateinit var api: Api
     @Inject lateinit var errorReporter: ErrorReporter
     @Inject lateinit var logger: Logger
 
@@ -43,7 +43,7 @@ class HistoryActivity : BaseDragonActivity() {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         }
 
-        restClient.stationHistory(stationId)
+        api.stationHistory(stationId)
                 .compose(bindToLifecycle<Any>())
                 .observeOn(AndroidSchedulers.mainThread())
                 .cast(Station::class.java)

@@ -26,7 +26,7 @@ class NetworkStationFragment : StationFragment() {
     }
 
     override fun loadData() {
-        restClient.station(stationId)
+        api.station(stationId)
                 .doOnSubscribe { showLoading() }
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

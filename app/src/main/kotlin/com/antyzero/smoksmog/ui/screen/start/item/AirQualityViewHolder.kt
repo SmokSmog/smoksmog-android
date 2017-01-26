@@ -10,7 +10,7 @@ import com.antyzero.smoksmog.dsl.findViewById
 import com.antyzero.smoksmog.dsl.getCompatColor
 import com.antyzero.smoksmog.dsl.tag
 import com.antyzero.smoksmog.eventbus.RxBus
-import com.antyzero.smoksmog.time.CountdownProvider
+import com.antyzero.smoksmog.i18n.time.CountdownProvider
 import com.antyzero.smoksmog.ui.dialog.AirQualityDialog
 import com.antyzero.smoksmog.ui.dialog.InfoDialog
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity

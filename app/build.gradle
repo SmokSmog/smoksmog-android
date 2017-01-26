@@ -89,6 +89,7 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
     }
 }
 
@@ -133,7 +134,10 @@ dependencies {
     }
 
     testCompile "junit:junit:${libVersions.junit}"
+    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "org.assertj:assertj-core:${libVersions.assertj}"
+    testCompile "com.nhaarman:mockito-kotlin:1.1.0"
 
     androidTestCompile "junit:junit:${libVersions.junit}"
     androidTestCompile 'org.mockito:mockito-core:2.0.31-beta'
