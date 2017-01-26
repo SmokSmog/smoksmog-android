@@ -4,7 +4,6 @@ import com.antyzero.smoksmog.google.GoogleModule
 import com.antyzero.smoksmog.ui.screen.about.AboutActivity
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity
 import com.antyzero.smoksmog.ui.screen.order.OrderActivity
-import com.antyzero.smoksmog.ui.screen.order.dialog.AddStationDialogComponent
 import com.antyzero.smoksmog.ui.screen.start.StartActivity
 import com.antyzero.smoksmog.ui.screen.start.fragment.LocationStationFragmentComponent
 import com.antyzero.smoksmog.ui.widget.StationWidgetConfigureActivity
@@ -14,8 +13,6 @@ import dagger.Subcomponent
 interface ActivityComponent {
 
     operator fun plus(fragmentModule: FragmentModule): FragmentComponent
-
-    operator fun plus(fragmentModule: SupportFragmentModule): AddStationDialogComponent
 
     fun plus(fragmentModule: FragmentModule, googleModule: GoogleModule): LocationStationFragmentComponent
 

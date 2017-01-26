@@ -23,7 +23,6 @@ import com.antyzero.smoksmog.storage.model.Item
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.PickStationActivity
-import com.antyzero.smoksmog.ui.screen.order.dialog.StationDialogAdapter
 import kotlinx.android.synthetic.main.activity_order.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -31,7 +30,7 @@ import rx.schedulers.Schedulers
 import smoksmog.logger.Logger
 import javax.inject.Inject
 
-class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAdapter.StationListener {
+class OrderActivity : BaseDragonActivity(), OnStartDragListener {
 
     @Inject lateinit var logger: Logger
     @Inject lateinit var errorReporter: ErrorReporter
@@ -129,7 +128,7 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
         itemTouchHelper.startDrag(viewHolder)
     }
 
-    override fun onStation(stationId: Long) {
+    private fun onStation(stationId: Long) {
         smokSmog.api.station(stationId)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
