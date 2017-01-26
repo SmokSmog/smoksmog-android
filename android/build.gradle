@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-    compile project(':common')
     compile project(':network')
 
     // UI oriented

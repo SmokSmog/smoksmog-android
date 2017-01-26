@@ -23,7 +23,7 @@ class ChangelogReaderTest {
         with(changelog.versions) {
             assertThat(this).hasSize(2)
             assertThat(this[0].changes[0].type).isEqualTo(FIX)
-            assertThat(this[0].changes[0].translation["pl"]).isNotNull()
+            assertThat(this[0].changes[0].translations["pl"]).isNotNull()
         }
     }
 
