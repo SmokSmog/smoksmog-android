@@ -7,13 +7,12 @@ node {
     slackSend channel: 'quality', color: '#0080FF', message: "Started Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
 
     stage('Prepare'){
-        //checkout scm
-        checkout([
-                $class: 'GitSCM',
-                branches: scm.branches,
-                extensions: scm.extensions + [[$class: 'CleanBeforeCheckout']],
-                userRemoteConfigs: scm.userRemoteConfigs
-        ])
+        dir('./build/'){deleteDir()}
+        dir('./android/build/'){deleteDir()}
+        dir('./app/build/'){deleteDir()}
+        dir('./domain/build/'){deleteDir()}
+        dir('./network/build/'){deleteDir()}
+        checkout scm
     }
 
     try {
