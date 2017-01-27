@@ -21,9 +21,10 @@ node {
             // Build successful
             slackSend channel: 'quality', color: '#80FF00', message: "Success Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
         }
-    } catch (ignored) {
+    } catch (error) {
         // Build failed
         slackSend channel: 'quality', color: '#FF0000', message: "Failed Android _${env.JOB_NAME}_ #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'smoksmog', tokenCredentialId: 'smoksmok-slack'
+        throw new IllegalStateException(error, "Build failed")
     }
 
     stage('Artifacts'){
