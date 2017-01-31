@@ -5,7 +5,9 @@ import android.content.res.Resources
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import android.widget.TextView
+import com.antyzero.smoksmog.BuildConfig
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmogApplication
 import com.antyzero.smoksmog.dsl.findViewById
@@ -14,6 +16,8 @@ import com.antyzero.smoksmog.settings.SettingsHelper
 import com.antyzero.smoksmog.utils.TextUtils
 import pl.malopolska.smoksmog.model.Particulate
 import pl.malopolska.smoksmog.model.ParticulateEnum
+import smoksmog.air.AirQuality
+import smoksmog.air.AirQualityIndex
 import smoksmog.ui.IndicatorView
 import javax.inject.Inject
 
@@ -29,6 +33,7 @@ class ParticulateViewHolder(itemView: View) : ListViewHolder<Particulate>(itemVi
     val textViewTimeHour: TextView = findViewById(R.id.textViewTimeHour) as TextView
     val textViewTimeDay: TextView = findViewById(R.id.textViewTimeDay) as TextView
     val indicatorView: IndicatorView = findViewById(R.id.indicatorView) as IndicatorView
+    val particulateIndex: ImageView = findViewById(R.id.particulateIndex) as ImageView
 
     init {
         SmokSmogApplication[itemView.context].appComponent.inject(this)
@@ -42,7 +47,7 @@ class ParticulateViewHolder(itemView: View) : ListViewHolder<Particulate>(itemVi
         textViewMeasureDay.text = resources.getString(R.string.measurment, data.average, data.unit)
         textViewMeasureHour.text = resources.getString(R.string.measurment, data.value, data.unit)
 
-        if (data.value > data.norm) {
+        if (data.value > data.norm && ParticulateEnum.PM25 != data.enum) {
             textViewTimeHour.setBackgroundResource(R.drawable.shape_oval_iron_border)
         } else {
             textViewTimeHour.setBackgroundResource(R.drawable.shape_oval_iron)
@@ -64,6 +69,11 @@ class ParticulateViewHolder(itemView: View) : ListViewHolder<Particulate>(itemVi
             indicatorView.visibility = GONE
             textViewMeasureDay.visibility = GONE
             textViewTimeDay.visibility = GONE
+        }
+
+        if(BuildConfig.DEBUG){
+
+            particulateIndex.setColorFilter(AirQuality.findByValue(AirQualityIndex.calculate(data)).getColor(context))
         }
     }
 }
