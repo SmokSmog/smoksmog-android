@@ -35,24 +35,17 @@ class AirQualityViewHolder(itemView: View) : ListViewHolder<Station>(itemView) {
     @Inject lateinit var countdownProvider: CountdownProvider
     @Inject lateinit var logger: Logger
 
-    var textViewIndexValue: TextView
-    var textViewAirQuality: TextView
-    var textViewMeasureTime: TextView
-    var airIndicator: ImageView
-    var buttonAirQualityInfo: View
-    var buttonTimeline: View
+    var textViewIndexValue: TextView = findViewById(R.id.textViewIndexValue) as TextView
+    var textViewAirQuality: TextView = findViewById(R.id.textViewAirQuality) as TextView
+    var textViewMeasureTime: TextView = findViewById(R.id.textViewMeasureTime) as TextView
+    var airIndicator: ImageView = findViewById(R.id.airIndicator) as ImageView
+    var buttonAirQualityInfo: View = findViewById(R.id.buttonAirQualityInfo)
+    var buttonTimeline: View = findViewById(R.id.buttonTimeline)
 
     private var measureDate: DateTime? = null
 
     init {
         SmokSmogApplication[itemView.context].appComponent.inject(this)
-
-        textViewIndexValue = findViewById(R.id.textViewIndexValue) as TextView
-        textViewAirQuality = findViewById(R.id.textViewAirQuality) as TextView
-        textViewMeasureTime = findViewById(R.id.textViewMeasureTime) as TextView
-        airIndicator = findViewById(R.id.airIndicator) as ImageView
-        buttonAirQualityInfo = findViewById(R.id.buttonAirQualityInfo)
-        buttonTimeline = findViewById(R.id.buttonTimeline)
     }
 
     override fun bind(data: Station) {

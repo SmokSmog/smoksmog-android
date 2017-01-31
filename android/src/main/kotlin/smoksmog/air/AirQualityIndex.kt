@@ -10,6 +10,8 @@ object AirQualityIndex {
         return calculate(station.particulates)
     }
 
+    fun calculate(particulate: Particulate): Double = calculate(listOf(particulate))
+
     fun calculate(particulates: Collection<Particulate>): Double {
 
         var index = 0.0
@@ -24,6 +26,7 @@ object AirQualityIndex {
                 CO -> particulateValue = (particulate.value / 10000).toDouble()
                 O3 -> particulateValue = (particulate.value / 120).toDouble()
                 PM10 -> particulateValue = (particulate.value / 100).toDouble()
+                PM25 -> particulateValue = (particulate.value / 60).toDouble()
                 C6H6 -> particulateValue = (particulate.value / 40).toDouble()
                 else -> {
                     // do nothing

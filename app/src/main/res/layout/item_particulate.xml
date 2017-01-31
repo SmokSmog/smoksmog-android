@@ -7,88 +7,105 @@
     android:layout_marginBottom="8dp"
     android:background="@color/item_background"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="8dp">
+    android:orientation="horizontal">
 
-    <!-- Particulate name -->
-
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/particulateIndex"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
-        android:gravity="left|center_vertical"
-        android:minHeight="@dimen/indicator_width_small"
-        android:minWidth="90dp"
-        android:textAppearance="@style/TextAppearance"
-        android:textSize="22sp"
-        tools:ignore="RtlHardcoded"
-        tools:text="PM10" />
+        android:src="@drawable/triangle"
+        android:alpha="0.5"
+        tools:ignore="RtlHardcoded" />
 
-    <!-- Percent indicator -->
-
-    <smoksmog.ui.IndicatorView
-        android:id="@+id/indicatorView"
-        android:layout_width="@dimen/indicator_width_small"
-        android:layout_height="@dimen/indicator_width_small"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/textViewName"
-        tools:layout_height="@dimen/indicator_width_small"
-        tools:layout_width="60dp" />
-
-    <!-- Values 24 and 1 hour -->
-
-    <GridLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:columnCount="2"
-        android:rowCount="2">
+        android:padding="8dp">
+
+        <!-- Particulate name -->
 
         <TextView
-            android:id="@+id/textViewTimeDay"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/shape_oval_iron"
-            android:gravity="center"
-            android:text="@string/hours_24"
-            android:textAppearance="@style/TextAppearance.Invert" />
-
-        <TextView
-            android:id="@+id/textViewMeasureDay"
+            android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:minWidth="120dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:gravity="left|center_vertical"
+            android:minHeight="@dimen/indicator_width_small"
+            android:minWidth="90dp"
             android:textAppearance="@style/TextAppearance"
-            android:textSize="18sp"
+            android:textSize="22sp"
             tools:ignore="RtlHardcoded"
-            tools:text="1 mg/m3" />
+            tools:text="PM10" />
 
-        <TextView
-            android:id="@+id/textViewTimeHour"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/shape_oval_iron"
-            android:gravity="center"
-            android:text="@string/hours_1"
-            android:textAppearance="@style/TextAppearance.Invert" />
+        <!-- Percent indicator -->
 
-        <TextView
-            android:id="@+id/textViewMeasureHour"
+        <smoksmog.ui.IndicatorView
+            android:id="@+id/indicatorView"
+            android:layout_width="@dimen/indicator_width_small"
+            android:layout_height="@dimen/indicator_width_small"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/textViewName"
+            tools:layout_height="@dimen/indicator_width_small"
+            tools:layout_width="60dp" />
+
+        <!-- Values 24 and 1 hour -->
+
+        <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:minWidth="120dp"
-            android:textAppearance="@style/TextAppearance"
-            android:textSize="18sp"
-            tools:ignore="RtlHardcoded"
-            tools:text="289 mg/m3" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:columnCount="2"
+            android:rowCount="2">
 
-    </GridLayout>
+            <TextView
+                android:id="@+id/textViewTimeDay"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/shape_oval_iron"
+                android:gravity="center"
+                android:text="@string/hours_24"
+                android:textAppearance="@style/TextAppearance.Invert" />
+
+            <TextView
+                android:id="@+id/textViewMeasureDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:minWidth="120dp"
+                android:textAppearance="@style/TextAppearance"
+                android:textSize="18sp"
+                tools:ignore="RtlHardcoded"
+                tools:text="1 mg/m3" />
+
+            <TextView
+                android:id="@+id/textViewTimeHour"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_oval_iron"
+                android:gravity="center"
+                android:text="@string/hours_1"
+                android:textAppearance="@style/TextAppearance.Invert" />
+
+            <TextView
+                android:id="@+id/textViewMeasureHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:minWidth="120dp"
+                android:textAppearance="@style/TextAppearance"
+                android:textSize="18sp"
+                tools:ignore="RtlHardcoded"
+                tools:text="289 mg/m3" />
+
+        </GridLayout>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

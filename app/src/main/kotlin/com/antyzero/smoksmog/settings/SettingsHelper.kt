@@ -14,7 +14,7 @@ import java.util.*
  *
  * This class should be responsible for data manipulation of every user-changeable data
  */
-class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsHelper(private val context: Context) {
 
     val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val stationIds: MutableList<Long>
@@ -23,16 +23,18 @@ class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedP
     private val keyDragonHead: String = context.getString(R.string.pref_key_dragon_visible)
     private val keyStationNear: String = context.getString(R.string.pref_key_station_closest)
 
-    var percentMode: Percent? = null
-        private set
-
     init {
         PreferenceManager.setDefaultValues(context, R.xml.settings_general, false)
-        preferences.registerOnSharedPreferenceChangeListener(this)
         stationIds = getList(preferences, KEY_STATION_ID_LIST)
-
-        updatePercentMode()
     }
+
+    var percentMode: Percent = Percent.DAY
+        private set
+        get() {
+            val defValue = context.getString(R.string.pref_percent_value_default)
+            val string = preferences.getString(keyPercent, defValue)
+            return Percent.find(context, string)
+        }
 
     val nearestStation: Boolean
         get() = preferences.getBoolean(keyStationNear, false)
@@ -41,12 +43,6 @@ class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedP
         get() = preferences.getBoolean(keyDragonHead, true)
 
     // --- Legacy ---
-
-    private fun updatePercentMode(sharedPreferences: SharedPreferences = preferences) {
-        val defValue = context.getString(R.string.pref_percent_value_default)
-        val string = sharedPreferences.getString(keyPercent, defValue)
-        percentMode = Percent.find(context, string)
-    }
 
     // This should be removed as soon as most of our users will update >= 197000
     @Deprecated(
@@ -68,12 +64,6 @@ class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedP
             string.split(SPLIT_CHAR.toRegex()).dropLastWhile(String::isEmpty).toTypedArray().mapTo(result, String::toLong)
         }
         return result
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        when (key) {
-            keyPercent -> updatePercentMode(sharedPreferences)
-        }
     }
 
     companion object {
