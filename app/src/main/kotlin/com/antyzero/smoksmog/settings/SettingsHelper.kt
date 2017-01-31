@@ -18,8 +18,10 @@ class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedP
 
     val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val stationIds: MutableList<Long>
+
     private val keyPercent: String = context.getString(R.string.pref_key_percent)
     private val keyDragonHead: String = context.getString(R.string.pref_key_dragon_visible)
+    private val keyStationNear: String = context.getString(R.string.pref_key_station_closest)
 
     var percentMode: Percent? = null
         private set
@@ -32,8 +34,13 @@ class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedP
         updatePercentMode()
     }
 
+    val nearestStation: Boolean
+        get() = preferences.getBoolean(keyStationNear, false)
+
     val dragonVisible: Boolean
         get() = preferences.getBoolean(keyDragonHead, true)
+
+    // --- Legacy ---
 
     private fun updatePercentMode(sharedPreferences: SharedPreferences = preferences) {
         val defValue = context.getString(R.string.pref_percent_value_default)
@@ -73,6 +80,6 @@ class SettingsHelper(private val context: Context) : SharedPreferences.OnSharedP
 
         private val EMPTY_STRING = "awd5ijsadf"
         private val SPLIT_CHAR = "%!@"
-        private val KEY_STATION_ID_LIST = "KEY_STATION_ID_LIST"
+        val KEY_STATION_ID_LIST = "KEY_STATION_ID_LIST"
     }
 }

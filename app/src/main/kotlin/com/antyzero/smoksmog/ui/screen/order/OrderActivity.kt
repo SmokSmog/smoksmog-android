@@ -23,18 +23,15 @@ import com.antyzero.smoksmog.storage.model.Item
 import com.antyzero.smoksmog.ui.BaseDragonActivity
 import com.antyzero.smoksmog.ui.screen.ActivityModule
 import com.antyzero.smoksmog.ui.screen.PickStationActivity
-import com.antyzero.smoksmog.ui.screen.order.dialog.StationDialogAdapter
 import kotlinx.android.synthetic.main.activity_order.*
-import pl.malopolska.smoksmog.RestClient
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import smoksmog.logger.Logger
 import javax.inject.Inject
 
-class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAdapter.StationListener {
+class OrderActivity : BaseDragonActivity(), OnStartDragListener {
 
-    @Inject lateinit var restClient: RestClient
     @Inject lateinit var logger: Logger
     @Inject lateinit var errorReporter: ErrorReporter
     @Inject lateinit var smokSmog: SmokSmog
@@ -69,11 +66,11 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
         itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
-        restClient.stations()
+        smokSmog.api.stations()
                 .flatMap { Observable.from(it) }
-                .toMap({it.id},{it.name})
+                .toMap({ it.id }, { it.name })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{
+                .subscribe {
                     idNameMap.clear()
                     idNameMap.putAll(it)
                     recyclerView.adapter.notifyDataSetChanged()
@@ -131,8 +128,8 @@ class OrderActivity : BaseDragonActivity(), OnStartDragListener, StationDialogAd
         itemTouchHelper.startDrag(viewHolder)
     }
 
-    override fun onStation(stationId: Long) {
-        restClient.station(stationId)
+    private fun onStation(stationId: Long) {
+        smokSmog.api.station(stationId)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

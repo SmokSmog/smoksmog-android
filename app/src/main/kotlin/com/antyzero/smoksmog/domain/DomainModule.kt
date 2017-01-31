@@ -2,9 +2,11 @@ package com.antyzero.smoksmog.domain
 
 import android.content.Context
 import com.antyzero.smoksmog.SmokSmog
+import com.antyzero.smoksmog.i18n.LocaleProvider
 import com.antyzero.smoksmog.location.LocationProvider
 import com.antyzero.smoksmog.location.SimpleLocationProvider
 import com.antyzero.smoksmog.settings.SettingsHelper
+import com.antyzero.smoksmog.settings.SettingsHelper.Companion.KEY_STATION_ID_LIST
 import com.antyzero.smoksmog.storage.JsonFileStorage
 import com.antyzero.smoksmog.storage.PersistentStorage
 import com.antyzero.smoksmog.storage.model.Item
@@ -32,17 +34,19 @@ class DomainModule {
                 for (id in settingsHelper.stationIdList) {
                     this.storage.add(Item.Station(id))
                 }
-                settingsHelper.preferences.edit().clear().apply()
-                settingsHelper.stationIdList.clear()
+                if (settingsHelper.nearestStation) {
+                    this.storage.add(Item.Nearest())
+                }
+                settingsHelper.preferences.edit().remove(KEY_STATION_ID_LIST).apply() // remove storage
+                settingsHelper.stationIdList.clear() // remove temp data
             }
         }
     }
 
     @Provides
     @Singleton
-    internal fun provideApi(context: Context): Api {
-        @Suppress("DEPRECATION")
-        return RestClient.Builder(context.resources.configuration.locale).apply {
+    internal fun provideApi(localeProvider: LocaleProvider): Api {
+        return RestClient.Builder(localeProvider.get()).apply {
             scheduler = Schedulers.io()
         }.build()
     }

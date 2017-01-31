@@ -1,0 +1,32 @@
+{
+  "versions": [
+    {
+      "name": "0.9.0",
+      "code": 90,
+      "date": 123123123,
+      "changes": [
+        {
+          "type": "fix",
+          "text": "We fixed something",
+          "translations": {
+            "pl": "Coś tam naprawiliśmy"
+          }
+        }
+      ]
+    },
+    {
+      "name": "0.8.0",
+      "code": 60,
+      "date": 14654465464,
+      "changes": [
+        {
+          "type": "new",
+          "text": "We added something",
+          "": {
+            "pl": "Coś tam dodalismy"
+          }
+        }
+      ]
+    }
+  ]
+}

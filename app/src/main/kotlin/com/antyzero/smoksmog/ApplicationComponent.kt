@@ -4,12 +4,11 @@ import com.antyzero.smoksmog.domain.DomainModule
 import com.antyzero.smoksmog.eventbus.EventBusModule
 import com.antyzero.smoksmog.fabric.FabricModule
 import com.antyzero.smoksmog.firebase.SmokSmogFirebaseInstanceIdService
+import com.antyzero.smoksmog.i18n.I18nModule
 import com.antyzero.smoksmog.job.JobModule
 import com.antyzero.smoksmog.job.SmokSmogJobService
 import com.antyzero.smoksmog.logger.LoggerModule
-import com.antyzero.smoksmog.network.NetworkModule
 import com.antyzero.smoksmog.settings.SettingsModule
-import com.antyzero.smoksmog.time.TimeModule
 import com.antyzero.smoksmog.ui.dialog.AboutDialog
 import com.antyzero.smoksmog.ui.dialog.FacebookDialog
 import com.antyzero.smoksmog.ui.screen.ActivityComponent
@@ -28,11 +27,10 @@ import javax.inject.Singleton
         ApplicationModule::class,
         DomainModule::class,
         LoggerModule::class,
-        NetworkModule::class,
         FabricModule::class,
         SettingsModule::class,
         EventBusModule::class,
-        TimeModule::class,
+        I18nModule::class,
         UserModule::class,
         WidgetModule::class,
         JobModule::class))

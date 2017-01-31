@@ -10,7 +10,7 @@ import com.antyzero.smoksmog.dsl.findViewById
 import com.antyzero.smoksmog.dsl.getCompatColor
 import com.antyzero.smoksmog.dsl.tag
 import com.antyzero.smoksmog.eventbus.RxBus
-import com.antyzero.smoksmog.time.CountdownProvider
+import com.antyzero.smoksmog.i18n.time.CountdownProvider
 import com.antyzero.smoksmog.ui.dialog.AirQualityDialog
 import com.antyzero.smoksmog.ui.dialog.InfoDialog
 import com.antyzero.smoksmog.ui.screen.history.HistoryActivity
@@ -72,8 +72,7 @@ class AirQualityViewHolder(itemView: View) : ListViewHolder<Station>(itemView) {
         val particulates = data.particulates
         if (!particulates.isEmpty()) {
 
-            val particulate = getNewest(particulates)
-            measureDate = particulate.date
+            measureDate = getNewest(particulates)?.date
             updateUiTime()
 
             // Loop update, we want up to date info
@@ -94,7 +93,7 @@ class AirQualityViewHolder(itemView: View) : ListViewHolder<Station>(itemView) {
      */
     private fun updateUiTime() {
         if (measureDate != null) {
-            val seconds = Seconds.secondsBetween(measureDate!!, DateTime.now()).seconds
+            val seconds = Seconds.secondsBetween(measureDate, DateTime.now()).seconds
             textViewMeasureTime.text = String.format(
                     itemView.resources.getText(R.string.measure_ago).toString(),
                     countdownProvider[seconds])
@@ -103,7 +102,10 @@ class AirQualityViewHolder(itemView: View) : ListViewHolder<Station>(itemView) {
         }
     }
 
-    private fun getNewest(data: List<Particulate>): Particulate {
-        return OperatorMinMax.max(Observable.from(data)) { lhs, rhs -> lhs.date.compareTo(rhs.date) }.toBlocking().first()
+    @Suppress("SENSELESS_COMPARISON")
+    private fun getNewest(data: List<Particulate>): Particulate? {
+        return OperatorMinMax.max(Observable.from(data).filter { it.date != null }) { lhs, rhs -> lhs.date.compareTo(rhs.date) }
+                .defaultIfEmpty(null)
+                .toBlocking().first()
     }
 }

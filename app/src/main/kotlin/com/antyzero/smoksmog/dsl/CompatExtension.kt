@@ -26,13 +26,6 @@ fun Context.getCompatColor(@ColorRes colorId: Int): Int = when (Build.VERSION.SD
 
 @Suppress("DEPRECATION")
 @SuppressLint("NewApi")
-fun Configuration.getCompatLocale(): Locale = when (Build.VERSION.SDK_INT) {
-    in 1..Build.VERSION_CODES.M -> locale
-    else -> locales[0] // API24
-}
-
-@Suppress("DEPRECATION")
-@SuppressLint("NewApi")
 fun TextView.compatFromHtml(@StringRes id: Int) {
     text = when (Build.VERSION.SDK_INT) {
         in 1..Build.VERSION_CODES.M -> Html.fromHtml(context.getString(id))

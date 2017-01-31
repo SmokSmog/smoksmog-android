@@ -9,8 +9,6 @@ import com.antyzero.smoksmog.ApplicationComponent;
 import com.antyzero.smoksmog.ApplicationModule;
 import com.antyzero.smoksmog.DaggerApplicationComponent;
 import com.antyzero.smoksmog.SmokSmogApplication;
-import com.antyzero.smoksmog.mock.MockNetworkModule;
-import com.antyzero.smoksmog.network.NetworkModule;
 
 /**
  * ActivityTestRule with mocked network communication for faster and more reliable testing
@@ -36,7 +34,7 @@ public class MockedNetworkActivityTestRule<T extends Activity> extends ActivityT
         SmokSmogApplication application = (SmokSmogApplication)
                 InstrumentationRegistry.getTargetContext().getApplicationContext();
 
-        ApplicationComponent applicationComponent = buildApplicationComponent(application, new MockNetworkModule());
+        ApplicationComponent applicationComponent = buildApplicationComponent(application);
 
         application.setAppComponent(applicationComponent);
     }
@@ -49,16 +47,15 @@ public class MockedNetworkActivityTestRule<T extends Activity> extends ActivityT
         SmokSmogApplication application = (SmokSmogApplication)
                 InstrumentationRegistry.getTargetContext().getApplicationContext();
 
-        ApplicationComponent applicationComponent = buildApplicationComponent(application, new NetworkModule());
+        ApplicationComponent applicationComponent = buildApplicationComponent(application);
         application.setAppComponent(applicationComponent);
 
         super.afterActivityFinished();
     }
 
-    private ApplicationComponent buildApplicationComponent(Application application, NetworkModule networkModule) {
+    private ApplicationComponent buildApplicationComponent(Application application) {
         return DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(application))
-                .networkModule(networkModule)
                 .build();
     }
 }
