@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmog
 import com.antyzero.smoksmog.SmokSmogApplication
+import com.antyzero.smoksmog.dsl.tag
 import com.antyzero.smoksmog.error.ErrorReporter
 import com.antyzero.smoksmog.eventbus.RxBus
 import com.antyzero.smoksmog.firebase.FirebaseEvents
@@ -154,7 +155,13 @@ class StartActivity : BaseDragonActivity(), ViewPager.OnPageChangeListener {
             // do nothing
         }
 
-        startActivity(intent)
+        try {
+            startActivity(intent)
+        } catch (e: Exception){
+            logger.w(tag(), "Going to Facebook page went wrong ($intent)", e)
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://fb.com/SmokSmog")))
+        }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

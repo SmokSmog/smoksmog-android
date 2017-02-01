@@ -71,9 +71,6 @@ class ParticulateViewHolder(itemView: View) : ListViewHolder<Particulate>(itemVi
             textViewTimeDay.visibility = GONE
         }
 
-        if(BuildConfig.DEBUG){
-
-            particulateIndex.setColorFilter(AirQuality.findByValue(AirQualityIndex.calculate(data)).getColor(context))
-        }
+        particulateIndex.setColorFilter(AirQuality.findByValue(AirQualityIndex.calculate(data)).getColor(context))
     }
 }
