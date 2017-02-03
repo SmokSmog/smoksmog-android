@@ -57,6 +57,7 @@ dependencies {
     compile "com.trello:rxlifecycle-components:${libVersions.rx.lifecycle}"
 
     testCompile "junit:junit:${libVersions.junit}"
+    testCompile 'org.assertj:assertj-core:2.6.0'
 }
 
 repositories {

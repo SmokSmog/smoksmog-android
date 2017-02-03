@@ -14,20 +14,20 @@ object AirQualityIndex {
 
     fun calculate(particulates: Collection<Particulate>): Double {
 
-        var index = 0.0
+        var index = 0.0f
 
         for (particulate in particulates) {
 
-            var particulateValue = 0.0
+            var particulateValue = 0.0f
 
             when (particulate.enum) {
-                SO2 -> particulateValue = (particulate.value / 350).toDouble()
-                NO2 -> particulateValue = (particulate.value / 200).toDouble()
-                CO -> particulateValue = (particulate.value / 10000).toDouble()
-                O3 -> particulateValue = (particulate.value / 120).toDouble()
-                PM10 -> particulateValue = (particulate.value / 100).toDouble()
-                PM25 -> particulateValue = (particulate.value / 60).toDouble()
-                C6H6 -> particulateValue = calculateBenzene(particulate)
+                PM10 -> particulateValue = particulate.value / 20
+                PM25 -> particulateValue = particulate.value / 12
+                SO2 -> particulateValue = particulate.value / 70
+                NO2 -> particulateValue = particulate.value / 40
+                CO -> particulateValue = particulate.value / 2000
+                O3 -> particulateValue = particulate.value / 24
+                C6H6 -> particulateValue = calculateBenzene(particulate.value)
                 else -> {
                     // do nothing
                 }
@@ -36,22 +36,24 @@ object AirQualityIndex {
             index = Math.max(index, particulateValue)
         }
 
-        return index * 5
+        return index.toDouble()
     }
 
-    private fun calculateBenzene(particulate: Particulate): Double {
-        val value = particulate.value.toDouble()
-        val vp = (1 / (value * 5))
-        if (value <= 5) { // Index 0-1
-            return (value / 25)
-        } else if (value <= 10) { // Index 1-3
-            return (1 / (vp * (100 / 3) + (-1 / 3)))
-        } else if (value <= 15) { // Index 3-5
-            return (1 / (vp * 20 + (-1 / 15)))
-        } else if (value <= 20) { // Index 5-7
-            return (1 / (vp * (120 / 7) + (1 / 35)))
-        } else { // Index 7 and more
-            return (1 / (vp * (50 / 7) + (5 / 70))) // 25 - for index 7-10 and more
+    fun calculateBenzene(particulate: Float): Float {
+        val value = Math.max(particulate, 0f)
+        return when (value) {
+            in 0f until 5f -> value * 0.2f// Index 0-1
+            in 5f until 20f -> value * 0.4f - 1 // Index 1-7
+            else -> value * 0.1f + 5 // Index 7 and above
         }
     }
+}
+
+private class FloatRange(override val start: Float, override val endInclusive: Float) : ClosedRange<Float> {
+    override fun contains(value: Float): Boolean = value >= start && value < endInclusive
+}
+
+private infix fun Float.until(to: Float): FloatRange {
+    if (this > to) throw IllegalArgumentException("The to argument value '$to' was too small.")
+    return FloatRange(this, to)
 }
