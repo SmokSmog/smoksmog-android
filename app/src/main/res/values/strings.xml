@@ -62,5 +62,6 @@
     <string name="cs_measurement_history_graphs">Measurement history graphs</string>
     <string name="title_pick_station">Pick station</string>
     <string name="title_manage_stations">Manage your items</string>
+    <string name="share">Share</string>
 
 </resources>

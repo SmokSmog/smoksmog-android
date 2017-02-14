@@ -41,4 +41,5 @@
     <string name="find_station">Znajdź stację</string>
     <string name="pref_dragon_visible_title">Widoczność smoczej głowy</string>
     <string name="pref_dragon_visible_summary">Ukryj głowę smoka widoczną na ekranach</string>
+    <string name="share">Udostępnij</string>
 </resources>

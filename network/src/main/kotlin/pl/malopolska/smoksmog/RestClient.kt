@@ -4,12 +4,12 @@ import com.fatboyindustrial.gsonjodatime.Converters
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.joda.time.DateTime
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import rx.Scheduler
-import rx.schedulers.Schedulers
 import java.util.*
 
 class RestClient(val endpoint: String, api: Api) : Api by api {
@@ -23,13 +23,12 @@ class RestClient(val endpoint: String, api: Api) : Api by api {
         }.create()
     }
 
-    class Builder(locale: Locale = Locale.getDefault(), serverUrl: String = ENDPOINT) {
-
-        constructor(locale: Locale = Locale.getDefault()) : this(locale, ENDPOINT)
+    class Builder @JvmOverloads constructor(locale: Locale = Locale.getDefault(), serverUrl: String = ENDPOINT) {
 
         val endpoint: String = "$serverUrl${locale.language}/"
 
         var scheduler: Scheduler? = null
+        var requestCustomizer: ((Request.Builder) -> Unit)? = null
 
         fun build(): RestClient {
 
@@ -48,6 +47,7 @@ class RestClient(val endpoint: String, api: Api) : Api by api {
                         val original = chain.request()
                         val request = original.newBuilder().apply {
                             header("X-Smog-AdditionalMeasurements".toLowerCase(), "pm25")
+                            requestCustomizer?.invoke(this)
                             method(original.method(), original.body())
                         }.build()
                         chain.proceed(request)

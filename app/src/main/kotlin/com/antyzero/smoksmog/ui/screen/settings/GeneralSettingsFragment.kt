@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.preference.CheckBoxPreference
+import android.view.View
 import com.antyzero.smoksmog.R
 import com.antyzero.smoksmog.SmokSmog
 import com.antyzero.smoksmog.dsl.activityComponent
