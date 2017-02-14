@@ -1,6 +1,8 @@
 package com.antyzero.smoksmog.domain
 
 import android.content.Context
+import android.os.Build
+import com.antyzero.smoksmog.BuildConfig
 import com.antyzero.smoksmog.SmokSmog
 import com.antyzero.smoksmog.i18n.LocaleProvider
 import com.antyzero.smoksmog.location.LocationProvider
@@ -48,6 +50,10 @@ class DomainModule {
     internal fun provideApi(localeProvider: LocaleProvider): Api {
         return RestClient.Builder(localeProvider.get()).apply {
             scheduler = Schedulers.io()
+            requestCustomizer = {
+                it.addHeader("User-Agent", "SmokSmog/%s (Android %s)".format(
+                        BuildConfig.VERSION_NAME, Build.VERSION.RELEASE))
+            }
         }.build()
     }
 
